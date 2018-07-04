@@ -7,7 +7,7 @@ import axios from 'axios';
 import * as Cookies from 'js-cookie';
 
 // 根据环境设置请求服务器地址
-axios.defaults.baseURL = 'http://localhost/';
+axios.defaults.baseURL = 'http://localhost/Sup_REST/';
 // 响应时间
 axios.defaults.timeout = 10000;
 // `withCredentails`选项表明了是否是跨域请求

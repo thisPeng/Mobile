@@ -14,7 +14,7 @@ export default {
   computed,
   mounted() {
     this.$axios({
-      url: "Sup_REST/ucml_mobile/select_User_Org_Mobile.ashx?type=HOME_MSG",
+      url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=HOME_MSG",
       method: "get"
     }).then(res => {
       if (res) {

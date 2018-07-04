@@ -14,7 +14,7 @@ export default {
   computed,
   mounted() {
     this.$axios({
-      url: "/Sup_REST/ucml_mobile/getMenuCount_new.ashx",
+      url: "/ucml_mobile/getMenuCount_new.ashx",
       method: "get"
     }).then(res => {
       if (res) {

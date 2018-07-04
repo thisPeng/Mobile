@@ -56,7 +56,7 @@ export default {
     userLogin() {
       if (this.loginName.length > 0 && this.password.length > 0) {
         this.$axios({
-          url: "/Sup_REST/UCMLWebServiceEntryForJs.aspx",
+          url: "/UCMLWebServiceEntryForJs.aspx",
           method: "post",
           data: {
             _bpoName: "BPO_CompleteTaskMobileService",
