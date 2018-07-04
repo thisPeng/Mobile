@@ -1,0 +1,61 @@
+<template>
+  <div class="home">
+    <van-nav-bar :title="title" :left-arrow="isBack" @click-left="onBack" @click-right="onMenu">
+      <!-- <van-icon name="search" slot="right" /> -->
+    </van-nav-bar>
+    <router-view class="content"></router-view>
+    <van-tabbar v-model="active">
+      <van-tabbar-item icon="chat" @click="jumpTabs('index')">消息</van-tabbar-item>
+      <van-tabbar-item icon="edit" @click="jumpTabs('apply')">应用</van-tabbar-item>
+      <van-tabbar-item icon="records" @click="jumpTabs('contact')">通讯录</van-tabbar-item>
+      <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
+    </van-tabbar>
+  </div>
+</template>
+<script>
+import computed from "./../../assets/js/computed.js";
+
+export default {
+  data() {
+    return {
+      title: "材博汇",
+      isBack: false,
+      active: 0
+    };
+  },
+  watch: {
+    $route(to) {
+      this.title = to.meta.title;
+    }
+  },
+  methods: {
+    onBack() {},
+    onMenu() {},
+    jumpTabs(name) {
+      this.$store.commit("tabActive", this.active);
+      this.$router.replace({ name });
+    }
+  },
+  computed,
+  created() {
+    this.title = this.$router.history.current.meta.title;
+  },
+  mounted() {
+    console.log(this.tabActive)
+    this.active = this.tabActive;
+  }
+};
+</script>
+<style lang="less" scoped>
+.home {
+  width: 100%;
+  height: 100%;
+  .content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 46px;
+    bottom: 50px;
+  }
+}
+</style>

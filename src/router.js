@@ -1,21 +1,56 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import About from './views/About.vue'
+import Login from './views/Login/Login'
+import Home from './components/Home/Home'
+import Index from './views/Index/Index'
+import Apply from './views/Apply/Apply'
+import Contact from './views/Contact/Contact'
+import Users from './views/Users/Users'
 
 Vue.use(Router)
 
 export default new Router({
+  // mode: "history",
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home
+      path: '/login',
+      name: 'login',
+      component: Login
     },
     {
-      path: '/about',
-      name: 'about',
-      component: About
+      path: '/',
+      redirect: '/index',
+      component: Home,
+      children: [{
+        path: 'index',
+        name: 'index',
+        component: Index,
+        meta: {
+          title: '首页' // 页面标题
+        }
+      }, {
+        path: '/apply',
+        name: 'apply',
+        component: Apply,
+        meta: {
+          title: '应用' // 页面标题
+        }
+      },
+      {
+        path: '/contact',
+        name: 'contact',
+        component: Contact,
+        meta: {
+          title: '通讯录' // 页面标题
+        }
+      }, {
+        path: '/users',
+        name: 'users',
+        component: Users,
+        meta: {
+          title: '用户中心' // 页面标题
+        }
+      }]
     }
   ]
 })
