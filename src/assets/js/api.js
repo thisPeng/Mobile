@@ -33,7 +33,7 @@ const index = {
 // 应用页
 const apply = {
   // 获取应用数据
-  getDate() {
+  getData() {
     return axios({
       url: "/ucml_mobile/getMenuCount_new.ashx"
     });

@@ -16,7 +16,7 @@ export default {
   methods: {},
   computed,
   mounted() {
-    apply.getDate().then(res => {
+    apply.getData().then(res => {
       if (res) {
         this.list = res;
       }
