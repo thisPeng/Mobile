@@ -5,20 +5,20 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
+import { apply } from "./../../assets/js/api.js";
 
 export default {
   data() {
-    return {};
+    return {
+      list: []
+    };
   },
   methods: {},
   computed,
   mounted() {
-    this.$axios({
-      url: "/ucml_mobile/getMenuCount_new.ashx",
-      method: "get"
-    }).then(res => {
+    apply.getDate().then(res => {
       if (res) {
-        console.log(res);
+        this.list = res;
       }
     });
   }

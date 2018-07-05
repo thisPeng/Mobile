@@ -39,6 +39,7 @@
 
 <script>
 import computed from "./../../assets/js/computed.js";
+import { login } from "./../../assets/js/api.js";
 
 export default {
   name: "login",
@@ -55,19 +56,11 @@ export default {
     // 登录
     userLogin() {
       if (this.loginName.length > 0 && this.password.length > 0) {
-        this.$axios({
-          url: "/UCMLWebServiceEntryForJs.aspx",
-          method: "post",
-          data: {
-            _bpoName: "BPO_CompleteTaskMobileService",
-            _methodName: "LoginMobile",
-            "_parameters[UserName]": this.loginName,
-            "_parameters[Password]": this.password,
-            "_parameters[DeviceID]": "",
-            _paraNames: "UserName,Password,DeviceID",
-            _pUrl: ""
-          }
-        }).then(res => {
+        const params = {
+          loginName: this.loginName,
+          password: this.password
+        };
+        login.validate(params).then(res => {
           if (res && res.text != "0") {
             this.$store.commit("userName", this.loginName);
             this.$router.replace({

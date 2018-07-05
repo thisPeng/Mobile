@@ -4,10 +4,9 @@
  * @author DJ
  */
 import axios from 'axios';
-import * as Cookies from 'js-cookie';
 
 // 根据环境设置请求服务器地址
-axios.defaults.baseURL = 'http://localhost/Sup_REST/';
+axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? "/" : 'http://127.0.0.1/Sup_REST/';
 // 响应时间
 axios.defaults.timeout = 10000;
 // `withCredentails`选项表明了是否是跨域请求
@@ -24,9 +23,6 @@ axios.interceptors.request.use(
     // 是否加全屏loding
     if (config.data !== false) {
       window.vm.$toast.loading();
-    }
-    if (Cookies.get('csrfToken')) {
-      config.headers['x-csrf-token'] = Cookies.get('csrfToken');
     }
     if (config.method === 'post') {
       config.transformRequest = function (data) {
@@ -74,7 +70,8 @@ axios.interceptors.response.use(
           error.message = '请求超时';
           break;
         case 500:
-          error.message = '服务器内部错误';
+          // error.message = '服务器内部错误';
+          error.message = '登录过期，请重新登录';
           break;
         case 501:
           error.message = '服务未实现';

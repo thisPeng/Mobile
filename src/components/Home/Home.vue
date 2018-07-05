@@ -41,7 +41,6 @@ export default {
     this.title = this.$router.history.current.meta.title;
   },
   mounted() {
-    console.log(this.tabActive)
     this.active = this.tabActive;
   }
 };
@@ -51,6 +50,7 @@ export default {
   width: 100%;
   height: 100%;
   .content {
+    background-color: #f6f6f6;
     position: absolute;
     left: 0;
     right: 0;
