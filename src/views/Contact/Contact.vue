@@ -1,20 +1,29 @@
 <template>
   <div class="contact">
-    <van-search placeholder="请输入商品名称" v-model="value" />
-    <van-row type="flex" justify="space-around">
-      <van-col span="6">组织机构</van-col>
-    </van-row>
-    <van-collapse v-model="activeName" accordion>
-      <van-collapse-item name="1">
+    <div class="contact-search">
+      <van-search placeholder="请输入商品名称" v-model="keyword" />
+      <van-row type="flex" justify="space-around">
+        <van-col span="6">组织机构</van-col>
+      </van-row>
+    </div>
+    <van-collapse v-model="activeName" accordion @change="getListData">
+      <van-collapse-item :name="index" v-for="(item,index) in list" :key="index">
         <div slot="title">
-          <van-icon name="cash-on-deliver" /> 工程商
-          <br>
-          <span slot="label">组织机构</span>
+          <div class="contect-item">
+            <div class="item-img">
+              <img src="../../../public/img/menuicon/zuzhi_ico.png">
+            </div>
+            <div class="item-text">
+              <div class="text-md">{{item.name}}</div>
+              <div class="text-gray text-sm">组织架构</div>
+            </div>
+          </div>
         </div>
-        <van-cell title="美科企业" is-link value="0" />
+        <van-cell title="美科企业" is-link value="0"></van-cell>
         <van-cell title="惠州市晨希网络科技有限公司" is-link value="0" />
         <van-cell title="易隆工程设计公司" is-link value="0" />
       </van-collapse-item>
+      <!--
       <van-collapse-item name="2">
         <div slot="title">
           <van-icon name="send-gift" /> 供应商
@@ -55,27 +64,37 @@
         <van-cell title="曽渊" is-link value="0" />
         <van-cell title="李家诚" is-link value="0" />
       </van-collapse-item>
+      -->
     </van-collapse>
   </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
+import { contact } from "./../../assets/js/api.js";
 
 export default {
   data() {
     return {
+      list: [],
+      keyword: "",
       activeName: "1"
     };
   },
-  methods: {},
+  methods: {
+    getListData(id) {
+      console.log(id)
+      // contact.getListData(id).then(res => {
+      //   if (res) {
+      //     console.log(res);
+      //   }
+      // });
+    }
+  },
   computed,
   mounted() {
-    this.$axios({
-      url: "/ucml_mobile/getMenuCount_new.ashx",
-      method: "get"
-    }).then(res => {
+    contact.getList().then(res => {
       if (res) {
-        console.log(res);
+        this.list = res;
       }
     });
   }
@@ -84,18 +103,34 @@ export default {
 <style lang="less" scoped>
 .contact {
   width: 100%;
-}
-span {
-  font-size: 8px;
-  color: darkgray;
-  margin-left: 15px;
-}
-.van-row {
-  height: 5%;
-  line-height: 30px;
-}
-.van-col {
-  font-size: 20px;
-  color: cornflowerblue;
+  .contact-search {
+    span {
+      font-size: 8px;
+      color: darkgray;
+      margin-left: 15px;
+    }
+    .van-row {
+      height: 5%;
+      line-height: 30px;
+    }
+    .van-col {
+      font-size: 20px;
+      color: cornflowerblue;
+    }
+  }
+  .contect-item {
+    display: flex;
+    align-items: center;
+    .item-img {
+      flex: 1;
+      img {
+        width: 100%;
+      }
+    }
+    .item-text {
+      padding-left: 10px;
+      flex: 6;
+    }
+  }
 }
 </style>

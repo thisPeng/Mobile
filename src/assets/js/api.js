@@ -1,4 +1,4 @@
-import axios from './request';
+import axios from "./request";
 
 // 登录页面
 const login = {
@@ -18,7 +18,7 @@ const login = {
       }
     });
   }
-}
+};
 
 // 首页
 const index = {
@@ -26,18 +26,34 @@ const index = {
   getData() {
     return axios({
       url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=HOME_MSG"
-    })
+    });
   }
-}
+};
 
 // 应用页
 const apply = {
   // 获取应用数据
   getDate() {
     return axios({
-      url: "/ucml_mobile/getMenuCount_new.ashx",
-    })
+      url: "/ucml_mobile/getMenuCount_new.ashx"
+    });
   }
-}
+};
 
-export { login, index, apply }
+// 应用页
+const contact = {
+  // 获取应用数据
+  getList() {
+    return axios({
+      url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=ORG"
+    });
+  },
+  // 获取应用数据
+  getListData(id) {
+    return axios({
+      url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=ORG_SUB&OID=" + id
+    });
+  }
+};
+
+export { login, index, apply, contact };
