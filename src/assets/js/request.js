@@ -6,7 +6,7 @@
 import axios from 'axios';
 
 // 根据环境设置请求服务器地址
-axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? "/" : 'http://127.0.0.1/Sup_REST/';
+axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? "/SupplyChain/" : 'http://localhost/SupplyChain/';
 // 响应时间
 axios.defaults.timeout = 10000;
 // `withCredentails`选项表明了是否是跨域请求
