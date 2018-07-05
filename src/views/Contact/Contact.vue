@@ -96,6 +96,6 @@ span{
 }
 .van-col {
   font-size: 20px;
-  color: dodgerblue;
+  color:cornflowerblue;
 }
 </style>
