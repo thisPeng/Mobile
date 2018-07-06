@@ -7,7 +7,7 @@
     <van-tabbar v-model="active">
       <van-tabbar-item icon="chat" @click="jumpTabs('index')">消息</van-tabbar-item>
       <van-tabbar-item icon="edit" @click="jumpTabs('apply')">应用</van-tabbar-item>
-      <van-tabbar-item icon="records" @click="jumpTabs('contact')">通讯录</van-tabbar-item>
+      <!-- <van-tabbar-item icon="records" @click="jumpTabs('contact')">通讯录</van-tabbar-item> -->
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -26,10 +26,22 @@ export default {
   watch: {
     $route(to) {
       this.title = to.meta.title;
+      if (
+        to.name !== "index" &&
+        to.name !== "apply" &&
+        to.name !== "contact" &&
+        to.name !== "users"
+      ) {
+        this.isBack = true;
+      } else {
+        this.isBack = false;
+      }
     }
   },
   methods: {
-    onBack() {},
+    onBack() {
+      this.$router.go(-1);
+    },
     onMenu() {},
     jumpTabs(name) {
       this.$store.commit("tabActive", this.active);
@@ -38,7 +50,18 @@ export default {
   },
   computed,
   created() {
-    this.title = this.$router.history.current.meta.title;
+    const current = this.$router.history.current;
+    this.title = current.meta.title;
+    if (
+      current.name !== "index" &&
+      current.name !== "apply" &&
+      current.name !== "contact" &&
+      current.name !== "users"
+    ) {
+      this.isBack = true;
+    } else {
+      this.isBack = false;
+    }
   },
   mounted() {
     this.active = this.tabActive;

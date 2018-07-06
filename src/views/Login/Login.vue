@@ -29,7 +29,7 @@
             </span>
           </div>
           <div class="button-option">
-            <van-button type="primary">登录</van-button>
+            <van-button type="primary">登 录</van-button>
           </div>
         </div>
       </form>
@@ -96,7 +96,7 @@ export default {
     height: 75px;
     border-radius: 75px;
     margin: 0 auto;
-    background-color: #4b0;
+    background-color: #00a0e9;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -175,6 +175,8 @@ export default {
           border: 0;
           border-radius: 130px;
           margin-top: 70px;
+          color: #fff;
+          background-color: #3d95d5;
         }
       }
     }

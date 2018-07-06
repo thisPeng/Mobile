@@ -1,6 +1,16 @@
 <template>
   <div class="apply">
-    Apply
+    <div class="apply-option">
+      <div class="apply-item" v-for="(item,index) in list.menu" :key="index">
+        <div class="item-divider" v-if="item.type === 'divider'">
+          <span>{{item.name}}</span>
+        </div>
+        <div class="item-menu" v-else-if="item.type === 'menu' && index < 3" @click="jumpPage(item.name)">
+          <img :src="item.imageLink" />
+          <span>{{item.name}}</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -13,11 +23,37 @@ export default {
       list: []
     };
   },
-  methods: {},
+  methods: {
+    jumpPage(name) {
+      if (name === "我的待办") {
+        this.$router.push({
+          name: "taskWait",
+          params: {
+            model: 0
+          }
+        });
+      } else if (name === "我的已办") {
+        this.$router.push({
+          name: "taskWait",
+          params: {
+            model: 1
+          }
+        });
+      }
+    }
+  },
   computed,
   mounted() {
     apply.getData().then(res => {
       if (res) {
+        for (const i in res.menu) {
+          if (res.menu[i].imageLink) {
+            res.menu[i].imageLink =
+              "http://localhost/SupplyChain/" + res.menu[i].imageLink;
+          } else {
+            res.menu[i].imageLink = "/img/menuicon/rizhi@2x.png";
+          }
+        }
         this.list = res;
       }
     });
@@ -27,5 +63,44 @@ export default {
 <style lang="less" scoped>
 .apply {
   width: 100%;
+  .apply-option {
+    width: 100%;
+    padding-bottom: 5px;
+    background-color: #fff;
+    .apply-item {
+      display: inline;
+      &:nth-child(4n + 1) {
+        .item-menu {
+          border-right: 0;
+        }
+      }
+      .item-divider {
+        padding: 10px;
+        border-bottom: 1px solid #d2d2d2;
+        span {
+          padding-left: 5px;
+          border-left: 3px solid #00a0e9;
+        }
+      }
+      .item-menu {
+        width: 25%;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-right: 1px solid #d2d2d2;
+        border-bottom: 1px solid #d2d2d2;
+        padding: 10px 0;
+        img {
+          width: 45px;
+          height: 45px;
+        }
+        span {
+          padding-top: 15px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
 }
 </style>

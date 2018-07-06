@@ -1,16 +1,9 @@
 <template>
   <div class="index">
     <ul class="index-list">
-      <li class="list-item" v-for="(item, i) in list" :key="i">
+      <li class="list-item" v-for="(item, i) in list" :key="i" @click="jumpPage(item.title)" v-if="item.title !== '内部通知'">
         <div class="item-left">
-          <!--图片静态渲染-->
-          <img src="@/../public/img/ms_ico1.png" v-if="i==0">
-          <img src="@/../public/img/ms_ico2.png" v-else-if="i==1">
-          <img src="@/../public/img/ms_ico3.png" v-else-if="i==2">
-          <img src="@/../public/img/ms_ico4.png" v-else-if="i==3">
-          <img src="@/../public/img/ms_ico5.png" v-else-if="i==4">
-          <img src="@/../public/img/ms_ico6.png" v-else-if="i==5">
-          <img src="@/../public/img/ms_ico7.png" v-else-if="i==6">
+          <img :src="'/img/ms_ico' + (i + 1) + '.png'">
         </div>
         <div :class="i !== 0 ? 'item-right border-top' : 'item-right'">
           <div class="item-title">
@@ -33,7 +26,15 @@ export default {
       list: []
     };
   },
-  methods: {},
+  methods: {
+    jumpPage(title) {
+      if (title === "待办事宜") {
+        this.$router.push({
+          name: "taskWait"
+        });
+      }
+    }
+  },
   computed,
   mounted() {
     index.getData().then(res => {

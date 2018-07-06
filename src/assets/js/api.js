@@ -40,15 +40,15 @@ const apply = {
   }
 };
 
-// 应用页
+// 通讯录
 const contact = {
-  // 获取应用数据
+  // 获取通讯录列表
   getList() {
     return axios({
       url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=ORG"
     });
   },
-  // 获取应用数据
+  // 获取列表详情
   getListData(id) {
     return axios({
       url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=ORG_SUB&OID=" + id

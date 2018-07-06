@@ -17,9 +17,7 @@
             </div>
           </div>
         </div>
-        <!-- <div :ref="'listData' + index"> -->
-          <van-cell :title="ite.name" is-link :value="ite.count" v-for="(ite,idx) in listData[index]" :key="idx"></van-cell>
-        <!-- </div> -->
+        <van-cell :title="ite.name" is-link :value="ite.count" v-for="(ite,idx) in listData[index]" :key="idx"></van-cell>
       </van-collapse-item>
     </van-collapse>
   </div>
