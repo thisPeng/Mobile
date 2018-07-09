@@ -85,9 +85,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .users {
-  width: 100%;
   .users-admin {
-    background: #3d95d5;
+    background: #00a0e9;
     padding: 20px;
     overflow: hidden;
   }
@@ -115,7 +114,6 @@ export default {
     margin-top: 20px;
     float: right;
     padding-right: 20px;
-    //background: url("../images/right_arr.png") right center no-repeat;
     .users-icon {
       color: #fff;
       vertical-align: middle;
@@ -128,7 +126,6 @@ export default {
   }
   .users-wrap {
     margin: 10px 0;
-
     .icon {
       padding-right: 10px;
     }

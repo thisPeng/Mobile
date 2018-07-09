@@ -6,6 +6,7 @@ import Index from './views/Index/Index'
 import Apply from './views/Apply/Apply'
 import Contact from './views/Contact/Contact'
 import Users from './views/Users/Users'
+import usersPwd from "./views/Users/usersPwd";
 import TaskWait from './views/TaskWait/TaskWait'
 
 Vue.use(Router)
@@ -57,6 +58,13 @@ export default new Router({
         component: Users,
         meta: {
           title: '用户中心' // 页面标题
+        }
+      }, {
+        path: "/users/usersPwd",
+        name: "usersPwd",
+        component: usersPwd,
+        meta: {
+          title: "修改密码" // 页面标题
         }
       }]
     }
