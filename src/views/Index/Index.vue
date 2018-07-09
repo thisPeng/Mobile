@@ -30,7 +30,10 @@ export default {
     jumpPage(title) {
       if (title === "待办事宜") {
         this.$router.push({
-          name: "taskWait"
+          name: "taskWait",
+          params: {
+            model: "wait"
+          }
         });
       }
     }

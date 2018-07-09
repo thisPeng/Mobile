@@ -10,13 +10,13 @@
           <span class="input-icon">
             <i class="iconfont icon-zhanghao"></i>
           </span>
-          <input v-model="loginName" type="text" placeholder="请输入账号" autocomplete="off">
+          <input v-model="loginName" type="text" name="loginName" placeholder="请输入账号" autocomplete="off">
         </div>
         <div class="login-form-input">
           <span class="input-icon">
             <i class="iconfont icon-mima"></i>
           </span>
-          <input v-model="password" type="password" ref="password" placeholder="请输入密码" autocomplete="off">
+          <input v-model="password" type="password" name="password" ref="password" placeholder="请输入密码" autocomplete="off">
           <span class="input-show" @click="pwdShow">
             <i class="iconfont icon-xianshi" v-show="isShow"></i>
             <i class="iconfont icon-yincang" v-show="!isShow"></i>
@@ -63,6 +63,7 @@ export default {
         login.validate(params).then(res => {
           if (res && res.text != "0") {
             this.$store.commit("userName", this.loginName);
+            this.$store.commit("tabActive", 0);
             this.$router.replace({
               name: "index"
             });

@@ -11,5 +11,8 @@ export default mapState({
   },
   tabActive: state => {
     return state.tabActive;
+  },
+  taskModel: state => {
+    return state.taskModel;
   }
 })

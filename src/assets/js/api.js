@@ -56,4 +56,65 @@ const contact = {
   }
 };
 
-export { login, index, apply, contact };
+// 我的待办
+const task = {
+  // 获取我的待办
+  getWaitData(page) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_TaskWait_WXService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": 'BC_AssignTask_WX',
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": '',
+        "_parameters[valueList]": '',
+        "_parameters[condiIndentList]": '',
+        "_parameters[SQLCondi]": '',
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": ' ORDER BY AssignTask.SYS_Created DESC',
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    });
+  },
+  getCompleteCount() {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: 'BPO_TaskComplete_WXService',
+        _methodName: 'BusiViewString',
+        _paraNames: '',
+        _pUrl: '',
+        _classFullName: ''
+      }
+    });
+  },
+  getCompleteData(page, count = 999) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_TaskComplete_WXService",
+        _methodName: 'getCondiActorDataBCStringPage',
+        '_parameters[BCName]': 'BC_CompletedTask_WX',
+        '_parameters[nStartPos]': page * 10,
+        '_parameters[nRecords]': 10,
+        '_parameters[fieldList]': '',
+        '_parameters[valueList]': '',
+        '_parameters[condiIndentList]': '',
+        '_parameters[SQLCondi]': '',
+        '_parameters[SQLCondiType]': 0,
+        '_parameters[SQLFix]': '',
+        '_parameters[inTotalRecord]': count,
+        _paraNames: 'BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix,inTotalRecord',
+        _pUrl: ""
+      }
+    });
+  }
+};
+
+export { login, index, apply, contact, task };

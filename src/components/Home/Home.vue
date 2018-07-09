@@ -4,7 +4,7 @@
       <!-- <van-icon name="search" slot="right" /> -->
     </van-nav-bar>
     <router-view class="content"></router-view>
-    <van-tabbar v-model="active">
+    <van-tabbar v-model="active" v-show="isTabbar">
       <van-tabbar-item icon="chat" @click="jumpTabs('index')">消息</van-tabbar-item>
       <van-tabbar-item icon="edit" @click="jumpTabs('apply')">应用</van-tabbar-item>
       <!-- <van-tabbar-item icon="records" @click="jumpTabs('contact')">通讯录</van-tabbar-item> -->
@@ -20,6 +20,7 @@ export default {
     return {
       title: "材博汇",
       isBack: false,
+      isTabbar: true,
       active: 0
     };
   },
@@ -33,8 +34,10 @@ export default {
         to.name !== "users"
       ) {
         this.isBack = true;
+        this.isTabbar = false;
       } else {
         this.isBack = false;
+        this.isTabbar = true;
       }
     }
   },
@@ -59,8 +62,10 @@ export default {
       current.name !== "users"
     ) {
       this.isBack = true;
+      this.isTabbar = false;
     } else {
       this.isBack = false;
+      this.isTabbar = true;
     }
   },
   mounted() {
@@ -72,13 +77,18 @@ export default {
 .home {
   width: 100%;
   height: 100%;
+  .van-nav-bar {
+    color: #fff;
+    background-color: #00a0e9;
+  }
   .content {
     background-color: #f6f6f6;
     position: absolute;
     left: 0;
     right: 0;
     top: 46px;
-    bottom: 50px;
+    bottom: 0;
+    overflow-y: auto;
   }
 }
 </style>
