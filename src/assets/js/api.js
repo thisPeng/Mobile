@@ -56,4 +56,27 @@ const contact = {
   }
 };
 
-export { login, index, apply, contact };
+const users = {
+  exit() {
+    return axios({
+      url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=ExitSystem"
+    });
+  },
+  updatePwd(params) {
+    return axios({
+      url: "UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SYS_ChangePWD_WXService",
+        _methodName: "DoChangePassword",
+        "_parameters[OldPassWord]": params.oldPwd,
+        "_parameters[NewPassWord]": params.newPwd,
+        "_parameters[ConfirmPassWord]": params.cfmPwd,
+        _paraNames: "OldPassWord,NewPassWord,ConfirmPassWord",
+        _pUrl: ""
+      }
+    });
+  }
+};
+
+export { login, index, apply, contact, users };
