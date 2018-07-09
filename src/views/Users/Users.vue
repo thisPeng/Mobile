@@ -1,24 +1,9 @@
 <template>
   <div class="users">
-    <!-- <div class="users-admin">
-      <div class="users-box">
-      <div class="users-img">
-        <img src="../../../public/img/ms_ico2.png">
-      </div>
-      <div class="users-name">
-        <div class="text-md">系统管理员</div>
-        <div class="text-md">账号:admin</div>
-      </div>
-      </div>
-      <div class="users-icon">
-        <img src="../../../public/img/codeico.png">
-      </div>
-    </div> -->
     <div class="users-admin">
       <div class="users-head">
         <img id="m_avatar" src="../../../public/img/ms_ico2.png" alt="">
-        <!--<div id="m_user" class="member-info">刘烨<br>ID: liuye01</div>-->
-        <div id="m_user" class="member-info">系统管理员<br>账号: ADMIN</div>
+        <div id="m_user" class="member-info">系统管理员<br>账号: {{userName}}</div>
       </div>
       <div class="m-code-box">
         <img id="m_barcode" src="../../../public/img/codeico.png" alt="">
@@ -128,6 +113,10 @@ export default {
     margin: 10px 0;
     .icon {
       padding-right: 10px;
+      border-radius: 50%;
+      .iconfont {
+        font-size: 20px;
+      }
     }
   }
 }
