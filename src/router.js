@@ -78,7 +78,7 @@ export default new Router({
           name: "usersInfo",
           component: usersInfo,
           meta: {
-            title: "修改密码" // 页面标题
+            title: "基本信息" // 页面标题
           }
         }
       ]
