@@ -16,7 +16,7 @@
       <!-- 性别 -->
       <van-cell-group class="info-sex">
         <span class="sex-label">性别</span>
-        <span class="sex-select" @click="sexShow=true">{{userInfo.sex}}</span>
+        <span class="sex-select" @click="sexShow=true">{{userInfo.sex || '请选择性别'}}</span>
         <van-popup v-model="sexShow" position="bottom">
           <van-picker show-toolbar title="请选择" :columns="columns" @cancel="sexShow=false" @confirm="onConfirm" />
         </van-popup>
@@ -43,7 +43,6 @@
             <van-icon name="success" />
           </span>保存</van-button>
       </div>
-
     </div>
   </div>
 </template>
@@ -67,20 +66,20 @@ export default {
     saveInfo() {
       const params = {
         sex: this.userInfo.sex,
-        telno:this.userInfo.telno,
-        email:this.userInfo.email,
-        worktelno:this.userInfo.worktelno,
+        telno: this.userInfo.telno,
+        email: this.userInfo.email,
+        worktelno: this.userInfo.worktelno
       };
       users.saveInfo(params).then(res => {
         if (res) {
-          this.$toast(res);
+          this.$store.commit("userInfo", this.userInfo);
+          this.$toast("保存成功");
         }
       });
     }
   },
   computed,
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 <style lang="less" scoped>

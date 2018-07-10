@@ -1,7 +1,7 @@
 <template>
   <div class="users">
-    <div class="users-admin">
-      <div class="users-head" @click="admininfo">
+    <div class="users-admin" @click="admininfo">
+      <div class="users-head">
         <img id="m_avatar" src="../../../public/img/ms_ico2.png" alt="">
         <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
       </div>
@@ -65,9 +65,9 @@ export default {
         name: "usersPwd"
       });
     },
-    admininfo(){
+    admininfo() {
       this.$router.push({
-        name:"usersInfo"
+        name: "usersInfo"
       });
     }
   },
@@ -76,7 +76,6 @@ export default {
     users.userInfo().then(res => {
       if (res) {
         this.$store.commit("userInfo", res);
-        // this.userInfo = res;
       }
     });
   }
