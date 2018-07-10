@@ -3,7 +3,7 @@
     <ul class="index-list">
       <li class="list-item" v-for="(item, i) in list" :key="i" @click="jumpPage(item.title)" v-if="item.title !== '内部通知'">
         <div class="item-left">
-          <img :src="'/img/ms_ico' + (i + 1) + '.png'">
+          <img :src="'img/ms_ico' + (i + 1) + '.png'">
         </div>
         <div :class="i !== 0 ? 'item-right border-top' : 'item-right'">
           <div class="item-title">

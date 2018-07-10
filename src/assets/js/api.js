@@ -62,6 +62,11 @@ const users = {
       url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=ExitSystem"
     });
   },
+  userInfo() {
+    return axios({
+      url: "ucml_mobile/select_User_Org_Mobile.ashx?type=MYINFO"
+    });
+  },
   updatePwd(params) {
     return axios({
       url: "UCMLWebServiceEntryForJs.aspx",
@@ -140,4 +145,11 @@ const task = {
   }
 };
 
-export { login, index, apply, contact, users, task };
+export {
+  login,
+  index,
+  apply,
+  contact,
+  users,
+  task
+};

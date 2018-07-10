@@ -142,7 +142,7 @@ export default {
   }
   .task-pages {
     width: 100%;
-    background-color: #fff;
+    background-color: #f6f6f6;
     position: fixed;
     bottom: 0;
     z-index: 99;

@@ -34,7 +34,7 @@ export default {
       };
       users.updatePwd(params).then(res => {
         if (res) {
-          console.log(res);
+          this.$toast(res.text);
         }
       });
     }
