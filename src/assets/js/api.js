@@ -31,7 +31,7 @@ const index = {
   // 获取系统消息
   getMessage() {
     return axios({
-      url: "/Mb_CaseLib7/UCMLWebServiceEntryForJs.aspx",
+      url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
         _bpoName: "BPO_SYS_OAMessageList_WXService",

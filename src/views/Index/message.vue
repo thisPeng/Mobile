@@ -1,42 +1,73 @@
 <template>
   <div class="message">
     <van-tabs v-model="active">
+      <!--未读信息-->
       <van-tab title="未读信息">
         <div class="message-button">
           <van-button type="default" class="button">标记已读</van-button>
         </div>
         <div class="task-table">
-          <table>
-            <thead>
-              <tr>
-                <td>
-                  <van-checkbox v-model="allChecked"></van-checkbox>
-                </td>
-                <td>消息内容</td>
-                <td>发送时间</td>
-                <td>发送人</td>
-              </tr>
-            </thead>
-            <tbody>
-              <van-checkbox-group v-model="checkeds">
-                <tr v-for="(item,index) in tableData" :key="item[0]">
+          <van-checkbox-group v-model="unReadChk">
+            <table>
+              <thead>
+                <tr>
                   <td>
-                    <van-checkbox :name="index">
-                      复选框 {{ item }}
-                    </van-checkbox>
+                    <van-checkbox name="all"></van-checkbox>
+                  </td>
+                  <td>消息内容</td>
+                  <td>发送时间</td>
+                  <td>发送人</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item,index) in unReadData" :key="index">
+                  <td>
+                    <van-checkbox :name="index"></van-checkbox>
                   </td>
                   <td>{{item[5]}}</td>
-                  <td>{{item[7]}}</td>
-                  <td>{{item[18]}}</td>
+                  <td>{{item[8]}}</td>
+                  <td>{{item[3]}}</td>
                 </tr>
-              </van-checkbox-group>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </van-checkbox-group>
         </div>
+        <van-pagination v-model="unReadPage" :total-items="unReadPages.RecordCount" :items-per-page="unReadPages.PageCount" mode="simple" class="task-pages" @change="getUnReadData" />
       </van-tab>
-      <van-tab title="已读信息">哦哦</van-tab>
+      <!--已读信息-->
+      <van-tab title="已读信息">
+        <div class="message-button">
+          <van-button type="default" class="button">删除</van-button>
+        </div>
+        <div class="task-table">
+          <van-checkbox-group v-model="readChk">
+            <table>
+              <thead>
+                <tr>
+                  <td>
+                    <van-checkbox name="all"></van-checkbox>
+                  </td>
+                  <td>消息内容</td>
+                  <td>发送时间</td>
+                  <td>发送人</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item,index) in readData" :key="index">
+                  <td>
+                    <van-checkbox :name="index"></van-checkbox>
+                  </td>
+                  <td>{{item[5]}}</td>
+                  <td>{{item[8]}}</td>
+                  <td>{{item[3]}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </van-checkbox-group>
+        </div>
+        <van-pagination v-model="readPage" :total-items="readPages.RecordCount" :items-per-page="readPages.PageCount" mode="simple" class="task-pages" @change="getUnReadData" />
+      </van-tab>
     </van-tabs>
-    <van-pagination v-model="currentPage" :total-items="tablePages.RecordCount" :items-per-page="tablePages.PageCount" mode="simple" class="task-pages" @change="getTableData" />
   </div>
 </template>
 <script>
@@ -47,23 +78,35 @@ export default {
   data() {
     return {
       active: 0,
-      tableData: [],
-      tablePages: {
+      readData: [],
+      readPages: {
         RecordCount: 1,
         PageCount: 1
       },
-      currentPage: 0,
-      allChecked: false,
-      checkeds: []
+      readPage: 0,
+      readChk: [],
+      unReadData: [],
+      unReadPages: {
+        RecordCount: 1,
+        PageCount: 1
+      },
+      unReadPage: 0,
+      unReadChk: []
     };
   },
   methods: {
-    getTableData() {}
+    getUnReadData() {}
   },
   computed,
   mounted() {
     index.getMessage().then(res => {
-      console.log(res);
+      if (res) {
+        const sp = res.text.split(";");
+        this.unReadData = eval(sp[1].split("=")[1]);
+        this.readData = eval(sp[2].split("=")[1]);
+        this.unReadPages = eval("(" + sp[15].split("=")[1] + ")");
+        this.ReadPages = eval("(" + sp[16].split("=")[1] + ")");
+      }
     });
   }
 };
@@ -90,7 +133,7 @@ export default {
       width: 100%;
       font-size: 14px;
       text-align: center;
-      padding-bottom: 40px;
+      margin-bottom: 40px;
       thead {
         tr {
           background-color: #e9f8ff;
