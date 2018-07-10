@@ -3,7 +3,7 @@
     <div class="users-admin">
       <div class="users-head" @click="admininfo">
         <img id="m_avatar" src="../../../public/img/ms_ico2.png" alt="">
-        <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid || userName}}</div>
+        <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
       </div>
       <div class="m-code-box">
         <img id="m_barcode" src="../../../public/img/codeico.png" alt="">
@@ -39,9 +39,7 @@ import { users } from "./../../assets/js/api.js";
 
 export default {
   data() {
-    return {
-      userInfo: {}
-    };
+    return {};
   },
   methods: {
     //退出到登录页
@@ -77,7 +75,8 @@ export default {
   created() {
     users.userInfo().then(res => {
       if (res) {
-        this.userInfo = res;
+        this.$store.commit("userInfo", res);
+        // this.userInfo = res;
       }
     });
   }
