@@ -97,8 +97,7 @@ const users = {
   },
   saveInfo(params) {
     return axios({
-      url:
-        "ucml_mobile/select_User_Org_Mobile.ashx?type=CHANGEINFO&sex=" +
+      url: "ucml_mobile/select_User_Org_Mobile.ashx?type=CHANGEINFO&sex=" +
         params.sex +
         "&telno=" +
         params.telno +
@@ -129,8 +128,7 @@ const task = {
         "_parameters[SQLCondi]": "",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": " ORDER BY AssignTask.SYS_Created DESC",
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -165,12 +163,18 @@ const task = {
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         "_parameters[inTotalRecord]": count,
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix,inTotalRecord",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix,inTotalRecord",
         _pUrl: ""
       }
     });
   }
 };
 
-export { login, index, apply, contact, users, task };
+export {
+  login,
+  index,
+  apply,
+  contact,
+  users,
+  task
+};

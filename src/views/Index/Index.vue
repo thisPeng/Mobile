@@ -44,6 +44,16 @@ export default {
   },
   computed,
   mounted() {
+    this.$axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_HrUcmlCListList_JS",
+        _methodName: "OnInit",
+        _paraNames: "",
+        _pUrl: ""
+      }
+    });
     index.getData().then(res => {
       if (res) {
         this.list = res;
