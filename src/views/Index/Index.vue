@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <ul class="index-list">
-      <li class="list-item" v-for="(item, i) in list" :key="i" @click="jumpPage(item.title)" v-if="item.title !== '内部通知'">
+      <li class="list-item" v-for="(item, i) in list" :key="i" @click="jumpPage(item.title)">
         <div class="item-left">
           <img :src="'img/ms_ico' + (i + 1) + '.png'">
         </div>
@@ -35,6 +35,10 @@ export default {
             model: "wait"
           }
         });
+      } else if (title === "内部通知") {
+        this.$router.push({
+          name: "message"
+        });
       }
     }
   },
@@ -58,6 +62,7 @@ export default {
       .item-left {
         flex: 1;
         padding: 10px;
+        max-width: 70px;
         img {
           width: 100%;
         }

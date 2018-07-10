@@ -27,6 +27,19 @@ const index = {
     return axios({
       url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=HOME_MSG"
     });
+  },
+  // 获取系统消息
+  getMessage() {
+    return axios({
+      url: "/Mb_CaseLib7/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SYS_OAMessageList_WXService",
+        _methodName: "BusiViewString",
+        _paraNames: "",
+        _pUrl: ""
+      }
+    })
   }
 };
 
