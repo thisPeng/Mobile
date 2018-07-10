@@ -23,11 +23,11 @@
           </span>
         </div>
         <div class="login-form-input login-form-button">
-          <div class="login-form-check">
+          <!-- <div class="login-form-check">
             <span class="check-option">
               <router-link :to="{ name:'index' }">忘记密码</router-link>
             </span>
-          </div>
+          </div> -->
           <div class="button-option">
             <van-button type="primary">登 录</van-button>
           </div>
