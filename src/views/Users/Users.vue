@@ -3,7 +3,7 @@
     <div class="users-admin">
       <div class="users-head">
         <img id="m_avatar" src="../../../public/img/ms_ico2.png" alt="">
-        <div id="m_user" class="member-info">系统管理员<br>账号: {{userName}}</div>
+        <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid || userName}}</div>
       </div>
       <div class="m-code-box">
         <img id="m_barcode" src="../../../public/img/codeico.png" alt="">
@@ -28,7 +28,9 @@
         </van-cell>
       </van-cell-group>
     </div>
-    <van-button type="primary" bottom-action @click="exit">退出</van-button>
+    <div class="users-button">
+      <van-button type="danger" size="large" @click="exit">退出</van-button>
+    </div>
   </div>
 </template>
 <script>
@@ -37,7 +39,9 @@ import { users } from "./../../assets/js/api.js";
 
 export default {
   data() {
-    return {};
+    return {
+      userInfo: {}
+    };
   },
   methods: {
     //退出到登录页
@@ -65,7 +69,13 @@ export default {
     }
   },
   computed,
-  mounted() {}
+  created() {
+    users.userInfo().then(res => {
+      if (res) {
+        this.userInfo = res;
+      }
+    });
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -74,6 +84,7 @@ export default {
     background: #00a0e9;
     padding: 20px;
     overflow: hidden;
+    position: relative;
   }
   .users-head {
     padding-top: 5px;
@@ -112,12 +123,23 @@ export default {
   .users-wrap {
     margin: 10px 0;
     .icon {
-      padding-right: 10px;
+      width: 25px;
+      height: 25px;
       border-radius: 50%;
+      background-color: #00a0e9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
       .iconfont {
-        font-size: 20px;
+        color: #fff;
+        font-size: 18px;
       }
     }
+  }
+  .users-button {
+    padding: 0 15px 60px 15px;
+    margin-top: 100px;
   }
 }
 </style>
