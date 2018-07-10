@@ -62,7 +62,7 @@ export default {
         };
         login.validate(params).then(res => {
           if (res && res.text != "0") {
-            this.$store.commit("userName", this.loginName);
+            this.$store.commit("userInfo", { loginid: this.loginName });
             this.$store.commit("tabActive", 0);
             this.$router.replace({
               name: "index"

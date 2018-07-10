@@ -13,14 +13,14 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   //数据源申明
   state: {
-    userName: "",
+    userInfo: {},
     tabActive: 0,
     taskModel: ""
   },
   //写入缓存并同步state
   mutations: {
-    userName: (state, val) => {
-      state.userName = val;
+    userInfo: (state, val) => {
+      state.userInfo = val;
     },
     tabActive: (state, val) => {
       state.tabActive = val;

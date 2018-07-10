@@ -6,8 +6,8 @@
 import { mapState } from 'vuex';
 
 export default mapState({
-  userName: state => {
-    return state.userName;
+  userInfo: state => {
+    return state.userInfo;
   },
   tabActive: state => {
     return state.tabActive;
