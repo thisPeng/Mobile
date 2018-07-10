@@ -94,6 +94,19 @@ const users = {
         _pUrl: ""
       }
     });
+  },
+  saveInfo(params) {
+    return axios({
+      url:
+        "ucml_mobile/select_User_Org_Mobile.ashx?type=CHANGEINFO&sex=" +
+        params.sex +
+        "&telno=" +
+        params.telno +
+        "&email=" +
+        params.email +
+        "&worktelno=" +
+        params.worktelno
+    });
   }
 };
 
@@ -107,16 +120,17 @@ const task = {
       data: {
         _bpoName: "BPO_TaskWait_WXService",
         _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": 'BC_AssignTask_WX',
+        "_parameters[BCName]": "BC_AssignTask_WX",
         "_parameters[nStartPos]": page * 10,
         "_parameters[nRecords]": 10,
-        "_parameters[fieldList]": '',
-        "_parameters[valueList]": '',
-        "_parameters[condiIndentList]": '',
-        "_parameters[SQLCondi]": '',
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "",
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": ' ORDER BY AssignTask.SYS_Created DESC',
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        "_parameters[SQLFix]": " ORDER BY AssignTask.SYS_Created DESC",
+        _paraNames:
+          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -126,11 +140,11 @@ const task = {
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: 'BPO_TaskComplete_WXService',
-        _methodName: 'BusiViewString',
-        _paraNames: '',
-        _pUrl: '',
-        _classFullName: ''
+        _bpoName: "BPO_TaskComplete_WXService",
+        _methodName: "BusiViewString",
+        _paraNames: "",
+        _pUrl: "",
+        _classFullName: ""
       }
     });
   },
@@ -140,29 +154,23 @@ const task = {
       method: "post",
       data: {
         _bpoName: "BPO_TaskComplete_WXService",
-        _methodName: 'getCondiActorDataBCStringPage',
-        '_parameters[BCName]': 'BC_CompletedTask_WX',
-        '_parameters[nStartPos]': page * 10,
-        '_parameters[nRecords]': 10,
-        '_parameters[fieldList]': '',
-        '_parameters[valueList]': '',
-        '_parameters[condiIndentList]': '',
-        '_parameters[SQLCondi]': '',
-        '_parameters[SQLCondiType]': 0,
-        '_parameters[SQLFix]': '',
-        '_parameters[inTotalRecord]': count,
-        _paraNames: 'BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix,inTotalRecord',
+        _methodName: "getCondiActorDataBCStringPage",
+        "_parameters[BCName]": "BC_CompletedTask_WX",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        "_parameters[inTotalRecord]": count,
+        _paraNames:
+          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix,inTotalRecord",
         _pUrl: ""
       }
     });
   }
 };
 
-export {
-  login,
-  index,
-  apply,
-  contact,
-  users,
-  task
-};
+export { login, index, apply, contact, users, task };
