@@ -1,7 +1,7 @@
 <template>
   <div class="users">
     <div class="users-admin">
-      <div class="users-head">
+      <div class="users-head" @click="admininfo">
         <img id="m_avatar" src="../../../public/img/ms_ico2.png" alt="">
         <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
       </div>
@@ -63,6 +63,11 @@ export default {
     jumpPwd() {
       this.$router.push({
         name: "usersPwd"
+      });
+    },
+    admininfo(){
+      this.$router.push({
+        name:"usersInfo"
       });
     }
   },
