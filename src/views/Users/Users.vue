@@ -15,7 +15,7 @@
       </div>
     </div> -->
     <div class="users-admin">
-      <div class="users-head">
+      <div class="users-head" @click="admininfo">
         <img id="m_avatar" src="../../../public/img/ms_ico2.png" alt="">
         <!--<div id="m_user" class="member-info">刘烨<br>ID: liuye01</div>-->
         <div id="m_user" class="member-info">系统管理员<br>账号: ADMIN</div>
@@ -76,6 +76,11 @@ export default {
     jumpPwd() {
       this.$router.push({
         name: "usersPwd"
+      });
+    },
+    admininfo(){
+      this.$router.push({
+        name:"usersInfo"
       });
     }
   },
