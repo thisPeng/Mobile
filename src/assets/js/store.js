@@ -15,7 +15,8 @@ export default new Vuex.Store({
   state: {
     userInfo: {},
     tabActive: 0,
-    taskModel: ""
+    taskModel: "",
+    taskParams: {}
   },
   //写入缓存并同步state
   mutations: {
@@ -27,6 +28,9 @@ export default new Vuex.Store({
     },
     taskModel: (state, val) => {
       state.taskModel = val;
+    },
+    taskParams: (state, val) => {
+      state.taskParams = val;
     }
   }
 });

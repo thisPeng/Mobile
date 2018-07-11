@@ -82,6 +82,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
+import { task } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -115,7 +116,20 @@ export default {
     }
   },
   computed,
-  mounted() {}
+  mounted() {
+    let ret = "";
+    for (const it in this.taskParams) {
+      ret += it + "=" + this.taskParams[it] + "&";
+    }
+    ret = ret.substring(0, ret.length - 1);
+    task.getTaskInfo(ret).then(res => {
+      if (res && res.status === 1) {
+        const sp = res.text.split(";");
+        const data = eval(sp[1].split("=")[1])[0];
+        console.log(data);
+      }
+    });
+  }
 };
 </script>
 <style lang="less" scoped>

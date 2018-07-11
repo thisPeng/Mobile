@@ -3,7 +3,9 @@
  * @file DATA映射
  * @author DJ
  */
-import { mapState } from 'vuex';
+import {
+  mapState
+} from 'vuex';
 
 export default mapState({
   userInfo: state => {
@@ -14,5 +16,8 @@ export default mapState({
   },
   taskModel: state => {
     return state.taskModel;
+  },
+  taskParams: state => {
+    return state.taskParams;
   }
 })

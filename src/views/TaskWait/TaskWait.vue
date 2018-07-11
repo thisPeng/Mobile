@@ -2,7 +2,7 @@
   <div class="task">
     <div class="task-data">
       <div class="task-button" v-if="taskModel === 'wait'">
-        <van-button type="default" class="button">执行任务</van-button>
+        <van-button type="default" class="button" @click="exeTask">执行任务</van-button>
         <!-- <van-button type="default" class="button">流程跟踪</van-button> -->
       </div>
       <div class="task-table">
@@ -44,10 +44,12 @@ export default {
         RecordCount: 1,
         StartPos: 0
       },
-      currentPage: 1
+      currentPage: 1,
+      params: {}
     };
   },
   methods: {
+    // 获取表格数据
     getTableData() {
       const page = this.currentPage > 0 ? this.currentPage - 1 : 0;
       if (this.taskModel === "complete") {
@@ -70,11 +72,32 @@ export default {
         });
       }
     },
+    // 选中项
     selectItem(i) {
       this.active = i;
-      const TaskID = this.tableData[i][0];
-      const InstanceID = this.tableData[i][8];
-      console.log(TaskID, InstanceID);
+      const params = {
+        TaskKind: this.tableData[i][2],
+        fReadTask: this.tableData[i][4] ? true : false,
+        COMMAND: "FinishTask",
+        TaskID: this.tableData[i][0],
+        InstanceID: this.tableData[i][8],
+        FlowID: this.tableData[i][9],
+        ActivityID: this.tableData[i][37],
+        name: this.tableData[i][39],
+        PageFrom: "WX"
+      };
+      // console.log(params);
+      // console.log(this.tableData[i]);
+      this.params = params;
+    },
+    // 执行任务
+    exeTask() {
+      if (this.params.name === "采购单申请") {
+        this.$store.commit("taskParams", this.params);
+        this.$router.push({
+          name: "taskDemo"
+        });
+      }
     }
   },
   computed,

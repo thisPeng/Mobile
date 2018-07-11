@@ -1,41 +1,38 @@
 <template>
   <section class="message">
     <div class="message-button">
-      <van-button type="default" class="button" @click="$emit('click')">{{buttonText}}</van-button>
+      <van-button type="default" class="button" @click="onClick">{{buttonText}}</van-button>
     </div>
     <div class="task-table">
-      <van-checkbox-group v-model="checkeds" @change="selectItem" ref="checkboxes">
-        <table>
-          <thead>
-            <tr>
-              <td>
-                <van-checkbox name="all"></van-checkbox>
-              </td>
-              <td>消息内容</td>
-              <td>发送时间</td>
-              <td>发送人</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item,index) in listData" :key="index">
-              <td>
-                <van-checkbox :name="index"></van-checkbox>
-              </td>
-              <td>{{item[5]}}</td>
-              <td>{{item[8]}}</td>
-              <td>{{item[3]}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </van-checkbox-group>
+      <ul class="table">
+        <li class="thead row">
+          <span class="row-option">
+            <van-checkbox v-model="checkAll" name="all" ref="checkAll" @change="selectAll"></van-checkbox>
+          </span>
+          <span class="row-content">消息内容</span>
+          <span class="row-item">发送时间</span>
+          <span class="row-item">发送人</span>
+        </li>
+        <van-checkbox-group v-model="checkeds" @change="selectItem">
+          <li class="tbody row" v-for="(item,index) in listData" :key="index">
+            <span class="row-option">
+              <van-checkbox :name="index" ref="checkeds"></van-checkbox>
+            </span>
+            <span class="row-content">{{item[5]}}</span>
+            <span class="row-item">{{item[8]}}</span>
+            <span class="row-item">{{item[3]}}</span>
+          </li>
+        </van-checkbox-group>
+      </ul>
     </div>
-    <van-pagination v-model="currentPage" :total-items="pages.RecordCount" :items-per-page="pages.PageCount" mode="simple" class="task-pages" @change="$emit('change')" />
+    <van-pagination v-model="currentPage" :total-items="pages.RecordCount" :items-per-page="pages.PageCount" mode="simple" class="task-pages" @change="$emit('change',currentPage)" />
   </section>
 </template>
 <script>
 export default {
   data() {
     return {
+      checkAll: false,
       checkeds: []
     };
   },
@@ -62,12 +59,32 @@ export default {
     }
   },
   methods: {
-    selectItem(item) {
-      // console.log(this.$refs.checkboxes);
-      // this.$refs.checkboxes[item].toggle();
-      if (item == "all") {
-        console.log(this.checkeds);
+    onClick() {
+      this.$emit("click");
+      this.checkAll = false;
+      this.checkeds = [];
+    },
+    selectAll(item) {
+      const checks = this.$refs.checkeds;
+      let arr = [];
+      if (item && checks) {
+        checks.forEach(val => {
+          arr.push(val.name);
+        });
+      } else {
+        arr = [];
       }
+      this.checkeds = arr;
+    },
+    selectItem(item) {
+      let arr = [];
+      // if (item.length === this.listData.length && item.length > 0) {
+      //   this.checkAll = true;
+      // }
+      item.forEach(val => {
+        arr.push(this.listData[val][0]);
+      });
+      this.$emit("select", arr);
     }
   }
 };
@@ -84,33 +101,40 @@ export default {
       background-color: #3d95d5;
     }
   }
-
   .task-table {
     border-top: 1px solid #d2d2d2;
-    table {
+    .table {
       width: 100%;
       font-size: 14px;
-      text-align: center;
       margin-bottom: 40px;
-      thead {
-        tr {
-          background-color: #e9f8ff;
-          font-weight: 600;
+      .thead {
+        background-color: #e9f8ff;
+        font-weight: 600;
+      }
+      .row {
+        display: flex;
+        justify-content: space-around;
+        .row-option {
+          flex: 1;
         }
-        td {
-          padding: 10px 0;
+        .row-content {
+          flex: 3;
+        }
+        span {
+          flex: 2;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          border: 1px solid #fff;
         }
       }
-      tbody {
-        tr:nth-child(2n) {
-          background-color: #e9f8ff;
-        }
-        td {
-          height: 50px;
-        }
-        .visited {
-          background-color: #b3e7ff !important;
-        }
+      .row:nth-child(2n) {
+        background-color: #e9f8ff;
+      }
+      .visited {
+        background-color: #b3e7ff !important;
       }
     }
   }

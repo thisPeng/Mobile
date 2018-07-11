@@ -48,7 +48,7 @@ export default {
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_HrUcmlCListList_JS",
+        _bpoName: "BPO_TASKTICKETMobile",
         _methodName: "OnInit",
         _paraNames: "",
         _pUrl: ""

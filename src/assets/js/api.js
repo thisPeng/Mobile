@@ -40,6 +40,78 @@ const index = {
         _pUrl: ""
       }
     })
+  },
+  // 获取未读消息
+  getUnReadMsg(page) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SYS_OAMessageList_WXService",
+        _methodName: "getCondiActorDataBCString",
+        '_parameters[BCName]': 'BC_SYS_v_OAUserMsg_Unread',
+        '_parameters[nStartPos]': page * 10,
+        '_parameters[nRecords]': 10,
+        '_parameters[fieldList]': '',
+        '_parameters[valueList]': '',
+        '_parameters[condiIndentList]': '',
+        '_parameters[SQLCondi]': '',
+        '_parameters[SQLCondiType]': 0,
+        '_parameters[SQLFix]': '',
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  // 获取已读系统
+  getReadMsg(page) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SYS_OAMessageList_WXService",
+        _methodName: "getCondiActorDataBCString",
+        '_parameters[BCName]': 'BC_SYS_v_OAUserMsg_Read',
+        '_parameters[nStartPos]': page * 10,
+        '_parameters[nRecords]': 10,
+        '_parameters[fieldList]': '',
+        '_parameters[valueList]': '',
+        '_parameters[condiIndentList]': '',
+        '_parameters[SQLCondi]': '',
+        '_parameters[SQLCondiType]': 0,
+        '_parameters[SQLFix]': '',
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  // 标记已读
+  markRead(id) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SYS_OAMessageList_WXService",
+        _methodName: "MarkRead",
+        '_parameters[OIDs]': id,
+        _paraNames: "OIDs",
+        _pUrl: ""
+      }
+    })
+  },
+  // 删除信息
+  deleteMsg(id) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SYS_OAMessageList_WXService",
+        _methodName: "DeleteOAMessageReceivers",
+        '_parameters[OIDs]': id,
+        _paraNames: "OIDs",
+        _pUrl: ""
+      }
+    })
   }
 };
 
@@ -133,6 +205,7 @@ const task = {
       }
     });
   },
+  // 获取待办数据统计
   getCompleteCount() {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -146,6 +219,7 @@ const task = {
       }
     });
   },
+  // 获取已完成待办数据
   getCompleteData(page, count = 999) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -165,6 +239,21 @@ const task = {
         "_parameters[inTotalRecord]": count,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix,inTotalRecord",
         _pUrl: ""
+      }
+    });
+  },
+  // 获取待办数据详情
+  getTaskInfo(params) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: 'BPO_PO_OderMainFormWF809_MobileService',
+        _methodName: 'BusiViewString',
+        '_parameters[urlParams]': params,
+        _paraNames: 'urlParams',
+        _pUrl: '',
+        _classFullName: ''
       }
     });
   }
