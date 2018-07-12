@@ -83,7 +83,7 @@ export default {
         InstanceID: this.tableData[i][8],
         FlowID: this.tableData[i][9],
         ActivityID: this.tableData[i][37],
-        name: this.tableData[i][39],
+        name: this.tableData[i][50],
         PageFrom: "WX"
       };
       // console.log(params);
@@ -92,10 +92,23 @@ export default {
     },
     // 执行任务
     exeTask() {
-      if (this.params.name === "采购单申请") {
-        this.$store.commit("taskParams", this.params);
+      // console.log(this.params.name);
+      this.$store.commit("taskParams", this.params);
+      if (this.params.name === "创建人单据填写") {
         this.$router.push({
           name: "taskDemo"
+        });
+      } else if (this.params.name === "任务布置") {
+        this.$router.push({
+          name: "taskAccept"
+        });
+      } else if (this.params.name === "任务验收") {
+        this.$router.push({
+          name: "taskExecute"
+        });
+      } else if (this.params.name === "是否接受任务") {
+        this.$router.push({
+          name: "taskGuide"
         });
       }
     }
