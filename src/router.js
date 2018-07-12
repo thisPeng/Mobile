@@ -11,6 +11,9 @@ import usersPwd from "./views/Users/usersPwd";
 import TaskWait from "./views/TaskWait/TaskWait";
 import usersInfo from "./views/Users/usersInfo";
 import TaskDemo from "./views/TaskWait/TaskDemo";
+import TaskAccept from "./views/TaskWait/TaskAccept";
+import TaskExecute from "./views/TaskWait/TaskExecute";
+import TaskGuide from "./views/TaskWait/TaskGuide";
 Vue.use(Router);
 
 export default new Router({
@@ -48,6 +51,30 @@ export default new Router({
           component: TaskDemo,
           meta: {
             title: "采购单移动运转" // 页面标题
+          }
+        },
+        {
+          path: "/taskWait/taskAccept",
+          name: "taskAccept",
+          component: TaskAccept,
+          meta: {
+            title: "接收任务" // 页面标题
+          }
+        },
+        {
+          path: "/taskWait/taskExecute",
+          name: "taskExecute",
+          component: TaskExecute,
+          meta: {
+            title: "任务执行" // 页面标题
+          }
+        },
+        {
+          path: "/taskWait/taskGuide",
+          name: "taskGuide",
+          component: TaskGuide,
+          meta: {
+            title: "任务执行" // 页面标题
           }
         },
         {
