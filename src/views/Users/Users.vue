@@ -2,7 +2,7 @@
   <div class="users">
     <div class="users-admin" @click="admininfo">
       <div class="users-head">
-        <img id="m_avatar" src="../../../public/img/ms_ico2.png" alt="">
+        <img id="m_avatar" src="../../../public/img/ms_ico5.png" alt="">
         <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
       </div>
       <div class="m-code-box">
@@ -19,7 +19,7 @@
             </div>
           </template>
         </van-cell>
-        <van-cell title="设置" is-link>
+        <van-cell title="清除缓存" is-link @click="cleanStore">
           <template slot="icon">
             <div class="icon">
               <i class="iconfont icon-shezhi"></i>
@@ -64,6 +64,11 @@ export default {
       this.$router.push({
         name: "usersPwd"
       });
+    },
+    cleanStore() {
+      localStorage.clear();
+      sessionStorage.clear();
+      this.$toast("缓存已清除");
     },
     admininfo() {
       this.$router.push({

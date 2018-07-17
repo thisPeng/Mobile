@@ -6,7 +6,8 @@
           <span>{{item.name}}</span>
         </div>
         <div class="item-menu" v-else-if="item.type === 'menu' && index < 3" @click="jumpPage(item.name)">
-          <img :src="item.imageLink" />
+          <img src="img/menuicon/caogaoxiang@2x.png" v-if="index === 1" />
+          <img src="img/menuicon/buzhirenwu@2x.png" v-else-if="index === 2" />
           <span>{{item.name}}</span>
         </div>
       </div>
@@ -37,14 +38,14 @@ export default {
   mounted() {
     apply.getData().then(res => {
       if (res) {
-        for (const i in res.menu) {
-          if (res.menu[i].imageLink) {
-            res.menu[i].imageLink =
-              "http://localhost/SupplyChain/" + res.menu[i].imageLink;
-          } else {
-            res.menu[i].imageLink = "/img/menuicon/rizhi@2x.png";
-          }
-        }
+        // for (const i in res.menu) {
+        //   if (res.menu[i].imageLink) {
+        //     res.menu[i].imageLink =
+        //       "http://localhost/SupplyChain/" + res.menu[i].imageLink;
+        //   } else {
+        //     res.menu[i].imageLink = "/img/menuicon/rizhi@2x.png";
+        //   }
+        // }
         this.list = res;
       }
     });

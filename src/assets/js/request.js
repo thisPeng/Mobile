@@ -8,8 +8,8 @@ import axios from "axios";
 // 根据环境设置请求服务器地址
 axios.defaults.baseURL =
   process.env.NODE_ENV === "production" ?
-  "/MobileCaseLib2018/" :
-  "http://localhost/MobileCaseLib2018/";
+  getRootPath() :
+  "http://localhost:8088/";
 // 响应时间
 axios.defaults.timeout = 10000;
 // `withCredentails`选项表明了是否是跨域请求
@@ -19,6 +19,14 @@ axios.defaults.headers = {
   "X-Requested-With": "XMLHttpRequest",
   "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
 };
+
+function getRootPath() {
+  // var strFullPath = window.document.location.href;
+  var strPath = window.document.location.pathname;
+  var postPath = strPath.substring(0, strPath.substr(1).indexOf('/') + 1);
+  if (postPath === 'Screen') postPath = ''
+  return postPath + "/";
+}
 
 // 添加请求拦截器
 axios.interceptors.request.use(
