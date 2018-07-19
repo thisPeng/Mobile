@@ -9,6 +9,7 @@
         <table>
           <thead>
             <tr>
+              <td>项目名称</td>
               <td>任务名称</td>
               <td>创建日期</td>
               <td v-if="taskModel === 'complete'">完成日期</td>
@@ -17,10 +18,11 @@
           </thead>
           <tbody>
             <tr v-for="(item,index) in tableData" :key="item[0]" :class="active === index ? 'visited' : ''" @click="selectItem(index)">
-              <td>{{item[5]}}</td>
-              <td>{{item[7]}}</td>
+              <td>{{item[33]}}</td>
+              <td>{{item[2]}}</td>
+              <td>{{item[4]}}</td>
               <td v-if="taskModel === 'complete'">{{item[40] !=="1900-01-01 00:00:00" ? item[40] : ''}}</td>
-              <td>{{item[18]}}</td>
+              <td>{{item[13]}}</td>
             </tr>
           </tbody>
         </table>
@@ -55,19 +57,28 @@ export default {
       if (this.taskModel === "complete") {
         task.getCompleteData(page, this.tablePages.RecordCount).then(res => {
           if (res) {
-            const sp = res.text.split(";");
-            this.tableData = eval(sp[0].split("=")[1]);
-            const pages = "(" + sp[1].split("=")[1] + ")";
-            this.tablePages = eval(pages);
+            try {
+              const sp = res.text.split(";");
+              this.tableData = eval(sp[0].split("=")[1]);
+              const pages = "(" + sp[1].split("=")[1] + ")";
+              this.tablePages = eval(pages);
+            } catch (e) {
+              console.log(e);
+            }
           }
         });
       } else {
         task.getWaitData(page).then(res => {
           if (res) {
-            const sp = res.text.split(";");
-            this.tableData = eval(sp[0].split("=")[1]);
-            const pages = "(" + sp[1].split("=")[1] + ")";
-            this.tablePages = eval(pages);
+            try {
+              const sp = res.text.split(";");
+              // console.log(eval("[[" + sp[0].split("[[")[1]));
+              this.tableData = eval("[[" + sp[0].split("[[")[1]);
+              const pages = "(" + sp[1].split("=")[1] + ")";
+              this.tablePages = eval(pages);
+            } catch (e) {
+              console.log(e);
+            }
           }
         });
       }
@@ -76,15 +87,10 @@ export default {
     selectItem(i) {
       this.active = i;
       const params = {
-        TaskKind: this.tableData[i][2],
-        fReadTask: this.tableData[i][4] ? true : false,
-        COMMAND: "FinishTask",
-        TaskID: this.tableData[i][0],
-        InstanceID: this.tableData[i][8],
-        FlowID: this.tableData[i][9],
-        ActivityID: this.tableData[i][37],
-        name: this.tableData[i][50],
-        PageFrom: "WX"
+        TaskID: this.tableData[i][9],
+        InstanceID: this.tableData[i][5],
+        name: this.tableData[i][2],
+        bpoName: this.tableData[i][3]
       };
       // console.log(params);
       // console.log(this.tableData[i]);
@@ -92,21 +98,20 @@ export default {
     },
     // 执行任务
     exeTask() {
-      // console.log(this.params.name);
       this.$store.commit("taskParams", this.params);
-      if (this.params.name === "创建人单据填写") {
+      if (this.params.name.indexOf("预存") >= 0) {
         this.$router.push({
-          name: "taskDemo"
+          name: "TaskYCFrom"
         });
-      } else if (this.params.name === "任务布置") {
+      } else if (this.params.name.indexOf("支付") >= 0) {
         this.$router.push({
           name: "taskAccept"
         });
-      } else if (this.params.name === "任务验收") {
+      } else if (this.params.name.indexOf("申请") >= 0) {
         this.$router.push({
           name: "taskExecute"
         });
-      } else if (this.params.name === "是否接受任务") {
+      } else if (this.params.name.indexOf("解冻") >= 0) {
         this.$router.push({
           name: "taskGuide"
         });
@@ -119,10 +124,14 @@ export default {
     this.$store.commit("taskModel", model);
     if (this.taskModel === "complete") {
       task.getCompleteCount().then(res => {
-        const sp = res.text.split(";");
-        this.tableData = eval(sp[1].split("=")[1]);
-        const pages = "(" + sp[12].split("=")[1] + ")";
-        this.tablePages = eval(pages);
+        try {
+          const sp = res.text.split(";");
+          this.tableData = eval(sp[1].split("=")[1]);
+          const pages = "(" + sp[12].split("=")[1] + ")";
+          this.tablePages = eval(pages);
+        } catch (e) {
+          console.log(e);
+        }
       });
     } else {
       this.getTableData();

@@ -35,6 +35,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
+import { task } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -80,7 +81,13 @@ export default {
     }
   },
   computed,
-  mounted() {}
+  mounted() {
+    task.getTaskInfo(this.taskParams).then(res => {
+      if (res) {
+        console.log(res);
+      }
+    });
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -6,7 +6,7 @@
         <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
       </div>
       <div class="m-code-box">
-        <img id="m_barcode" src="../../../public/img/codeico.png" alt="">
+        <!-- <img id="m_barcode" src="../../../public/img/codeico.png" alt=""> -->
         <van-icon class="users-icon" name="arrow" />
       </div>
     </div>

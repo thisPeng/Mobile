@@ -1,7 +1,7 @@
 <template>
   <div class="apply">
     <div class="apply-option">
-      <div class="apply-item" v-for="(item,index) in list.menu" :key="index">
+      <!-- <div class="apply-item" v-for="(item,index) in list.menu" :key="index">
         <div class="item-divider" v-if="item.type === 'divider' && index < 3">
           <span>{{item.name}}</span>
         </div>
@@ -10,13 +10,28 @@
           <img src="img/menuicon/buzhirenwu@2x.png" v-else-if="index === 2" />
           <span>{{item.name}}</span>
         </div>
+      </div> -->
+
+      <!--菜单-->
+      <div class="apply-item">
+        <div class="item-divider">
+          <span>我的首页(手机)</span>
+        </div>
+        <div class="item-menu" @click="jumpPage('我的待办')">
+          <img src="img/menuicon/caogaoxiang@2x.png" />
+          <span>我的待办</span>
+        </div>
+        <div class="item-menu" @click="jumpPage('我的已办')">
+          <img src="img/menuicon/buzhirenwu@2x.png" />
+          <span>我的已办</span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { apply } from "./../../assets/js/api.js";
+// import { apply } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -36,6 +51,7 @@ export default {
   },
   computed,
   mounted() {
+    /*
     apply.getData().then(res => {
       if (res) {
         // for (const i in res.menu) {
@@ -49,6 +65,7 @@ export default {
         this.list = res;
       }
     });
+    */
   }
 };
 </script>
@@ -63,7 +80,7 @@ export default {
       display: inline;
       &:nth-child(4n + 1) {
         .item-menu {
-          border-right: 0;
+          // border-right: 0;
         }
       }
       .item-divider {

@@ -5,7 +5,7 @@
       <van-button type="default" class="button" @click="apply">申请变更</van-button>
     </div>
     <van-dialog v-model="show" show-cancel-button :before-close="beforeClose" title="任务变更申请确认">
-      <van-field v-model="username"  label="变更理由" placeholder="请输入变更理由" />
+      <van-field v-model="username" label="变更理由" placeholder="请输入变更理由" />
     </van-dialog>
     <van-cell-group>
       <div class="ap-access">
@@ -26,6 +26,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
+import { task } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -57,7 +58,13 @@ export default {
     }
   },
   computed,
-  mounted() {}
+  mounted() {
+    task.getTaskInfo(this.taskParams).then(res => {
+      if (res) {
+        console.log(res);
+      }
+    });
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -14,7 +14,7 @@
     <van-tabs v-model="active">
       <van-tab>
         <div slot="title">
-           执行进度汇报
+          执行进度汇报
         </div>
         <div class="task-table">
           <table>
@@ -39,9 +39,9 @@
       </van-tab>
       <van-tab>
         <div slot="title">
-         变更申请记录
+          变更申请记录
         </div>
-         <div class="task-table">
+        <div class="task-table">
           <table>
             <thead>
               <tr>
@@ -67,17 +67,24 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
+import { task } from "./../../assets/js/api.js";
 
 export default {
   data() {
     return {
       active: 2,
-      tableData: [],
+      tableData: []
     };
   },
   methods: {},
   computed,
-  mounted() {}
+  mounted() {
+    task.getTaskInfo(this.taskParams).then(res => {
+      if (res) {
+        console.log(res);
+      }
+    });
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -2,7 +2,7 @@
   <div class="usersinfo">
     <div class="mui-head">
       <!-- <img class="info-img" src="../../../public/img/topbar.jpg" alt=""> -->
-      <img src="../../../public/img/ms_ico2.png" alt="" />
+      <img src="../../../public/img/ms_ico5.png" alt="" />
       <div id="nName" class="mui-name">{{userInfo.name}}</div>
     </div>
     <div class="info-users">

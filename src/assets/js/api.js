@@ -189,9 +189,9 @@ const task = {
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_TaskWait_WXService",
+        _bpoName: "BPO_WF_TASKTICKETService",
         _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_AssignTask_WX",
+        "_parameters[BCName]": "BC_WF_AssignTask",
         "_parameters[nStartPos]": page * 10,
         "_parameters[nRecords]": 10,
         "_parameters[fieldList]": "",
@@ -242,21 +242,50 @@ const task = {
       }
     });
   },
-  // 获取待办数据详情
-  getTaskInfo(params) {
+  // 获取预存详情
+  getTaskYCInfo(params) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: 'BPO_PO_OderMainFormWF809_MobileService',
-        _methodName: 'BusiViewString',
-        '_parameters[urlParams]': params,
-        _paraNames: 'urlParams',
-        _pUrl: '',
-        _classFullName: ''
+        _bpoName: "BPO_Start_YC_InOutFormService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Money_InOut",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "InstanceID='" + params.InstanceID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": " ",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
       }
     });
-  }
+  },
+  // 获取预存详情
+  getTaskZFInfo(params) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_YC_InOutFormService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Pay_Apply",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "InstanceID='" + params.InstanceID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": " ",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    });
+  },
 };
 
 export {

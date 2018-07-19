@@ -10,7 +10,7 @@ import Users from "./views/Users/Users";
 import usersPwd from "./views/Users/usersPwd";
 import TaskWait from "./views/TaskWait/TaskWait";
 import usersInfo from "./views/Users/usersInfo";
-import TaskDemo from "./views/TaskWait/TaskDemo";
+import TaskYCFrom from "./views/TaskWait/TaskYCFrom";
 import TaskAccept from "./views/TaskWait/TaskAccept";
 import TaskExecute from "./views/TaskWait/TaskExecute";
 import TaskGuide from "./views/TaskWait/TaskGuide";
@@ -46,11 +46,11 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait/taskDemo",
-          name: "taskDemo",
-          component: TaskDemo,
+          path: "/taskWait/TaskYCFrom",
+          name: "TaskYCFrom",
+          component: TaskYCFrom,
           meta: {
-            title: "采购单移动运转" // 页面标题
+            title: "预存单审核" // 页面标题
           }
         },
         {
