@@ -19,5 +19,11 @@ export default mapState({
   },
   taskParams: state => {
     return state.taskParams;
+  },
+  servePath: state => {
+    return state.servePath;
+  },
+  tabsShow: state => {
+    return state.tabsShow;
   }
 })

@@ -11,6 +11,11 @@ import usersPwd from "./views/Users/usersPwd";
 import TaskWait from "./views/TaskWait/TaskWait";
 import usersInfo from "./views/Users/usersInfo";
 import TaskYCFrom from "./views/TaskWait/TaskYCFrom";
+import TaskZFFrom from "./views/TaskWait/TaskZFFrom";
+import TaskKKFrom from "./views/TaskWait/TaskKKFrom";
+import TaskPKFrom from "./views/TaskWait/TaskPKFrom";
+import TaskJDFrom from "./views/TaskWait/TaskJDFrom";
+import TaskDJFrom from "./views/TaskWait/TaskDJFrom";
 import TaskAccept from "./views/TaskWait/TaskAccept";
 import TaskExecute from "./views/TaskWait/TaskExecute";
 import TaskGuide from "./views/TaskWait/TaskGuide";
@@ -18,8 +23,7 @@ Vue.use(Router);
 
 export default new Router({
   // mode: "history",
-  routes: [
-    {
+  routes: [{
       path: "/login",
       name: "login",
       component: Login
@@ -28,8 +32,7 @@ export default new Router({
       path: "/",
       redirect: "/index",
       component: Home,
-      children: [
-        {
+      children: [{
           path: "/index",
           name: "index",
           component: Index,
@@ -51,6 +54,46 @@ export default new Router({
           component: TaskYCFrom,
           meta: {
             title: "预存单审核" // 页面标题
+          }
+        },
+        {
+          path: "/taskWait/TaskZFFrom",
+          name: "TaskZFFrom",
+          component: TaskZFFrom,
+          meta: {
+            title: "支付申请审核" // 页面标题
+          }
+        },
+        {
+          path: "/taskWait/TaskKKFrom",
+          name: "TaskKKFrom",
+          component: TaskKKFrom,
+          meta: {
+            title: "扣款申请审核" // 页面标题
+          }
+        },
+        {
+          path: "/taskWait/TaskJDFrom",
+          name: "TaskJDFrom",
+          component: TaskJDFrom,
+          meta: {
+            title: "解冻申请审核" // 页面标题
+          }
+        },
+        {
+          path: "/taskWait/TaskPKFrom",
+          name: "TaskPKFrom",
+          component: TaskPKFrom,
+          meta: {
+            title: "批款申请审核" // 页面标题
+          }
+        },
+        {
+          path: "/taskWait/TaskDJFrom",
+          name: "TaskDJFrom",
+          component: TaskDJFrom,
+          meta: {
+            title: "冻结申请审核" // 页面标题
           }
         },
         {

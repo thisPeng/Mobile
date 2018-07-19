@@ -24,7 +24,7 @@ function getRootPath() {
   // var strFullPath = window.document.location.href;
   var strPath = window.document.location.pathname;
   var postPath = strPath.substring(0, strPath.substr(1).indexOf('/') + 1);
-  if (postPath === '/Screen') postPath = ''
+  if (postPath === '/Screen' || postPath === '/mobile' ) postPath = ''
   return postPath + "/";
 }
 

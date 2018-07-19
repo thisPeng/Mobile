@@ -264,14 +264,14 @@ const task = {
       }
     });
   },
-  // 获取预存详情
+  // 获取支付详情
   getTaskZFInfo(params) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_Start_YC_InOutFormService",
-        _methodName: "getCondiActorDataBCString",
+        _bpoName: "BPO_WF_Apply_InfoService",
+        _methodName: "GetProjectInfo",
         "_parameters[BCName]": "BC_SC_Pay_Apply",
         "_parameters[nStartPos]": 0,
         "_parameters[nRecords]": 10,

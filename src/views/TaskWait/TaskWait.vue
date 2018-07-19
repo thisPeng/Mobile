@@ -105,15 +105,23 @@ export default {
         });
       } else if (this.params.name.indexOf("支付") >= 0) {
         this.$router.push({
-          name: "taskAccept"
+          name: "TaskZFFrom"
         });
-      } else if (this.params.name.indexOf("申请") >= 0) {
+      } else if (this.params.name.indexOf("扣款") >= 0) {
         this.$router.push({
-          name: "taskExecute"
+          name: "TaskKKFrom"
         });
       } else if (this.params.name.indexOf("解冻") >= 0) {
         this.$router.push({
-          name: "taskGuide"
+          name: "TaskJDFrom"
+        });
+      } else if (this.params.name.indexOf("批款") >= 0) {
+        this.$router.push({
+          name: "TaskPKFrom"
+        });
+      } else if (this.params.name.indexOf("冻结") >= 0) {
+        this.$router.push({
+          name: "TaskDJFrom"
         });
       }
     }
