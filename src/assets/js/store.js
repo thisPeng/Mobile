@@ -18,7 +18,8 @@ export default new Vuex.Store({
     taskModel: "",
     taskParams: {},
     servePath: "",
-    tabsShow: true
+    tabsShow: true,
+    tableZFrom:{}
   },
   //写入缓存并同步state
   mutations: {
@@ -39,6 +40,9 @@ export default new Vuex.Store({
     },
     tabsShow: (state, val) => {
       state.tabsShow = val;
+    },
+    tableZFrom: (state, val) => {
+      state.tableZFrom = val;
     }
   }
 });

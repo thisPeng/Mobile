@@ -6,11 +6,34 @@
       <van-field v-model="data[28]" label="工程名称" :disabled="edit" />
       <van-field v-model="data[16]" label="申请方说明" :disabled="edit" />
       <van-field v-model="data[9]" label="可用资金金额" :disabled="edit" />
-      <van-field v-model="data[13]" label="经手人" :disabled="edit" />
-      <van-field v-model="data[29]" label="操作员" :disabled="edit" />
-      <van-field v-model="data[17]" label="创建日期" :disabled="edit" />
-      <div class="task-title">
-        <span></span>
+      <van-field label="员工姓名" disabled />
+      <van-field label="创建日期" disabled />
+      <van-cell-group class="from-payment">
+        <span class="from-label">支付类型</span>
+        <span class="from-select" @click="paymentShow=true">{{'请选择支付类型'}}</span>
+        <van-popup v-model="paymentShow" position="bottom">
+          <van-picker show-toolbar title="请选择" :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
+        </van-popup>
+      </van-cell-group>
+      <div class="task-table">
+        <table>
+          <thead>
+            <tr>
+              <td>单位名称</td>
+              <td>分配金额</td>
+              <td>款项说明</td>
+            </tr>
+          </thead>
+          <!-- <tbody>
+          <tr v-for="(item,index) in tableData" :key="item[0]" :class="active === index ? 'visited' : ''" @click="selectItem(index)">
+            <td>{{item[33]}}</td>
+            <td>{{item[2]}}</td>
+            <td>{{item[4]}}</td>
+            <td v-if="taskModel === 'complete'">{{item[40] !=="1900-01-01 00:00:00" ? item[40] : ''}}</td>
+            <td>{{item[13]}}</td>
+          </tr>
+        </tbody> -->
+        </table>
       </div>
     </van-cell-group>
     <van-cell-group>
@@ -27,10 +50,20 @@ export default {
   data() {
     return {
       edit: true,
-      data: []
+      data: [],
+      sexShow: false,
+      columns: ["支付材料与劳务费用", "退结余额", "余额转预存其它项目"],
+      paymentShow: false
     };
   },
-  methods: {},
+  methods: {
+    onConfirm(res) {
+      const from = this.tableZFrom;
+      from.tableZFrom = res;
+      this.$store.commit("tableZFrom", from);
+      this.paymentShow = false;
+    }
+  },
   computed,
   components: {
     taskTabs
@@ -39,9 +72,9 @@ export default {
     // 获取数据
     task.getTaskZFInfo(this.taskParams).then(res => {
       if (res && res.status === 1) {
-        const sp = res.text.split(";");
-        this.data = eval(sp[0].split("=")[1])[0];
-        console.log(this.data);
+        // const sp = res.text.split(";");
+        // this.data = eval(sp[0].split("=")[1])[0];
+        // console.log(this.data);
         // console.log(this.data);
       }
     });
@@ -69,6 +102,62 @@ export default {
     .img {
       width: 100%;
       height: 200px;
+    }
+  }
+  .from-payment {
+    display: flex;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    line-height: 24px;
+    position: relative;
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    overflow: hidden;
+    .from-label {
+      min-width: 90px;
+      flex: 1;
+    }
+    .from-select {
+      flex: 5;
+    }
+  }
+  .task-button {
+    padding: 10px 0;
+    .button {
+      margin: 0 10px;
+      color: #fff;
+      border-radius: 5px;
+      background-color: #3d95d5;
+    }
+  }
+  .task-table {
+    border-top: 1px solid #d2d2d2;
+    table {
+      width: 100%;
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 40px;
+      thead {
+        tr {
+          background-color: #e9f8ff;
+          font-weight: 600;
+        }
+        td {
+          padding: 10px 0;
+        }
+      }
+      tbody {
+        tr:nth-child(2n) {
+          background-color: #e9f8ff;
+        }
+        td {
+          height: 50px;
+        }
+        .visited {
+          background-color: #b3e7ff !important;
+        }
+      }
     }
   }
 }
