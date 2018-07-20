@@ -6,6 +6,7 @@ import Index from "./views/Index/Index";
 import Message from "./views/Index/message";
 import Apply from "./views/Apply/Apply";
 import Contact from "./views/Contact/Contact";
+import Count from "./views/Count/Count";
 import Users from "./views/Users/Users";
 import usersPwd from "./views/Users/usersPwd";
 import TaskWait from "./views/TaskWait/TaskWait";
@@ -16,6 +17,7 @@ import TaskKKFrom from "./views/TaskWait/TaskKKFrom";
 import TaskPKFrom from "./views/TaskWait/TaskPKFrom";
 import TaskJDFrom from "./views/TaskWait/TaskJDFrom";
 import TaskDJFrom from "./views/TaskWait/TaskDJFrom";
+import TaskDemo from "./views/TaskWait/TaskDemo";
 import TaskAccept from "./views/TaskWait/TaskAccept";
 import TaskExecute from "./views/TaskWait/TaskExecute";
 import TaskGuide from "./views/TaskWait/TaskGuide";
@@ -49,51 +51,59 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait/TaskYCFrom",
-          name: "TaskYCFrom",
+          path: "/taskWait/taskYCFrom",
+          name: "taskYCFrom",
           component: TaskYCFrom,
           meta: {
             title: "预存单审核" // 页面标题
           }
         },
         {
-          path: "/taskWait/TaskZFFrom",
-          name: "TaskZFFrom",
+          path: "/taskWait/taskZFFrom",
+          name: "taskZFFrom",
           component: TaskZFFrom,
           meta: {
             title: "支付申请审核" // 页面标题
           }
         },
         {
-          path: "/taskWait/TaskKKFrom",
-          name: "TaskKKFrom",
+          path: "/taskWait/taskKKFrom",
+          name: "taskKKFrom",
           component: TaskKKFrom,
           meta: {
             title: "扣款申请审核" // 页面标题
           }
         },
         {
-          path: "/taskWait/TaskJDFrom",
-          name: "TaskJDFrom",
+          path: "/taskWait/taskJDFrom",
+          name: "taskJDFrom",
           component: TaskJDFrom,
           meta: {
             title: "解冻申请审核" // 页面标题
           }
         },
         {
-          path: "/taskWait/TaskPKFrom",
-          name: "TaskPKFrom",
+          path: "/taskWait/taskPKFrom",
+          name: "taskPKFrom",
           component: TaskPKFrom,
           meta: {
             title: "批款申请审核" // 页面标题
           }
         },
         {
-          path: "/taskWait/TaskDJFrom",
-          name: "TaskDJFrom",
+          path: "/taskWait/taskDJFrom",
+          name: "taskDJFrom",
           component: TaskDJFrom,
           meta: {
             title: "冻结申请审核" // 页面标题
+          }
+        },
+        {
+          path: "/taskWait/taskDemo",
+          name: "taskDemo",
+          component: TaskDemo,
+          meta: {
+            title: "执行任务" // 页面标题
           }
         },
         {
@@ -142,6 +152,14 @@ export default new Router({
           component: Contact,
           meta: {
             title: "通讯录" // 页面标题
+          }
+        },
+        {
+          path: "/count",
+          name: "count",
+          component: Count,
+          meta: {
+            title: "数据统计" // 页面标题
           }
         },
         {

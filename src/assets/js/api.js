@@ -142,16 +142,19 @@ const contact = {
 };
 
 const users = {
+  // 编辑用户信息
   exit() {
     return axios({
       url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=ExitSystem"
     });
   },
+  // 获取用户信息
   userInfo() {
     return axios({
       url: "ucml_mobile/select_User_Org_Mobile.ashx?type=MYINFO"
     });
   },
+  // 更新用户密码
   updatePwd(params) {
     return axios({
       url: "UCMLWebServiceEntryForJs.aspx",
@@ -167,6 +170,7 @@ const users = {
       }
     });
   },
+  // 保存用户信息
   saveInfo(params) {
     return axios({
       url: "ucml_mobile/select_User_Org_Mobile.ashx?type=CHANGEINFO&sex=" +
@@ -177,6 +181,20 @@ const users = {
         params.email +
         "&worktelno=" +
         params.worktelno
+    });
+  },
+  // 获取统计数据
+  getDemandData(id) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_ViewPage_InfoService",
+        _methodName: "GetViewPageInfo",
+        "_parameters[LoginUserOID]": id,
+        _paraNames: "LoginUserOID",
+        _pUrl: ""
+      }
     });
   }
 };
@@ -286,6 +304,38 @@ const task = {
       }
     });
   },
+  saveTaskForm(parasm) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_WF_YC_InOutFormService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": `<root>
+          <BC_WF_AssignTask_Idea UpdateKind="ukModify">
+            <AssignTaskOID>4a32e78a-3ddb-4aba-9ca5-359a993e0a3a</AssignTaskOID>
+            <resolutionCode>null</resolutionCode>
+            <Idea>同意</Idea>
+            <IdeaCode>1</IdeaCode>
+            <BusiField1>同意</BusiField1>
+            <BusiField2>1</BusiField2>
+            <InstanceID>65463d3a-4b21-4658-b8a0-d947143d3506</InstanceID>
+          </BC_WF_AssignTask_Idea>
+          <BC_WF_AssignTask_Idea UpdateKind="">
+            <AssignTaskOID>null</AssignTaskOID>
+            <resolutionCode>null</resolutionCode>
+            <Idea>` + parasm + `</Idea>
+            <IdeaCode>null</IdeaCode>
+            <BusiField1>null</BusiField1>
+            <BusiField2>null</BusiField2>
+            <InstanceID>null</InstanceID>
+          </BC_WF_AssignTask_Idea>
+        </root>`,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    });
+  }
 };
 
 export {

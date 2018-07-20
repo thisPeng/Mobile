@@ -9,16 +9,18 @@ import 'vant/lib/vant-css/index.css';
 import './assets/css/iconfont.css';
 import "./assets/css/theme.less";
 import axios from './assets/js/request';
+import echarts from 'echarts'
 
 Vue.use(Vant);
 Vue.prototype.$axios = axios;
-Vue.config.productionTip = false
+Vue.prototype.$echarts = echarts;
+Vue.config.productionTip = false;
 
 // 图片地址
 if (process.env.NODE_ENV === "production") {
   let strPath = window.document.location.pathname;
   let postPath = strPath.substring(0, strPath.substr(1).indexOf("/") + 1);
-  if (postPath === '/Screen' || postPath === '/mobile' ) postPath = ''
+  if (postPath === '/Screen' || postPath === '/mobile') postPath = ''
   store.commit('servePath', postPath);
 } else {
   store.commit('servePath', "http://localhost:8088");

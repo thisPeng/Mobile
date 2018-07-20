@@ -25,8 +25,5 @@ export default mapState({
   },
   tabsShow: state => {
     return state.tabsShow;
-  },
-  tableZFrom: state => {
-    return state.tabsShow;
   }
 })

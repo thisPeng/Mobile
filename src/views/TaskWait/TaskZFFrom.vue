@@ -58,9 +58,7 @@ export default {
   },
   methods: {
     onConfirm(res) {
-      const from = this.tableZFrom;
-      from.tableZFrom = res;
-      this.$store.commit("tableZFrom", from);
+      console.log(res);
       this.paymentShow = false;
     }
   },

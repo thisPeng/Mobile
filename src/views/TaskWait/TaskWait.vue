@@ -18,11 +18,11 @@
           </thead>
           <tbody>
             <tr v-for="(item,index) in tableData" :key="item[0]" :class="active === index ? 'visited' : ''" @click="selectItem(index)">
-              <td>{{item[33]}}</td>
-              <td>{{item[2]}}</td>
-              <td>{{item[4]}}</td>
+              <td>{{taskModel === 'complete' ? item[39] : item[33]}}</td>
+              <td>{{taskModel === 'complete' ? item[50] : item[2]}}</td>
+              <td>{{taskModel === 'complete' ? item[11] : item[4]}}</td>
               <td v-if="taskModel === 'complete'">{{item[40] !=="1900-01-01 00:00:00" ? item[40] : ''}}</td>
-              <td>{{item[13]}}</td>
+              <td>{{taskModel === 'complete' ? item[54] : item[13]}}</td>
             </tr>
           </tbody>
         </table>
@@ -59,7 +59,8 @@ export default {
           if (res) {
             try {
               const sp = res.text.split(";");
-              this.tableData = eval(sp[0].split("=")[1]);
+              this.tableData = eval("[[" + sp[0].split("[[")[1]);
+              console.log(this.tableData);
               const pages = "(" + sp[1].split("=")[1] + ")";
               this.tablePages = eval(pages);
             } catch (e) {
@@ -101,27 +102,27 @@ export default {
       this.$store.commit("taskParams", this.params);
       if (this.params.name.indexOf("预存") >= 0) {
         this.$router.push({
-          name: "TaskYCFrom"
+          name: "taskYCFrom"
         });
       } else if (this.params.name.indexOf("支付") >= 0) {
         this.$router.push({
-          name: "TaskZFFrom"
+          name: "taskZFFrom"
         });
       } else if (this.params.name.indexOf("扣款") >= 0) {
         this.$router.push({
-          name: "TaskKKFrom"
+          name: "taskKKFrom"
         });
       } else if (this.params.name.indexOf("解冻") >= 0) {
         this.$router.push({
-          name: "TaskJDFrom"
+          name: "taskJDFrom"
         });
       } else if (this.params.name.indexOf("批款") >= 0) {
         this.$router.push({
-          name: "TaskPKFrom"
+          name: "taskPKFrom"
         });
       } else if (this.params.name.indexOf("冻结") >= 0) {
         this.$router.push({
-          name: "TaskDJFrom"
+          name: "taskDJFrom"
         });
       }
     }
@@ -135,6 +136,7 @@ export default {
         try {
           const sp = res.text.split(";");
           this.tableData = eval(sp[1].split("=")[1]);
+          console.log(this.tableData);
           const pages = "(" + sp[12].split("=")[1] + ")";
           this.tablePages = eval(pages);
         } catch (e) {

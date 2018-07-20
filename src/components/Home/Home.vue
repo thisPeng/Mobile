@@ -6,9 +6,11 @@
     <router-view class="content"></router-view>
     <van-tabbar v-model="active" v-show="isTabbar">
       <van-tabbar-item icon="chat" @click="jumpTabs('index')">消息</van-tabbar-item>
-      <van-tabbar-item icon="edit" @click="jumpTabs('apply')">
+      <van-tabbar-item @click="jumpTabs('apply')">
         <i slot="icon" slot-scope="props" class="iconfont icon-yingyong-" />应用</van-tabbar-item>
       <!-- <van-tabbar-item icon="records" @click="jumpTabs('contact')">通讯录</van-tabbar-item> -->
+      <van-tabbar-item @click="jumpTabs('count')">
+        <i slot="icon" slot-scope="props" class="iconfont icon-icon1" />统计</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -32,6 +34,7 @@ export default {
         to.name !== "index" &&
         to.name !== "apply" &&
         to.name !== "contact" &&
+        to.name !== "count" &&
         to.name !== "users"
       ) {
         this.isBack = true;
@@ -60,6 +63,7 @@ export default {
       current.name !== "index" &&
       current.name !== "apply" &&
       current.name !== "contact" &&
+      current.name !== "count" &&
       current.name !== "users"
     ) {
       this.isBack = true;
