@@ -42,6 +42,22 @@ export default {
       } else {
         this.isBack = false;
         this.isTabbar = true;
+        switch (to.name) {
+          case "index":
+            this.active = 0;
+            break;
+          case "apply":
+            this.active = 1;
+            break;
+          case "count":
+            this.active = 2;
+            break;
+          case "users":
+            this.active = 3;
+            break;
+          default:
+            this.active = this.tabActive;
+        }
       }
     }
   },
@@ -71,10 +87,26 @@ export default {
     } else {
       this.isBack = false;
       this.isTabbar = true;
+      switch (current.name) {
+        case "index":
+          this.active = 0;
+          break;
+        case "apply":
+          this.active = 1;
+          break;
+        case "count":
+          this.active = 2;
+          break;
+        case "users":
+          this.active = 3;
+          break;
+        default:
+          this.active = this.tabActive;
+      }
     }
   },
   mounted() {
-    this.active = this.tabActive;
+    // this.active = this.tabActive;
   }
 };
 </script>
@@ -82,6 +114,12 @@ export default {
 .home {
   width: 100%;
   height: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
   .van-nav-bar {
     color: #fff;
     background-color: #00a0e9;

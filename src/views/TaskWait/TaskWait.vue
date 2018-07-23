@@ -150,9 +150,9 @@ export default {
         background-color: #3d95d5;
       }
     }
-
     .task-table {
       border-top: 1px solid #d2d2d2;
+      padding-bottom: 5px;
       table {
         width: 100%;
         font-size: 14px;

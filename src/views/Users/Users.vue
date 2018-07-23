@@ -6,7 +6,7 @@
         <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
       </div>
       <div class="m-code-box">
-        <!-- <img id="m_barcode" src="../../../public/img/codeico.png" alt=""> -->
+        <img id="m_barcode" src="../../../public/img/codeico.png" alt="">
         <van-icon class="users-icon" name="arrow" />
       </div>
     </div>
@@ -93,12 +93,15 @@ export default {
     padding: 20px;
     overflow: hidden;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   .users-head {
-    padding-top: 5px;
     position: relative;
     float: left;
     padding-left: 70px;
+    padding-top: 5px;
     height: 60px;
     color: #fff;
     font-size: 16px;
@@ -115,9 +118,6 @@ export default {
     top: 0;
   }
   .m-code-box {
-    margin-top: 20px;
-    float: right;
-    padding-right: 20px;
     .users-icon {
       color: #fff;
       vertical-align: middle;
