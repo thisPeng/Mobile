@@ -87,7 +87,7 @@ export default {
           // console.log(res);
           if (res && res.status === 1) {
             this.dataMoney = res.text.split(",");
-            console.log(this.dataMoney);
+           // console.log(this.dataMoney);
           }
         });
       }

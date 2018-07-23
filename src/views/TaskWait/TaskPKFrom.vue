@@ -6,7 +6,7 @@
       <van-field v-model="data[28]" label="工程名称" :disabled="edit" />
       <van-field v-model="data[17]" label="到款日期" :disabled="edit" />
       <van-field v-model="data[34]" label="到款金额" :disabled="edit" />
-      <van-field v-model="data[12]" label="银行账号" :disabled="edit" />
+      <van-field v-model="data[12]" label="到款账号" :disabled="edit" />
       <van-field v-model="data[11]" label="开户行" :disabled="edit" />
       <van-field v-model="data[13]" label="经手人" :disabled="edit" />
       <van-field v-model="data[9]" label="批款金额" :disabled="edit" />
