@@ -2,17 +2,17 @@
   <div class="task">
     <van-cell-group :style="tabsShow ? 'padding-bottom: 280px;' : 'padding-bottom: 30px;'">
       <van-field v-model="data[1]" label="单号" :disabled="edit" />
-      <van-field v-model="data[27]" label="工程编号" :disabled="edit" />
-      <van-field v-model="data[28]" label="工程名称" :disabled="edit" />
-      <van-field v-model="data[16]" label="申请方说明" :disabled="edit" />
-      <van-field v-model="data[9]" label="可用资金金额" :disabled="edit" />
-      <van-field label="员工姓名" disabled />
-      <van-field label="创建日期" disabled />
+      <van-field v-model="data[25]" label="工程编号" :disabled="edit" />
+      <van-field v-model="data[24]" label="工程名称" :disabled="edit" />
+      <van-field v-model="data[10]" label="申请方说明" :disabled="edit" />
+      <van-field v-model="dataMoney[3]" label="可用资金" :disabled="edit" />
+      <van-field v-model="data[31]" label="员工姓名" disabled />
+      <van-field v-model="data[16]" label="创建日期" disabled />
       <van-cell-group class="from-payment">
         <span class="from-label">支付类型</span>
-        <span class="from-select" @click="paymentShow=true">{{'请选择支付类型'}}</span>
+        <span class="from-select" @click="paymentShow=true">{{payment}}</span>
         <van-popup v-model="paymentShow" position="bottom">
-          <van-picker show-toolbar title="请选择" :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
+          <van-picker show-toolbar :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
         </van-popup>
       </van-cell-group>
       <div class="task-table">
@@ -24,20 +24,18 @@
               <td>款项说明</td>
             </tr>
           </thead>
-          <!-- <tbody>
-          <tr v-for="(item,index) in tableData" :key="item[0]" :class="active === index ? 'visited' : ''" @click="selectItem(index)">
-            <td>{{item[33]}}</td>
-            <td>{{item[2]}}</td>
-            <td>{{item[4]}}</td>
-            <td v-if="taskModel === 'complete'">{{item[40] !=="1900-01-01 00:00:00" ? item[40] : ''}}</td>
-            <td>{{item[13]}}</td>
-          </tr>
-        </tbody> -->
+          <tbody>
+            <tr v-for="item in dataTable" :key="item[0]">
+              <td>{{item[8]}}</td>
+              <td>{{item[4]}}</td>
+              <td>{{item[5]}}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </van-cell-group>
     <van-cell-group>
-      <taskTabs :data="data" />
+      <taskTabs :data="{}" />
     </van-cell-group>
   </div>
 </template>
@@ -51,15 +49,19 @@ export default {
     return {
       edit: true,
       data: [],
+      dataTable: [],
+      dataMoney: [],
       sexShow: false,
       columns: ["支付材料与劳务费用", "退结余额", "余额转预存其它项目"],
-      paymentShow: false
+      paymentShow: false,
+      payment: "请选择支付类型"
     };
   },
   methods: {
     onConfirm(res) {
-      console.log(res);
-      this.paymentShow = false;
+      // console.log(res);
+      this.payment = res;
+      this.columns[res] = this.paymentShow = false;
     }
   },
   computed,
@@ -70,10 +72,23 @@ export default {
     // 获取数据
     task.getTaskZFInfo(this.taskParams).then(res => {
       if (res && res.status === 1) {
-        // const sp = res.text.split(";");
-        // this.data = eval(sp[0].split("=")[1])[0];
+        //console.log(res);
+        const sp = res.text.split(";");
+        if (sp[0].split("=")[1] != "[]") {
+          this.data = eval(sp[0].split("=")[1])[0];
+        }
+        //console.log(sp);
+        this.dataTable = eval(sp[2].split("=")[1]);
         // console.log(this.data);
-        // console.log(this.data);
+        console.log(this.data);
+
+        task.getTaskZFMoney(this.data[2]).then(res => {
+          // console.log(res);
+          if (res && res.status === 1) {
+            this.dataMoney = res.text.split(",");
+            console.log(this.dataMoney);
+          }
+        });
       }
     });
   }

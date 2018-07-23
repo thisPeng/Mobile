@@ -296,7 +296,7 @@ const task = {
       method: "post",
       data: {
         _bpoName: "BPO_Start_Apply_InfoService",
-        _methodName: "GetViewPageInfo",
+        _methodName: "GetProjectInfo",
         "_parameters[ProjectID]": id,
         _paraNames: "ProjectID",
         _pUrl: ""
