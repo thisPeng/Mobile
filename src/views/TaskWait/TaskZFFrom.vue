@@ -35,7 +35,7 @@
       </div>
     </van-cell-group>
     <van-cell-group>
-      <taskTabs :data="{}" />
+      <taskTabs :data="taskTabs" />
     </van-cell-group>
   </div>
 </template>
@@ -51,6 +51,7 @@ export default {
       data: [],
       dataTable: [],
       dataMoney: [],
+      taskTabs: {},
       sexShow: false,
       columns: ["支付材料与劳务费用", "退结余额", "余额转预存其它项目"],
       paymentShow: false,

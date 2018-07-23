@@ -11,6 +11,9 @@ export default mapState({
   userInfo: state => {
     return state.userInfo;
   },
+  loginInfo: state => {
+    return state.loginInfo;
+  },
   tabActive: state => {
     return state.tabActive;
   },

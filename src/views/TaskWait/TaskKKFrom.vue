@@ -25,7 +25,7 @@
       </van-swipe>
     </van-cell-group>
     <van-cell-group>
-      <taskTabs :data="data" />
+      <taskTabs :data="taskTabs" />
     </van-cell-group>
   </div>
 </template>
@@ -39,7 +39,8 @@ export default {
   data() {
     return {
       edit: true,
-      data: []
+      data: [],
+      taskTabs: {}
     };
   },
   methods: {

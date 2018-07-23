@@ -13,7 +13,7 @@
       <van-field v-model="data[17]" label="创建日期" :disabled="edit" />
     </van-cell-group>
     <van-cell-group>
-      <taskTabs :data="data" />
+      <taskTabs :data="taskTabs" />
     </van-cell-group>
   </div>
 </template>
@@ -27,7 +27,8 @@ export default {
   data() {
     return {
       edit: true,
-      data: []
+      data: [],
+      taskTabs: {}
     };
   },
   methods: {

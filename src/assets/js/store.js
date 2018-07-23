@@ -14,6 +14,7 @@ export default new Vuex.Store({
   //数据源申明
   state: {
     userInfo: {},
+    loginInfo: {},
     tabActive: 0,
     taskModel: "",
     taskParams: {},
@@ -24,6 +25,9 @@ export default new Vuex.Store({
   mutations: {
     userInfo: (state, val) => {
       state.userInfo = val;
+    },
+    loginInfo: (state, val) => {
+      state.loginInfo = val;
     },
     tabActive: (state, val) => {
       state.tabActive = val;
