@@ -18,7 +18,7 @@
           </thead>
           <tbody>
             <tr v-for="(item,index) in tableData" :key="item[0]" :class="active === index ? 'visited' : ''" @click="selectItem(index)">
-              <td>{{taskModel === 'complete' ? item[39] : item[33]}}</td>
+              <td>{{taskModel === 'complete' ? item[33] : item[33]}}</td>
               <td>{{taskModel === 'complete' ? item[50] : item[2]}}</td>
               <td>{{taskModel === 'complete' ? item[11] : item[4]}}</td>
               <td v-if="taskModel === 'complete'">{{item[40] !=="1900-01-01 00:00:00" ? item[40] : ''}}</td>
@@ -73,7 +73,6 @@ export default {
           if (res) {
             try {
               const sp = res.text.split(";");
-              // console.log(eval("[[" + sp[0].split("[[")[1]));
               this.tableData = eval("[[" + sp[0].split("[[")[1]);
               const pages = "(" + sp[1].split("=")[1] + ")";
               this.tablePages = eval(pages);
@@ -131,21 +130,7 @@ export default {
   mounted() {
     const model = this.$router.history.current.params.model || this.taskModel;
     this.$store.commit("taskModel", model);
-    if (this.taskModel === "complete") {
-      task.getCompleteCount().then(res => {
-        try {
-          const sp = res.text.split(";");
-          this.tableData = eval(sp[1].split("=")[1]);
-          console.log(this.tableData);
-          const pages = "(" + sp[12].split("=")[1] + ")";
-          this.tablePages = eval(pages);
-        } catch (e) {
-          console.log(e);
-        }
-      });
-    } else {
-      this.getTableData();
-    }
+    this.getTableData();
   }
 };
 </script>

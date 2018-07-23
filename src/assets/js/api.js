@@ -223,29 +223,15 @@ const task = {
       }
     });
   },
-  // 获取待办数据统计
-  getCompleteCount() {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_TaskComplete_WXService",
-        _methodName: "BusiViewString",
-        _paraNames: "",
-        _pUrl: "",
-        _classFullName: ""
-      }
-    });
-  },
   // 获取已完成待办数据
-  getCompleteData(page, count = 999) {
+  getCompleteData(page) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_TaskComplete_WXService",
-        _methodName: "getCondiActorDataBCStringPage",
-        "_parameters[BCName]": "BC_CompletedTask_WX",
+        _bpoName: "BPO_WF_CompleteTaskService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_WF_CompletedTask",
         "_parameters[nStartPos]": page * 10,
         "_parameters[nRecords]": 10,
         "_parameters[fieldList]": "",
@@ -253,9 +239,8 @@ const task = {
         "_parameters[condiIndentList]": "",
         "_parameters[SQLCondi]": "",
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": "",
-        "_parameters[inTotalRecord]": count,
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix,inTotalRecord",
+        "_parameters[SQLFix]": " ORDER BY AssignTask.SYS_Created DESC",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
