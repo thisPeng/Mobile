@@ -10,8 +10,9 @@
       <van-field v-model="data[16]" label="创建日期" disabled />
       <van-cell-group class="from-payment">
         <span class="from-label">支付类型</span>
-        <span class="from-select" @click="paymentShow=true">{{payment}}</span>
-        <van-popup v-model="paymentShow" position="bottom">
+        <span class="from-select" v-if="edit">{{payment}}</span>
+        <span class="from-select" v-else @click="paymentShow=true">{{payment}}</span>
+        <van-popup v-model="paymentShow" v-if="!edit" position="bottom">
           <van-picker show-toolbar :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
         </van-popup>
       </van-cell-group>
@@ -81,13 +82,13 @@ export default {
         //console.log(sp);
         this.dataTable = eval(sp[2].split("=")[1]);
         // console.log(this.data);
-        console.log(this.data);
+        this.payment = this.columns[this.data[9] - 1];
 
         task.getTaskZFMoney(this.data[2]).then(res => {
           // console.log(res);
           if (res && res.status === 1) {
             this.dataMoney = res.text.split(",");
-           // console.log(this.dataMoney);
+            // console.log(this.dataMoney);
           }
         });
       }
