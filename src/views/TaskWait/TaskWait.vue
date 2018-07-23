@@ -18,11 +18,11 @@
           </thead>
           <tbody>
             <tr v-for="(item,index) in tableData" :key="item[0]" :class="active === index ? 'visited' : ''" @click="selectItem(index)">
-              <td>{{taskModel === 'complete' ? item[33] : item[33]}}</td>
-              <td>{{taskModel === 'complete' ? item[50] : item[2]}}</td>
-              <td>{{taskModel === 'complete' ? item[11] : item[4]}}</td>
-              <td v-if="taskModel === 'complete'">{{item[40] !=="1900-01-01 00:00:00" ? item[40] : ''}}</td>
-              <td>{{taskModel === 'complete' ? item[54] : item[13]}}</td>
+              <td>{{taskModel === 'complete' ? item[25] : item[33]}}</td>
+              <td>{{taskModel === 'complete' ? item[2] : item[2]}}</td>
+              <td>{{taskModel === 'complete' ? item[7] : item[4]}}</td>
+              <td v-if="taskModel === 'complete'">{{item[15] !=="1900-01-01 00:00:00" ? item[15] : ''}}</td>
+              <td>{{taskModel === 'complete' ? item[9] : item[13]}}</td>
             </tr>
           </tbody>
         </table>
