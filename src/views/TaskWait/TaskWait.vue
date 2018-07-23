@@ -60,7 +60,7 @@ export default {
             try {
               const sp = res.text.split(";");
               this.tableData = eval("[[" + sp[0].split("[[")[1]);
-              console.log(this.tableData);
+              // console.log(this.tableData);
               const pages = "(" + sp[1].split("=")[1] + ")";
               this.tablePages = eval(pages);
             } catch (e) {
