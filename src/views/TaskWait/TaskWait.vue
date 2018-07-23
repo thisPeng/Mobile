@@ -28,7 +28,7 @@
         </table>
       </div>
     </div>
-    <van-pagination v-model="currentPage" :total-items="tablePages.RecordCount" :items-per-page="tablePages.PageCount" mode="simple" class="task-pages" @change="getTableData" />
+    <van-pagination v-model="currentPage" :total-items="tablePages.RecordCount" :items-per-page="10" mode="simple" class="task-pages" @change="getTableData" />
   </div>
 </template>
 <script>
