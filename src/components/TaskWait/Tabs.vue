@@ -27,6 +27,8 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
+import { task } from "./../../assets/js/api.js";
+
 export default {
   data() {
     return {
@@ -38,8 +40,8 @@ export default {
   computed,
   props: {
     data: {
-      type: Array,
-      default: () => []
+      type: Object,
+      default: () => {}
     }
   },
   methods: {
@@ -47,17 +49,27 @@ export default {
       this.$store.commit("tabsShow", !this.tabsShow);
     },
     onSave() {
+      const that = this;
       if (this.radio === "" || this.viewText === "") {
         this.$toast("请选择审批意见");
         return;
       }
+
       this.$dialog
         .confirm({
           title: "提示",
           message: "确定完成任务吗？"
         })
         .then(() => {
-          // on confirm
+          that.data.viewText = that.viewText;
+          that.data.code = that.radio;
+          that.data.text = that.radio === "1" ? "同意" : "不同意";
+          task.saveTaskForm(that.data).then(res => {
+            console.log(res);
+            if (res && res.status === 1) {
+              this.$toast("保存成功!");
+            }
+          });
         })
         .catch(() => {
           // on cancel

@@ -25,21 +25,22 @@
       </van-swipe>
     </van-cell-group>
     <van-cell-group>
-      <taskTabs :data="data" />
+      <taskTabs :data="taskTabs" />
     </van-cell-group>
   </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
 import taskTabs from "./../../components/TaskWait/Tabs";
-import { ImagePreview } from 'vant';
+import { ImagePreview } from "vant";
 import { task } from "./../../assets/js/api.js";
 
 export default {
   data() {
     return {
       edit: true,
-      data: []
+      data: [],
+      taskTabs: {}
     };
   },
   methods: {
@@ -60,6 +61,8 @@ export default {
       if (res && res.status === 1) {
         const sp = res.text.split(";");
         this.data = eval(sp[0].split("=")[1])[0];
+        this.taskTabs.TaskOID = this.data[0];
+        this.taskTabs.InstanceID = this.data[7];
         // console.log(this.data);
       }
     });

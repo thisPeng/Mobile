@@ -90,38 +90,61 @@ export default {
   methods: {
     drawLine() {
       const that = this;
-      // // 基于准备好的dom，初始化echarts实例
-      // let myChart = this.$echarts.init(document.getElementById("myChart"));
-      // // 绘制图表
-      // myChart.setOption({
-      //   title: { text: "交易排行榜 Top 5" },
-      //   tooltip: {},
-      //   xAxis: {
-      //     data: ["衬衫", "羊毛衫", "雪纺衫", "裤子"]
-      //   },
-      //   yAxis: {},
-      //   series: [
-      //     {
-      //       name: "销量",
-      //       type: "bar",
-      //       barWidth: 30, //柱图宽度
-      //       data: [5, 20, 36, 10]
-      //     }
-      //   ]
-      // });
 
       let names = [],
         datas = [];
       that.tableData1.forEach(val => {
         names.push(val[1]);
-        datas.push({
-          name: val[1],
-          value: val[3]
-        });
+        datas.push(val[3]);
       });
 
+      // 交易排行榜 Top 5
       let myChart = this.$echarts.init(document.getElementById("myChart1"));
-      that.setOption(myChart, names, datas, "交易排行榜 Top 5");
+      myChart.setOption({
+        title: {
+          text: "交易排行榜 Top 5"
+        },
+        tooltip: {
+          trigger: "axis"
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            mark: { show: true },
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ["line", "bar"] },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          }
+        },
+        calculable: true,
+        xAxis: [
+          {
+            type: "value",
+            splitNumber: 3
+          }
+        ],
+        yAxis: [
+          {
+            type: "category",
+            data: names,
+            axisLabel: {
+              interval: 0,
+              formatter: function(value) {
+                return value.split("").join("\n");
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: "金额",
+            type: "bar",
+            barWidth: 30,
+            data: datas
+          }
+        ]
+      });
 
       names = [];
       datas = [];
@@ -133,32 +156,20 @@ export default {
         });
       });
 
+      // 合作商排行榜
       myChart = this.$echarts.init(document.getElementById("myChart2"));
-      that.setOption(myChart, names, datas, "合作商排行榜 Top 5");
-
-      names = [];
-      datas = [];
-      that.tableData3.forEach(val => {
-        names.push(val[1]);
-        datas.push({
-          name: val[1],
-          value: val[3]
-        });
-      });
-
-      myChart = this.$echarts.init(document.getElementById("myChart3"));
-      that.setOption(myChart, names, datas, "供应商排行榜 Top 5");
-    },
-    setOption(char, names = [], datas = [], title = "") {
-      // 绘制图表
-      char.setOption({
+      myChart.setOption({
         title: {
-          text: title,
+          text: "合作商排行榜 Top 5",
           x: "center"
         },
         tooltip: {
           trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
+          formatter: "{b}<br >￥{c} ({d}%)",
+          position: function(point, params, dom) {
+            var posDis = window.innerWidth - dom.offsetWidth;
+            return posDis < point[0] ? [posDis, "10%"] : [point[0], "10%"];
+          }
         },
         legend: {
           orient: "vertical",
@@ -190,10 +201,83 @@ export default {
         calculable: true,
         series: [
           {
-            name: "详细数据",
+            name: "交易额",
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
+            data: datas
+          }
+        ]
+      });
+
+      names = [];
+      datas = [];
+      that.tableData3.forEach(val => {
+        names.push(val[1]);
+        datas.push({
+          name: val[1],
+          value: val[3]
+        });
+      });
+
+      // 供应商排行榜 Top 5
+      myChart = this.$echarts.init(document.getElementById("myChart3"));
+      myChart.setOption({
+        title: {
+          text: "供应商排行榜 Top 5",
+          x: "center"
+        },
+        tooltip: {
+          trigger: "item",
+          formatter: "{b}<br >￥{c} ({d}%)",
+          position: function(point, params, dom) {
+            var posDis = window.innerWidth - dom.offsetWidth;
+            return posDis < point[0] ? [posDis, "10%"] : [point[0], "10%"];
+          }
+        },
+        legend: {
+          orient: "vertical",
+          x: "right",
+          y: "center",
+          data: names
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            mark: { show: true },
+            dataView: { show: true, readOnly: false },
+            magicType: {
+              show: true,
+              type: ["pie", "funnel"],
+              option: {
+                funnel: {
+                  x: "25%",
+                  width: "50%",
+                  funnelAlign: "center",
+                  max: 1548
+                }
+              }
+            },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          }
+        },
+        calculable: true,
+        series: [
+          {
+            name: "金额",
+            type: "pie",
+            radius: ["50%", "70%"],
+            itemStyle: {
+              normal: {
+                label: {
+                  show: false
+                },
+                labelLine: {
+                  show: false
+                }
+              }
+            },
             data: datas
           }
         ]

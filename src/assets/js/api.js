@@ -289,34 +289,50 @@ const task = {
       }
     });
   },
+  // 获取支付项目资金
+  getTaskZFMoney(id) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Apply_InfoService",
+        _methodName: "GetViewPageInfo",
+        "_parameters[ProjectID]": id,
+        _paraNames: "ProjectID",
+        _pUrl: ""
+      }
+    });
+  },
+  // 保存并完成任务
   saveTaskForm(parasm) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
         _bpoName: "BPO_WF_YC_InOutFormService",
-        _methodName: "BusinessSubmit",
-        "_parameters[xmlData]": `<root>
-          <BC_WF_AssignTask_Idea UpdateKind="ukModify">
-            <AssignTaskOID>4a32e78a-3ddb-4aba-9ca5-359a993e0a3a</AssignTaskOID>
-            <resolutionCode>null</resolutionCode>
-            <Idea>同意</Idea>
-            <IdeaCode>1</IdeaCode>
-            <BusiField1>同意</BusiField1>
-            <BusiField2>1</BusiField2>
-            <InstanceID>65463d3a-4b21-4658-b8a0-d947143d3506</InstanceID>
-          </BC_WF_AssignTask_Idea>
-          <BC_WF_AssignTask_Idea UpdateKind="">
-            <AssignTaskOID>null</AssignTaskOID>
-            <resolutionCode>null</resolutionCode>
-            <Idea>` + parasm + `</Idea>
-            <IdeaCode>null</IdeaCode>
-            <BusiField1>null</BusiField1>
-            <BusiField2>null</BusiField2>
-            <InstanceID>null</InstanceID>
-          </BC_WF_AssignTask_Idea>
-        </root>`,
-        _paraNames: "xmlData",
+        _methodName: "__FinishMyTask",
+        "_parameters[DeltaXml]": "<root>" +
+          "<BC_WF_AssignTask_Idea UpdateKind=\"ukModify\">" +
+          "<AssignTaskOID>" + parasm.TaskOID + "</AssignTaskOID>" +
+          "<resolutionCode>null</resolutionCode>" +
+          "<Idea>null</Idea>" +
+          "<IdeaCode>null</IdeaCode>" +
+          "<BusiField1>null</BusiField1>" +
+          "<BusiField2>null</BusiField2>" +
+          "<InstanceID>" + parasm.InstanceID + "</InstanceID>" +
+          "</BC_WF_AssignTask_Idea>" +
+          "<BC_WF_AssignTask_Idea UpdateKind=\"\">" +
+          "<AssignTaskOID>null</AssignTaskOID>" +
+          "<resolutionCode>null</resolutionCode>" +
+          "<Idea>" + parasm.viewText + "</Idea>" +
+          "<IdeaCode>" + parasm.code + "</IdeaCode>" +
+          "<BusiField1>" + parasm.text + "</BusiField1>" +
+          "<BusiField2>" + parasm.code + "</BusiField2>" +
+          "<InstanceID>null</InstanceID>" +
+          "</BC_WF_AssignTask_Idea>" +
+          "</root>",
+        "_parameters[IdeaCode]": parasm.code,
+        _paraNames: "DeltaXml,IdeaCode",
         _pUrl: ""
       }
     });

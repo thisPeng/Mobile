@@ -55,12 +55,12 @@ export default {
     getTableData() {
       const page = this.currentPage > 0 ? this.currentPage - 1 : 0;
       if (this.taskModel === "complete") {
+        this.$parent.title = "我的已办";
         task.getCompleteData(page, this.tablePages.RecordCount).then(res => {
           if (res) {
             try {
               const sp = res.text.split(";");
               this.tableData = eval("[[" + sp[0].split("[[")[1]);
-              // console.log(this.tableData);
               const pages = "(" + sp[1].split("=")[1] + ")";
               this.tablePages = eval(pages);
             } catch (e) {
@@ -69,6 +69,7 @@ export default {
           }
         });
       } else {
+        this.$parent.title = "我的待办";
         task.getWaitData(page).then(res => {
           if (res) {
             try {

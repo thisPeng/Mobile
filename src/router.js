@@ -47,7 +47,7 @@ export default new Router({
           name: "taskWait",
           component: TaskWait,
           meta: {
-            title: "我的待办" // 页面标题
+            title: "待办列表" // 页面标题
           }
         },
         {
