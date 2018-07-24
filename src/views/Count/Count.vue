@@ -11,7 +11,7 @@
         </van-col>
         <van-col span="12">
           <div class="row-title">
-            <i class="iconfont icon-qizi text-blue" /> 待确认
+            <i class="iconfont icon-qizi text-blue" /> {{model ? '待确认' : '待报价'}}
           </div>
           <div class="row-content">{{data[4]}}</div>
         </van-col>
@@ -25,7 +25,7 @@
         </van-col>
         <van-col span="12">
           <div class="row-title">
-            <i class="iconfont icon-qizi text-green" /> 待收货
+            <i class="iconfont icon-qizi text-green" /> {{model ? '待收货' : '待发货'}}
           </div>
           <div class="row-content">{{data[5]}}</div>
         </van-col>
@@ -33,21 +33,21 @@
       <van-row class="count-row">
         <van-col span="12">
           <div class="row-title">
-            <i class="iconfont icon-duizhangdan text-orange" /> 总应付(￥)
+            <i class="iconfont icon-duizhangdan text-orange" /> {{model ? '总应付(￥)' : '总应收(￥)'}}
           </div>
           <div class="row-content">{{data[2]}}</div>
         </van-col>
         <van-col span="12">
           <div class="row-title">
-            <i class="iconfont icon-qizi text-orange" /> 项目数
+            <i class="iconfont icon-qizi text-orange" /> {{model ? '项目数' : '待收款(￥)'}}
           </div>
           <div class="row-content">{{data[6]}}</div>
         </van-col>
       </van-row>
-      <van-row class="count-row">
+      <van-row class="count-row" v-if="model">
         <van-col span="12">
           <div class="row-title">
-            <i class="iconfont icon-daifukuan text-red" /> 待付款(￥)
+            <i class="iconfont icon-daifukuan text-red" /> {{model ? '待付款(￥)' : '待收款(￥)'}}
           </div>
           <div class="row-content">{{data[3]}}</div>
         </van-col>
@@ -82,6 +82,7 @@ export default {
   data() {
     return {
       data: [],
+      model: true,
       tableData1: [],
       tableData2: [],
       tableData3: []
@@ -93,16 +94,24 @@ export default {
 
       let names = [],
         datas = [];
-      that.tableData1.forEach(val => {
-        names.push(val[1]);
-        datas.push(val[3]);
-      });
 
-      // 交易排行榜 Top 5
-      let myChart = this.$echarts.init(document.getElementById("myChart1"));
-      myChart.setOption({
+      if (that.model) {
+        // 交易排行榜 Top 5
+        that.tableData1.forEach(val => {
+          names.push(val[1]);
+          datas.push(val[3]);
+        });
+      } else {
+        // 我的销售排行榜 Top 5
+        that.tableData3.forEach(val => {
+          names.push(val[1]);
+          datas.push(val[3]);
+        });
+      }
+      let chart1 = this.$echarts.init(document.getElementById("myChart1"));
+      chart1.setOption({
         title: {
-          text: "交易排行榜 Top 5"
+          text: that.model ? "交易排行榜 Top 5" : "我的销售排行榜 Top 5"
         },
         tooltip: {
           trigger: "axis"
@@ -157,10 +166,10 @@ export default {
       });
 
       // 合作商排行榜
-      myChart = this.$echarts.init(document.getElementById("myChart2"));
-      myChart.setOption({
+      let chart2 = this.$echarts.init(document.getElementById("myChart2"));
+      chart2.setOption({
         title: {
-          text: "合作商排行榜 Top 5",
+          text: that.model ? "合作商排行榜 Top 5" : "客户排行榜 Top 5",
           x: "center"
         },
         tooltip: {
@@ -212,19 +221,30 @@ export default {
 
       names = [];
       datas = [];
-      that.tableData3.forEach(val => {
-        names.push(val[1]);
-        datas.push({
-          name: val[1],
-          value: val[3]
+      if (that.model) {
+        // 供应商排行榜 Top 5
+        that.tableData3.forEach(val => {
+          names.push(val[1]);
+          datas.push({
+            name: val[1],
+            value: val[3]
+          });
         });
-      });
+      } else {
+        // 项目公开 Top 5
+        that.tableData1.forEach(val => {
+          names.push(val[1]);
+          datas.push({
+            name: val[1],
+            value: val[3]
+          });
+        });
+      }
 
-      // 供应商排行榜 Top 5
-      myChart = this.$echarts.init(document.getElementById("myChart3"));
-      myChart.setOption({
+      let chart3 = this.$echarts.init(document.getElementById("myChart3"));
+      chart3.setOption({
         title: {
-          text: "供应商排行榜 Top 5",
+          text: that.model ? "供应商排行榜 Top 5" : "项目公开 Top 5",
           x: "center"
         },
         tooltip: {
@@ -282,6 +302,13 @@ export default {
           }
         ]
       });
+
+      // 自适应大小
+      window.addEventListener("resize", function() {
+        chart1.resize();
+        chart2.resize();
+        chart3.resize();
+      });
     }
   },
   computed,
@@ -298,6 +325,7 @@ export default {
             that.tableData1 = eval(sp[2].split("=")[1]);
             that.tableData2 = eval(sp[3].split("=")[1]);
             that.tableData3 = eval(sp[4].split("=")[1]);
+            that.model = that.data.length > 8;
             that.drawLine();
           }
         });
