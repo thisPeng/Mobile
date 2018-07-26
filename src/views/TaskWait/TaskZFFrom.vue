@@ -74,14 +74,11 @@ export default {
     // 获取数据
     task.getTaskZFInfo(this.taskParams).then(res => {
       if (res && res.status === 1) {
-        //console.log(res);
         const sp = res.text.split(";");
         if (sp[0].split("=")[1] != "[]") {
           this.data = eval(sp[0].split("=")[1])[0];
         }
-        //console.log(sp);
         this.dataTable = eval(sp[2].split("=")[1]);
-        // console.log(this.data);
         this.payment = this.columns[this.data[9] - 1];
 
         task.getTaskZFMoney(this.data[2]).then(res => {
@@ -152,7 +149,7 @@ export default {
       width: 100%;
       font-size: 14px;
       text-align: center;
-      margin-bottom: 40px;
+      // margin-bottom: 40px;
       thead {
         tr {
           background-color: #e9f8ff;

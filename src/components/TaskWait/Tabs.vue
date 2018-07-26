@@ -8,12 +8,17 @@
       <van-tab title="流程处理">
         <van-radio-group v-model="radio">
           <van-cell-group>
+            <van-cell clickable v-for="item in data.codeJson" :title="item.name" :key="item.value" @click="radio = item.value; viewText = item.name">
+              <van-radio :name="item.value" />
+            </van-cell>
+            <!--
             <van-cell title="同意" clickable @click="radio = '1'; viewText = '同意'">
               <van-radio name="1" />
             </van-cell>
             <van-cell title="不同意" clickable @click="radio = '2'; viewText = '不同意'">
               <van-radio name="2" />
             </van-cell>
+            -->
           </van-cell-group>
         </van-radio-group>
         <van-field v-model="viewText" label="审批意见" placeholder="请输入审批意见" />
@@ -63,11 +68,14 @@ export default {
         .then(() => {
           that.data.viewText = that.viewText;
           that.data.code = that.radio;
-          that.data.text = that.radio === "1" ? "同意" : "不同意";
+          that.data.text =
+            that.radio === 1 || that.radio === 3 ? "同意" : "不同意";
           task.saveTaskForm(that.data).then(res => {
             console.log(res);
             if (res && res.status === 1) {
-              this.$toast("保存成功!");
+              this.$toast("保存成功！");
+            } else {
+              this.$toast("操作失败！请刷新页面重试！");
             }
           });
         })
@@ -75,6 +83,9 @@ export default {
           // on cancel
         });
     }
+  },
+  mounted() {
+    console.log(this.data.codeJson);
   }
 };
 </script>

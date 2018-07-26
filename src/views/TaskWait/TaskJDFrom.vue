@@ -20,7 +20,6 @@
 <script>
 import computed from "./../../assets/js/computed.js";
 import taskTabs from "./../../components/TaskWait/Tabs";
-// import { ImagePreview } from 'vant';
 import { task } from "./../../assets/js/api.js";
 
 export default {
@@ -32,12 +31,6 @@ export default {
     };
   },
   methods: {
-    // preView() {
-    //   ImagePreview([
-    //     (this.servePath + this.data[14]).replace("~", ""),
-    //     (this.servePath + this.data[15]).replace("~", "")
-    //   ]);
-    // }
   },
   computed,
   components: {
