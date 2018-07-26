@@ -14,7 +14,7 @@
       <van-field v-model="data[29]" label="操作员" :disabled="edit" />
       <van-field v-model="data[17]" label="创建日期" :disabled="edit" />
     </van-cell-group>
-    <van-cell-group>
+    <van-cell-group v-if="taskTabs.codeJson">
       <taskTabs :data="taskTabs" />
     </van-cell-group>
   </div>
@@ -29,7 +29,9 @@ export default {
     return {
       edit: true,
       data: [],
-      taskTabs: {}
+      taskTabs: {
+        codeJson: []
+      }
     };
   },
   methods: {},
@@ -38,15 +40,31 @@ export default {
     taskTabs
   },
   mounted() {
-    // 获取数据
-    task.getTaskYCInfo(this.taskParams).then(res => {
-      if (res && res.status === 1) {
-        const sp = res.text.split(";");
-        this.data = eval(sp[0].split("=")[1])[0];
-        console.log(this.data);
-        // console.log(this.data);
-      }
-    });
+    try {
+      // 获取数据
+      task.getTaskYCInfo(this.taskParams).then(result => {
+        if (result && result.status === 1) {
+          let sp = result.text.split(";");
+          this.data = eval(sp[0].split("=")[1])[0];
+          this.taskTabs.InstanceID = this.data[32];
+          this.taskTabs.FlowID = this.data[33];
+
+          task.getFlowAssignData(this.data[32]).then(res => {
+            if (res && res.status === 1) {
+              sp = res.text.split(";");
+              let tmp = eval(sp[1].split("=")[1])[0];
+              this.taskTabs.TaskOID = tmp[0];
+              this.taskTabs.ActivityID = tmp[5];
+              if (tmp[13]) {
+                this.taskTabs.codeJson = JSON.parse(tmp[13]);
+              }
+            }
+          });
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 };
 </script>

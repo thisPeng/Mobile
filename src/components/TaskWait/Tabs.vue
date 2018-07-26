@@ -6,28 +6,21 @@
     </div>
     <van-tabs class="task-tabs" v-model="active" v-show="tabsShow">
       <van-tab title="流程处理">
-        <van-radio-group v-model="radio">
+        <van-radio-group v-model="radio" v-if="data.codeJson.length > 0">
           <van-cell-group>
             <van-cell clickable v-for="item in data.codeJson" :title="item.name" :key="item.value" @click="radio = item.value; viewText = item.name">
               <van-radio :name="item.value" />
             </van-cell>
-            <!--
-            <van-cell title="同意" clickable @click="radio = '1'; viewText = '同意'">
-              <van-radio name="1" />
-            </van-cell>
-            <van-cell title="不同意" clickable @click="radio = '2'; viewText = '不同意'">
-              <van-radio name="2" />
-            </van-cell>
-            -->
           </van-cell-group>
         </van-radio-group>
         <van-field v-model="viewText" label="审批意见" placeholder="请输入审批意见" />
       </van-tab>
       <van-tab title="意见浏览">
-        <span class="task-content">{{data[37]}}</span>
+        <span class="task-content">{{result}}</span>
       </van-tab>
     </van-tabs>
-    <van-button class="margin-top" type="primary" size="large" @click="onSave" v-show="tabsShow">保存并完成任务</van-button>
+    <van-button class="margin-top" type="primary" size="large" @click="onSave" v-show="tabsShow" v-if="data.codeJson.length > 0">保存并完成任务</van-button>
+    <van-button class="margin-top" type="primary" size="large" @click="onReset" v-show="tabsShow" v-else>重新发起</van-button>
   </section>
 </template>
 <script>
@@ -39,6 +32,7 @@ export default {
     return {
       active: 0,
       radio: "",
+      result: "",
       viewText: ""
     };
   },
@@ -53,6 +47,41 @@ export default {
     showTabs() {
       this.$store.commit("tabsShow", !this.tabsShow);
     },
+    onReset() {
+      const that = this;
+      if (this.viewText === "") {
+        this.$toast("请输入审批意见");
+        return;
+      }
+
+      this.$dialog
+        .confirm({
+          title: "提示",
+          message: "确定重新发起任务吗？"
+        })
+        .then(() => {
+          that.data.viewText = that.viewText;
+          that.data.code = 1;
+          that.data.text = "申请人修改";
+          task.saveTaskForm(that.data).then(res => {
+            if (res && res.status === 1) {
+              this.$dialog
+                .alert({
+                  message: "操作成功！",
+                  className: "text-center"
+                })
+                .then(() => {
+                  this.$router.go(-1);
+                });
+            } else {
+              this.$toast(res.text);
+            }
+          });
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
     onSave() {
       const that = this;
       if (this.radio === "" || this.viewText === "") {
@@ -63,7 +92,7 @@ export default {
       this.$dialog
         .confirm({
           title: "提示",
-          message: "确定完成任务吗？"
+          message: "确定保存并完成任务吗？"
         })
         .then(() => {
           that.data.viewText = that.viewText;
@@ -71,11 +100,17 @@ export default {
           that.data.text =
             that.radio === 1 || that.radio === 3 ? "同意" : "不同意";
           task.saveTaskForm(that.data).then(res => {
-            console.log(res);
             if (res && res.status === 1) {
-              this.$toast("保存成功！");
+              this.$dialog
+                .alert({
+                  message: "操作成功！",
+                  className: "text-center"
+                })
+                .then(() => {
+                  this.$router.go(-1);
+                });
             } else {
-              this.$toast("操作失败！请刷新页面重试！");
+              this.$toast(res.text);
             }
           });
         })
@@ -83,9 +118,6 @@ export default {
           // on cancel
         });
     }
-  },
-  mounted() {
-    console.log(this.data.codeJson);
   }
 };
 </script>

@@ -58,26 +58,31 @@ export default {
     taskTabs
   },
   mounted() {
-    // 获取数据
-    task.getTaskYCInfo(this.taskParams).then(result => {
-      if (result && result.status === 1) {
-        let sp = result.text.split(";");
-        this.data = eval(sp[0].split("=")[1])[0];
-        this.taskTabs.InstanceID = this.data[32];
-        this.taskTabs.FlowID = this.data[33];
+    try {
+      // 获取数据
+      task.getTaskYCInfo(this.taskParams).then(result => {
+        if (result && result.status === 1) {
+          let sp = result.text.split(";");
+          this.data = eval(sp[0].split("=")[1])[0];
+          this.taskTabs.InstanceID = this.data[32];
+          this.taskTabs.FlowID = this.data[33];
 
-        task.getFlowAssignData(this.data[32]).then(res => {
-          if (res && res.status === 1) {
-            sp = res.text.split(";");
-            let tmp = eval(sp[1].split("=")[1])[0];
-            this.taskTabs.TaskOID = tmp[0];
-            this.taskTabs.ActivityID = tmp[5];
-            this.taskTabs.codeJson = JSON.parse(tmp[13]);
-            console.log(this.taskTabs.codeJson);
-          }
-        });
-      }
-    });
+          task.getFlowAssignData(this.data[32]).then(res => {
+            if (res && res.status === 1) {
+              sp = res.text.split(";");
+              let tmp = eval(sp[1].split("=")[1])[0];
+              this.taskTabs.TaskOID = tmp[0];
+              this.taskTabs.ActivityID = tmp[5];
+              if (tmp[13]) {
+                this.taskTabs.codeJson = JSON.parse(tmp[13]);
+              }
+            }
+          });
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 };
 </script>

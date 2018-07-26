@@ -35,7 +35,7 @@
         </table>
       </div>
     </van-cell-group>
-    <van-cell-group>
+    <van-cell-group v-if="taskTabs.codeJson">
       <taskTabs :data="taskTabs" />
     </van-cell-group>
   </div>
@@ -52,7 +52,9 @@ export default {
       data: [],
       dataTable: [],
       dataMoney: [],
-      taskTabs: {},
+      taskTabs: {
+        codeJson: []
+      },
       sexShow: false,
       columns: ["支付材料与劳务费用", "退结余额", "余额转预存其它项目"],
       paymentShow: false,
@@ -72,24 +74,40 @@ export default {
   },
   mounted() {
     // 获取数据
-    task.getTaskZFInfo(this.taskParams).then(res => {
-      if (res && res.status === 1) {
-        const sp = res.text.split(";");
-        if (sp[0].split("=")[1] != "[]") {
-          this.data = eval(sp[0].split("=")[1])[0];
-        }
-        this.dataTable = eval(sp[2].split("=")[1]);
-        this.payment = this.columns[this.data[9] - 1];
+    try {
+      task.getTaskZFInfo(this.taskParams).then(result => {
+        if (result && result.status === 1) {
+          let sp = result.text.split(";");
 
-        task.getTaskZFMoney(this.data[2]).then(res => {
-          // console.log(res);
-          if (res && res.status === 1) {
-            this.dataMoney = res.text.split(",");
-            // console.log(this.dataMoney);
-          }
-        });
-      }
-    });
+          this.data = eval(sp[0].split("=")[1])[0];
+          this.dataTable = eval(sp[2].split("=")[1]);
+          this.payment = this.columns[this.data[9] - 1];
+          this.taskTabs.InstanceID = this.data[34];
+          this.taskTabs.FlowID = this.data[35];
+
+          task.getTaskZFMoney(this.data[2]).then(res => {
+            if (res && res.status === 1) {
+              this.dataMoney = res.text.split(",");
+            }
+          });
+
+          task.getFlowAssignData(this.data[34]).then(res => {
+            if (res && res.status === 1) {
+              sp = res.text.split(";");
+              let tmp = eval(sp[1].split("=")[1])[0];
+              // console.log(tmp);
+              this.taskTabs.TaskOID = tmp[0];
+              this.taskTabs.ActivityID = tmp[5];
+              if (tmp[13]) {
+                this.taskTabs.codeJson = JSON.parse(tmp[13]);
+              }
+            }
+          });
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 };
 </script>
@@ -144,12 +162,10 @@ export default {
     }
   }
   .task-table {
-    border-top: 1px solid #d2d2d2;
     table {
       width: 100%;
       font-size: 14px;
       text-align: center;
-      // margin-bottom: 40px;
       thead {
         tr {
           background-color: #e9f8ff;
