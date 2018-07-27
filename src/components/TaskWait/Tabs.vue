@@ -98,7 +98,16 @@ export default {
           that.data.viewText = that.viewText;
           that.data.code = null;
           that.data.text = "申请人修改";
+          let str = "";
+          for (const i in that.data.params) {
+            str += that.$util.xmlData(i, that.data.params[i]);
+          }
+
           that.data.DeltaXml = `<root>` +
+          `<BC_SC_Money_InOut UpdateKind="ukModify">` +
+          `<SC_Money_InOutOID>` + that.data.TaskOID + `</SC_Money_InOutOID>` + str +
+          `</BC_SC_Money_InOut>`;
+          /*
           `<BC_WF_AssignTask_Idea UpdateKind="ukModify">` +
           `<AssignTaskOID>` + that.data.TaskOID + `</AssignTaskOID>` +
           `<resolutionCode>null</resolutionCode>` +
@@ -108,6 +117,7 @@ export default {
           `<BusiField2>null</BusiField2>` +
           `<InstanceID>` + that.data.InstanceID + `</InstanceID>` +
           `</BC_WF_AssignTask_Idea>` +
+
           `<BC_WF_AssignTask_Idea UpdateKind="">` +
           `<AssignTaskOID>null</AssignTaskOID>` +
           `<resolutionCode>null</resolutionCode>` +
@@ -118,7 +128,8 @@ export default {
           `<InstanceID>null</InstanceID>` +
           `</BC_WF_AssignTask_Idea>` +
           `</root>`;
-          task.xmlDate(that.data).then(res => {
+          */
+          task.submitTaskForm(that.data).then(res => {
             if (res && res.status === 1) {
               this.$dialog
                 .alert({

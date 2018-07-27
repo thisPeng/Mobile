@@ -61,8 +61,17 @@ export default {
         if (result && result.status === 1) {
           let sp = result.text.split(";");
           this.data = eval(sp[0].split("=")[1])[0];
-          this.data[9] = this.$util.formatMoney(this.data[9])
-          this.data[34] = this.$util.formatMoney(this.data[34])
+          this.data[9] = this.$util.formatMoney(this.data[9]);
+          this.data[34] = this.$util.formatMoney(this.data[34]);
+          this.taskTabs.params = {
+            InOut_Date: this.data[10],
+            Project_InAmt: this.data[34],
+            Bank_Account: this.data[12],
+            Bank_Name: this.data[11],
+            InOut_Amt: this.data[9],
+            Operator: this.data[13],
+            Remark: this.data[16]
+          };
           this.taskTabs.InstanceID = this.data[32];
           this.taskTabs.FlowID = this.data[33];
 

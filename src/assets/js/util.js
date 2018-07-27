@@ -45,11 +45,11 @@ const formatMoney = function formatMoney(str) {
   );
 };
 
-const xmlDate = function xmlDate(xml, val) {
+const xmlData = function xmlData(xml, val) {
   return "<" + xml + ">" + val + "</" + xml + ">"
 };
 
 export default {
   formatMoney,
-  xmlDate
+  xmlData
 };
