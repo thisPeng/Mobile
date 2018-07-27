@@ -44,16 +44,6 @@ export default {
   },
   computed,
   mounted() {
-    this.$axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_TASKTICKETMobile",
-        _methodName: "OnInit",
-        _paraNames: "",
-        _pUrl: ""
-      }
-    });
     index.getData().then(res => {
       if (res) {
         this.list = res;

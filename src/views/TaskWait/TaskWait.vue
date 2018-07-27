@@ -17,7 +17,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item,index) in tableData" :key="item[0]" :class="active === index ? 'visited' : ''" @click="selectItem(index)">
+            <tr v-for="(item,index) in tableData" :key="item[0]" :class="active === index ? 'visited' : ''" @click="selectItem(index)" @dblclick="exeTask">
               <td>{{taskModel === 'complete' ? item[25] : item[33]}}</td>
               <td>{{taskModel === 'complete' ? item[2] : item[2]}}</td>
               <td>{{taskModel === 'complete' ? item[7] : item[4]}}</td>
@@ -143,6 +143,7 @@ export default {
     background-color: #fff;
     .task-button {
       padding: 10px 0;
+      // position: fixed;
       .button {
         margin: 0 10px;
         color: #fff;
