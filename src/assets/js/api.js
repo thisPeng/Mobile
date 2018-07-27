@@ -317,6 +317,20 @@ const task = {
       }
     });
   },
+  // 读取审核意见列表
+  getViewList(InstanceID) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_WF_YC_InOutFormService",
+        _methodName: "GetFlowAssignIdea",
+        "_parameters[InstanceID]": InstanceID,
+        _paraNames: "InstanceID",
+        _pUrl: ""
+      }
+    });
+  },
   // 保存并完成任务
   saveTaskForm(parasm) {
     return axios({
@@ -333,7 +347,7 @@ const task = {
           parasm.code + `</IdeaCode><BusiField1>` +
           parasm.text + `</BusiField1><BusiField2>` +
           parasm.code + `</BusiField2><InstanceID>null</InstanceID></BC_WF_AssignTask_Idea></root>`,
-        "_parameters[IdeaCode]": parasm.code,
+        "_parameters[IdeaCode]": parasm.code || 0,
         "_parameters[FlowID]": parasm.FlowID,
         "_parameters[ActivityID]": parasm.ActivityID,
         "_parameters[TaskOID]": parasm.TaskOID,

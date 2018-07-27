@@ -41,6 +41,7 @@ export default {
   },
   mounted() {
     try {
+      this.$parent.title = this.taskParams.name;
       // 获取数据
       task.getTaskYCInfo(this.taskParams).then(result => {
         if (result && result.status === 1) {

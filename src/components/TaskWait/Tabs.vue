@@ -4,7 +4,7 @@
       <i class="iconfont icon-icon_down" v-show="tabsShow"></i>
       <i class="iconfont icon-icon_up" v-show="!tabsShow"></i>
     </div>
-    <van-tabs class="task-tabs" v-model="active" v-show="tabsShow">
+    <van-tabs class="task-tabs" v-model="active" v-show="tabsShow" @click="getView">
       <van-tab title="流程处理">
         <van-radio-group v-model="radio" v-if="data.codeJson.length > 0">
           <van-cell-group>
@@ -16,7 +16,24 @@
         <van-field v-model="viewText" label="审批意见" placeholder="请输入审批意见" />
       </van-tab>
       <van-tab title="意见浏览">
-        <span class="task-content">{{result}}</span>
+        <span class="task-content">
+          <table>
+            <thead>
+              <tr>
+                <td>时间</td>
+                <td>审核</td>
+                <td>意见</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item,index) in result" :key="index">
+                <td>{{item.sys_created}}</td>
+                <td>{{item.BusiField1}}</td>
+                <td>{{item.Idea}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </span>
       </van-tab>
     </van-tabs>
     <van-button class="margin-top" type="primary" size="large" @click="onSave" v-show="tabsShow" v-if="data.codeJson.length > 0">保存并完成任务</van-button>
@@ -44,6 +61,16 @@ export default {
     }
   },
   methods: {
+    getView(index) {
+      if (index === 1) {
+        task.getViewList(this.data.InstanceID).then(res => {
+          if (res && res.status === 1) {
+            const sp = res.text.split(";");
+            this.result = eval(sp[0]);
+          }
+        });
+      }
+    },
     showTabs() {
       this.$store.commit("tabsShow", !this.tabsShow);
     },
@@ -61,7 +88,7 @@ export default {
         })
         .then(() => {
           that.data.viewText = that.viewText;
-          that.data.code = 1;
+          that.data.code = null;
           that.data.text = "申请人修改";
           task.saveTaskForm(that.data).then(res => {
             if (res && res.status === 1) {
@@ -95,24 +122,28 @@ export default {
           message: "确定保存并完成任务吗？"
         })
         .then(() => {
-          that.data.viewText = that.viewText;
-          that.data.code = that.radio;
-          that.data.text =
-            that.radio === 1 || that.radio === 3 ? "同意" : "不同意";
-          task.saveTaskForm(that.data).then(res => {
-            if (res && res.status === 1) {
-              this.$dialog
-                .alert({
-                  message: "操作成功！",
-                  className: "text-center"
-                })
-                .then(() => {
-                  this.$router.go(-1);
-                });
-            } else {
-              this.$toast(res.text);
-            }
-          });
+          try {
+            that.data.viewText = that.viewText;
+            that.data.code = that.radio;
+            that.data.text =
+              that.radio === 1 || that.radio === 3 ? "同意" : "不同意";
+            task.saveTaskForm(that.data).then(res => {
+              if (res && res.status === 1) {
+                this.$dialog
+                  .alert({
+                    message: "操作成功！",
+                    className: "text-center"
+                  })
+                  .then(() => {
+                    this.$router.go(-1);
+                  });
+              } else {
+                this.$toast(res.text);
+              }
+            });
+          } catch (e) {
+            console.log(e);
+          }
         })
         .catch(() => {
           // on cancel
@@ -137,9 +168,38 @@ export default {
     }
   }
   .task-tabs {
+    background-color: #fff;
     .task-content {
       width: 100%;
       min-height: 130px;
+      max-height: 400px;
+      overflow-y: scroll;
+      table {
+        width: 100%;
+        font-size: 14px;
+        text-align: center;
+        margin-bottom: 40px;
+        thead {
+          tr {
+            background-color: #e9f8ff;
+            font-weight: 600;
+          }
+          td {
+            padding: 10px 0;
+          }
+        }
+        tbody {
+          tr:nth-child(2n) {
+            background-color: #e9f8ff;
+          }
+          td {
+            height: 50px;
+          }
+          .visited {
+            background-color: #b3e7ff !important;
+          }
+        }
+      }
     }
   }
 }

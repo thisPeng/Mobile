@@ -75,6 +75,7 @@ export default {
   mounted() {
     // 获取数据
     try {
+      this.$parent.title = this.taskParams.name;
       task.getTaskZFInfo(this.taskParams).then(result => {
         if (result && result.status === 1) {
           let sp = result.text.split(";");
