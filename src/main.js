@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from '../src/assets/js/store'
+import util from '../src/assets/js/util'
 import './registerServiceWorker'
 import "normalize.css";
 import Vant from 'vant';
@@ -12,6 +13,7 @@ import axios from './assets/js/request';
 import echarts from 'echarts'
 
 Vue.use(Vant);
+Vue.prototype.$util = util;
 Vue.prototype.$axios = axios;
 Vue.prototype.$echarts = echarts;
 Vue.config.productionTip = false;

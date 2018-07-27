@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 /**
  * @file Javascript工具
  * @author DJ
@@ -17,10 +17,39 @@ Date.prototype.Format = function (fmt) {
     "m+": this.getMinutes(), //分
     "s+": this.getSeconds(), //秒
     "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-    "S": this.getMilliseconds() //毫秒
+    S: this.getMilliseconds() //毫秒
   };
-  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+  if (/(y+)/.test(fmt))
+    fmt = fmt.replace(
+      RegExp.$1,
+      (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+    );
   for (var k in o)
-    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    if (new RegExp("(" + k + ")").test(fmt))
+      fmt = fmt.replace(
+        RegExp.$1,
+        RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)
+      );
   return fmt;
-}
+};
+
+const formatMoney = function formatMoney(str) {
+  var num = parseFloat(str).toFixed(3); //这里因为我需要两位小数所以做一个限制，你们看情况做小数位的限制
+  var s = num.substring(0, num.length - 1); //只取小数位2位
+
+  return (
+    s &&
+    s.toString().replace(/(\d)(?=(\d{3})+\.)/g, function ($0, $1) {
+      return $1 + ",";
+    })
+  );
+};
+
+const xmlDate = function xmlDate(xml, val) {
+  return "<" + xml + ">" + val + "</" + xml + ">"
+};
+
+export default {
+  formatMoney,
+  xmlDate
+};

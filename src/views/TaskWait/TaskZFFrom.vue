@@ -1,13 +1,11 @@
 <template>
   <div class="task">
     <van-cell-group :style="tabsShow ? 'padding-bottom: 280px;' : 'padding-bottom: 30px;'">
-      <van-field v-model="data[1]" label="单号" :disabled="edit" />
-      <van-field v-model="data[25]" label="工程编号" :disabled="edit" />
-      <van-field v-model="data[24]" label="工程名称" :disabled="edit" />
+      <van-field v-model="data[1]" label="单号" :disabled="true" />
+      <van-field v-model="data[25]" label="工程编号" :disabled="true" />
+      <van-field v-model="data[24]" label="工程名称" :disabled="true" />
       <van-field v-model="data[10]" label="申请方说明" :disabled="edit" />
-      <van-field v-model="dataMoney[3]" label="可用资金" :disabled="edit" />
-      <van-field v-model="data[31]" label="员工姓名" disabled />
-      <van-field v-model="data[16]" label="创建日期" disabled />
+      <van-field v-model="dataMoney[3]" label="可用资金(￥)" :disabled="edit" />
       <van-cell-group class="from-payment">
         <span class="from-label">支付类型</span>
         <span class="from-select" v-if="edit">{{payment}}</span>
@@ -16,6 +14,8 @@
           <van-picker show-toolbar :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
         </van-popup>
       </van-cell-group>
+      <van-field v-model="data[31]" label="员工姓名" :disabled="true" />
+      <van-field v-model="data[16]" label="创建日期" :disabled="true" />
       <div class="task-table">
         <table>
           <thead>
@@ -101,6 +101,8 @@ export default {
               this.taskTabs.ActivityID = tmp[5];
               if (tmp[13]) {
                 this.taskTabs.codeJson = JSON.parse(tmp[13]);
+              } else {
+                this.edit = false;
               }
             }
           });
@@ -127,12 +129,6 @@ export default {
     overflow: hidden;
     .center {
       margin: 0 auto;
-    }
-  }
-  .task-img {
-    .img {
-      width: 100%;
-      height: 200px;
     }
   }
   .from-payment {

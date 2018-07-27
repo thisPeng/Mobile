@@ -20,15 +20,21 @@
           <table>
             <thead>
               <tr>
-                <td>时间</td>
-                <td>审核</td>
+                <td>创建时间</td>
+                <td>任务名称</td>
+                <td>执行人</td>
+                <td>执行结果</td>
+                <!-- <td>完成时间</td> -->
                 <td>意见</td>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item,index) in result" :key="index">
-                <td>{{item.sys_created}}</td>
+                <td>{{new Date(item.sys_created).Format("yyyy-MM-dd hh:mm")}}</td>
+                <td>{{item.FromActivityName}}</td>
+                <td>{{item.PersonName}}</td>
                 <td>{{item.BusiField1}}</td>
+                <!-- <td>{{new Date(item.FinishDate).Format("yyyy-MM-dd hh:mm")}}</td> -->
                 <td>{{item.Idea}}</td>
               </tr>
             </tbody>
@@ -67,6 +73,7 @@ export default {
           if (res && res.status === 1) {
             const sp = res.text.split(";");
             this.result = eval(sp[0]);
+            // console.log(this.result);
           }
         });
       }
@@ -74,6 +81,7 @@ export default {
     showTabs() {
       this.$store.commit("tabsShow", !this.tabsShow);
     },
+    // 重新发起
     onReset() {
       const that = this;
       if (this.viewText === "") {
@@ -90,7 +98,27 @@ export default {
           that.data.viewText = that.viewText;
           that.data.code = null;
           that.data.text = "申请人修改";
-          task.saveTaskForm(that.data).then(res => {
+          that.data.DeltaXml = `<root>` +
+          `<BC_WF_AssignTask_Idea UpdateKind="ukModify">` +
+          `<AssignTaskOID>` + that.data.TaskOID + `</AssignTaskOID>` +
+          `<resolutionCode>null</resolutionCode>` +
+          `<Idea>null</Idea>` +
+          `<IdeaCode>null</IdeaCode>` +
+          `<BusiField1>null</BusiField1>` +
+          `<BusiField2>null</BusiField2>` +
+          `<InstanceID>` + that.data.InstanceID + `</InstanceID>` +
+          `</BC_WF_AssignTask_Idea>` +
+          `<BC_WF_AssignTask_Idea UpdateKind="">` +
+          `<AssignTaskOID>null</AssignTaskOID>` +
+          `<resolutionCode>null</resolutionCode>` +
+          `<Idea>` + that.data.viewText + `</Idea>` +
+          `<IdeaCode>` + that.data.code + `</IdeaCode>` +
+          `<BusiField1>` + that.data.text + `</BusiField1>` +
+          `<BusiField2>` + that.data.code + `</BusiField2>` +
+          `<InstanceID>null</InstanceID>` +
+          `</BC_WF_AssignTask_Idea>` +
+          `</root>`;
+          task.xmlDate(that.data).then(res => {
             if (res && res.status === 1) {
               this.$dialog
                 .alert({
@@ -172,7 +200,7 @@ export default {
     .task-content {
       width: 100%;
       min-height: 130px;
-      max-height: 400px;
+      max-height: 230px;
       overflow-y: scroll;
       table {
         width: 100%;
