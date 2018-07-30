@@ -350,6 +350,25 @@ const task = {
       }
     });
   },
+  // 支付重新提交
+  submitZFTaskForm(parasm) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_WF_Apply_InfoService",
+        _methodName: "FinishMyTask",
+        "_parameters[DeltaXml]": parasm.DeltaXml,
+        "_parameters[IdeaCode]": parasm.code || 0,
+        "_parameters[FlowID]": parasm.FlowID,
+        "_parameters[ActivityID]": parasm.ActivityID,
+        "_parameters[TaskOID]": parasm.TaskOID,
+        "_parameters[FInstanceID]": parasm.InstanceID,
+        _paraNames: "DeltaXml,IdeaCode,FlowID,ActivityID,TaskOID,FInstanceID",
+        _pUrl: ""
+      }
+    });
+  },
   // 保存并完成任务
   saveTaskForm(parasm) {
     return axios({

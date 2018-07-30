@@ -33,7 +33,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { task } from "./../../assets/js/api.js";
+import { users, task } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -64,6 +64,7 @@ export default {
               const pages = "(" + sp[1].split("=")[1] + ")";
               this.tablePages = eval(pages);
             } catch (e) {
+              this.$router.go(-1);
               console.log(e);
             }
           }
@@ -78,6 +79,7 @@ export default {
               const pages = "(" + sp[1].split("=")[1] + ")";
               this.tablePages = eval(pages);
             } catch (e) {
+              this.$router.go(-1);
               console.log(e);
             }
           }
@@ -132,6 +134,13 @@ export default {
     const model = this.$router.history.current.params.model || this.taskModel;
     this.$store.commit("taskModel", model);
     this.getTableData();
+  },
+  created() {
+    users.userInfo().then(res => {
+      if (res) {
+        this.$store.commit("userInfo", res);
+      }
+    });
   }
 };
 </script>

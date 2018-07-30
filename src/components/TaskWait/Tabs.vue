@@ -30,7 +30,7 @@
             </thead>
             <tbody>
               <tr v-for="(item,index) in result" :key="index">
-                <td>{{new Date(item.sys_created).Format("yyyy-MM-dd hh:mm")}}</td>
+                <td>{{new Date(item.sys_created).Format("MM-dd")}}</td>
                 <td>{{item.FromActivityName}}</td>
                 <td>{{item.PersonName}}</td>
                 <td>{{item.BusiField1}}</td>
@@ -84,11 +84,7 @@ export default {
     // 重新发起
     onReset() {
       const that = this;
-      if (this.viewText === "") {
-        this.$toast("请输入审批意见");
-        return;
-      }
-
+      const parData = this.$parent.$parent._data.data;
       this.$dialog
         .confirm({
           title: "提示",
@@ -98,51 +94,151 @@ export default {
           that.data.viewText = that.viewText;
           that.data.code = null;
           that.data.text = "申请人修改";
-          let str = "";
+          let str = "",
+            newStr = "",
+            payStr = "",
+            index = 0,
+            bcName = "BC_SC_Money_InOut";
           for (const i in that.data.params) {
             str += that.$util.xmlData(i, that.data.params[i]);
+            if (index === 0) {
+              newStr += that.$util.xmlData(i, null);
+            } else {
+              if(i === "SYS_LAST_UPD_BY") {
+                newStr += that.$util.xmlData(i, new Date().Format("yyyy-MM-dd hh:mm"));
+              } else if(i === "SYS_LAST_UPD") {
+                newStr += that.$util.xmlData(i, that.userInfo.oid);
+              } else {
+                newStr += that.$util.xmlData(i, parData[that.data.arrays[index]]);
+              }
+            }
+            index++;
           }
 
-          that.data.DeltaXml = `<root>` +
-          `<BC_SC_Money_InOut UpdateKind="ukModify">` +
-          `<SC_Money_InOutOID>` + that.data.TaskOID + `</SC_Money_InOutOID>` + str +
-          `</BC_SC_Money_InOut>`;
-          /*
-          `<BC_WF_AssignTask_Idea UpdateKind="ukModify">` +
-          `<AssignTaskOID>` + that.data.TaskOID + `</AssignTaskOID>` +
-          `<resolutionCode>null</resolutionCode>` +
-          `<Idea>null</Idea>` +
-          `<IdeaCode>null</IdeaCode>` +
-          `<BusiField1>null</BusiField1>` +
-          `<BusiField2>null</BusiField2>` +
-          `<InstanceID>` + that.data.InstanceID + `</InstanceID>` +
-          `</BC_WF_AssignTask_Idea>` +
-
-          `<BC_WF_AssignTask_Idea UpdateKind="">` +
-          `<AssignTaskOID>null</AssignTaskOID>` +
-          `<resolutionCode>null</resolutionCode>` +
-          `<Idea>` + that.data.viewText + `</Idea>` +
-          `<IdeaCode>` + that.data.code + `</IdeaCode>` +
-          `<BusiField1>` + that.data.text + `</BusiField1>` +
-          `<BusiField2>` + that.data.code + `</BusiField2>` +
-          `<InstanceID>null</InstanceID>` +
-          `</BC_WF_AssignTask_Idea>` +
-          `</root>`;
-          */
-          task.submitTaskForm(that.data).then(res => {
-            if (res && res.status === 1) {
-              this.$dialog
-                .alert({
-                  message: "操作成功！",
-                  className: "text-center"
-                })
-                .then(() => {
-                  this.$router.go(-1);
-                });
+          if (that.data.payment) {
+            index = 0;
+            bcName = "BC_SC_Pay_Apply";
+            let tmpStr = "",
+              tmpsStr = "";
+            if (that.data.payment === "支付材料与劳务费用") {
+              for (const i in that.data.paramsChild) {
+                for (const j in that.data.paramsChild[i]) {
+                  tmpStr += that.$util.xmlData(j, that.data.paramsChild[i][j]);
+                  if (index <= 1) {
+                    tmpsStr += that.$util.xmlData(j, null);
+                  } else {
+                    tmpsStr += that.$util.xmlData(
+                      j,
+                      that.$parent.$parent.dataTable[i][that.data.arrs[index]]
+                    );
+                  }
+                  index++;
+                }
+              }
+              payStr =
+                `<BC_SC_Pay_Detail UpdateKind="ukModify">` +
+                tmpStr +
+                `</BC_SC_Pay_Detail>` +
+                `<BC_SC_Pay_Detail UpdateKind="">` +
+                tmpsStr +
+                `</BC_SC_Pay_Detail>`;
             } else {
-              this.$toast(res.text);
+              for (const i in that.data.paramsChild) {
+                tmpStr += that.$util.xmlData(i, that.data.paramsChild[i]);
+                if (index === 0) {
+                  tmpsStr += that.$util.xmlData(i, null);
+                } else {
+                  tmpsStr += that.$util.xmlData(
+                    i,
+                    that.$parent.$parent.dataTable[0][that.data.arrs[index]]
+                  );
+                }
+                index++;
+              }
+              payStr =
+                `<BC_SC_Pay_Detail UpdateKind="ukModify">` +
+                tmpStr +
+                `</BC_SC_Pay_Detail>` +
+                `<BC_SC_Pay_Detail UpdateKind="">` +
+                tmpsStr +
+                `</BC_SC_Pay_Detail>`;
             }
-          });
+          }
+
+          console.log(str);
+          console.log(newStr);
+
+          that.data.DeltaXml =
+            `<root>` +
+            `<` + bcName + ` UpdateKind="ukModify">` +
+            str +
+            `</` + bcName + `>` +
+            `<` + bcName + ` UpdateKind="">` + newStr +
+            `</` + bcName + `>` +
+            payStr +
+            `<BC_WF_AssignTask_Idea UpdateKind="ukModify">` +
+            `<AssignTaskOID>` +
+            that.data.TaskOID +
+            `</AssignTaskOID>` +
+            `<resolutionCode>null</resolutionCode>` +
+            `<Idea>null</Idea>` +
+            `<IdeaCode>null</IdeaCode>` +
+            `<BusiField1>null</BusiField1>` +
+            `<BusiField2>null</BusiField2>` +
+            `<InstanceID>` +
+            that.data.InstanceID +
+            `</InstanceID>` +
+            `</BC_WF_AssignTask_Idea>` +
+            `<BC_WF_AssignTask_Idea UpdateKind="">` +
+            `<AssignTaskOID>null</AssignTaskOID>` +
+            `<resolutionCode>null</resolutionCode>` +
+            `<Idea>` +
+            that.data.viewText +
+            `</Idea>` +
+            `<IdeaCode>` +
+            that.data.code +
+            `</IdeaCode>` +
+            `<BusiField1>` +
+            that.data.text +
+            `</BusiField1>` +
+            `<BusiField2>` +
+            that.data.code +
+            `</BusiField2>` +
+            `<InstanceID>null</InstanceID>` +
+            `</BC_WF_AssignTask_Idea>` +
+            `</root>`;
+
+          if (that.data.payment) {
+            task.submitZFTaskForm(that.data).then(res => {
+              if (res && res.status === 1) {
+                this.$dialog
+                  .alert({
+                    message: "操作成功！",
+                    className: "text-center"
+                  })
+                  .then(() => {
+                    this.$router.go(-1);
+                  });
+              } else {
+                this.$toast(res.text);
+              }
+            });
+          } else {
+            task.submitTaskForm(that.data).then(res => {
+              if (res && res.status === 1) {
+                this.$dialog
+                  .alert({
+                    message: "操作成功！",
+                    className: "text-center"
+                  })
+                  .then(() => {
+                    this.$router.go(-1);
+                  });
+              } else {
+                this.$toast(res.text);
+              }
+            });
+          }
         })
         .catch(() => {
           // on cancel

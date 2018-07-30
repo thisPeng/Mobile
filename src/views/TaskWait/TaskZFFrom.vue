@@ -5,18 +5,31 @@
       <van-field v-model="data[25]" label="工程编号" :disabled="true" />
       <van-field v-model="data[24]" label="工程名称" :disabled="true" />
       <van-field v-model="data[10]" label="申请方说明" :disabled="edit" />
-      <van-field v-model="dataMoney[3]" label="可用资金(￥)" :disabled="edit" />
-      <van-cell-group class="from-payment">
+      <van-field v-model="dataMoney[3]" label="可用资金(￥)" :disabled="true" />
+      <van-field v-model="payment" label="支付类型" :disabled="true" />
+      <!-- <van-cell-group class="from-payment">
         <span class="from-label">支付类型</span>
-        <span class="from-select" v-if="edit">{{payment}}</span>
+        <span class="from-select" v-if="true">{{payment}}</span>
         <span class="from-select" v-else @click="paymentShow=true">{{payment}}</span>
-        <van-popup v-model="paymentShow" v-if="!edit" position="bottom">
+        <van-popup v-model="paymentShow" v-if="!true" position="bottom">
           <van-picker show-toolbar :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
         </van-popup>
-      </van-cell-group>
+      </van-cell-group> -->
+      <!--退结余额-->
+      <van-field v-model="dataTable[0][4]" label="申请金额" :disabled="edit" v-if="payment === '退结余额'" />
+      <van-field v-model="dataTable[0][5]" label="收款账号" :disabled="edit" v-if="payment === '退结余额'" />
+      <van-field v-model="dataTable[0][7]" label="开户行" :disabled="edit" v-if="payment === '退结余额'" />
+      <van-field v-model="dataTable[0][6]" label="收款人" :disabled="edit" v-if="payment === '退结余额'" />
+      <van-field v-model="dataTable[0][8]" label="备注" :disabled="edit" v-if="payment === '退结余额'" />
+      <!--余额转预存其它项目-->
+      <van-field v-model="dataMoney[2]" label="目标项目" :disabled="true" v-if="payment === '余额转预存其它项目'" />
+      <van-field v-model="dataTable[0][4]" label="转存金额" :disabled="edit" v-if="payment === '余额转预存其它项目'" />
+      <van-field v-model="dataTable[0][5]" label="转预存说明" :disabled="edit" v-if="payment === '余额转预存其它项目'" />
+      <!--员工姓名、创建时间-->
       <van-field v-model="data[31]" label="员工姓名" :disabled="true" />
-      <van-field v-model="data[16]" label="创建日期" :disabled="true" />
-      <div class="task-table">
+      <van-field v-model="data[15]" label="创建日期" :disabled="true" />
+      <van-field v-model="data[16]" label="修改日期" :disabled="true" />
+      <div class="task-table" v-if="payment === '支付材料与劳务费用'">
         <table>
           <thead>
             <tr>
@@ -27,13 +40,21 @@
           </thead>
           <tbody>
             <tr v-for="item in dataTable" :key="item[0]">
-              <td>{{item[8]}}</td>
-              <td>{{item[4]}}</td>
-              <td>{{item[5]}}</td>
+              <td>
+                <van-field v-model="item[8]" :disabled="true" />
+              </td>
+              <td>
+                <van-field v-model="item[4]" :disabled="edit" />
+              </td>
+              <td>
+                <van-field v-model="item[5]" :disabled="edit" />
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
+      <b class="padding-left-sm" v-if="payment === '余额转预存其它项目'">
+        说明：转预存是由一个项目的余额转给另一个项目的资金池中,供另一个项目使用, 不用通过银行,直接项目间产生资金的转移流水。</b>
     </van-cell-group>
     <van-cell-group v-if="taskTabs.codeJson">
       <taskTabs :data="taskTabs" />
@@ -55,7 +76,6 @@ export default {
       taskTabs: {
         codeJson: []
       },
-      sexShow: false,
       columns: ["支付材料与劳务费用", "退结余额", "余额转预存其它项目"],
       paymentShow: false,
       payment: "请选择支付类型"
@@ -74,9 +94,9 @@ export default {
   },
   mounted() {
     // 获取数据
-    try {
-      this.$parent.title = this.taskParams.name;
-      task.getTaskZFInfo(this.taskParams).then(result => {
+    this.$parent.title = this.taskParams.name;
+    task.getTaskZFInfo(this.taskParams).then(result => {
+      try {
         if (result && result.status === 1) {
           let sp = result.text.split(";");
 
@@ -85,18 +105,60 @@ export default {
           this.payment = this.columns[this.data[9] - 1];
           this.taskTabs.InstanceID = this.data[34];
           this.taskTabs.FlowID = this.data[35];
+          this.taskTabs.payment = this.payment;
+
+          this.taskTabs.params = {
+            SC_Pay_ApplyOID: this.data[0],
+            Partner_memo: this.data[10],
+            Pay_Type: this.data[9],
+            SYS_LAST_UPD: this.data[16],
+            SYS_LAST_UPD_BY: this.data[23]
+          };
+          this.taskTabs.arrays = [0, 10, 9, 16, 23];
+
+          if (this.payment === "支付材料与劳务费用") {
+            const tmp = [];
+            this.dataTable.forEach(val => {
+              tmp.push({
+                SC_Pay_DetailOID: val[0],
+                SupplierID: val[1],
+                Supplier_Amt: val[4],
+                Remark: val[5],
+                Bank_Account: val[7],
+                Bank_Name: val[6]
+              });
+            });
+            this.taskTabs.paramsChild = tmp;
+            this.taskTabs.arrs = [0, 1, 4, 5, 7, 6];
+          } else if (this.payment === "退结余额") {
+            this.taskTabs.paramsChild = {
+              SC_Pay_DetailOID: this.dataTable[0][0],
+              Supplier_Amt: this.dataTable[0][4],
+              Remark: this.dataTable[0][8],
+              Bank_Account: this.dataTable[0][6],
+              Bank_Name: this.dataTable[0][7]
+            };
+            this.taskTabs.arrs = [0, 4, 8, 6, 7];
+          } else if (this.payment === "余额转预存其它项目") {
+            this.taskTabs.paramsChild = {
+              SC_Pay_DetailOID: this.dataTable[0][0],
+              Supplier_Amt: this.dataTable[0][4],
+              Remark: this.dataTable[0][5]
+            };
+            this.taskTabs.arrs = [0, 4, 5];
+          }
 
           task.getTaskZFMoney(this.data[2]).then(res => {
             if (res && res.status === 1) {
               this.dataMoney = res.text.split(",");
+              // console.log(this.dataMoney);
             }
           });
 
           task.getFlowAssignData(this.data[34]).then(res => {
             if (res && res.status === 1) {
               sp = res.text.split(";");
-              let tmp = eval(sp[1].split("=")[1])[0];
-              // console.log(tmp);
+              const tmp = eval(sp[1].split("=")[1])[0];
               this.taskTabs.TaskOID = tmp[0];
               this.taskTabs.ActivityID = tmp[5];
               if (tmp[13]) {
@@ -107,10 +169,11 @@ export default {
             }
           });
         }
-      });
-    } catch (e) {
-      console.log(e);
-    }
+      } catch (e) {
+        this.$router.go(-1);
+        console.log(e);
+      }
+    });
   }
 };
 </script>

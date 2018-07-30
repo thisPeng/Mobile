@@ -4,14 +4,15 @@
       <van-field v-model="data[1]" label="单号" :disabled="true" />
       <van-field v-model="data[27]" label="工程编号" :disabled="true" />
       <van-field v-model="data[28]" label="工程名称" :disabled="true" />
-      <van-field v-model="data[10]" label="解冻日期" :disabled="edit" readonly @click="showDate" />
+      <van-field v-model="data[10]" label="解冻日期" :disabled="true" readonly @click="showDate" />
       <van-datetime-picker v-model="currentDate" v-show="dateShow" type="datetime" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
       <van-field v-model="data[16]" label="解冻说明" :disabled="edit" />
-      <van-field v-model="data[34]" label="冻结金额(￥)" :disabled="edit" />
-      <van-field v-model="data[9]" label="解冻金额(￥)" :disabled="edit" />
+      <van-field v-model="data[34]" label="冻结金额(￥)" :disabled="true" />
+      <van-field v-model="data[9]" label="解冻金额(￥)" :disabled="true" />
       <van-field v-model="data[13]" label="经手人" :disabled="edit" />
       <van-field v-model="data[29]" label="操作员" :disabled="true" />
       <van-field v-model="data[17]" label="创建日期" :disabled="true" />
+      <van-field v-model="data[18]" label="修改日期" :disabled="true" />
     </van-cell-group>
     <van-cell-group v-if="taskTabs.codeJson">
       <taskTabs :data="taskTabs" />
@@ -52,22 +53,31 @@ export default {
     taskTabs
   },
   mounted() {
-    try {
-      this.$parent.title = this.taskParams.name;
-      // 获取数据
-      task.getTaskYCInfo(this.taskParams).then(result => {
+    this.$parent.title = this.taskParams.name;
+    // 获取数据
+    task.getTaskYCInfo(this.taskParams).then(result => {
+      try {
         if (result && result.status === 1) {
           let sp = result.text.split(";");
           this.data = eval(sp[0].split("=")[1])[0];
-          this.data[9] = this.$util.formatMoney(this.data[9])
-          this.data[34] = this.$util.formatMoney(this.data[34])
+          this.data[9] = this.$util.formatMoney(this.data[9]);
+          this.data[34] = this.$util.formatMoney(this.data[34]);
           this.taskTabs.InstanceID = this.data[32];
           this.taskTabs.FlowID = this.data[33];
+
+          this.taskTabs.params = {
+            SC_Money_InOutOID: this.data[0],
+            Remark: this.data[16],
+            Operator: this.data[13],
+            SYS_LAST_UPD_BY: this.data[25],
+            SYS_LAST_UPD: this.data[17]
+          };
+          this.taskTabs.arrays = [0, 16, 13, 25, 17];
 
           task.getFlowAssignData(this.data[32]).then(res => {
             if (res && res.status === 1) {
               sp = res.text.split(";");
-              let tmp = eval(sp[1].split("=")[1])[0];
+              const tmp = eval(sp[1].split("=")[1])[0];
               this.taskTabs.TaskOID = tmp[0];
               this.taskTabs.ActivityID = tmp[5];
               if (tmp[13]) {
@@ -78,10 +88,11 @@ export default {
             }
           });
         }
-      });
-    } catch (e) {
-      console.log(e);
-    }
+      } catch (e) {
+        this.$router.go(-1);
+        console.log(e);
+      }
+    });
   }
 };
 </script>

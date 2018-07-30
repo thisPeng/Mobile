@@ -14,6 +14,7 @@
       <van-field v-model="data[16]" label="批款说明" :disabled="edit" />
       <van-field v-model="data[29]" label="操作员" :disabled="true" />
       <van-field v-model="data[17]" label="创建日期" :disabled="true" />
+      <van-field v-model="data[18]" label="修改日期" :disabled="true" />
     </van-cell-group>
     <van-cell-group v-if="taskTabs.codeJson">
       <taskTabs :data="taskTabs" />
@@ -47,6 +48,9 @@ export default {
     saveDate(val) {
       this.data[10] = new Date(val).Format("yyyy-MM-dd hh:mm:ss");
       this.dateShow = false;
+    },
+    returnData() {
+      return this.data;
     }
   },
   computed,
@@ -54,31 +58,37 @@ export default {
     taskTabs
   },
   mounted() {
-    try {
-      this.$parent.title = this.taskParams.name;
-      // 获取数据
-      task.getTaskYCInfo(this.taskParams).then(result => {
+    this.$parent.title = this.taskParams.name;
+    // 获取数据
+    task.getTaskYCInfo(this.taskParams).then(result => {
+      try {
         if (result && result.status === 1) {
           let sp = result.text.split(";");
           this.data = eval(sp[0].split("=")[1])[0];
           this.data[9] = this.$util.formatMoney(this.data[9]);
           this.data[34] = this.$util.formatMoney(this.data[34]);
+
+          this.taskTabs.InstanceID = this.data[32];
+          this.taskTabs.FlowID = this.data[33];
+
           this.taskTabs.params = {
+            SC_Money_InOutOID: this.data[0],
             InOut_Date: this.data[10],
             Project_InAmt: this.data[34],
             Bank_Account: this.data[12],
             Bank_Name: this.data[11],
             InOut_Amt: this.data[9],
             Operator: this.data[13],
-            Remark: this.data[16]
+            Remark: this.data[16],
+            SYS_LAST_UPD_BY: this.data[25],
+            SYS_LAST_UPD: this.data[17]
           };
-          this.taskTabs.InstanceID = this.data[32];
-          this.taskTabs.FlowID = this.data[33];
+          this.taskTabs.arrays = [0, 10, 34, 12, 11, 9, 13, 16, 25, 17];
 
           task.getFlowAssignData(this.data[32]).then(res => {
             if (res && res.status === 1) {
               sp = res.text.split(";");
-              let tmp = eval(sp[1].split("=")[1])[0];
+              const tmp = eval(sp[1].split("=")[1])[0];
               this.taskTabs.TaskOID = tmp[0];
               this.taskTabs.ActivityID = tmp[5];
               if (tmp[13]) {
@@ -89,10 +99,11 @@ export default {
             }
           });
         }
-      });
-    } catch (e) {
-      console.log(e);
-    }
+      } catch (e) {
+        this.$router.go(-1);
+        console.log(e);
+      }
+    });
   }
 };
 </script>
