@@ -16,14 +16,14 @@
         </van-popup>
       </van-cell-group> -->
       <!--退结余额-->
-      <van-field v-model="dataTable[0][4]" label="申请金额" :disabled="edit" v-if="payment === '退结余额'" />
-      <van-field v-model="dataTable[0][5]" label="收款账号" :disabled="edit" v-if="payment === '退结余额'" />
-      <van-field v-model="dataTable[0][7]" label="开户行" :disabled="edit" v-if="payment === '退结余额'" />
-      <van-field v-model="dataTable[0][6]" label="收款人" :disabled="edit" v-if="payment === '退结余额'" />
+      <van-field v-model="dataTable[0][4]" label="申请金额(￥)" :disabled="edit" v-if="payment === '退结余额'" />
+      <van-field v-model="dataTable[0][7]" label="收款账号" :disabled="edit" v-if="payment === '退结余额'" />
+      <van-field v-model="dataTable[0][6]" label="开户行" :disabled="edit" v-if="payment === '退结余额'" />
+      <van-field v-model="dataTable[0][5]" label="收款人" :disabled="edit" v-if="payment === '退结余额'" />
       <van-field v-model="dataTable[0][8]" label="备注" :disabled="edit" v-if="payment === '退结余额'" />
       <!--余额转预存其它项目-->
       <van-field v-model="dataMoney[2]" label="目标项目" :disabled="true" v-if="payment === '余额转预存其它项目'" />
-      <van-field v-model="dataTable[0][4]" label="转存金额" :disabled="edit" v-if="payment === '余额转预存其它项目'" />
+      <van-field v-model="dataTable[0][4]" label="转存金额(￥)" :disabled="edit" v-if="payment === '余额转预存其它项目'" />
       <van-field v-model="dataTable[0][5]" label="转预存说明" :disabled="edit" v-if="payment === '余额转预存其它项目'" />
       <!--员工姓名、创建时间-->
       <van-field v-model="data[31]" label="员工姓名" :disabled="true" />
@@ -106,6 +106,7 @@ export default {
           this.taskTabs.InstanceID = this.data[34];
           this.taskTabs.FlowID = this.data[35];
           this.taskTabs.payment = this.payment;
+          console.log(this.dataTable);
 
           this.taskTabs.params = {
             SC_Pay_ApplyOID: this.data[0],
@@ -133,12 +134,12 @@ export default {
           } else if (this.payment === "退结余额") {
             this.taskTabs.paramsChild = {
               SC_Pay_DetailOID: this.dataTable[0][0],
-              Supplier_Amt: this.dataTable[0][4],
+              Supplier_Amt: this.dataTable[0][5],
               Remark: this.dataTable[0][8],
-              Bank_Account: this.dataTable[0][6],
-              Bank_Name: this.dataTable[0][7]
+              Bank_Account: this.dataTable[0][4],
+              Bank_Name: this.dataTable[0][6]
             };
-            this.taskTabs.arrs = [0, 4, 8, 6, 7];
+            this.taskTabs.arrs = [0, 5, 8, 4, 6];
           } else if (this.payment === "余额转预存其它项目") {
             this.taskTabs.paramsChild = {
               SC_Pay_DetailOID: this.dataTable[0][0],
