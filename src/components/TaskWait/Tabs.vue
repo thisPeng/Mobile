@@ -120,7 +120,7 @@ export default {
             bcName = "BC_SC_Pay_Apply";
             let tmpStr = "",
               tmpsStr = "";
-            if (that.data.payment === "支付材料与劳务费用") {
+            if (that.data.payment === "支付供应商") {
               for (const i in that.data.paramsChild) {
                 for (const j in that.data.paramsChild[i]) {
                   tmpStr += that.$util.xmlData(j, that.data.paramsChild[i][j]);

@@ -10,7 +10,7 @@ axios.defaults.baseURL =
   process.env.NODE_ENV === "production" ?
   getRootPath() :
   "http://192.168.2.254/SupplyChain/";
-  // "http://localhost:8088";
+  // "http://192.168.2.172:8090/";
 // 响应时间
 axios.defaults.timeout = 10000;
 // `withCredentails`选项表明了是否是跨域请求
