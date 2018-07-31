@@ -165,8 +165,8 @@ export default {
             }
           }
 
-          console.log(str);
-          console.log(newStr);
+          // console.log(str);
+          // console.log(newStr);
 
           that.data.DeltaXml =
             `<root>` +

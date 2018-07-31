@@ -64,7 +64,6 @@ export default {
               const pages = "(" + sp[1].split("=")[1] + ")";
               this.tablePages = eval(pages);
             } catch (e) {
-              this.$router.go(-1);
               console.log(e);
             }
           }
@@ -79,7 +78,6 @@ export default {
               const pages = "(" + sp[1].split("=")[1] + ")";
               this.tablePages = eval(pages);
             } catch (e) {
-              this.$router.go(-1);
               console.log(e);
             }
           }
