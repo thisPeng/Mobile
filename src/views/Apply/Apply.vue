@@ -104,13 +104,13 @@ export default {
     background-color: #fff;
     .apply-item {
       display: inline;
+      /*
       &:nth-child(4n + 1) {
-        /*
         .item-menu {
           border-right: 0;
         }
-        */
       }
+      */
       .item-divider {
         padding: 10px;
         border-bottom: 1px solid #d2d2d2;

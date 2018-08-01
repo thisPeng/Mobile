@@ -5,14 +5,14 @@
         <div class="content">
           <div class="left" id="left">
             <ul>
-              <li v-for="item in items1" :key="item">{{item.name}}</li>
+              <li v-for="(item,index) in items1" :key="index">{{item.name}}</li>
             </ul>
           </div>
           <div class="right" id="right">
             <ul>
-              <li v-for="item in items2" :key="item">
+              <li v-for="(item,index) in items2" :key="index">
                 <div class="class-title">{{item.class}}</div>
-                <div v-for="ite in item.list" :key="ite">
+                <div v-for="(ite,idx) in item.list" :key="idx">
                   <div class="item">
                     <div class="item-left">
                       <div class="item-img"></div>
@@ -79,7 +79,7 @@ export default {
 <style lang="less" scoped>
 .classify {
   width: 100%;
-
+  overflow: hidden !important;
   .swiper-container-ul {
     list-style: none;
     overflow: hidden;
@@ -108,6 +108,7 @@ export default {
     width: 25%;
     height: 100%;
     background: #eee;
+    overflow-y: scroll;
   }
   .left ul {
     list-style: none;
@@ -124,6 +125,12 @@ export default {
     float: left;
     width: 75%;
     height: 100%;
+    overflow-y: scroll;
+    position: absolute;
+    left: 25%;
+    right: 0;
+    top: 0;
+    bottom: 0;
   }
   .right ul {
     list-style: none;
