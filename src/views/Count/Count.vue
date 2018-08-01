@@ -111,7 +111,8 @@ export default {
       let chart1 = this.$echarts.init(document.getElementById("myChart1"));
       chart1.setOption({
         title: {
-          text: that.model ? "交易排行榜 Top 5" : "我的销售排行榜 Top 5"
+          text: that.model ? "交易排行榜 Top 5" : "我的销售排行榜 Top 5",
+          x: "center"
         },
         tooltip: {
           trigger: "axis"

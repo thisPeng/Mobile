@@ -3,8 +3,10 @@ import Router from "vue-router";
 import Login from "./views/Login/Login";
 import Home from "./components/Home/Home";
 import Index from "./views/Index/Index";
-import Classify from "./views/Index/Index";
+import Classify from "./views/Classify/Classify";
 import Cart from "./views/Cart/Cart";
+import Self from "./views/Project/Self";
+import Cooperation from "./views/Project/Cooperation";
 import MsgList from "./views/Message/MsgList";
 import Message from "./views/Message/Message";
 import Apply from "./views/Apply/Apply";
@@ -66,11 +68,19 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait",
-          name: "taskWait",
-          component: TaskWait,
+          path: "/self",
+          name: "self",
+          component: Self,
           meta: {
-            title: "待办列表" // 页面标题
+            title: "自营项目" // 页面标题
+          }
+        },
+        {
+          path: "/cooperation",
+          name: "cooperation",
+          component: Cooperation,
+          meta: {
+            title: "合作项目" // 页面标题
           }
         },
         {

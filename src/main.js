@@ -6,6 +6,7 @@ import util from '../src/assets/js/util'
 import './registerServiceWorker'
 import "normalize.css";
 import Vant from 'vant';
+import { Lazyload } from 'vant';
 import 'vant/lib/vant-css/index.css';
 import './assets/css/iconfont.css';
 import "./assets/css/theme.less";
@@ -13,6 +14,7 @@ import axios from './assets/js/request';
 import echarts from 'echarts'
 
 Vue.use(Vant);
+Vue.use(Lazyload);
 Vue.prototype.$util = util;
 Vue.prototype.$axios = axios;
 Vue.prototype.$echarts = echarts;

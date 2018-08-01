@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <van-nav-bar :title="title" :left-arrow="isBack" @click-left="onBack" @click-right="onMenu">
-      <!-- <van-icon name="search" slot="right" /> -->
+      <van-icon name="pending-evaluate" slot="right" class="home-icon" />
     </van-nav-bar>
     <router-view class="content"></router-view>
     <van-tabbar v-model="active" v-show="isTabbar">
@@ -66,7 +66,9 @@ export default {
     onBack() {
       this.$router.go(-1);
     },
-    onMenu() {},
+    onMenu() {
+      this.$router.push({ name: "msgList" });
+    },
     jumpTabs(name) {
       this.$store.commit("tabActive", this.active);
       this.$router.replace({ name });
@@ -123,6 +125,10 @@ export default {
   .van-nav-bar {
     color: #fff;
     background-color: #00a0e9;
+    .home-icon {
+      font-size: 18px;
+      color: #fff;
+    }
   }
   .content {
     background-color: #f6f6f6;

@@ -26,7 +26,10 @@ const index = {
     return axios({
       url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=HOME_MSG"
     });
-  },
+  }
+}
+
+const project = {
   // 获取项目列表
   getProjectList(params) {
     return axios({
@@ -470,6 +473,7 @@ const task = {
 export {
   login,
   index,
+  project,
   classify,
   apply,
   message,

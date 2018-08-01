@@ -31,7 +31,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { users, apply } from "./../../assets/js/api.js";
+// import { users, apply } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -51,6 +51,7 @@ export default {
   },
   computed,
   mounted() {
+    /*
     const params = {
       oid: this.userInfo.oid,
       type: 1
@@ -68,6 +69,7 @@ export default {
         console.log(eval(sp[1].split("=")[1]));
       }
     });
+    */
     /*
     apply.getData().then(res => {
       if (res) {
@@ -84,13 +86,13 @@ export default {
     });
     */
   },
-  created() {
-    users.userInfo().then(res => {
-      if (res) {
-        this.$store.commit("userInfo", res);
-      }
-    });
-  }
+  // created() {
+  //   users.userInfo().then(res => {
+  //     if (res) {
+  //       this.$store.commit("userInfo", res);
+  //     }
+  //   });
+  // }
 };
 </script>
 <style lang="less" scoped>
@@ -103,9 +105,11 @@ export default {
     .apply-item {
       display: inline;
       &:nth-child(4n + 1) {
+        /*
         .item-menu {
-          // border-right: 0;
+          border-right: 0;
         }
+        */
       }
       .item-divider {
         padding: 10px;
