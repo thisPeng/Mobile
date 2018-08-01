@@ -20,9 +20,33 @@ const login = {
   }
 };
 
-// 首页
 const index = {
   // 获取首页数据
+  getData() {
+    return axios({
+      url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=HOME_MSG"
+    });
+  },
+  // 获取项目列表
+  getProjectList(params) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_ProjectService",
+        _methodName: "GetProjectInfo",
+        '_parameters[UserID]': params.oid,
+        '_parameters[ProjectType]': params.type,
+        _paraNames: "UserID,ProjectType",
+        _pUrl: ""
+      }
+    })
+  }
+}
+
+// 消息页面
+const message = {
+  // 获取消息列表
   getData() {
     return axios({
       url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=HOME_MSG"
@@ -115,29 +139,8 @@ const index = {
   },
 };
 
-// 应用页
-const apply = {
-  // 获取应用数据
-  getData() {
-    return axios({
-      url: "/ucml_mobile/getMenuCount_new.ashx"
-    });
-  },
-  // 获取项目列表
-  getProjectList(params) {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_Purchase_ProjectService",
-        _methodName: "GetProjectInfo",
-        '_parameters[UserID]': params.oid,
-        '_parameters[ProjectType]': params.type,
-        _paraNames: "UserID,ProjectType",
-        _pUrl: ""
-      }
-    })
-  },
+
+const classify = {
   // 物选择首页
   getProductType() {
     return axios({
@@ -167,6 +170,17 @@ const apply = {
       }
     })
   }
+}
+
+// 应用页
+const apply = {
+  // 获取应用数据
+  getData() {
+    return axios({
+      url: "/ucml_mobile/getMenuCount_new.ashx"
+    });
+  },
+
 };
 
 // 通讯录
@@ -456,7 +470,9 @@ const task = {
 export {
   login,
   index,
+  classify,
   apply,
+  message,
   contact,
   users,
   task

@@ -1,28 +1,24 @@
 <template>
-  <div class="index">
+  <div class="cart">
 
   </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-// import { index } from "./../../assets/js/api.js";
+// import { cart } from "./../../assets/js/api.js";
 
 export default {
   data() {
     return {
-      list: []
     };
   },
-  methods: {
-
-  },
+  methods: {},
   computed,
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 <style lang="less" scoped>
-.index {
+.cart {
   width: 100%;
 }
 </style>

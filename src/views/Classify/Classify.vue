@@ -1,24 +1,19 @@
 <template>
-  <div class="index">
+  <div class="Classify">
 
   </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-// import { index } from "./../../assets/js/api.js";
+// import { classify } from "./../../assets/js/api.js";
 
 export default {
   data() {
-    return {
-      list: []
-    };
+    return {};
   },
-  methods: {
-
-  },
+  methods: {},
   computed,
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 <style lang="less" scoped>

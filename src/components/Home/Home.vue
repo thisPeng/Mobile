@@ -5,12 +5,14 @@
     </van-nav-bar>
     <router-view class="content"></router-view>
     <van-tabbar v-model="active" v-show="isTabbar">
-      <van-tabbar-item icon="chat" @click="jumpTabs('index')">消息</van-tabbar-item>
-      <van-tabbar-item @click="jumpTabs('apply')">
-        <i slot="icon" slot-scope="props" class="iconfont icon-yingyong-" />应用</van-tabbar-item>
+      <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
+      <van-tabbar-item icon="shop" @click="jumpTabs('classify')">挑货</van-tabbar-item>
+      <van-tabbar-item icon="cart" @click="jumpTabs('cart')">购物车</van-tabbar-item>
+      <!-- <van-tabbar-item @click="jumpTabs('apply')">
+        <i slot="icon" slot-scope="props" class="iconfont icon-yingyong-" />应用</van-tabbar-item> -->
       <!-- <van-tabbar-item icon="records" @click="jumpTabs('contact')">通讯录</van-tabbar-item> -->
-      <van-tabbar-item @click="jumpTabs('count')">
-        <i slot="icon" slot-scope="props" class="iconfont icon-icon1" />统计</van-tabbar-item>
+      <!-- <van-tabbar-item @click="jumpTabs('count')">
+        <i slot="icon" slot-scope="props" class="iconfont icon-icon1" />统计</van-tabbar-item> -->
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -32,9 +34,8 @@ export default {
       this.title = to.meta.title;
       if (
         to.name !== "index" &&
-        to.name !== "apply" &&
-        to.name !== "contact" &&
-        to.name !== "count" &&
+        to.name !== "classify" &&
+        to.name !== "cart" &&
         to.name !== "users"
       ) {
         this.isBack = true;
@@ -46,10 +47,10 @@ export default {
           case "index":
             this.active = 0;
             break;
-          case "apply":
+          case "classify":
             this.active = 1;
             break;
-          case "count":
+          case "cart":
             this.active = 2;
             break;
           case "users":
@@ -77,9 +78,8 @@ export default {
     this.title = current.meta.title;
     if (
       current.name !== "index" &&
-      current.name !== "apply" &&
-      current.name !== "contact" &&
-      current.name !== "count" &&
+      current.name !== "classify" &&
+      current.name !== "cart" &&
       current.name !== "users"
     ) {
       this.isBack = true;
@@ -91,10 +91,10 @@ export default {
         case "index":
           this.active = 0;
           break;
-        case "apply":
+        case "classify":
           this.active = 1;
           break;
-        case "count":
+        case "cart":
           this.active = 2;
           break;
         case "users":

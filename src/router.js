@@ -3,7 +3,10 @@ import Router from "vue-router";
 import Login from "./views/Login/Login";
 import Home from "./components/Home/Home";
 import Index from "./views/Index/Index";
-import Message from "./views/Index/message";
+import Classify from "./views/Index/Index";
+import Cart from "./views/Cart/Cart";
+import MsgList from "./views/Message/MsgList";
+import Message from "./views/Message/Message";
 import Apply from "./views/Apply/Apply";
 import Contact from "./views/Contact/Contact";
 import Count from "./views/Count/Count";
@@ -17,10 +20,6 @@ import TaskKKFrom from "./views/TaskWait/TaskKKFrom";
 import TaskPKFrom from "./views/TaskWait/TaskPKFrom";
 import TaskJDFrom from "./views/TaskWait/TaskJDFrom";
 import TaskDJFrom from "./views/TaskWait/TaskDJFrom";
-import TaskDemo from "./views/TaskWait/TaskDemo";
-import TaskAccept from "./views/TaskWait/TaskAccept";
-import TaskExecute from "./views/TaskWait/TaskExecute";
-import TaskGuide from "./views/TaskWait/TaskGuide";
 Vue.use(Router);
 
 export default new Router({
@@ -40,6 +39,30 @@ export default new Router({
           component: Index,
           meta: {
             title: "首页" // 页面标题
+          }
+        },
+        {
+          path: "/classify",
+          name: "classify",
+          component: Classify,
+          meta: {
+            title: "挑货" // 页面标题
+          }
+        },
+        {
+          path: "/cart",
+          name: "cart",
+          component: Cart,
+          meta: {
+            title: "购物车" // 页面标题
+          }
+        },
+        {
+          path: "/taskWait",
+          name: "taskWait",
+          component: TaskWait,
+          meta: {
+            title: "待办列表" // 页面标题
           }
         },
         {
@@ -99,35 +122,11 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait/taskDemo",
-          name: "taskDemo",
-          component: TaskDemo,
+          path: "/msgList",
+          name: "msgList",
+          component: MsgList,
           meta: {
-            title: "执行任务" // 页面标题
-          }
-        },
-        {
-          path: "/taskWait/taskAccept",
-          name: "taskAccept",
-          component: TaskAccept,
-          meta: {
-            title: "接收任务" // 页面标题
-          }
-        },
-        {
-          path: "/taskWait/taskExecute",
-          name: "taskExecute",
-          component: TaskExecute,
-          meta: {
-            title: "任务执行" // 页面标题
-          }
-        },
-        {
-          path: "/taskWait/taskGuide",
-          name: "taskGuide",
-          component: TaskGuide,
-          meta: {
-            title: "任务执行" // 页面标题
+            title: "消息列表" // 页面标题
           }
         },
         {
