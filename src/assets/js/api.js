@@ -112,7 +112,7 @@ const index = {
         _pUrl: ""
       }
     })
-  }
+  },
 };
 
 // 应用页
@@ -122,6 +122,50 @@ const apply = {
     return axios({
       url: "/ucml_mobile/getMenuCount_new.ashx"
     });
+  },
+  // 获取项目列表
+  getProjectList(params) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_ProjectService",
+        _methodName: "GetProjectInfo",
+        '_parameters[UserID]': params.oid,
+        '_parameters[ProjectType]': params.type,
+        _paraNames: "UserID,ProjectType",
+        _pUrl: ""
+      }
+    })
+  },
+  // 物选择首页
+  getProductType() {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SC_MaterialTypeTreeService",
+        _methodName: "BusiViewString",
+        _paraNames: "",
+        _pUrl: ""
+      }
+    })
+  },
+  // 获取物资列表
+  getSupp(params) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Supp_ProductSKU_Query",
+        _methodName: "GetProjectInfo",
+        '_parameters[MaterialTypeID]': params.id,
+        '_parameters[BrandName]': params.name,
+        '_parameters[SKUList]': params.keyword,
+        _paraNames: "MaterialTypeID,BrandName,SKUList",
+        _pUrl: ""
+      }
+    })
   }
 };
 

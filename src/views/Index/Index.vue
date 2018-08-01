@@ -49,6 +49,9 @@ export default {
         this.list = res;
       }
     });
+    index.getProjectList().then(res => {
+      console.log(res);
+    });
   }
 };
 </script>
