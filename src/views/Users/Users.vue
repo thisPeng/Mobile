@@ -50,10 +50,9 @@ export default {
           message: "确认退出系统吗？"
         })
         .then(() => {
-          users.exit().then(() => {
-            this.$router.replace({
-              name: "login"
-            });
+          users.exit();
+          this.$router.replace({
+            name: "login"
           });
         })
         .catch(() => {
@@ -68,7 +67,12 @@ export default {
     cleanStore() {
       localStorage.clear();
       sessionStorage.clear();
-      this.$toast("缓存已清除");
+      users.userInfo().then(result => {
+        if (result) {
+          this.$store.commit("userInfo", result);
+          this.$toast("缓存已清除");
+        }
+      });
     },
     admininfo() {
       this.$router.push({
@@ -76,14 +80,7 @@ export default {
       });
     }
   },
-  computed,
-  created() {
-    users.userInfo().then(res => {
-      if (res) {
-        this.$store.commit("userInfo", res);
-      }
-    });
-  }
+  computed
 };
 </script>
 <style lang="less" scoped>

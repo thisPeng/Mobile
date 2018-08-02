@@ -11,8 +11,8 @@
       <van-field v-model="data[11]" label="开户行" :disabled="edit" />
       <van-field v-model="data[13]" label="经手人" :disabled="edit" />
       <van-field v-model="data[16]" label="汇款说明" :disabled="edit" />
-      <van-field v-model="data[29]" label="操作员" :disabled="true" />
-      <van-field v-model="data[17]" label="创建日期" :disabled="true" />
+      <van-field v-model="data[29]" label="制单人" :disabled="true" />
+      <van-field v-model="data[17]" label="制单日期" :disabled="true" />
       <van-field v-model="data[18]" label="修改日期" :disabled="true" />
       <div class="task-title">
         <span>资金凭证</span>

@@ -39,7 +39,7 @@
 
 <script>
 import computed from "./../../assets/js/computed.js";
-import { login } from "./../../assets/js/api.js";
+import { login, users } from "./../../assets/js/api.js";
 
 export default {
   name: "login",
@@ -62,14 +62,18 @@ export default {
         };
         login.validate(params).then(res => {
           if (res && res.text != "0") {
-            this.$store.commit("userInfo", { loginid: this.loginName });
             this.$store.commit("loginInfo", {
               login: this.loginName,
               pwd: this.password
             });
             this.$store.commit("tabActive", 0);
-            this.$router.replace({
-              name: "index"
+            users.userInfo().then(result => {
+              if (result) {
+                this.$store.commit("userInfo", result);
+                this.$router.replace({
+                  name: "index"
+                });
+              }
             });
           } else {
             this.$toast("用户名或密码错误");

@@ -316,22 +316,19 @@ export default {
   mounted() {
     // 初始化获取数据
     const that = this;
-    users.userInfo().then(result => {
-      this.$store.commit("userInfo", result);
-      if (result.oid) {
-        users.getDemandData(result.oid).then(res => {
-          if (res && res.status === 1) {
-            const sp = res.text.split(";");
-            that.data = eval(sp[1].split("=")[1])[0];
-            that.tableData1 = eval(sp[2].split("=")[1]);
-            that.tableData2 = eval(sp[3].split("=")[1]);
-            that.tableData3 = eval(sp[4].split("=")[1]);
-            that.model = that.data.length > 8;
-            that.drawLine();
-          }
-        });
-      }
-    });
+    if (this.userInfo.oid) {
+      users.getDemandData(this.userInfo.oid).then(res => {
+        if (res && res.status === 1) {
+          const sp = res.text.split(";");
+          that.data = eval(sp[1].split("=")[1])[0];
+          that.tableData1 = eval(sp[2].split("=")[1]);
+          that.tableData2 = eval(sp[3].split("=")[1]);
+          that.tableData3 = eval(sp[4].split("=")[1]);
+          that.model = that.data.length > 8;
+          that.drawLine();
+        }
+      });
+    }
   }
 };
 </script>

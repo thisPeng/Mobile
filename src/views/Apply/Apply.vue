@@ -85,14 +85,7 @@ export default {
       }
     });
     */
-  },
-  // created() {
-  //   users.userInfo().then(res => {
-  //     if (res) {
-  //       this.$store.commit("userInfo", res);
-  //     }
-  //   });
-  // }
+  }
 };
 </script>
 <style lang="less" scoped>

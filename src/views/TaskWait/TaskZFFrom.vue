@@ -26,8 +26,8 @@
       <van-field v-model="dataTable[0][4]" label="转存金额(￥)" :disabled="edit" v-if="payment === '余额转预存'" />
       <van-field v-model="dataTable[0][5]" label="转预存说明" :disabled="edit" v-if="payment === '余额转预存'" />
       <!--员工姓名、创建时间-->
-      <van-field v-model="data[31]" label="员工姓名" :disabled="true" />
-      <van-field v-model="data[15]" label="创建日期" :disabled="true" />
+      <van-field v-model="data[31]" label="制单人" :disabled="true" />
+      <van-field v-model="data[15]" label="制单日期" :disabled="true" />
       <van-field v-model="data[16]" label="修改日期" :disabled="true" />
       <div class="task-table" v-if="payment === '支付供应商'">
         <table>

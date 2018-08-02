@@ -10,8 +10,8 @@
       <van-field v-model="data[34]" label="冻结金额(￥)" :disabled="true" />
       <van-field v-model="data[9]" label="解冻金额(￥)" :disabled="true" />
       <van-field v-model="data[13]" label="经手人" :disabled="edit" />
-      <van-field v-model="data[29]" label="操作员" :disabled="true" />
-      <van-field v-model="data[17]" label="创建日期" :disabled="true" />
+      <van-field v-model="data[29]" label="制单人" :disabled="true" />
+      <van-field v-model="data[17]" label="制单日期" :disabled="true" />
       <van-field v-model="data[18]" label="修改日期" :disabled="true" />
     </van-cell-group>
     <van-cell-group v-if="taskTabs.codeJson">

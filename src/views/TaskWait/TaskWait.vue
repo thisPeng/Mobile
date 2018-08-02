@@ -20,7 +20,7 @@
             <tr v-for="(item,index) in tableData" :key="item[0]" :class="active === index ? 'visited' : ''" @click="selectItem(index)" @dblclick="exeTask">
               <td>{{taskModel === 'complete' ? item[25] : item[33]}}</td>
               <td>{{taskModel === 'complete' ? item[2] : item[2]}}</td>
-              <td>{{taskModel === 'complete' ? item[7] : item[4]}}</td>
+              <td>{{taskModel === 'complete' ? item[7] : item[8]}}</td>
               <td v-if="taskModel === 'complete'">{{item[15] !=="1900-01-01 00:00:00" ? item[15] : ''}}</td>
               <td>{{taskModel === 'complete' ? item[9] : item[13]}}</td>
             </tr>
@@ -33,7 +33,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { users, task } from "./../../assets/js/api.js";
+import { task } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -107,7 +107,7 @@ export default {
         }
       }
       // console.log(this.params);
-      // console.log(this.tableData[i]);
+      console.log(this.tableData[i]);
     },
     // 执行任务
     exeTask() {
@@ -144,13 +144,6 @@ export default {
     const model = this.$router.history.current.params.model || this.taskModel;
     this.$store.commit("taskModel", model);
     this.getTableData();
-  },
-  created() {
-    users.userInfo().then(res => {
-      if (res) {
-        this.$store.commit("userInfo", res);
-      }
-    });
   }
 };
 </script>
