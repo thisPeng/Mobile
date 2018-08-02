@@ -7,18 +7,11 @@
     </div>
     <div class="right">
       <ul>
-        <li v-for="(item,index) in detailedList" :key="index">
+        <li v-for="(item,index) in detailedList" :key="index" v-if="item.pid == topList[active].id">
           <div class="class-title">{{item.name}}</div>
           <div v-for="(ite,idx) in item.list" :key="idx">
             <div class="item">
-              <div class="item-left">
-                <div class="item-img"></div>
-              </div>
-              <div class="item-right">
-                <div class="title">{{ite.name}}</div>
-                <div class="subtitle"></div>
-                <div class="price"></div>
-              </div>
+              <div class="title">{{ite.name}}</div>
             </div>
           </div>
         </li>
@@ -41,32 +34,10 @@ export default {
   },
   methods: {
     onNavClick(index) {
-      this.mainActiveIndex = index;
+      this.active = index;
     },
     onItemClick(data) {
       this.activeId = data.id;
-    },
-
-    getSubList(pid, index) {
-      let arr = [];
-      // let tmp = [];
-      for (let i = index; i < this.list.length; i++) {
-        if (this.list[i][8] === pid) {
-          // tmp = [];
-          arr.push({
-            code: this.list[i][1],
-            name: this.list[i][2],
-            id: this.list[i][0]
-          });
-          //arr = tmp;
-          let res = this.getSubList(this.list[i][0], i);
-          if (res.length > 0) {
-            arr.push(res);
-          }
-          // arr.push(this.getSubList(this.list[i][0], i));
-        }
-      }
-      return arr;
     }
   },
   computed,
@@ -75,50 +46,51 @@ export default {
       if (res && res.status === 1) {
         const sp = res.text.split(";");
         const list = eval(sp[1].split("=")[1]);
-        this.list = list;
 
-        let arr = [];
-        for (let i = 0; i < list.length; i++) {
-          if (list[i][8] === "00000000-0000-0000-0000-000000000000") {
+        let topIndex = -1,
+          deIndex = -1;
+        list.forEach(val => {
+          if (val[8] === "00000000-0000-0000-0000-000000000000") {
             this.topList.push({
-              code: list[i][1],
-              name: list[i][2],
-              id: list[i][0]
+              id: val[0],
+              code: val[1],
+              name: val[2],
+              pid: val[8],
+              list: []
             });
-            arr.push(this.getSubList(list[i][0], i));
-          }
-        }
-        console.log(arr);
-        this.detailedList = arr;
-        // console.log(this.detailedList);
-
-        /*
-        list.forEach(v => {
-          if (v[1].length === 2) {
-            this.topList.push({
-              code: v[1],
-              name: v[2]
+            topIndex++;
+          } else if (this.topList[topIndex].id === val[8]) {
+            this.detailedList.push({
+              id: val[0],
+              code: val[1],
+              name: val[2],
+              pid: val[8],
+              list: []
+            });
+            deIndex++;
+          } else if (this.detailedList[deIndex].id === val[8]) {
+            this.detailedList[deIndex].list.push({
+              id: val[0],
+              code: val[1],
+              name: val[2],
+              pid: val[8],
+              list: []
             });
           } else {
-            console.log(v[1]);
-            if (v[1].length === 4) {
-              this.detailedList.push({
-                code: v[1],
-                name: v[2],
-                list: []
-              });
-              i++;
-            } else {
-              this.detailedList[i].list.push({
-                code: v[1],
-                name: v[2]
-              });
-            }
+            this.detailedList[deIndex].list.forEach(v => {
+              if (v.id === val[8]) {
+                v.list.push({
+                  id: val[0],
+                  code: val[1],
+                  name: val[2],
+                  pid: val[8]
+                });
+              }
+            });
           }
         });
-        */
-        // console.log(this.topList);
       }
+      // console.log(this.detailedList);
     });
   }
 };
