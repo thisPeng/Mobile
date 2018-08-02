@@ -105,9 +105,9 @@ export default {
               newStr += that.$util.xmlData(i, null);
             } else {
               if(i === "SYS_LAST_UPD_BY") {
-                newStr += that.$util.xmlData(i, new Date().Format("yyyy-MM-dd hh:mm"));
-              } else if(i === "SYS_LAST_UPD") {
                 newStr += that.$util.xmlData(i, that.userInfo.oid);
+              } else if(i === "SYS_LAST_UPD") {
+                newStr += that.$util.xmlData(i, new Date().Format("yyyy-MM-dd hh:mm"));
               } else {
                 newStr += that.$util.xmlData(i, parData[that.data.arrays[index]]);
               }

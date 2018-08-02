@@ -92,10 +92,10 @@ export default {
             Bank_Name: this.data[11],
             Operator: this.data[13],
             Remark: this.data[16],
-            SYS_LAST_UPD_BY: this.data[29],
+            SYS_LAST_UPD_BY: this.data[25],
             SYS_LAST_UPD: this.data[17]
           };
-          this.taskTabs.arrays = [0, 10, 9, 12, 11, 13, 16, 29, 17];
+          this.taskTabs.arrays = [0, 10, 9, 12, 11, 13, 16, 25, 17];
 
           task.getFlowAssignData(this.data[32]).then(res => {
             if (res && res.status === 1) {
