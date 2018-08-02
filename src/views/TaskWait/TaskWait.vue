@@ -1,8 +1,8 @@
 <template>
   <div class="task">
     <div class="task-data">
-      <div class="task-button" v-if="taskModel === 'wait'">
-        <van-button type="default" class="button" @click="exeTask">执行任务</van-button>
+      <div class="task-button">
+        <van-button type="default" class="button" @click="exeTask">{{taskModel === 'complete' ? '查看详情' : '执行任务'}}</van-button>
         <!-- <van-button type="default" class="button">流程跟踪</van-button> -->
       </div>
       <div class="task-table">
@@ -86,16 +86,28 @@ export default {
     },
     // 选中项
     selectItem(i) {
-      this.active = i;
-      const params = {
-        TaskID: this.tableData[i][9],
-        InstanceID: this.tableData[i][5],
-        name: this.tableData[i][2],
-        bpoName: this.tableData[i][3]
-      };
-      // console.log(params);
+      if (this.active === i) {
+        this.exeTask();
+      } else {
+        this.active = i;
+        if (this.taskModel === "complete") {
+          this.params = {
+            TaskID: this.tableData[i][8],
+            InstanceID: this.tableData[i][4],
+            name: this.tableData[i][2],
+            bpoName: this.tableData[i][3]
+          };
+        } else {
+          this.params = {
+            TaskID: this.tableData[i][9],
+            InstanceID: this.tableData[i][5],
+            name: this.tableData[i][2],
+            bpoName: this.tableData[i][3]
+          };
+        }
+      }
+      // console.log(this.params);
       // console.log(this.tableData[i]);
-      this.params = params;
     },
     // 执行任务
     exeTask() {

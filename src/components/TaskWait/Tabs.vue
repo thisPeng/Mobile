@@ -5,15 +5,15 @@
       <i class="iconfont icon-icon_up" v-show="!tabsShow"></i>
     </div>
     <van-tabs class="task-tabs" v-model="active" v-show="tabsShow" @click="getView">
-      <van-tab title="流程处理">
+      <van-tab title="流程处理" v-if="taskModel === 'wait'">
         <van-radio-group v-model="radio" v-if="data.codeJson.length > 0">
           <van-cell-group>
-            <van-cell clickable v-for="item in data.codeJson" :title="item.name" :key="item.value" @click="radio = item.value; viewText = item.name">
+            <van-cell clickable v-for="item in data.codeJson" :title="item.name" :key="item.value" @click="onSelect(item)">
               <van-radio :name="item.value" />
             </van-cell>
           </van-cell-group>
         </van-radio-group>
-        <van-field v-model="viewText" label="审批意见" placeholder="请输入审批意见" />
+        <van-field v-model="viewText" label="审批意见" type="textarea" placeholder="请输入审批意见" id="viewText" ref="viewText" />
       </van-tab>
       <van-tab title="意见浏览">
         <span class="task-content">
@@ -43,7 +43,7 @@
       </van-tab>
     </van-tabs>
     <van-button class="margin-top" type="primary" size="large" @click="onSave" v-show="tabsShow" v-if="data.codeJson.length > 0">保存并完成任务</van-button>
-    <van-button class="margin-top" type="primary" size="large" @click="onReset" v-show="tabsShow" v-else>重新发起</van-button>
+    <van-button class="margin-top" type="primary" size="large" @click="onReset" v-show="tabsShow" v-else-if="taskModel === 'wait'">重新发起</van-button>
   </section>
 </template>
 <script>
@@ -67,8 +67,22 @@ export default {
     }
   },
   methods: {
+    onSelect(item) {
+      this.radio = item.value;
+      if (
+        this.viewText === "" ||
+        this.viewText === "同意" ||
+        this.viewText === "不同意"
+      ) {
+        this.viewText = item.name;
+      }
+    },
     getView(index) {
-      if (index === 1) {
+      if (index === 0) {
+        setTimeout(() => {
+          document.getElementById("viewText").focus();
+        }, 10);
+      } else if (index === 1) {
         task.getViewList(this.data.InstanceID).then(res => {
           if (res && res.status === 1) {
             const sp = res.text.split(";");
@@ -80,6 +94,11 @@ export default {
     },
     showTabs() {
       this.$store.commit("tabsShow", !this.tabsShow);
+      if (this.tabsShow) {
+        this.$nextTick(() => {
+          document.getElementById("viewText").focus();
+        });
+      }
     },
     // 重新发起
     onReset() {
@@ -104,12 +123,18 @@ export default {
             if (index === 0) {
               newStr += that.$util.xmlData(i, null);
             } else {
-              if(i === "SYS_LAST_UPD_BY") {
+              if (i === "SYS_LAST_UPD_BY") {
                 newStr += that.$util.xmlData(i, that.userInfo.oid);
-              } else if(i === "SYS_LAST_UPD") {
-                newStr += that.$util.xmlData(i, new Date().Format("yyyy-MM-dd hh:mm"));
+              } else if (i === "SYS_LAST_UPD") {
+                newStr += that.$util.xmlData(
+                  i,
+                  new Date().Format("yyyy-MM-dd hh:mm")
+                );
               } else {
-                newStr += that.$util.xmlData(i, parData[that.data.arrays[index]]);
+                newStr += that.$util.xmlData(
+                  i,
+                  parData[that.data.arrays[index]]
+                );
               }
             }
             index++;
@@ -170,11 +195,20 @@ export default {
 
           that.data.DeltaXml =
             `<root>` +
-            `<` + bcName + ` UpdateKind="ukModify">` +
+            `<` +
+            bcName +
+            ` UpdateKind="ukModify">` +
             str +
-            `</` + bcName + `>` +
-            `<` + bcName + ` UpdateKind="">` + newStr +
-            `</` + bcName + `>` +
+            `</` +
+            bcName +
+            `>` +
+            `<` +
+            bcName +
+            ` UpdateKind="">` +
+            newStr +
+            `</` +
+            bcName +
+            `>` +
             payStr +
             `<BC_WF_AssignTask_Idea UpdateKind="ukModify">` +
             `<AssignTaskOID>` +
@@ -250,7 +284,6 @@ export default {
         this.$toast("请选择审批意见");
         return;
       }
-
       this.$dialog
         .confirm({
           title: "提示",
@@ -284,6 +317,11 @@ export default {
           // on cancel
         });
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      document.getElementById("viewText").focus();
+    });
   }
 };
 </script>

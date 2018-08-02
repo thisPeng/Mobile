@@ -82,7 +82,7 @@ export default {
               this.taskTabs.ActivityID = tmp[5];
               if (tmp[13]) {
                 this.taskTabs.codeJson = JSON.parse(tmp[13]);
-              } else {
+              } else if (this.taskModel === "wait") {
                 this.edit = false;
               }
             }
