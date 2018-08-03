@@ -27,8 +27,8 @@
                 <span class="row-right">执行结果：{{item.BusiField1}}</span>
               </div>
               <div class="content-row">
-                <span class="row-left">创建日期：{{new Date(item.sys_created).Format("MM-dd hh:mm")}}</span>
-                <span class="row-right">完成日期：{{new Date(item.FinishDate).Format("MM-dd hh:mm")}}</span>
+                <span class="row-left">创建日期：{{new Date(item.sys_created).Format("yyyy-MM-dd hh:mm")}}</span>
+                <span class="row-right" v-if="item.FinishDate !== '1900-01-01T00:00:00'">完成日期：{{new Date(item.FinishDate).Format("yyyy-MM-dd hh:mm")}}</span>
               </div>
               <div class="content-row">
                 <span>审批意见：{{item.Idea}}</span>
@@ -36,31 +36,6 @@
             </div>
           </div>
         </div>
-
-        <!-- <span class="task-content">
-          <table>
-            <thead>
-              <tr>
-                <td>创建时间</td>
-                <td>任务名称</td>
-                <td>执行人</td>
-                <td>执行结果</td>
-                <td>完成时间</td>
-                <td>意见</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item,index) in result" :key="index">
-                <td>{{new Date(item.sys_created).Format("MM-dd")}}</td>
-                <td>{{item.FromActivityName}}</td>
-                <td>{{item.PersonName}}</td>
-                <td>{{item.BusiField1}}</td>
-                <td>{{new Date(item.FinishDate).Format("yyyy-MM-dd hh:mm")}}</td>
-                <td>{{item.Idea}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </span> -->
       </van-tab>
     </van-tabs>
     <van-button class="margin-top" type="primary" size="large" @click="onSave" v-show="tabsShow" v-if="data.codeJson.length > 0">保存并完成任务</van-button>
@@ -399,35 +374,6 @@ export default {
           }
         }
       }
-
-      /*
-      table {
-        width: 100%;
-        font-size: 14px;
-        text-align: center;
-        margin-bottom: 40px;
-        thead {
-          tr {
-            background-color: #e9f8ff;
-            font-weight: 600;
-          }
-          td {
-            padding: 10px 0;
-          }
-        }
-        tbody {
-          tr:nth-child(2n) {
-            background-color: #e9f8ff;
-          }
-          td {
-            height: 50px;
-          }
-          .visited {
-            background-color: #b3e7ff !important;
-          }
-        }
-      }
-      */
     }
   }
 }

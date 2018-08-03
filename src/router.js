@@ -7,6 +7,8 @@ import Classify from "./views/Classify/Classify";
 import GoodsList from "./views/Classify/GoodsList";
 import Cart from "./views/Cart/Cart";
 import Project from "./views/Project/Project";
+import Option from "./views/Project/Option";
+import Material from "./views/Project/Option/Material";
 import MsgList from "./views/Message/MsgList";
 import Message from "./views/Message/Message";
 import Apply from "./views/Apply/Apply";
@@ -81,6 +83,22 @@ export default new Router({
           component: Project,
           meta: {
             title: "合作项目" // 页面标题
+          }
+        },
+        {
+          path: "/project/option",
+          name: "option",
+          component: Option,
+          meta: {
+            title: "项目功能" // 页面标题
+          }
+        },
+        {
+          path: "/project/option/material",
+          name: "material",
+          component: Material,
+          meta: {
+            title: "物资列表" // 页面标题
           }
         },
         {

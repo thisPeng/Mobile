@@ -19,8 +19,8 @@
               <span class="row-right">执行人：{{taskModel === '我的已办' ? item[9] : item[13]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">创建日期：{{taskModel === '我的已办' ? new Date(item[7]).Format("MM-dd hh:mm") : new Date(item[8]).Format("MM-dd hh:mm")}}</span>
-              <span class="row-right" v-if="taskModel === '我的已办'">完成日期：{{item[15] !=="1900-01-01 00:00:00" ? new Date(item[15]).Format("MM-dd hh:mm") : ''}}</span>
+              <span class="row-left">创建日期：{{taskModel === '我的已办' ? item[7] : item[8]}}</span>
+              <span class="row-right" v-if="taskModel === '我的已办'">完成日期：{{item[15] !=="1900-01-01 00:00:00" ? item[15] : ''}}</span>
             </div>
           </div>
         </div>

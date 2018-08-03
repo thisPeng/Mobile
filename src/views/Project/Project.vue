@@ -39,8 +39,10 @@ export default {
       });
     },
     jumpPage(item) {
-      this.$toast(item.ProjectName);
-      // console.log(item);
+      this.$router.push({
+        name: "option"
+      });
+      console.log(item);
     }
   },
   computed,
