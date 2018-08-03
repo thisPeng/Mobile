@@ -18,6 +18,7 @@ export default new Vuex.Store({
     tabActive: 0,
     taskModel: "",
     taskParams: {},
+    goodsParams: {},
     servePath: "",
     tabsShow: true
   },
@@ -37,6 +38,9 @@ export default new Vuex.Store({
     },
     taskParams: (state, val) => {
       state.taskParams = val;
+    },
+    goodsParams: (state, val) => {
+      state.goodsParams = val;
     },
     servePath: (state, val) => {
       state.servePath = val;

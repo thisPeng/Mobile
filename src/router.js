@@ -4,6 +4,7 @@ import Login from "./views/Login/Login";
 import Home from "./components/Home/Home";
 import Index from "./views/Index/Index";
 import Classify from "./views/Classify/Classify";
+import GoodsList from "./views/Classify/GoodsList";
 import Cart from "./views/Cart/Cart";
 import Self from "./views/Project/Self";
 import Cooperation from "./views/Project/Cooperation";
@@ -52,11 +53,19 @@ export default new Router({
           }
         },
         {
+          path: "/goodsList",
+          name: "goodsList",
+          component: GoodsList,
+          meta: {
+            title: "物资列表" // 页面标题
+          }
+        },
+        {
           path: "/cart",
           name: "cart",
           component: Cart,
           meta: {
-            title: "购物车" // 页面标题
+            title: "货仓" // 页面标题
           }
         },
         {

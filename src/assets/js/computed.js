@@ -23,6 +23,9 @@ export default mapState({
   taskParams: state => {
     return state.taskParams;
   },
+  goodsParams: state => {
+    return state.goodsParams;
+  },
   servePath: state => {
     return state.servePath;
   },

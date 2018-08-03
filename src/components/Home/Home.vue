@@ -7,7 +7,7 @@
     <van-tabbar v-model="active" v-show="isTabbar">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
       <van-tabbar-item icon="shop" @click="jumpTabs('classify')">挑货</van-tabbar-item>
-      <van-tabbar-item icon="cart" @click="jumpTabs('cart')">购物车</van-tabbar-item>
+      <van-tabbar-item icon="cart" @click="jumpTabs('cart')">货仓</van-tabbar-item>
       <!-- <van-tabbar-item @click="jumpTabs('apply')">
         <i slot="icon" slot-scope="props" class="iconfont icon-yingyong-" />应用</van-tabbar-item> -->
       <!-- <van-tabbar-item icon="records" @click="jumpTabs('contact')">通讯录</van-tabbar-item> -->
@@ -19,6 +19,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
+import { users } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -109,6 +110,11 @@ export default {
   },
   mounted() {
     // this.active = this.tabActive;
+    users.userInfo().then(result => {
+      if (result) {
+        this.$store.commit("userInfo", result);
+      }
+    });
   }
 };
 </script>

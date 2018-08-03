@@ -42,7 +42,7 @@
         </span>
       </van-tab>
     </van-tabs>
-    <van-button class="margin-top" type="primary" size="large" @click="onSave" v-show="tabsShow" v-if="data.codeJson.length > 0">保存并完成任务</van-button>
+    <van-button class="margin-top" type="primary" size="large" @click="onSave" v-show="tabsShow" v-if="taskModel === 'wait' && data.codeJson.length > 0">保存并完成任务</van-button>
     <van-button class="margin-top" type="primary" size="large" @click="onReset" v-show="tabsShow" v-else-if="taskModel === 'wait'">重新发起</van-button>
   </section>
 </template>

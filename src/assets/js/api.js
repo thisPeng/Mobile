@@ -158,15 +158,15 @@ const classify = {
     })
   },
   // 获取物资列表
-  getSupp(params) {
+  getGoodsList(params) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_Supp_ProductSKU_Query",
-        _methodName: "GetProjectInfo",
+        _bpoName: "BPO_Supp_ProductSKU_QueryService",
+        _methodName: "Get_MtlTypeForJS",
         '_parameters[MaterialTypeID]': params.id,
-        '_parameters[BrandName]': params.name,
+        '_parameters[BrandName]': params.brand,
         '_parameters[SKUList]': params.keyword,
         _paraNames: "MaterialTypeID,BrandName,SKUList",
         _pUrl: ""

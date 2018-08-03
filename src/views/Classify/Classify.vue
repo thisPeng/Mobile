@@ -2,7 +2,7 @@
   <div class="classify">
     <div class="left">
       <ul>
-        <li v-for="(item,index) in topList" :key="index" @click="onNavClick(index)">{{item.name}}</li>
+        <li v-for="(item,index) in topList" :key="index" @click="onNavClick(index)" :class="index===active? 'active' : ''">{{item.name}}</li>
       </ul>
     </div>
     <div class="right">
@@ -10,7 +10,14 @@
         <li v-for="(item,index) in detailedList" :key="index" v-if="item.pid == topList[active].id">
           <div class="class-title">{{item.name}}</div>
           <div v-for="(ite,idx) in item.list" :key="idx">
-            <div class="item">
+            <van-collapse v-model="activeNames" v-if="ite.list.length > 0">
+              <van-collapse-item :title="ite.name" :name="idx">
+                <div class="item" v-for="(e,i) in ite.list" :key="i" @click="onItemClick(e.id)">
+                  <div class="title">{{e.name}}</div>
+                </div>
+              </van-collapse-item>
+            </van-collapse>
+            <div class="item" v-else @click="onItemClick(ite.id)">
               <div class="title">{{ite.name}}</div>
             </div>
           </div>
@@ -27,6 +34,7 @@ export default {
   data() {
     return {
       active: 0,
+      activeNames: [],
       list: [],
       topList: [],
       detailedList: []
@@ -36,8 +44,12 @@ export default {
     onNavClick(index) {
       this.active = index;
     },
-    onItemClick(data) {
-      this.activeId = data.id;
+    onItemClick(id) {
+      this.$store.commit("goodsParams", { id });
+      this.$router.push({
+        name: "goodsList"
+      });
+      console.log(id);
     }
   },
   computed,
@@ -109,7 +121,7 @@ export default {
     float: left;
     width: 25%;
     height: 100%;
-    background: #eee;
+    // background: #eee;
     overflow-y: scroll;
     ul {
       list-style: none;
@@ -143,9 +155,13 @@ export default {
       .item {
         overflow: hidden;
         width: 100%;
-        padding: 10px;
+        height: 44px;
+        padding: 10px 15px;
+        font-size: 14px;
         background: #fff;
         border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
         .item-left {
           float: left;
           .item-img {
@@ -175,6 +191,11 @@ export default {
             margin-top: 10px;
             background: #eee;
           }
+        }
+      }
+      .van-collapse-item__content {
+        .title {
+          font-size: 12px !important;
         }
       }
     }
