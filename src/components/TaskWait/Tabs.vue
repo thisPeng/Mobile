@@ -1,11 +1,11 @@
 <template>
-  <section class="task">
+  <section class="task" v-if="taskModel === '我的待办'">
     <div class="task-in" @click="showTabs">
       <i class="iconfont icon-icon_down" v-show="tabsShow"></i>
       <i class="iconfont icon-icon_up" v-show="!tabsShow"></i>
     </div>
     <van-tabs class="task-tabs" v-model="active" v-show="tabsShow" @click="getView">
-      <van-tab title="流程处理" v-if="taskModel === 'wait'">
+      <van-tab title="流程处理">
         <van-radio-group v-model="radio" v-if="data.codeJson.length > 0">
           <van-cell-group>
             <van-cell clickable v-for="item in data.codeJson" :title="item.name" :key="item.value" @click="onSelect(item)">
@@ -16,7 +16,28 @@
         <van-field v-model="viewText" label="审批意见" type="textarea" placeholder="请输入审批意见" id="viewText" ref="viewText" />
       </van-tab>
       <van-tab title="意见浏览">
-        <span class="task-content">
+        <div class="task-content">
+          <div class="task-item" v-for="(item,index) in result" :key="index">
+            <div class="item-title">
+              <span class="title">{{item.FromActivityName}}</span>
+            </div>
+            <div class="item-content">
+              <div class="content-row">
+                <span class="row-left">执行人：{{item.PersonName}}</span>
+                <span class="row-right">执行结果：{{item.BusiField1}}</span>
+              </div>
+              <div class="content-row">
+                <span class="row-left">创建日期：{{new Date(item.sys_created).Format("MM-dd hh:mm")}}</span>
+                <span class="row-right">完成日期：{{new Date(item.FinishDate).Format("MM-dd hh:mm")}}</span>
+              </div>
+              <div class="content-row">
+                <span>审批意见：{{item.Idea}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <span class="task-content">
           <table>
             <thead>
               <tr>
@@ -24,7 +45,7 @@
                 <td>任务名称</td>
                 <td>执行人</td>
                 <td>执行结果</td>
-                <!-- <td>完成时间</td> -->
+                <td>完成时间</td>
                 <td>意见</td>
               </tr>
             </thead>
@@ -34,16 +55,16 @@
                 <td>{{item.FromActivityName}}</td>
                 <td>{{item.PersonName}}</td>
                 <td>{{item.BusiField1}}</td>
-                <!-- <td>{{new Date(item.FinishDate).Format("yyyy-MM-dd hh:mm")}}</td> -->
+                <td>{{new Date(item.FinishDate).Format("yyyy-MM-dd hh:mm")}}</td>
                 <td>{{item.Idea}}</td>
               </tr>
             </tbody>
           </table>
-        </span>
+        </span> -->
       </van-tab>
     </van-tabs>
-    <van-button class="margin-top" type="primary" size="large" @click="onSave" v-show="tabsShow" v-if="taskModel === 'wait' && data.codeJson.length > 0">保存并完成任务</van-button>
-    <van-button class="margin-top" type="primary" size="large" @click="onReset" v-show="tabsShow" v-else-if="taskModel === 'wait'">重新发起</van-button>
+    <van-button class="margin-top" type="primary" size="large" @click="onSave" v-show="tabsShow" v-if="data.codeJson.length > 0">保存并完成任务</van-button>
+    <van-button class="margin-top" type="primary" size="large" @click="onReset" v-show="tabsShow" v-else>重新发起</van-button>
   </section>
 </template>
 <script>
@@ -318,6 +339,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      if (this.taskModel !== "我的待办") this.$store.commit("tabsShow", false);
       const obj = document.getElementById("viewText");
       if (obj) obj.focus();
     });
@@ -340,12 +362,45 @@ export default {
     }
   }
   .task-tabs {
-    background-color: #fff;
     .task-content {
       width: 100%;
       min-height: 130px;
       max-height: 230px;
       overflow-y: scroll;
+      .task-item {
+        background-color: #fff;
+        padding: 10px 15px;
+        border-bottom: 1px solid #eee;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        .item-title {
+          padding: 10px 0;
+          border-bottom: 1px solid #f6f6f6;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .title {
+            font-weight: 600;
+            font-size: 16px;
+          }
+          .icon {
+            font-size: 14px;
+          }
+        }
+        .item-content {
+          padding: 5px 0;
+          font-size: 12px;
+          color: #666;
+          .content-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0;
+          }
+        }
+      }
+
+      /*
       table {
         width: 100%;
         font-size: 14px;
@@ -372,6 +427,7 @@ export default {
           }
         }
       }
+      */
     }
   }
 }

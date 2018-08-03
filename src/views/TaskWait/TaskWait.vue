@@ -6,7 +6,7 @@
         <van-button type="default" class="button">流程跟踪</van-button>
       </div> -->
       <div class="task-card">
-        <div class="task-item" v-for="(item,index) in tableData" :key="item[0]" :class="active === index ? 'visited' : ''" @click="selectItem(index)">
+        <div class="task-item" v-for="(item,index) in tableData" :key="item[0]" @click="selectItem(index)">
           <div class="item-title">
             <span class="title">{{taskModel === '我的已办' ? item[25] : item[33]}}</span>
             <span class="icon">
@@ -15,12 +15,12 @@
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">任务名称：{{taskModel === '我的已办' ? item[25] : item[33]}}</span>
-              <span class="row-right">执行者：{{taskModel === '我的已办' ? item[9] : item[13]}}</span>
+              <span class="row-left">任务名称：{{taskModel === '我的已办' ? item[2] : item[2]}}</span>
+              <span class="row-right">执行人：{{taskModel === '我的已办' ? item[9] : item[13]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">创建日期：{{taskModel === '我的已办' ? new Date(item[7]).Format('MM-dd hh:mm') : new Date(item[8]).Format('MM-dd hh:mm')}}</span>
-              <span class="row-right" v-if="taskModel === '我的已办'">完成日期：{{item[15] !=="1900-01-01 00:00:00" ? new Date(item[15]).Format('MM-dd hh:mm') : ''}}</span>
+              <span class="row-left">创建日期：{{taskModel === '我的已办' ? new Date(item[7]).Format("MM-dd hh:mm") : new Date(item[8]).Format("MM-dd hh:mm")}}</span>
+              <span class="row-right" v-if="taskModel === '我的已办'">完成日期：{{item[15] !=="1900-01-01 00:00:00" ? new Date(item[15]).Format("MM-dd hh:mm") : ''}}</span>
             </div>
           </div>
         </div>
@@ -33,7 +33,7 @@
               <td>任务名称</td>
               <td>创建日期</td>
               <td v-if="taskModel === '我的已办'">完成日期</td>
-              <td>执行者</td>
+              <td>执行人</td>
             </tr>
           </thead>
           <tbody>
@@ -190,7 +190,6 @@ export default {
     margin-bottom: 40px;
     .task-button {
       padding: 10px 0;
-      // position: fixed;
       .button {
         margin: 0 10px;
         color: #fff;

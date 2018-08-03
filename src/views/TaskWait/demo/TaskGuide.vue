@@ -22,7 +22,7 @@
               <tr>
                 <td>汇报时间</td>
                 <td>汇报执行情况</td>
-                <td v-if="taskModel === 'complete'">完成日期</td>
+                <td v-if="taskModel === '我的已办'">完成日期</td>
                 <td>进度</td>
               </tr>
             </thead>
@@ -30,7 +30,7 @@
               <tr v-for="(item,index) in tableData" :key="item[0]" :class="active === index ? 'visited' : ''" @click="selectItem(index)">
                 <td>{{item[5]}}</td>
                 <td>{{item[7]}}</td>
-                <td v-if="taskModel === 'complete'">{{item[40] !=="1900-01-01 00:00:00" ? item[40] : ''}}</td>
+                <td v-if="taskModel === '我的已办'">{{item[40] !=="1900-01-01 00:00:00" ? item[40] : ''}}</td>
                 <td>{{item[18]}}</td>
               </tr>
             </tbody>
@@ -47,7 +47,7 @@
               <tr>
                 <td>时间</td>
                 <td>变更理由</td>
-                <td v-if="taskModel === 'complete'">完成日期</td>
+                <td v-if="taskModel === '我的已办'">完成日期</td>
                 <td>变更结果</td>
               </tr>
             </thead>
@@ -55,7 +55,7 @@
               <tr v-for="(item,index) in tableData" :key="item[0]" :class="active === index ? 'visited' : ''" @click="selectItem(index)">
                 <td>{{item[5]}}</td>
                 <td>{{item[7]}}</td>
-                <td v-if="taskModel === 'complete'">{{item[40] !=="1900-01-01 00:00:00" ? item[40] : ''}}</td>
+                <td v-if="taskModel === '我的已办'">{{item[40] !=="1900-01-01 00:00:00" ? item[40] : ''}}</td>
                 <td>{{item[18]}}</td>
               </tr>
             </tbody>

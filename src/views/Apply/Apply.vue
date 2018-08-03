@@ -44,7 +44,7 @@ export default {
       this.$router.push({
         name: "taskWait",
         params: {
-          model: name === "我的已办" ? "complete" : "wait"
+          model: name
         }
       });
     }

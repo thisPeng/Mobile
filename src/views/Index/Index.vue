@@ -67,7 +67,6 @@ export default {
   },
   methods: {
     jumpPage(name, model = "") {
-      // params === "我的已办" ? "complete" : "wait";
       this.$router.push({
         name,
         params: {
