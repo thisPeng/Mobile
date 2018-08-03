@@ -24,13 +24,13 @@
           </div>
           <div class="apply-text">我的已办</div>
         </div>
-        <div class="apply-item" @click="jumpPage('self')">
+        <div class="apply-item" @click="jumpPage('project', '自营项目')">
           <div class="item-icon bg-orange">
             <i class="iconfont icon-ziying" />
           </div>
           <div class="apply-text">自营项目</div>
         </div>
-        <div class="apply-item" @click="jumpPage('cooperation')">
+        <div class="apply-item" @click="jumpPage('project', '合作项目')">
           <div class="item-icon bg-yellow">
             <i class="iconfont icon-hezuo" />
           </div>
@@ -66,11 +66,12 @@ export default {
     count
   },
   methods: {
-    jumpPage(name, params = '') {
+    jumpPage(name, model = "") {
+      // params === "我的已办" ? "complete" : "wait";
       this.$router.push({
         name,
         params: {
-          model: params === "我的已办" ? "complete" : "wait"
+          model: model
         }
       });
     }

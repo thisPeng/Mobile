@@ -6,8 +6,7 @@ import Index from "./views/Index/Index";
 import Classify from "./views/Classify/Classify";
 import GoodsList from "./views/Classify/GoodsList";
 import Cart from "./views/Cart/Cart";
-import Self from "./views/Project/Self";
-import Cooperation from "./views/Project/Cooperation";
+import Project from "./views/Project/Project";
 import MsgList from "./views/Message/MsgList";
 import Message from "./views/Message/Message";
 import Apply from "./views/Apply/Apply";
@@ -77,17 +76,9 @@ export default new Router({
           }
         },
         {
-          path: "/self",
-          name: "self",
-          component: Self,
-          meta: {
-            title: "自营项目" // 页面标题
-          }
-        },
-        {
-          path: "/cooperation",
-          name: "cooperation",
-          component: Cooperation,
+          path: "/project",
+          name: "project",
+          component: Project,
           meta: {
             title: "合作项目" // 页面标题
           }

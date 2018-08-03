@@ -52,25 +52,6 @@ export default {
   computed,
   mounted() {
     /*
-    const params = {
-      oid: this.userInfo.oid,
-      type: 1
-    };
-    apply.getProjectList(params).then(res => {
-      if (res && res.status) {
-        let sp = res.text.split(";");
-        console.log(eval(sp[0]));
-        this.list = eval(sp[0]);
-      }
-    });
-    apply.getProductType().then(res => {
-      if (res && res.status) {
-        let sp = res.text.split(";");
-        console.log(eval(sp[1].split("=")[1]));
-      }
-    });
-    */
-    /*
     apply.getData().then(res => {
       if (res) {
         // for (const i in res.menu) {

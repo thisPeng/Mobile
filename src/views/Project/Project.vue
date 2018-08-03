@@ -1,6 +1,6 @@
 <template>
-  <div class="Self">
-    <div class="Self-item" v-for="(item,index) in list" :key="index">
+  <div class="project">
+    <div class="project-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
       <div class="item-title">
         <span class="title">{{item.ProjectName}}</span>
         <span class="icon">
@@ -24,28 +24,39 @@ export default {
       list: []
     };
   },
-  methods: {},
+  methods: {
+    getData() {
+      const params = {
+        oid: this.userInfo.oid,
+        type: this.projectModel === "自营项目" ? 0 : 1
+      };
+      project.getProjectList(params).then(res => {
+        if (res && res.status === 1) {
+          const sp = res.text.split(";");
+          this.list = eval(sp[0]);
+          // console.log(this.list);
+        }
+      });
+    },
+    jumpPage(item) {
+      this.$toast(item.ProjectName);
+      // console.log(item);
+    }
+  },
   computed,
   mounted() {
-    const params = {
-      oid: this.userInfo.oid,
-      type: 0
-    };
-    project.getProjectList(params).then(res => {
-      if (res && res.status === 1) {
-        const sp = res.text.split(";");
-        this.list = eval(sp[0]);
-        console.log(this.list);
-      }
-    });
+    const model = this.$router.history.current.params.model || this.taskModel;
+    this.$parent.title = model;
+    this.$store.commit("projectModel", model);
+    this.getData();
   }
 };
 </script>
 <style lang="less" scoped>
-.Self {
+.project {
   width: 100%;
   padding: 10px;
-  .Self-item {
+  .project-item {
     background-color: #fff;
     padding: 10px 15px;
     border-bottom: 1px solid #eee;

@@ -80,14 +80,14 @@ export default {
     getView(index) {
       if (index === 0) {
         setTimeout(() => {
-          document.getElementById("viewText").focus();
+          const obj = document.getElementById("viewText");
+          if (obj) obj.focus();
         }, 10);
       } else if (index === 1) {
         task.getViewList(this.data.InstanceID).then(res => {
           if (res && res.status === 1) {
             const sp = res.text.split(";");
             this.result = eval(sp[0]);
-            // console.log(this.result);
           }
         });
       }
@@ -96,7 +96,8 @@ export default {
       this.$store.commit("tabsShow", !this.tabsShow);
       if (this.tabsShow) {
         this.$nextTick(() => {
-          document.getElementById("viewText").focus();
+          const obj = document.getElementById("viewText");
+          if (obj) obj.focus();
         });
       }
     },
@@ -189,9 +190,6 @@ export default {
                 `</BC_SC_Pay_Detail>`;
             }
           }
-
-          // console.log(str);
-          // console.log(newStr);
 
           that.data.DeltaXml =
             `<root>` +
@@ -320,7 +318,8 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      document.getElementById("viewText").focus();
+      const obj = document.getElementById("viewText");
+      if (obj) obj.focus();
     });
   }
 };

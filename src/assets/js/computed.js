@@ -20,6 +20,9 @@ export default mapState({
   taskModel: state => {
     return state.taskModel;
   },
+  projectModel: state => {
+    return state.projectModel;
+  },
   taskParams: state => {
     return state.taskParams;
   },

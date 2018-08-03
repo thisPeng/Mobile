@@ -17,6 +17,7 @@ export default new Vuex.Store({
     loginInfo: {},
     tabActive: 0,
     taskModel: "",
+    projectModel: "",
     taskParams: {},
     goodsParams: {},
     servePath: "",
@@ -35,6 +36,9 @@ export default new Vuex.Store({
     },
     taskModel: (state, val) => {
       state.taskModel = val;
+    },
+    projectModel: (state, val) => {
+      state.projectModel = val;
     },
     taskParams: (state, val) => {
       state.taskParams = val;
