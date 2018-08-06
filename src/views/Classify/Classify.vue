@@ -104,6 +104,11 @@ export default {
       }
       // console.log(this.detailedList);
     });
+    this.$nextTick().then(() => {
+      if (this.projectInfo.ProjectNo) {
+        this.$parent.title = this.projectInfo.ProjectName;
+      }
+    });
   }
 };
 </script>

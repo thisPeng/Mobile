@@ -1,18 +1,14 @@
 <template>
   <div class="home">
     <van-nav-bar :title="title" :left-arrow="isBack" @click-left="onBack" @click-right="onMenu">
-      <van-icon name="pending-evaluate" slot="right" class="home-icon" />
+      <!-- <van-icon name="pending-evaluate" slot="right" class="home-icon" /> -->
+      <i slot="right" class="iconfont icon-qiehuan home-icon" />
     </van-nav-bar>
     <router-view class="content"></router-view>
     <van-tabbar v-model="active" v-show="isTabbar">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
       <van-tabbar-item icon="shop" @click="jumpTabs('classify')">挑货</van-tabbar-item>
       <van-tabbar-item icon="cart" @click="jumpTabs('cart')">货仓</van-tabbar-item>
-      <!-- <van-tabbar-item @click="jumpTabs('apply')">
-        <i slot="icon" slot-scope="props" class="iconfont icon-yingyong-" />应用</van-tabbar-item> -->
-      <!-- <van-tabbar-item icon="records" @click="jumpTabs('contact')">通讯录</van-tabbar-item> -->
-      <!-- <van-tabbar-item @click="jumpTabs('count')">
-        <i slot="icon" slot-scope="props" class="iconfont icon-icon1" />统计</van-tabbar-item> -->
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -68,7 +64,8 @@ export default {
       this.$router.go(-1);
     },
     onMenu() {
-      this.$router.push({ name: "msgList" });
+      // this.$router.push({ name: "msgList" });
+      this.$router.push({ name: "projectList" });
     },
     jumpTabs(name) {
       this.$store.commit("tabActive", this.active);
@@ -79,6 +76,15 @@ export default {
   created() {
     const current = this.$router.history.current;
     this.title = current.meta.title;
+
+    users.userInfo().then(result => {
+      if (result && this.userInfo.oid !== result.oid) {
+        this.$store.commit("cleanStore", true);
+        this.$store.commit("userInfo", result);
+        this.title = current.meta.title;
+      }
+    });
+
     if (
       current.name !== "index" &&
       current.name !== "classify" &&
@@ -110,11 +116,6 @@ export default {
   },
   mounted() {
     // this.active = this.tabActive;
-    users.userInfo().then(result => {
-      if (result) {
-        this.$store.commit("userInfo", result);
-      }
-    });
   }
 };
 </script>

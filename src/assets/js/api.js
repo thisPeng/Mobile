@@ -260,6 +260,53 @@ const users = {
   }
 };
 
+const supplier = {
+  // 供应商所有列表
+  getAllList(page) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_SupplierListService",
+        _methodName: "getCondiActorDataBCString",
+        '_parameters[BCName]': 'BC_Purchase_Supplier',
+        '_parameters[nStartPos]': page * 10,
+        '_parameters[nRecords]': 10,
+        '_parameters[fieldList]': '',
+        '_parameters[valueList]': '',
+        '_parameters[condiIndentList]': '',
+        '_parameters[SQLCondi]': '',
+        '_parameters[SQLCondiType]': 0,
+        '_parameters[SQLFix]': '',
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  // 常用供应商列表
+  getList(page) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Partner_SupplierService",
+        _methodName: "getCondiActorDataBCString",
+        '_parameters[BCName]': 'BC_SC_Partner_Supplier',
+        '_parameters[nStartPos]': page * 10,
+        '_parameters[nRecords]': 10,
+        '_parameters[fieldList]': '',
+        '_parameters[valueList]': '',
+        '_parameters[condiIndentList]': '',
+        '_parameters[SQLCondi]': '',
+        '_parameters[SQLCondiType]': 0,
+        '_parameters[SQLFix]': '',
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+}
+
 // 我的待办
 const task = {
   // 获取我的待办
@@ -479,5 +526,6 @@ export {
   message,
   contact,
   users,
+  supplier,
   task
 };

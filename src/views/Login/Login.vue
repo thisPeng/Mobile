@@ -69,6 +69,7 @@ export default {
             this.$store.commit("tabActive", 0);
             users.userInfo().then(result => {
               if (result) {
+                this.$store.commit("cleanStore", true);
                 this.$store.commit("userInfo", result);
                 this.$router.replace({
                   name: "index"

@@ -12,7 +12,11 @@ export default {
   },
   methods: {},
   computed,
-  mounted() {}
+  mounted() {
+    if (!this.projectInfo.ProjectNo) {
+      this.$toast("请先点击屏幕右上角按钮，选择项目");
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

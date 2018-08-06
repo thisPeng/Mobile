@@ -15,7 +15,7 @@
 <script>
 import taskList from "./../../components/TaskWait/List";
 import computed from "./../../assets/js/computed.js";
-import { index } from "./../../assets/js/api.js";
+import { message } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -39,7 +39,7 @@ export default {
   methods: {
     // 标记已读
     onRead() {
-      index.markRead(this.selItem).then(res => {
+      message.markRead(this.selItem).then(res => {
         if (res && res.status === 1) {
           this.getUnReadData();
           this.$toast("已标记");
@@ -49,7 +49,7 @@ export default {
     // 获取未读消息
     getUnReadData(page) {
       page = page > 1 ? page - 1 : 0;
-      index.getUnReadMsg(page).then(res => {
+      message.getUnReadMsg(page).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split(";");
           this.unReadData = eval(sp[0].split("=")[1]);
@@ -61,7 +61,7 @@ export default {
     },
     // 删除消息
     onDelete() {
-      index.deleteMsg(this.selItem).then(res => {
+      message.deleteMsg(this.selItem).then(res => {
         if (res && res.status === 1) {
           this.getReadData();
           this.$toast("已删除");
@@ -71,7 +71,7 @@ export default {
     // 获取已读消息
     getReadData(page) {
       page = page > 1 ? page - 1 : 0;
-      index.getReadMsg(page).then(res => {
+      message.getReadMsg(page).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split(";");
           this.readData = eval(sp[0].split("=")[1]);
@@ -96,13 +96,13 @@ export default {
   computed,
   mounted() {
     // 初始化获取数据
-    index.getMessage().then(res => {
-      if (res) {
+    message.getMessage().then(res => {
+      if (res && res.status === 1) {
         const sp = res.text.split(";");
         this.unReadData = eval(sp[1].split("=")[1]);
         this.readData = eval(sp[2].split("=")[1]);
-        this.unReadPages = eval("(" + sp[15].split("=")[1] + ")");
-        this.ReadPages = eval("(" + sp[16].split("=")[1] + ")");
+        this.unReadPages = eval("(" + sp[16].split("=")[1] + ")");
+        this.ReadPages = eval("(" + sp[17].split("=")[1] + ")");
       }
     });
   }

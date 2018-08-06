@@ -19,7 +19,13 @@ export default {
     onSubmit() {}
   },
   computed,
-  mounted() {}
+  mounted() {
+    this.$nextTick().then(() => {
+      if (this.projectInfo.ProjectNo) {
+        this.$parent.title = this.projectInfo.ProjectName;
+      }
+    });
+  }
 };
 </script>
 <style lang="less" scoped>

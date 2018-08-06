@@ -6,7 +6,7 @@
           <div class="item-title">
             <span class="title">{{item.ProjectName}}</span>
             <span class="icon">
-              <van-icon name="arrow" />
+              <van-icon name="success" color="#00A0E9" v-if="item.ProjectNo === projectInfo.ProjectNo" />
             </span>
           </div>
           <div class="item-content">
@@ -20,7 +20,7 @@
           <div class="item-title">
             <span class="title">{{item.ProjectName}}</span>
             <span class="icon">
-              <van-icon name="arrow" />
+              <van-icon name="success" color="#00A0E9" v-if="item.ProjectNo === projectInfo.ProjectNo" />
             </span>
           </div>
           <div class="item-content">
@@ -63,7 +63,8 @@ export default {
       // this.$router.push({
       //   name: "option"
       // });
-      console.log(item);
+      this.$store.commit("projectInfo", item);
+      this.$router.go(-1);
     }
   },
   computed,
