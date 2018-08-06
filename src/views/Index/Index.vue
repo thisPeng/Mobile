@@ -10,7 +10,7 @@
     </div>
 
     <!--应用-->
-    <div class="index-apply">
+    <div class="index-apply" v-if="userType === 1">
       <div class="apply">
         <div class="apply-item" @click="jumpPage('taskWait','我的待办')">
           <div class="item-icon bg-blue">
@@ -24,6 +24,7 @@
           </div>
           <div class="apply-text">我的已办</div>
         </div>
+
         <div class="apply-item" @click="jumpPage('project', '自营项目')">
           <div class="item-icon bg-orange">
             <i class="iconfont icon-ziying" />

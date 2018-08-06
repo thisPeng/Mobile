@@ -7,6 +7,7 @@ import Classify from "./views/Classify/Classify";
 import GoodsList from "./views/Classify/GoodsList";
 import Cart from "./views/Cart/Cart";
 import Project from "./views/Project/Project";
+import ProjectList from "./views/Project/ProjectList";
 import Option from "./views/Project/Option";
 import Material from "./views/Project/Option/Material";
 import MsgList from "./views/Message/MsgList";
@@ -16,6 +17,7 @@ import Contact from "./views/Contact/Contact";
 import Count from "./views/Count/Count";
 import Users from "./views/Users/Users";
 import usersPwd from "./views/Users/usersPwd";
+import TaskList from "./views/TaskWait/TaskList";
 import TaskWait from "./views/TaskWait/TaskWait";
 import usersInfo from "./views/Users/usersInfo";
 import TaskYCFrom from "./views/TaskWait/TaskYCFrom";
@@ -75,6 +77,22 @@ export default new Router({
           component: TaskWait,
           meta: {
             title: "待办列表" // 页面标题
+          }
+        },
+        {
+          path: "/taskList",
+          name: "taskList",
+          component: TaskList,
+          meta: {
+            title: "待办列表" // 页面标题
+          }
+        },
+        {
+          path: "/projectList",
+          name: "projectList",
+          component: ProjectList,
+          meta: {
+            title: "项目列表" // 页面标题
           }
         },
         {

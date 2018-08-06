@@ -111,8 +111,7 @@ export default {
       let chart1 = this.$echarts.init(document.getElementById("myChart1"));
       chart1.setOption({
         title: {
-          text: that.model ? "交易排行榜 Top 5" : "我的销售排行榜 Top 5",
-          x: "center"
+          text: that.model ? "交易排行榜 Top 5" : "我的销售排行榜 Top 5"
         },
         tooltip: {
           trigger: "axis"
@@ -170,8 +169,7 @@ export default {
       let chart2 = this.$echarts.init(document.getElementById("myChart2"));
       chart2.setOption({
         title: {
-          text: that.model ? "合作商排行榜 Top 5" : "客户排行榜 Top 5",
-          x: "center"
+          text: that.model ? "合作商排行榜 Top 5" : "客户排行榜 Top 5"
         },
         tooltip: {
           trigger: "item",
@@ -245,8 +243,7 @@ export default {
       let chart3 = this.$echarts.init(document.getElementById("myChart3"));
       chart3.setOption({
         title: {
-          text: that.model ? "供应商排行榜 Top 5" : "项目公开 Top 5",
-          x: "center"
+          text: that.model ? "供应商排行榜 Top 5" : "项目公开 Top 5"
         },
         tooltip: {
           trigger: "item",
@@ -325,6 +322,7 @@ export default {
           that.tableData2 = eval(sp[3].split("=")[1]);
           that.tableData3 = eval(sp[4].split("=")[1]);
           that.model = that.data.length > 8;
+          that.$store.commit("userType", that.model ? 1 : 2);
           that.drawLine();
         }
       });

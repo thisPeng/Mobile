@@ -32,7 +32,7 @@ export default {
         this.$router.push({
           name: "taskWait",
           params: {
-            model: "wait"
+            model: "我的待办"
           }
         });
       } else if (title === "内部通知") {

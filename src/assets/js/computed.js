@@ -11,6 +11,9 @@ export default mapState({
   userInfo: state => {
     return state.userInfo;
   },
+  userType: state => {
+    return state.userType;
+  },
   loginInfo: state => {
     return state.loginInfo;
   },

@@ -14,6 +14,7 @@ export default new Vuex.Store({
   //数据源申明
   state: {
     userInfo: {},
+    userType: 0, // 用户身份: 1、工程、合作； 2、供应商
     loginInfo: {},
     tabActive: 0,
     taskModel: "",
@@ -27,6 +28,9 @@ export default new Vuex.Store({
   mutations: {
     userInfo: (state, val) => {
       state.userInfo = val;
+    },
+    userType: (state, val) => {
+      state.userType = val;
     },
     loginInfo: (state, val) => {
       state.loginInfo = val;
