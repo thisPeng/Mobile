@@ -63,7 +63,7 @@
               <div class="item-icon bg-mint">
                 <i class="iconfont icon-icon-price" />
               </div>
-              <div class="project-text">订单报价</div>
+              <div class="project-text">确认价格</div>
             </div>
             <div class="project-item" @click="jumpPage('material')">
               <div class="item-icon bg-red">

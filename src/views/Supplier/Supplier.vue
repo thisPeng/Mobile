@@ -82,23 +82,30 @@ export default {
     getList() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
       supplier.getList(page).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split("]]");
-          this.list = eval(sp[0].split("=")[1] + "]]");
-          this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split("]]");
+            this.list = eval(sp[0].split("=")[1] + "]]");
+            this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
+          }
+        } catch (e) {
+          console.log(e);
         }
       });
     },
     getAllList() {
       const page = this.curAllPage > 0 ? this.curAllPage - 1 : 0;
       supplier.getAllList(page).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split("]]");
-          this.allList = eval(sp[0].split("=")[1] + "]]");
-          console.log(this.allList);
-          this.allPages = eval(
-            "(" + sp[1].split("=")[1].replace(";", "") + ")"
-          );
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split("]]");
+            this.allList = eval(sp[0].split("=")[1] + "]]");
+            this.allPages = eval(
+              "(" + sp[1].split("=")[1].replace(";", "") + ")"
+            );
+          }
+        } catch (e) {
+          console.log(e);
         }
       });
     },
@@ -106,13 +113,23 @@ export default {
       console.log(res);
     },
     onCancel() {},
+    // 添加收藏
     onCollect(item) {
-      console.log(item);
-      this.$toast("收藏");
+      const params = {
+        pid: this.userId.UCML_PostOID,
+        sid: item[0]
+      };
+      supplier.addCollect(params).then(res => {
+        if (res && res.status === 1) {
+          this.$toast("添加收藏成功");
+        } else {
+          this.$toast(res.text);
+        }
+      });
     },
     onUnCollect(item) {
       console.log(item);
-      this.$toast("取消收藏");
+      this.$toast("取消收藏成功");
     }
   },
   computed,

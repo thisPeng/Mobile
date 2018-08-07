@@ -97,12 +97,16 @@ export default {
   mounted() {
     // 初始化获取数据
     message.getMessage().then(res => {
-      if (res && res.status === 1) {
-        const sp = res.text.split(";");
-        this.unReadData = eval(sp[1].split("=")[1]);
-        this.readData = eval(sp[2].split("=")[1]);
-        this.unReadPages = eval("(" + sp[16].split("=")[1] + ")");
-        this.ReadPages = eval("(" + sp[17].split("=")[1] + ")");
+      try {
+        if (res && res.status === 1) {
+          const sp = res.text.split(";");
+          this.unReadData = eval(sp[1].split("=")[1]);
+          this.readData = eval(sp[2].split("=")[1]);
+          this.unReadPages = eval("(" + sp[16].split("=")[1] + ")");
+          this.ReadPages = eval("(" + sp[17].split("=")[1] + ")");
+        }
+      } catch (e) {
+        console.log(e);
       }
     });
   }

@@ -13,6 +13,7 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   //数据源申明
   state: {
+    userId: {},
     userInfo: {},
     userType: 0, // 用户身份: 1、工程、合作； 2、供应商
     loginInfo: {},
@@ -29,6 +30,7 @@ export default new Vuex.Store({
   mutations: {
     cleanStore: (state, val) => {
       if (val) {
+        state.userId = {};
         state.userInfo = {};
         state.userType = 0; // 用户身份: 1、工程、合作； 2、供应商
         state.loginInfo = {};
@@ -39,6 +41,9 @@ export default new Vuex.Store({
         state.taskParams = {};
         state.goodsParams = {};
       }
+    },
+    userId: (state, val) => {
+      state.userId = val;
     },
     userInfo: (state, val) => {
       state.userInfo = val;

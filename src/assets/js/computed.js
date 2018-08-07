@@ -8,6 +8,9 @@ import {
 } from 'vuex';
 
 export default mapState({
+  userId: state => {
+    return state.userId;
+  },
   userInfo: state => {
     return state.userInfo;
   },
