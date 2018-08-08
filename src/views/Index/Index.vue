@@ -10,10 +10,10 @@
     </div>
 
     <!--应用-->
-    <div class="index-apply" v-if="userType === 1">
+    <div class="index-apply">
       <div class="apply">
         <div class="apply-item" @click="jumpPage('taskWait','我的待办')">
-          <div class="item-icon bg-blue">
+          <div class="item-icon bg-red">
             <i class="iconfont icon-daiban" />
           </div>
           <div class="apply-text">我的待办</div>
@@ -24,8 +24,20 @@
           </div>
           <div class="apply-text">我的已办</div>
         </div>
+        <div class="apply-item" @click="jumpPage('message')">
+          <div class="item-icon bg-orange">
+            <i class="iconfont icon-xiaoxi" />
+          </div>
+          <div class="apply-text">内部消息</div>
+        </div>
+        <div class="apply-item" @click="jumpPage('')">
+          <div class="item-icon bg-blue">
+            <i class="iconfont icon-chaxun" />
+          </div>
+          <div class="apply-text">物资查询</div>
+        </div>
 
-        <div class="apply-item" @click="jumpPage('project', '自营项目')">
+        <!-- <div class="apply-item" @click="jumpPage('project', '自营项目')">
           <div class="item-icon bg-orange">
             <i class="iconfont icon-ziying" />
           </div>
@@ -36,8 +48,58 @@
             <i class="iconfont icon-hezuo" />
           </div>
           <div class="apply-text">合作项目</div>
-        </div>
+        </div> -->
       </div>
+      <van-swipe class="apply-project" v-if="userType === 1">
+        <van-swipe-item>
+          <div class="project">
+            <div class="project-item" @click="jumpPage('material')">
+              <div class="item-icon bg-blue">
+                <i class="iconfont icon-wuzi" />
+              </div>
+              <div class="project-text">物资列表</div>
+            </div>
+            <div class="project-item" @click="jumpPage('material')">
+              <div class="item-icon bg-mint">
+                <i class="iconfont icon-icon-price" />
+              </div>
+              <div class="project-text">确认价格</div>
+            </div>
+            <div class="project-item" @click="jumpPage('material')">
+              <div class="item-icon bg-red">
+                <i class="iconfont icon-hetong" />
+              </div>
+              <div class="project-text">合同信息</div>
+            </div>
+            <div class="project-item" @click="jumpPage('material')">
+              <div class="item-icon bg-green">
+                <i class="iconfont icon-daohuofangshi" />
+              </div>
+              <div class="project-text">到货信息</div>
+            </div>
+            <div class="project-item" @click="jumpPage('material')">
+              <div class="item-icon bg-orange">
+                <i class="iconfont icon-fukuan" />
+              </div>
+              <div class="project-text">付款信息</div>
+            </div>
+          </div>
+        </van-swipe-item>
+        <van-swipe-item>
+          <div class="project">
+            <div class="project-item" @click="jumpPage('material')">
+              <div class="item-icon bg-blue">
+                <i class="iconfont icon-gongcheng" />
+              </div>
+              <div class="project-text">项目信息</div>
+            </div>
+            <div class="project-item"></div>
+            <div class="project-item"></div>
+            <div class="project-item"></div>
+            <div class="project-item"></div>
+          </div>
+        </van-swipe-item>
+      </van-swipe>
     </div>
 
     <!--统计数据-->
@@ -77,7 +139,13 @@ export default {
     }
   },
   computed,
-  mounted() {}
+  mounted() {
+    this.$nextTick().then(() => {
+      if (this.projectInfo.ProjectNo) {
+        this.$parent.title = this.projectInfo.ProjectName;
+      }
+    });
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -112,12 +180,43 @@ export default {
           justify-content: center;
           .iconfont {
             color: #fff;
-            font-size: 25px;
+            font-size: 30px;
           }
         }
       }
       .apply-text {
         padding-top: 10px;
+      }
+    }
+    .apply-project {
+      border-top: 1px solid #eee;
+      .project {
+        display: flex;
+        align-items: center;
+        .project-item {
+          height: 100px;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          .item-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .iconfont {
+              color: #fff;
+              font-size: 25px;
+            }
+          }
+        }
+        .project-text {
+          padding-top: 5px;
+          font-size: 12px;
+        }
       }
     }
   }

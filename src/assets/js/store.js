@@ -13,11 +13,13 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   //数据源申明
   state: {
+    userId: {},
     userInfo: {},
     userType: 0, // 用户身份: 1、工程、合作； 2、供应商
     loginInfo: {},
     tabActive: 0,
     taskModel: "",
+    projectInfo: {},
     projectModel: "",
     taskParams: {},
     goodsParams: {},
@@ -26,6 +28,23 @@ export default new Vuex.Store({
   },
   //写入缓存并同步state
   mutations: {
+    cleanStore: (state, val) => {
+      if (val) {
+        state.userId = {};
+        state.userInfo = {};
+        state.userType = 0; // 用户身份: 1、工程、合作； 2、供应商
+        state.loginInfo = {};
+        state.tabActive = 0;
+        state.taskModel = "";
+        state.projectInfo = {};
+        state.projectModel = "";
+        state.taskParams = {};
+        state.goodsParams = {};
+      }
+    },
+    userId: (state, val) => {
+      state.userId = val;
+    },
     userInfo: (state, val) => {
       state.userInfo = val;
     },
@@ -40,6 +59,9 @@ export default new Vuex.Store({
     },
     taskModel: (state, val) => {
       state.taskModel = val;
+    },
+    projectInfo: (state, val) => {
+      state.projectInfo = val;
     },
     projectModel: (state, val) => {
       state.projectModel = val;

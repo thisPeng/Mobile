@@ -8,6 +8,9 @@ import {
 } from 'vuex';
 
 export default mapState({
+  userId: state => {
+    return state.userId;
+  },
   userInfo: state => {
     return state.userInfo;
   },
@@ -25,6 +28,9 @@ export default mapState({
   },
   projectModel: state => {
     return state.projectModel;
+  },
+  projectInfo: state => {
+    return state.projectInfo;
   },
   taskParams: state => {
     return state.taskParams;

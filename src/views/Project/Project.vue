@@ -47,7 +47,8 @@ export default {
   },
   computed,
   mounted() {
-    const model = this.$router.history.current.params.model || this.taskModel;
+    const model =
+      this.$router.history.current.params.model || this.projectModel;
     this.$parent.title = model;
     this.$store.commit("projectModel", model);
     this.getData();

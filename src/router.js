@@ -16,10 +16,11 @@ import Apply from "./views/Apply/Apply";
 import Contact from "./views/Contact/Contact";
 import Count from "./views/Count/Count";
 import Users from "./views/Users/Users";
-import usersPwd from "./views/Users/usersPwd";
+import UsersPwd from "./views/Users/UsersPwd";
+import UsersInfo from "./views/Users/UsersInfo";
+import Supplier from "./views/Supplier/Supplier";
 import TaskList from "./views/TaskWait/TaskList";
 import TaskWait from "./views/TaskWait/TaskWait";
-import usersInfo from "./views/Users/usersInfo";
 import TaskYCFrom from "./views/TaskWait/TaskYCFrom";
 import TaskZFFrom from "./views/TaskWait/TaskZFFrom";
 import TaskKKFrom from "./views/TaskWait/TaskKKFrom";
@@ -84,7 +85,7 @@ export default new Router({
           name: "taskList",
           component: TaskList,
           meta: {
-            title: "待办列表" // 页面标题
+            title: "待办事宜" // 页面标题
           }
         },
         {
@@ -92,7 +93,7 @@ export default new Router({
           name: "projectList",
           component: ProjectList,
           meta: {
-            title: "项目列表" // 页面标题
+            title: "选择项目" // 页面标题
           }
         },
         {
@@ -218,7 +219,7 @@ export default new Router({
         {
           path: "/users/usersPwd",
           name: "usersPwd",
-          component: usersPwd,
+          component: UsersPwd,
           meta: {
             title: "修改密码" // 页面标题
           }
@@ -226,9 +227,17 @@ export default new Router({
         {
           path: "/users/usersInfo",
           name: "usersInfo",
-          component: usersInfo,
+          component: UsersInfo,
           meta: {
             title: "个人信息" // 页面标题
+          }
+        },
+        {
+          path: "/users/supplier",
+          name: "supplier",
+          component: Supplier,
+          meta: {
+            title: "供应商设置" // 页面标题
           }
         }
       ]

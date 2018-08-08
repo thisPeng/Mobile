@@ -11,8 +11,17 @@
       </div>
     </div>
     <div class="users-wrap">
+      <van-cell-group class="margin-bottom-sm">
+        <van-cell title="供应商设置" is-link @click="jumpPage('supplier')">
+          <template slot="icon">
+            <div class="icon">
+              <i class="iconfont icon-gongkaobei"></i>
+            </div>
+          </template>
+        </van-cell>
+      </van-cell-group>
       <van-cell-group>
-        <van-cell title="修改密码" is-link @click="jumpPwd">
+        <van-cell title="修改密码" is-link @click="jumpPage('usersPwd')">
           <template slot="icon">
             <div class="icon">
               <i class="iconfont icon-mima"></i>
@@ -59,18 +68,24 @@ export default {
           // on cancel
         });
     },
-    jumpPwd() {
+    jumpPage(name) {
       this.$router.push({
-        name: "usersPwd"
+        name
       });
     },
     cleanStore() {
       localStorage.clear();
       sessionStorage.clear();
+      this.$store.commit("cleanStore", true);
       users.userInfo().then(result => {
         if (result) {
           this.$store.commit("userInfo", result);
-          this.$toast("缓存已清除");
+          users.userId(result.oid).then(res => {
+            if (res && res.status === 1) {
+              this.$store.commit("userId", JSON.parse(res.text)[0]);
+              this.$toast("缓存已清除");
+            }
+          });
         }
       });
     },
@@ -80,7 +95,14 @@ export default {
       });
     }
   },
-  computed
+  computed,
+  mounted() {
+    this.$nextTick().then(() => {
+      if (this.projectInfo.ProjectNo) {
+        this.$parent.title = this.projectInfo.ProjectName;
+      }
+    });
+  }
 };
 </script>
 <style lang="less" scoped>

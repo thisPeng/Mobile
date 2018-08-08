@@ -144,7 +144,21 @@ const message = {
 
 
 const classify = {
-  // 物选择首页
+  // 供应商物资分类
+  getSupplierType(SupplierID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SC_SMaterialTypeTreeService",
+        _methodName: "Get_SC_SMaterialType",
+        '_parameters[SupplierID]': SupplierID,
+        _paraNames: "SupplierID",
+        _pUrl: ""
+      }
+    })
+  },
+  // 所有物资分类
   getProductType() {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -215,6 +229,20 @@ const users = {
       url: "ucml_mobile/select_User_Org_Mobile.ashx?type=MYINFO"
     });
   },
+  // 获取用户ID
+  userId(id) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Project_EditService",
+        _methodName: "GetUserInfoOrgOID",
+        '_parameters[UserOID]': id,
+        _paraNames: "UserOID",
+        _pUrl: ""
+      }
+    })
+  },
   // 更新用户密码
   updatePwd(params) {
     return axios({
@@ -259,6 +287,68 @@ const users = {
     });
   }
 };
+
+const supplier = {
+  // 供应商所有列表
+  getAllList(page) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_SupplierListService",
+        _methodName: "getCondiActorDataBCString",
+        '_parameters[BCName]': 'BC_Purchase_Supplier',
+        '_parameters[nStartPos]': page * 10,
+        '_parameters[nRecords]': 10,
+        '_parameters[fieldList]': '',
+        '_parameters[valueList]': '',
+        '_parameters[condiIndentList]': '',
+        '_parameters[SQLCondi]': '',
+        '_parameters[SQLCondiType]': 0,
+        '_parameters[SQLFix]': '',
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  // 常用供应商列表
+  getList(page) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Partner_SupplierService",
+        _methodName: "getCondiActorDataBCString",
+        '_parameters[BCName]': 'BC_SC_Partner_Supplier',
+        '_parameters[nStartPos]': page * 10,
+        '_parameters[nRecords]': 10,
+        '_parameters[fieldList]': '',
+        '_parameters[valueList]': '',
+        '_parameters[condiIndentList]': '',
+        '_parameters[SQLCondi]': '',
+        '_parameters[SQLCondiType]': 0,
+        '_parameters[SQLFix]': '',
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  // 收藏供应商
+  addCollect(params) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Partner_SupplierService",
+        _methodName: "CollectSupplier",
+        "_parameters[PartnerID]": params.pid,
+        "_parameters[SupplierID]": params.sid,
+        _paraNames: "PartnerID,SupplierID",
+        _pUrl: ""
+      }
+    });
+  }
+}
 
 // 我的待办
 const task = {
@@ -479,5 +569,6 @@ export {
   message,
   contact,
   users,
+  supplier,
   task
 };
