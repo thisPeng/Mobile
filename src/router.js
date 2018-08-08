@@ -19,6 +19,7 @@ import Users from "./views/Users/Users";
 import UsersPwd from "./views/Users/UsersPwd";
 import UsersInfo from "./views/Users/UsersInfo";
 import Supplier from "./views/Supplier/Supplier";
+import SupplieType from "./views/Supplier/SupplieType";
 import TaskList from "./views/TaskWait/TaskList";
 import TaskWait from "./views/TaskWait/TaskWait";
 import TaskYCFrom from "./views/TaskWait/TaskYCFrom";
@@ -238,6 +239,14 @@ export default new Router({
           component: Supplier,
           meta: {
             title: "供应商设置" // 页面标题
+          }
+        },
+        {
+          path: "/users/supplier/type",
+          name: "supplierType",
+          component: SupplieType,
+          meta: {
+            title: "供应商物资" // 页面标题
           }
         }
       ]

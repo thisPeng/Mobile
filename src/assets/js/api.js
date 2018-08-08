@@ -339,7 +339,7 @@ const supplier = {
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_Partner_SupplierService",
+        _bpoName: "BPO_Purchase_SupplierListService",
         _methodName: "CollectSupplier",
         "_parameters[PartnerID]": params.pid,
         "_parameters[SupplierID]": params.sid,

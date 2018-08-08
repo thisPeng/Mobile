@@ -3,9 +3,7 @@
     <van-search placeholder="请输入商品名称" v-model="squery" />
     <div class="flex-span">
       <van-row type="flex">
-        <van-col span="8">
-          单价
-        </van-col>
+        <van-col span="8">单价</van-col>
         <van-col span="8">税率</van-col>
         <van-col span="8">
           <span @click="screenshow=true">筛选</span>
@@ -97,7 +95,7 @@ export default {
       univalent: "100.00",
       yntex: "是",
       duty: "16.00",
-      kaptex:"3%;6%;10%;16%"
+      kaptex: "3%;6%;10%;16%"
     };
   },
   methods: {
@@ -158,6 +156,12 @@ export default {
             align-items: center;
             justify-content: space-between;
             padding: 5px 0;
+            .row-left {
+              flex: 1;
+            }
+            .row-right {
+              flex: 1;
+            }
           }
         }
       }
