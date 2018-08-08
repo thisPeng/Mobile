@@ -1,6 +1,22 @@
 <template>
   <div class="classify">
-    <cly :topList="topList" :detailedList="detailedList"></cly>
+    <!-- <cly :topList="topList" :detailedList="detailedList"></cly> -->
+    <div class="type">
+    <van-search placeholder="请输入商品名称" v-model="value" />
+    <van-badge-group :active-key="activeKey">
+      <van-badge title="土建" @click="onClick" />
+      <van-badge title="装饰" @click="onClick" />
+      <van-badge title="电气" @click="onClick" />
+      <van-badge title="给排水" @click="onClick" />
+      <van-badge title="消防工程" @click="onClick" />
+      <van-badge title="暖通" @click="onClick" />
+      <van-badge title="市政" @click="onClick" />
+      <van-badge title="园林绿化" @click="onClick" />
+      <van-badge title="仿古工程" @click="onClick" />
+      <van-badge title="其它材料" @click="onClick" />
+      <van-badge title="辅材工具" @click="onClick" />
+    </van-badge-group>
+    </div>
   </div>
 </template>
 <script>
@@ -14,13 +30,17 @@ export default {
       activeTabs: 0,
       pages: [],
       topList: [],
-      detailedList: []
+      detailedList: [],
+      activeKey: 0
     };
   },
   components: {
     cly
   },
   methods: {
+    onClick(key) {
+      this.activeKey = key;
+    },
     switchTabs(i) {
       if (i > 0) {
         this.getSuppClassify(this.list[i - 1][2]);
@@ -60,7 +80,7 @@ export default {
   },
   computed,
   mounted() {
-    this.getClassifyList();
+    // this.getClassifyList();
     this.$nextTick().then(() => {});
   }
 };
@@ -128,6 +148,9 @@ export default {
         }
       }
     }
+  }
+  .type{
+    height: 300px;
   }
 }
 </style>
