@@ -9,15 +9,19 @@
       <ul>
         <li v-for="(item,index) in detailedList" :key="index" v-if="item.pid == topList[active].id">
           <div class="class-title">{{item.name}}</div>
-          <div v-for="(ite,idx) in item.list" :key="idx">
-            <van-collapse v-model="activeNames" v-if="ite.list.length > 0">
-              <van-collapse-item :title="ite.name" :name="idx">
-                <div class="item" v-for="(e,i) in ite.list" :key="i" @click="onItemClick(e.id)">
-                  <div class="title">{{e.name}}</div>
+          <div v-for="(ite,idx) in item.list" :key="idx" class="class-item">
+            <!-- <van-collapse v-model="activeNames" v-if="ite.list.length > 0" class="item-list">
+              <van-collapse-item class="text-xs" :title="ite.name" :name="idx">
+                <div class="class-item" v-for="(e,i) in ite.list" :key="i" @click="onItemClick(e.id)">
+                  <div class="item">
+                    <img class="image" :src="e.img" alt="">
+                    <div class="title">{{e.name}}</div>
+                  </div>
                 </div>
               </van-collapse-item>
-            </van-collapse>
-            <div class="item" v-else @click="onItemClick(ite.id)">
+            </van-collapse> -->
+            <div class="item" @click="onItemClick(ite.id)">
+              <img class="image" :src="ite.img" alt="">
               <div class="title">{{ite.name}}</div>
             </div>
           </div>
@@ -51,11 +55,10 @@ export default {
       this.active = index;
     },
     onItemClick(id) {
-      this.$store.commit("goodsParams", { id });
+      this.$store.commit("goodsParams", id);
       this.$router.push({
         name: "goodsList"
       });
-      console.log(id);
     }
   },
   computed
@@ -64,17 +67,18 @@ export default {
 <style lang="less" scoped>
 .classify {
   width: 100%;
-  bottom: 50px !important;
-  overflow: hidden !important;
+  font-size: 14px;
   .actives {
     border-bottom: 1px solid #3190e8;
     color: #3190e8;
   }
   .left {
-    top: 41px;
-    float: left;
     width: 25%;
-    height: 100%;
+    position: absolute;
+    top: 45px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     overflow-y: scroll;
     ul {
       list-style: none;
@@ -89,38 +93,49 @@ export default {
     }
   }
   .right {
-    float: left;
-    width: 75%;
-    height: 100%;
+    position: absolute;
+    top: 45px;
+    left: 25%;
+    right: 0;
+    bottom: 0;
     overflow-y: scroll;
     ul {
       list-style: none;
-      .class-title {
-        padding: 7px 10px;
-        background: #eee;
-      }
-      .item {
-        overflow: hidden;
-        width: 100%;
-        height: 44px;
-        padding: 10px 15px;
-        font-size: 14px;
+      li {
         background: #fff;
-        border-bottom: 1px solid #eee;
-        display: flex;
-        align-items: center;
-        .item-left {
-          float: left;
-          .item-img {
-            width: 100px;
-            height: 100px;
-            background: #eee;
+        .class-title {
+          padding: 7px 10px;
+          background: #eee;
+        }
+        .class-item {
+          width: 33.33%;
+          height: 90px;
+          display: inline-block;
+          .item {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            .image {
+              width: 55px;
+              height: 55px;
+              border-radius: 5px;
+            }
+            .title {
+              padding-top: 5px;
+              font-size: 12px;
+              text-align: center;
+            }
           }
         }
-      }
-      .van-collapse-item__content {
-        .title {
-          font-size: 12px !important;
+        .class-list {
+          width: 100%;
+        }
+        .van-collapse-item__content {
+          .title {
+            font-size: 12px !important;
+          }
         }
       }
     }

@@ -118,7 +118,7 @@ export default new Router({
           name: "material",
           component: Material,
           meta: {
-            title: "物资列表" // 页面标题
+            title: "项目详情" // 页面标题
           }
         },
         {

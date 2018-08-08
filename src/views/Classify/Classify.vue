@@ -81,27 +81,36 @@ export default {
           if (val[8] === "00000000-0000-0000-0000-000000000000") {
             this.allTopList.push({
               id: val[0],
+              mid: val[4],
               code: val[1],
               name: val[2],
               pid: val[8],
+              img: val[16].replace("~", this.servePath),
               list: []
             });
             topIndex++;
           } else if (this.allTopList[topIndex].id === val[8]) {
             this.allDetailedList.push({
               id: val[0],
+              mid: val[4],
               code: val[1],
               name: val[2],
               pid: val[8],
+              img: val[16].replace("~", this.servePath),
               list: []
             });
             deIndex++;
           } else if (this.allDetailedList[deIndex].id === val[8]) {
             this.allDetailedList[deIndex].list.push({
               id: val[0],
+              mid: val[4],
               code: val[1],
               name: val[2],
               pid: val[8],
+              img: val[16]
+                ? val[16].replace("~", this.servePath)
+                : this.servePath +
+                  "/SupplyChain/Images/MaterialType/default.jpg",
               list: []
             });
           } else {
@@ -109,8 +118,13 @@ export default {
               if (v.id === val[8]) {
                 v.list.push({
                   id: val[0],
+                  mid: val[4],
                   code: val[1],
                   name: val[2],
+                  img: val[16]
+                    ? val[16].replace("~", this.servePath)
+                    : this.servePath +
+                      "/SupplyChain/Images/MaterialType/default.jpg",
                   pid: val[8]
                 });
               }
@@ -134,66 +148,10 @@ export default {
 <style lang="less" scoped>
 .classify {
   width: 100%;
-  bottom: 50px !important;
+  bottom: 40px !important;
   overflow: hidden !important;
-  .actives {
-    border-bottom: 1px solid #3190e8;
-    color: #3190e8;
-  }
-  .left {
-    top: 41px;
-    float: left;
-    width: 25%;
+  .van-tabs {
     height: 100%;
-    overflow-y: scroll;
-    ul {
-      list-style: none;
-      li {
-        padding: 15px 5px;
-        text-align: center;
-      }
-    }
-    .active {
-      background: #fff;
-      border-left: 2px solid #3190e8;
-    }
-  }
-  .right {
-    float: left;
-    width: 75%;
-    height: 100%;
-    overflow-y: scroll;
-    ul {
-      list-style: none;
-      .class-title {
-        padding: 7px 10px;
-        background: #eee;
-      }
-      .item {
-        overflow: hidden;
-        width: 100%;
-        height: 44px;
-        padding: 10px 15px;
-        font-size: 14px;
-        background: #fff;
-        border-bottom: 1px solid #eee;
-        display: flex;
-        align-items: center;
-        .item-left {
-          float: left;
-          .item-img {
-            width: 100px;
-            height: 100px;
-            background: #eee;
-          }
-        }
-      }
-      .van-collapse-item__content {
-        .title {
-          font-size: 12px !important;
-        }
-      }
-    }
   }
 }
 </style>

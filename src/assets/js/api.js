@@ -171,8 +171,8 @@ const classify = {
       }
     })
   },
-  // 获取物资列表
-  getGoodsList(params) {
+  // 获取物资筛选项
+  getGoodsFilter(params) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -183,6 +183,28 @@ const classify = {
         '_parameters[BrandName]': params.brand,
         '_parameters[SKUList]': params.keyword,
         _paraNames: "MaterialTypeID,BrandName,SKUList",
+        _pUrl: ""
+      }
+    })
+  },
+  // 获取物资列表
+  getGoodsList(params, page) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Supp_ProductSKU_QueryService",
+        _methodName: "getCondiActorDataBCString",
+        '_parameters[BCName]': 'BC_SC_Supp_ProductSKU',
+        '_parameters[nStartPos]': page * 10,
+        '_parameters[nRecords]': 10,
+        '_parameters[fieldList]': '',
+        '_parameters[valueList]': '',
+        '_parameters[condiIndentList]': '',
+        '_parameters[SQLCondi]': params.SQLCondi,
+        '_parameters[SQLCondiType]': 0,
+        '_parameters[SQLFix]': params.SQLFix,
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     })
