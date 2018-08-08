@@ -6,15 +6,15 @@
           <van-search v-model="keyword" placeholder="请输入供应商名称" @search="onSearch"></van-search>
         </div>
         <div class="supplier-list">
-          <div class="supplier-item" v-for="(item,index) in list" :key="index">
+          <div class="supplier-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
             <div class="item-title">
               <span class="title">{{item[5]}}</span>
-              <span class="option" @click="onUnCollect(item)">取消收藏</span>
+              <span class="option" @click.stop="onUnCollect(item)">取消收藏</span>
             </div>
             <div class="item-content">
               <div class="content-row">
                 <span class="row-left">联系人：{{item[10]}}</span>
-                <span class="row-right">生产类别：{{item[6]}}</span>
+                <span class="row-right">生产类别：{{item[6] | type}}</span>
               </div>
               <div class="content-row">
                 <span class="row-left">联系电话：{{item[11]}}</span>
@@ -34,15 +34,15 @@
           <van-search v-model="allKeyword" placeholder="请输入供应商名称" @search="onSearch"></van-search>
         </div>
         <div class="supplier-list">
-          <div class="supplier-item" v-for="(item,index) in allList" :key="index">
+          <div class="supplier-item" v-for="(item,index) in allList" :key="index" @click="jumpPage(item)">
             <div class="item-title">
               <span class="title">{{item[2]}}</span>
-              <span class="option" @click="onCollect(item)">收藏</span>
+              <span class="option" @click.stop="onCollect(item)">收藏</span>
             </div>
             <div class="item-content">
               <div class="content-row">
                 <span class="row-left">联系人：{{item[13]}}</span>
-                <span class="row-right">生产类别：{{item[6]}}</span>
+                <span class="row-right">生产类别：{{item[3] | type}}</span>
               </div>
               <div class="content-row">
                 <span class="row-left">联系电话：{{item[14]}}</span>
@@ -78,6 +78,11 @@ export default {
       allPages: {}
     };
   },
+  filters: {
+    type: val => {
+      return val === 1 ? "生产厂家" : "经销商";
+    }
+  },
   methods: {
     getList() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
@@ -100,6 +105,7 @@ export default {
           if (res && res.status === 1) {
             const sp = res.text.split("]]");
             this.allList = eval(sp[0].split("=")[1] + "]]");
+            console.log(this.allList);
             this.allPages = eval(
               "(" + sp[1].split("=")[1].replace(";", "") + ")"
             );
@@ -109,6 +115,7 @@ export default {
         }
       });
     },
+    // 搜索
     onSearch(res) {
       console.log(res);
     },
@@ -116,20 +123,33 @@ export default {
     // 添加收藏
     onCollect(item) {
       const params = {
-        pid: this.userId.UCML_PostOID,
+        pid: this.userId.UCML_OrganizeOID,
         sid: item[0]
       };
       supplier.addCollect(params).then(res => {
         if (res && res.status === 1) {
-          this.$toast("添加收藏成功");
-        } else {
+          if (res.text === "1") {
+            this.$toast("供应商已经是常用供应商");
+          } else if (res.text === "2") {
+            this.$toast("添加收藏成功");
+          } else {
+            this.$toast("添加收藏失败，请刷新页面重试");
+          }
+        } else if (res && res.text) {
           this.$toast(res.text);
         }
       });
     },
+    // 取消收藏
     onUnCollect(item) {
       console.log(item);
       this.$toast("取消收藏成功");
+    },
+    jumpPage(item) {
+      console.log(item);
+      this.$router.push({
+        name: "supplierType"
+      });
     }
   },
   computed,
@@ -180,6 +200,12 @@ export default {
           align-items: center;
           justify-content: space-between;
           padding: 5px 0;
+          .row-left {
+            flex: 1;
+          }
+          .row-right {
+            flex: 1;
+          }
         }
       }
     }

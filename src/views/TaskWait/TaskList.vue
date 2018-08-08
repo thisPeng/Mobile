@@ -180,6 +180,12 @@ export default {
             align-items: center;
             justify-content: space-between;
             padding: 5px 0;
+            .row-left {
+              flex: 1;
+            }
+            .row-right {
+              flex: 1;
+            }
           }
         }
       }
