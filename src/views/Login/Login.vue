@@ -1,9 +1,12 @@
 <template>
   <div class="login">
-    <div class="login-logo">
+    <!-- <div class="login-logo">
       <i class="iconfont icon-leicailiaojiagongx"></i>
+    </div> -->
+    <div class="logo">
+      <img src="img\icons\android-chrome-512x512.png" alt="logo">
     </div>
-    <div class="login-title">材 博 汇</div>
+    <div class="login-title">材博汇供应链系统</div>
     <div class="login-form">
       <form @submit.prevent="userLogin()">
         <div class="login-form-input">
@@ -111,6 +114,14 @@ export default {
 .login {
   width: 100%;
   padding-top: 15%;
+  .logo {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    img {
+      width: 100%;
+    }
+  }
   .login-logo {
     width: 75px;
     height: 75px;
