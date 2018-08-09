@@ -7,7 +7,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-// import { cart } from "./../../assets/js/api.js";
+import { cart } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -23,6 +23,9 @@ export default {
     this.$nextTick().then(() => {
       if (this.projectInfo.ProjectNo) {
         this.$parent.title = this.projectInfo.ProjectName;
+        cart.getList(this.projectInfo.SC_ProjectOID).then(res => {
+          console.log(res);
+        });
       }
     });
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="classify">
     <div class="classify-search">
-      <van-search placeholder="请输入商品名称" v-model="keyword" />
+      <van-search placeholder="请输入商品名称" v-model="keyword" @search="onSearch" @cancel="filterReset" />
       <div class="flex-span">
         <div class="flex-1" @click="orderList('price')">单价
           <i class="iconfont icon-paixu-shang" v-show="!priceDesc"></i>
@@ -18,7 +18,11 @@
     </div>
     <div class="classify-data">
       <div class="classify-list">
-        <div class="classify-item" v-for="(item, index) in goodsList" :key="index">
+        <div v-for="(item, index) in goodsList" :key="index" @click="showInfo(item)">
+          <van-card :title="item[22]" :desc="item[28]" :price="item[5]" :thumb="item[41].replace('~',servePath)" />
+        </div>
+        <van-sku v-model="showBase" :sku="sku" />
+        <!-- <div class="classify-item" v-for="(item, index) in goodsList" :key="index">
           <div class="item-title">
             <span class="title">材料名称：{{item[22]}}</span>
           </div>
@@ -41,7 +45,7 @@
               <span>可开票税率：{{item[32]}}</span>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getGoodsList" />
     </div>
@@ -51,14 +55,14 @@
           <van-collapse v-model="activeNames">
             <van-collapse-item v-for="(item, index) in filterList" :key="index" :title="item.sku_name" :name="index">
               <span class="filter-item" v-for="(ite, idx) in item.sku_arr" :key="idx">
-                <van-button size="normal">{{ite}}</van-button>
+                <van-button :disabled="item.sku_arr.length === 1" v-if="ite.id" @click="itemActive(item.sku_name, ite.val, ite.id)">{{ite.val}}</van-button>
+                <van-button :disabled="item.sku_arr.length === 1" v-else @click="itemActive(item.sku_name, ite)">{{ite}}</van-button>
               </span>
             </van-collapse-item>
           </van-collapse>
         </div>
         <div class="screen-button">
-          <van-button type="default" class="button">重置</van-button>
-          <van-button type="primary" class="button">确定</van-button>
+          <van-button type="primary" size="large" @click="filterReset">重 置</van-button>
         </div>
       </div>
     </van-popup>
@@ -73,6 +77,9 @@ export default {
     return {
       params: { SQLCondi: "", SQLFix: "" },
       keyword: "",
+      searchSql: " and smt.SPUName LIKE '%%'",
+      BrandName: "",
+      SKUList: "",
       activeNames: [],
       screenshow: false,
       filterList: [],
@@ -80,44 +87,91 @@ export default {
       curPage: 1,
       pages: {},
       priceDesc: false,
-      taxRateDesc: true
+      taxRateDesc: true,
+      // 物资详情
+      showBase: false,
+      sku: {}
     };
   },
   methods: {
+    // 搜索
+    onSearch(res) {
+      if (res) {
+        this.curPage = 1;
+        this.getGoodsList();
+      } else {
+        this.filterReset();
+      }
+    },
     // 获取物资种类
     getGoodsFilter() {
       const params = {
-        id: this.goodsParams,
-        brand: "",
-        keyword: ""
+        MaterialTypeID: this.goodsParams,
+        BrandName: this.BrandName,
+        SKUList: this.SKUList
       };
       classify.getGoodsFilter(params).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split(";");
           const filterList = eval(sp[0]);
+          let tmp = [];
           filterList.forEach(val => {
-            val.sku_arr = val.sku_item.split(",");
+            if (val.sku_item.indexOf("|") > 0) {
+              let arr = [],
+                tmpArr = [];
+              tmpArr = val.sku_item.split(",");
+              tmpArr.forEach(v => {
+                tmp = v.split("|");
+                arr.push({
+                  id: tmp[0],
+                  val: tmp[1]
+                });
+              });
+              val.sku_arr = arr;
+            } else {
+              val.sku_arr = val.sku_item.split(",");
+            }
           });
+          // console.log(filterList);
           this.filterList = filterList;
         }
       });
     },
+    // 显示物资详情
+    showInfo(item) {
+      this.showBase = true;
+      console.log(item);
+    },
     // 获取物资列表
     getGoodsList() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
+      let SQLCondi = this.params.SQLCondi;
+      if (SQLCondi.indexOf(this.searchSql) > 0) {
+        const str = " and smt.SPUName LIKE '%" + this.keyword + "%'";
+        this.params.SQLCondi = SQLCondi.replace(this.searchSql, str);
+        this.searchSql = str;
+      } else {
+        this.params.SQLCondi += this.searchSql;
+      }
+
       classify.getGoodsList(this.params, page).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("]]");
             this.goodsList = eval(sp[0].split("=")[1] + "]]");
             this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
-            // console.log(this.goodsList);
+            this.getGoodsFilter();
+            console.log(this.goodsList);
           }
         } catch (e) {
-          console.log(e);
+          this.filterList = [];
+          this.goodsList = [];
+          this.pages = {};
+          // console.log(e);
         }
       });
     },
+    // 商品排序
     orderList(type = "price") {
       this.curPage = 1;
       if (type === "price") {
@@ -130,11 +184,47 @@ export default {
       SQLFix += this.taxRateDesc ? ",TaxRate DESC" : ",TaxRate ASC";
       this.params.SQLFix = SQLFix;
       this.getGoodsList();
+    },
+    // 筛选项选择
+    itemActive(type = "", val = "", id = "") {
+      this.curPage = 1;
+      if (id) {
+        this.SKUList += type + " : " + id + "|";
+        this.params.SQLCondi +=
+          " AND SC_Supp_ProductSKU.SC_MaterialType_FK = '" + id + "'";
+      } else {
+        if (type === "品牌") {
+          this.BrandName = val;
+          this.params.SQLCondi += " and BrandName='" + val + "'";
+        } else {
+          this.SKUList += type + " : " + val + "|";
+          this.params.SQLCondi +=
+            " and CHARINDEX('" + type + " : " + val + "',SKUUnionIDS)>0 ";
+        }
+      }
+      this.getGoodsList();
+    },
+    // 重置过滤选项
+    filterReset() {
+      this.searchSql = " and smt.SPUName LIKE '%%'";
+      this.keyword = this.BrandName = this.SKUList = "";
+      this.curPage = 1;
+
+      const params = {
+        SQLCondi:
+          "(SC_Supp_ProductSKU.SC_MaterialType_FK = '" +
+          this.goodsParams +
+          "' or SC_Supp_ProductSKU.Parent_MaterialType = '" +
+          this.goodsParams +
+          "')",
+        SQLFix: " ORDER BY Price ASC, TaxRate DESC"
+      };
+      this.params = params;
+      this.getGoodsList();
     }
   },
   computed,
   mounted() {
-    this.getGoodsFilter();
     const params = {
       SQLCondi:
         "(SC_Supp_ProductSKU.SC_MaterialType_FK = '" +
@@ -243,10 +333,6 @@ export default {
         right: 0;
         bottom: 0;
         text-align: center;
-        .button {
-          width: 50%;
-          // margin: 0 10px;
-        }
       }
     }
   }

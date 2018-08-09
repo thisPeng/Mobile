@@ -179,9 +179,9 @@ const classify = {
       data: {
         _bpoName: "BPO_Supp_ProductSKU_QueryService",
         _methodName: "Get_MtlTypeForJS",
-        '_parameters[MaterialTypeID]': params.id,
-        '_parameters[BrandName]': params.brand,
-        '_parameters[SKUList]': params.keyword,
+        '_parameters[MaterialTypeID]': params.MaterialTypeID,
+        '_parameters[BrandName]': params.BrandName,
+        '_parameters[SKUList]': params.SKUList,
         _paraNames: "MaterialTypeID,BrandName,SKUList",
         _pUrl: ""
       }
@@ -582,6 +582,30 @@ const task = {
   }
 };
 
+const cart = {
+  getList(ProjectID) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_ProjectService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_IntentionSKU",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_IntentionSKU.ProjectID ='" + ProjectID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": " ",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  }
+}
+
 export {
   login,
   index,
@@ -592,5 +616,6 @@ export {
   contact,
   users,
   supplier,
-  task
+  task,
+  cart
 };
