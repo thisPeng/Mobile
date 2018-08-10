@@ -18,34 +18,33 @@
     </div>
     <div class="classify-data">
       <div class="classify-list">
-        <div v-for="(item, index) in goodsList" :key="index" @click="showInfo(item)">
-          <van-card :title="item[22]" :desc="item[28]" :price="item[5]" :thumb="item[41].replace('~',servePath)" />
+        <div class="list-item" v-for="(item, index) in goodsList" :key="index" @click="showInfo(item)">
+          <van-card :title="item[22]" :desc="item[28]" :price="item[5]" :thumb="item[41].replace('~',servePath)">
+            <div slot="footer">
+              <!-- <i class="iconfont icon-xiangqing" @click="showInfo(item)"></i> -->
+              <i class="iconfont icon-add" @click.stop="addCart(item)"></i>
+            </div>
+          </van-card>
         </div>
-        <van-sku v-model="showBase" :sku="sku" />
-        <!-- <div class="classify-item" v-for="(item, index) in goodsList" :key="index">
-          <div class="item-title">
-            <span class="title">材料名称：{{item[22]}}</span>
-          </div>
-          <div class="item-content">
-            <div class="content-row">
-              <span>品牌名称：{{item[22]}}</span>
+        <!--商品详情-->
+        <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
+          <template slot="sku-body-top" slot-scope="props">
+            <van-cell-group>
+              <van-cell title="品牌名称" :value="goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
+              <van-cell title="税率" :value="goods.taxRate" :label="'可开票税率：' + goods.taxAll" />
+              <van-cell title="供应商" :value="goods.shop" />
+            </van-cell-group>
+          </template>
+          <template slot="sku-stepper" slot-scope="props">
+            <div></div>
+          </template>
+          <template slot="sku-actions" slot-scope="props">
+            <div class="van-sku-actions">
+              <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
+              <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">加入购物车</van-button>
             </div>
-            <div class="content-row">
-              <span>{{item[28]}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">单位：{{item[23]}}</span>
-              <span class="row-right">单价：{{item[5]}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">是否含税：{{item[4] ? '是' : '否'}}</span>
-              <span class="row-right">税率：{{item[20]}}</span>
-            </div>
-            <div class="content-row">
-              <span>可开票税率：{{item[32]}}</span>
-            </div>
-          </div>
-        </div> -->
+          </template>
+        </van-sku>
       </div>
       <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getGoodsList" />
     </div>
@@ -66,11 +65,17 @@
         </div>
       </div>
     </van-popup>
+    <!--购物车-->
+    <div class="cart-icon" @click="jumpCart">
+      <div class="van-badge__info">0</div>
+      <i class="iconfont icon-gouwuchekong"></i>
+    </div>
   </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
 import { classify } from "./../../assets/js/api.js";
+import { Sku } from "vant";
 
 export default {
   data() {
@@ -90,8 +95,30 @@ export default {
       taxRateDesc: true,
       // 物资详情
       showBase: false,
-      sku: {}
+      sku: {
+        tree: [],
+        price: "0.00", // 默认价格（单位元）
+        // stock_num: 0, // 商品总库存
+        // collection_id: 0, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
+        none_sku: true, // 是否无规格商品
+        hide_stock: true // 是否隐藏剩余库存
+      },
+      goods: {
+        id: "",
+        sid: "",
+        title: "", // 页面标题
+        picture: "", // 默认商品 sku 缩略图
+        brand: "",
+        info: "",
+        unit: "",
+        shop: "",
+        taxRate: "",
+        taxAll: ""
+      }
     };
+  },
+  components: {
+    "van-sku": Sku
   },
   methods: {
     // 搜索
@@ -137,10 +164,64 @@ export default {
         }
       });
     },
+    // 添加物资到购物车
+    addCart(item) {
+      this.goods = {
+        id: item[0],
+        sid: item[31],
+        title: item[22],
+        picture: item[41].replace("~", this.servePath),
+        brand: item[24],
+        info: item[28],
+        unit: item[23],
+        shop: item[36],
+        taxRate: item[20],
+        taxAll: item[32]
+      };
+      this.onBuyClicked();
+      // console.log(item);
+    },
     // 显示物资详情
     showInfo(item) {
+      this.goods = {
+        id: item[0],
+        sid: item[31],
+        title: item[22],
+        picture: item[41].replace("~", this.servePath),
+        brand: item[24],
+        info: item[28],
+        unit: item[23],
+        shop: item[36],
+        taxRate: item[20],
+        taxAll: item[32]
+      };
       this.showBase = true;
-      console.log(item);
+      // console.log(item);
+    },
+    jumpCart() {
+      this.$router.replace({
+        name: "cart"
+      });
+    },
+    // 添加购物车
+    onBuyClicked() {
+      if (this.projectInfo.ProjectNo) {
+        const params = {
+          OIDCheckList: this.goods.id + "|" + this.goods.sid,
+          PartnerID: this.userId.UCML_OrganizeOID,
+          ProjectID: this.projectInfo.SC_ProjectOID,
+          DemandID: this.projectInfo.DemandID
+        };
+        classify.addCart(params).then(res => {
+          if (res && res.status === 1 && res.text === "True") {
+            this.$toast.success("添加成功");
+          } else {
+            this.$toast.fail("添加失败");
+          }
+        });
+      } else {
+        this.$toast("请先点击屏幕右上角按钮，选择项目");
+      }
     },
     // 获取物资列表
     getGoodsList() {
@@ -161,7 +242,7 @@ export default {
             this.goodsList = eval(sp[0].split("=")[1] + "]]");
             this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
             this.getGoodsFilter();
-            console.log(this.goodsList);
+            // console.log(this.goodsList);
           }
         } catch (e) {
           this.filterList = [];
@@ -236,6 +317,11 @@ export default {
     };
     this.params = params;
     this.getGoodsList();
+    this.$nextTick().then(() => {
+      if (this.projectInfo.ProjectNo) {
+        this.$parent.title = this.projectInfo.ProjectName;
+      }
+    });
   }
 };
 </script>
@@ -257,42 +343,14 @@ export default {
     .classify-list {
       width: 100%;
       padding: 0 10px;
-      .classify-item {
-        background-color: #fff;
-        padding: 10px 15px;
-        border-bottom: 1px solid #eee;
+      .van-card {
+        border: 1px solid #eee;
         border-radius: 5px;
         margin-bottom: 10px;
-        .item-title {
-          padding: 10px 0;
-          border-bottom: 1px solid #f6f6f6;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          .title {
-            font-weight: 600;
-            font-size: 16px;
-          }
-          .icon {
-            font-size: 14px;
-          }
-        }
-        .item-content {
-          padding: 5px 0;
-          font-size: 13px;
-          color: #666;
-          .content-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 5px 0;
-            .row-left {
-              flex: 1;
-            }
-            .row-right {
-              flex: 1;
-            }
-          }
+        .iconfont {
+          color: #00a0e9;
+          font-size: 26px;
+          padding: 10px;
         }
       }
     }
@@ -336,13 +394,30 @@ export default {
       }
     }
   }
-
+  /* 分页 */
   .classify-pages {
     width: 100%;
     background-color: #f6f6f6;
     position: fixed;
     bottom: 0;
     z-index: 99;
+  }
+  /* 购物车 */
+  .cart-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 10px;
+    bottom: 50px;
+    background-color: #fa7815;
+    border-radius: 100%;
+    .iconfont {
+      color: #fff;
+      font-size: 30px;
+    }
   }
 }
 </style>

@@ -54,7 +54,7 @@ export default new Router({
           name: "classify",
           component: Classify,
           meta: {
-            title: "挑货" // 页面标题
+            title: "物资分类" // 页面标题
           }
         },
         {
@@ -70,7 +70,7 @@ export default new Router({
           name: "cart",
           component: Cart,
           meta: {
-            title: "货仓" // 页面标题
+            title: "购物车" // 页面标题
           }
         },
         {

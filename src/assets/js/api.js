@@ -208,7 +208,25 @@ const classify = {
         _pUrl: ""
       }
     })
-  }
+  },
+  // 添加购物车
+  addCart(params) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Supp_ProductSKU_QueryService",
+        _methodName: "SaveIntentionSKU",
+        '_parameters[BCName]': 'BC_SC_Supp_ProductSKU',
+        '_parameters[OIDCheckList]': params.OIDCheckList,
+        '_parameters[PartnerID]': params.PartnerID,
+        '_parameters[ProjectID]': params.ProjectID,
+        '_parameters[DemandID]': params.DemandID,
+        _paraNames: "OIDCheckList,PartnerID,ProjectID,DemandID",
+        _pUrl: ""
+      }
+    })
+  },
 }
 
 // 应用页

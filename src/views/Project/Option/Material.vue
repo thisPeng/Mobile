@@ -14,7 +14,7 @@ export default {
   computed,
   mounted() {
     if (!this.projectInfo.ProjectNo) {
-      this.$toast("请先点击屏幕右上角按钮，选择项目");
+      this.$toast.fail("请先点击屏幕右上角按钮，选择项目");
     } else {
       this.$parent.title = this.projectInfo.ProjectName;
     }

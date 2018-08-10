@@ -7,8 +7,8 @@
     <router-view class="content"></router-view>
     <van-tabbar v-model="active" v-show="isTabbar">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
-      <van-tabbar-item icon="shop" @click="jumpTabs('classify')">挑货</van-tabbar-item>
-      <van-tabbar-item icon="cart" @click="jumpTabs('cart')">货仓</van-tabbar-item>
+      <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item>
+      <van-tabbar-item icon="cart" @click="jumpTabs('cart')">购物车</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
