@@ -1,21 +1,31 @@
 <template>
   <div class="classify">
     <!-- <cly :topList="topList" :detailedList="detailedList"></cly> -->
-    <div class="type">
-    <van-search placeholder="请输入商品名称" v-model="value" />
-    <van-badge-group :active-key="activeKey">
-      <van-badge title="土建" @click="onClick" />
-      <van-badge title="装饰" @click="onClick" />
-      <van-badge title="电气" @click="onClick" />
-      <van-badge title="给排水" @click="onClick" />
-      <van-badge title="消防工程" @click="onClick" />
-      <van-badge title="暖通" @click="onClick" />
-      <van-badge title="市政" @click="onClick" />
-      <van-badge title="园林绿化" @click="onClick" />
-      <van-badge title="仿古工程" @click="onClick" />
-      <van-badge title="其它材料" @click="onClick" />
-      <van-badge title="辅材工具" @click="onClick" />
-    </van-badge-group>
+    <van-search placeholder="请输入商品名称" v-model="classifyvalue" />
+    <div class="left">
+      <van-badge-group :active-key="activeKey">
+        <van-badge title="土建" @click="onClick" />
+        <van-badge title="装饰" @click="onClick" />
+        <van-badge title="电气" @click="onClick" />
+        <van-badge title="给排水" @click="onClick" />
+        <van-badge title="消防工程" @click="onClick" />
+        <van-badge title="暖通" @click="onClick" />
+        <van-badge title="市政" @click="onClick" />
+        <van-badge title="园林绿化" @click="onClick" />
+        <van-badge title="仿古工程" @click="onClick" />
+        <van-badge title="其它材料" @click="onClick" />
+        <van-badge title="辅材工具" @click="onClick" />
+      </van-badge-group>
+    </div>
+    <div class="right">
+      <div class="class-title" >{{name}}</div>
+      <van-card title="标题" desc="描述" num="2" price="2.00">
+        <!--:thumb="imageURL" -->
+        <div slot="footer" class="">
+        <van-stepper v-model="choice" />
+          <!-- <van-button size="mini">加入购物车</van-button> -->
+        </div>
+      </van-card>
     </div>
   </div>
 </template>
@@ -31,7 +41,10 @@ export default {
       pages: [],
       topList: [],
       detailedList: [],
-      activeKey: 0
+      activeKey: 0,
+      classifyvalue: "",
+      name: "购物列表显示",
+      choice:1
     };
   },
   components: {
@@ -88,7 +101,7 @@ export default {
 <style lang="less" scoped>
 .classify {
   width: 100%;
-  bottom: 50px !important;
+  bottom: 10px !important;
   overflow: hidden !important;
   .actives {
     border-bottom: 1px solid #3190e8;
@@ -121,7 +134,7 @@ export default {
       list-style: none;
       .class-title {
         padding: 7px 10px;
-        background: #eee;
+        background: rgb(224, 12, 12);
       }
       .item {
         overflow: hidden;
@@ -149,8 +162,18 @@ export default {
       }
     }
   }
-  .type{
-    height: 300px;
+  .left {
+    height: 100%;
+    overflow-y: auto;
+  }
+  .van-badge--select {
+    font-weight: 700;
+    color: #333;
+    border-color: #00a0e9;
+  }
+  .class-title {
+    padding: 7px 10px;
+    background: rgb(202, 195, 195);
   }
 }
 </style>
