@@ -18,7 +18,7 @@
       </van-badge-group>
     </div>
     <div class="right">
-      <div class="class-title">{{name}}</div>
+      <div class="class-title" >{{name}}</div>
       <van-card title="标题" desc="描述" num="2" price="2.00">
         <!--:thumb="imageURL" -->
         <div slot="footer" class="">
