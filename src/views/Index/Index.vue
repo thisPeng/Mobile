@@ -59,25 +59,25 @@
               </div>
               <div class="project-text">物资列表</div>
             </div>
-            <div class="project-item" @click="jumpPage('material')">
+            <div class="project-item" @click="jumpPage('conprice')">
               <div class="item-icon bg-mint">
                 <i class="iconfont icon-icon-price" />
               </div>
               <div class="project-text">确认价格</div>
             </div>
-            <div class="project-item" @click="jumpPage('material')">
+            <div class="project-item" @click="jumpPage('contractinfo')">
               <div class="item-icon bg-red">
                 <i class="iconfont icon-hetong" />
               </div>
               <div class="project-text">合同信息</div>
             </div>
-            <div class="project-item" @click="jumpPage('material')">
+            <div class="project-item" @click="jumpPage('arrivalinformation')">
               <div class="item-icon bg-green">
                 <i class="iconfont icon-daohuofangshi" />
               </div>
               <div class="project-text">到货信息</div>
             </div>
-            <div class="project-item" @click="jumpPage('material')">
+            <div class="project-item" @click="jumpPage('paymentinfo')">
               <div class="item-icon bg-orange">
                 <i class="iconfont icon-fukuan" />
               </div>
@@ -87,7 +87,7 @@
         </van-swipe-item>
         <van-swipe-item>
           <div class="project">
-            <div class="project-item" @click="jumpPage('material')">
+            <div class="project-item" @click="jumpPage('infoitem')">
               <div class="item-icon bg-blue">
                 <i class="iconfont icon-gongcheng" />
               </div>

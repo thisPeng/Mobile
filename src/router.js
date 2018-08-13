@@ -10,6 +10,19 @@ import Project from "./views/Project/Project";
 import ProjectList from "./views/Project/ProjectList";
 import Option from "./views/Project/Option";
 import Material from "./views/Project/Option/Material";
+import ConPrice from "./views/Project/Option/ConPrice";
+import ContractInfo from "./views/Project/Option/ContractInfo";
+import ArrivalInformation from "./views/Project/Option/ArrivalInformation";
+import InfoItem from "./views/Project/Option/InfoItem";
+import Application from "./views/Project/Option/Payment/Application";
+import PaymentInfo from "./views/Project/Option/Payment/PaymentInfo";
+import PreMemory from "./views/Project/Option/Payment/PreMemory";
+import PayInfomation from "./views/Project/Option/Payment/PayInfomation";
+import Appropriation from "./views/Project/Option/Payment/Appropriation";
+import CapitalFlow from "./views/Project/Option/Payment/CapitalFlow";
+import Withholding from "./views/Project/Option/Payment/Withholding"
+import Frozen from "./views/Project/Option/Payment/Frozen";
+import OAinformation from "./views/Project/Option/Payment/OAinformation";
 import MsgList from "./views/Message/MsgList";
 import Message from "./views/Message/Message";
 import Apply from "./views/Apply/Apply";
@@ -247,6 +260,110 @@ export default new Router({
           component: SupplieType,
           meta: {
             title: "供应商物资" // 页面标题
+          }
+        },
+        {
+          path: "/project/option/conprice",
+          name: "conprice",
+          component: ConPrice,
+          meta: {
+            title: "确认价格" // 页面标题
+          }
+        },
+        {
+          path: "/project/option/contractinfo",
+          name: "contractinfo",
+          component: ContractInfo,
+          meta: {
+            title: "合同信息" // 页面标题
+          }
+        },
+        {
+          path: "/project/option/arrivalinformation",
+          name: "arrivalinformation",
+          component: ArrivalInformation,
+          meta: {
+            title: "到货信息" // 页面标题
+          }
+        },
+        {
+          path: "/project/option/payment/application",
+          name: "application",
+          component: Application,
+          meta: {
+            title: "支付申请信息" // 页面标题
+          }
+        },
+        {
+          path: "/project/option/payment/paymentinfo",
+          name: "paymentinfo",
+          component: PaymentInfo,
+          meta: {
+            title: "付款信息列表" // 页面标题
+          }
+        },
+        {
+          path: "/project/option/payment/prememory",
+          name: "prememory",
+          component: PreMemory,
+          meta: {
+            title: "预存列表" // 页面标题
+          }
+        },
+        {
+          path: "/project/option/payment/payinfomation",
+          name: "payinfomation",
+          component: PayInfomation,
+          meta: {
+            title: "支付信息" // 页面标题
+          }
+        },
+        {
+          path: "/project/option/payment/appropriation",
+          name: "appropriation",
+          component: Appropriation,
+          meta: {
+            title: "批款信息" // 页面标题
+          }
+        },
+        {
+          path: "/project/option/payment/frozen",
+          name: "frozen",
+          component: Frozen,
+          meta: {
+            title: "冻结信息" // 页面标题
+          }
+        },
+        {
+          path: "/project/option/payment/withholding",
+          name: "withholding",
+          component: Withholding,
+          meta: {
+            title: "扣款信息" // 页面标题
+          }
+        },
+        {
+          path: "/project/option/payment/capitalflow",
+          name: "capitalflow",
+          component: CapitalFlow,
+          meta: {
+            title: "资金流水" // 页面标题
+          }
+        },
+        {
+          path:"/project/option/payment/oainformation",
+          name:"oainformation",
+          component:OAinformation,
+          meta:{
+            title:"OA批款信息" //页面标题
+          }
+        },
+        {
+          path:"/project/option/infoitem",
+          name:"infoitem",
+          component:InfoItem,
+          meta:{
+            title:"项目信息" //页面标题
           }
         }
       ]

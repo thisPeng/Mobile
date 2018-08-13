@@ -1,0 +1,103 @@
+<template>
+  <!-- 确认价格 -->
+  <div class="conprice">
+    <div class="con-data">
+      <div class="con-card">
+        <div class="con-item" v-for="(item,index) in list" :key="index">
+          <div class="item-title">
+            <span class="title">{{item[9]}}</span>
+          </div>
+          <div class="item-content">
+            <div class="content-row">
+              <span class="row-left">{{item[14]}}</span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">{{item[11]}} {{item[12]}}</span>
+              <span class="row-right"></span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">{{item[15]}}</span>
+              <!-- <span class="row-right">制单人:{{item.zdren}}</span> -->
+            </div>
+            <div class="content-row">
+              <span>{{item[16]}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import computed from "./../../../assets/js/computed.js";
+import { conprice } from "./../../../assets/js/api.js";
+
+export default {
+  data() {
+    return {
+      list: []
+    };
+  },
+  computed,
+  methods: {},
+  mounted() {
+    conprice.getList(this.projectInfo.SC_ProjectOID).then(res => {
+      if (res && res.status === 1) {
+        const sp = res.text.split("[[");
+        console.log(sp);
+        const csp = sp[1].split(";");
+        console.log(csp);
+        this.list = eval("[[" + csp[0]);
+        console.log(this.list);
+      }
+    });
+  }
+};
+</script>
+<style lang="less" scoped>
+.conprice {
+  width: 100%;
+  padding: 10px;
+  background-color: #eee;
+  .con-data {
+    margin-bottom: 40px;
+    .con-card {
+      width: 100%;
+      .con-item {
+        background-color: #fff;
+        padding: 10px 15px;
+        border-bottom: 1px solid #eee;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        .item-title {
+          padding: 10px 0;
+          border-bottom: 1px solid #f6f6f6;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .title {
+            font-weight: 600;
+            font-size: 16px;
+          }
+          .icon {
+            font-size: 14px;
+          }
+        }
+        .item-content {
+          padding: 5px 0;
+          font-size: 13px;
+          color: #666;
+          .content-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0;
+          }
+        }
+      }
+    }
+  }
+}
+</style>
+
+

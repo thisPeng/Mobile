@@ -27,7 +27,7 @@ const index = {
       url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=HOME_MSG"
     });
   }
-}
+};
 
 const project = {
   // 获取项目列表
@@ -38,14 +38,14 @@ const project = {
       data: {
         _bpoName: "BPO_Purchase_ProjectService",
         _methodName: "GetProjectInfo",
-        '_parameters[UserID]': params.oid,
-        '_parameters[ProjectType]': params.type,
+        "_parameters[UserID]": params.oid,
+        "_parameters[ProjectType]": params.type,
         _paraNames: "UserID,ProjectType",
         _pUrl: ""
       }
-    })
+    });
   }
-}
+};
 
 // 消息页面
 const message = {
@@ -66,7 +66,7 @@ const message = {
         _paraNames: "",
         _pUrl: ""
       }
-    })
+    });
   },
   // 获取未读消息
   getUnReadMsg(page) {
@@ -76,19 +76,20 @@ const message = {
       data: {
         _bpoName: "BPO_SYS_OAMessageList_WXService",
         _methodName: "getCondiActorDataBCString",
-        '_parameters[BCName]': 'BC_SYS_v_OAUserMsg_Unread',
-        '_parameters[nStartPos]': page * 10,
-        '_parameters[nRecords]': 10,
-        '_parameters[fieldList]': '',
-        '_parameters[valueList]': '',
-        '_parameters[condiIndentList]': '',
-        '_parameters[SQLCondi]': '',
-        '_parameters[SQLCondiType]': 0,
-        '_parameters[SQLFix]': '',
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        "_parameters[BCName]": "BC_SYS_v_OAUserMsg_Unread",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames:
+          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
-    })
+    });
   },
   // 获取已读系统
   getReadMsg(page) {
@@ -98,19 +99,20 @@ const message = {
       data: {
         _bpoName: "BPO_SYS_OAMessageList_WXService",
         _methodName: "getCondiActorDataBCString",
-        '_parameters[BCName]': 'BC_SYS_v_OAUserMsg_Read',
-        '_parameters[nStartPos]': page * 10,
-        '_parameters[nRecords]': 10,
-        '_parameters[fieldList]': '',
-        '_parameters[valueList]': '',
-        '_parameters[condiIndentList]': '',
-        '_parameters[SQLCondi]': '',
-        '_parameters[SQLCondiType]': 0,
-        '_parameters[SQLFix]': '',
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        "_parameters[BCName]": "BC_SYS_v_OAUserMsg_Read",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames:
+          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
-    })
+    });
   },
   // 标记已读
   markRead(id) {
@@ -120,11 +122,11 @@ const message = {
       data: {
         _bpoName: "BPO_SYS_OAMessageList_WXService",
         _methodName: "MarkRead",
-        '_parameters[OIDs]': id,
+        "_parameters[OIDs]": id,
         _paraNames: "OIDs",
         _pUrl: ""
       }
-    })
+    });
   },
   // 删除信息
   deleteMsg(id) {
@@ -134,14 +136,13 @@ const message = {
       data: {
         _bpoName: "BPO_SYS_OAMessageList_WXService",
         _methodName: "DeleteOAMessageReceivers",
-        '_parameters[OIDs]': id,
+        "_parameters[OIDs]": id,
         _paraNames: "OIDs",
         _pUrl: ""
       }
-    })
-  },
+    });
+  }
 };
-
 
 const classify = {
   // 供应商物资分类
@@ -152,11 +153,11 @@ const classify = {
       data: {
         _bpoName: "BPO_SC_SMaterialTypeTreeService",
         _methodName: "Get_SC_SMaterialType",
-        '_parameters[SupplierID]': SupplierID,
+        "_parameters[SupplierID]": SupplierID,
         _paraNames: "SupplierID",
         _pUrl: ""
       }
-    })
+    });
   },
   // 所有物资分类
   getProductType() {
@@ -169,7 +170,7 @@ const classify = {
         _paraNames: "",
         _pUrl: ""
       }
-    })
+    });
   },
   // 获取物资筛选项
   getGoodsFilter(params) {
@@ -179,13 +180,13 @@ const classify = {
       data: {
         _bpoName: "BPO_Supp_ProductSKU_QueryService",
         _methodName: "Get_MtlTypeForJS",
-        '_parameters[MaterialTypeID]': params.MaterialTypeID,
-        '_parameters[BrandName]': params.BrandName,
-        '_parameters[SKUList]': params.SKUList,
+        "_parameters[MaterialTypeID]": params.MaterialTypeID,
+        "_parameters[BrandName]": params.BrandName,
+        "_parameters[SKUList]": params.SKUList,
         _paraNames: "MaterialTypeID,BrandName,SKUList",
         _pUrl: ""
       }
-    })
+    });
   },
   // 获取物资列表
   getGoodsList(params, page) {
@@ -195,19 +196,20 @@ const classify = {
       data: {
         _bpoName: "BPO_Supp_ProductSKU_QueryService",
         _methodName: "getCondiActorDataBCString",
-        '_parameters[BCName]': 'BC_SC_Supp_ProductSKU',
-        '_parameters[nStartPos]': page * 10,
-        '_parameters[nRecords]': 10,
-        '_parameters[fieldList]': '',
-        '_parameters[valueList]': '',
-        '_parameters[condiIndentList]': '',
-        '_parameters[SQLCondi]': params.SQLCondi,
-        '_parameters[SQLCondiType]': 0,
-        '_parameters[SQLFix]': params.SQLFix,
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        "_parameters[BCName]": "BC_SC_Supp_ProductSKU",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": params.SQLCondi,
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": params.SQLFix,
+        _paraNames:
+          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
-    })
+    });
   },
   // 添加购物车
   addCart(params) {
@@ -217,17 +219,17 @@ const classify = {
       data: {
         _bpoName: "BPO_Supp_ProductSKU_QueryService",
         _methodName: "SaveIntentionSKU",
-        '_parameters[BCName]': 'BC_SC_Supp_ProductSKU',
-        '_parameters[OIDCheckList]': params.OIDCheckList,
-        '_parameters[PartnerID]': params.PartnerID,
-        '_parameters[ProjectID]': params.ProjectID,
-        '_parameters[DemandID]': params.DemandID,
+        "_parameters[BCName]": "BC_SC_Supp_ProductSKU",
+        "_parameters[OIDCheckList]": params.OIDCheckList,
+        "_parameters[PartnerID]": params.PartnerID,
+        "_parameters[ProjectID]": params.ProjectID,
+        "_parameters[DemandID]": params.DemandID,
         _paraNames: "OIDCheckList,PartnerID,ProjectID,DemandID",
         _pUrl: ""
       }
-    })
-  },
-}
+    });
+  }
+};
 
 // 应用页
 const apply = {
@@ -236,8 +238,7 @@ const apply = {
     return axios({
       url: "/ucml_mobile/getMenuCount_new.ashx"
     });
-  },
-
+  }
 };
 
 // 通讯录
@@ -277,11 +278,11 @@ const users = {
       data: {
         _bpoName: "BPO_Project_EditService",
         _methodName: "GetUserInfoOrgOID",
-        '_parameters[UserOID]': id,
+        "_parameters[UserOID]": id,
         _paraNames: "UserOID",
         _pUrl: ""
       }
-    })
+    });
   },
   // 更新用户密码
   updatePwd(params) {
@@ -302,7 +303,8 @@ const users = {
   // 保存用户信息
   saveInfo(params) {
     return axios({
-      url: "ucml_mobile/select_User_Org_Mobile.ashx?type=CHANGEINFO&sex=" +
+      url:
+        "ucml_mobile/select_User_Org_Mobile.ashx?type=CHANGEINFO&sex=" +
         params.sex +
         "&telno=" +
         params.telno +
@@ -337,19 +339,20 @@ const supplier = {
       data: {
         _bpoName: "BPO_Purchase_SupplierListService",
         _methodName: "getCondiActorDataBCString",
-        '_parameters[BCName]': 'BC_Purchase_Supplier',
-        '_parameters[nStartPos]': page * 10,
-        '_parameters[nRecords]': 10,
-        '_parameters[fieldList]': '',
-        '_parameters[valueList]': '',
-        '_parameters[condiIndentList]': '',
-        '_parameters[SQLCondi]': '',
-        '_parameters[SQLCondiType]': 0,
-        '_parameters[SQLFix]': '',
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        "_parameters[BCName]": "BC_Purchase_Supplier",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames:
+          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
-    })
+    });
   },
   // 常用供应商列表
   getList(page) {
@@ -359,19 +362,20 @@ const supplier = {
       data: {
         _bpoName: "BPO_Partner_SupplierService",
         _methodName: "getCondiActorDataBCString",
-        '_parameters[BCName]': 'BC_SC_Partner_Supplier',
-        '_parameters[nStartPos]': page * 10,
-        '_parameters[nRecords]': 10,
-        '_parameters[fieldList]': '',
-        '_parameters[valueList]': '',
-        '_parameters[condiIndentList]': '',
-        '_parameters[SQLCondi]': '',
-        '_parameters[SQLCondiType]': 0,
-        '_parameters[SQLFix]': '',
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        "_parameters[BCName]": "BC_SC_Partner_Supplier",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames:
+          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
-    })
+    });
   },
   // 收藏供应商
   addCollect(params) {
@@ -388,7 +392,7 @@ const supplier = {
       }
     });
   }
-}
+};
 
 // 我的待办
 const task = {
@@ -409,7 +413,8 @@ const task = {
         "_parameters[SQLCondi]": "",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": " ORDER BY AssignTask.SYS_Created DESC",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames:
+          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -431,7 +436,8 @@ const task = {
         "_parameters[SQLCondi]": "",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": " ORDER BY AssignTask.SYS_Created DESC",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames:
+          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -453,7 +459,8 @@ const task = {
         "_parameters[SQLCondi]": "InstanceID='" + params.InstanceID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": " ",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames:
+          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -475,7 +482,8 @@ const task = {
         "_parameters[SQLCondi]": "InstanceID='" + params.InstanceID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": " ",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames:
+          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -568,23 +576,36 @@ const task = {
       data: {
         _bpoName: "BPO_WF_YC_InOutFormService",
         _methodName: "FinishMyTask",
-        "_parameters[DeltaXml]": `<root>` +
+        "_parameters[DeltaXml]":
+          `<root>` +
           `<BC_WF_AssignTask_Idea UpdateKind="ukModify">` +
-          `<AssignTaskOID>` + parasm.TaskOID + `</AssignTaskOID>` +
+          `<AssignTaskOID>` +
+          parasm.TaskOID +
+          `</AssignTaskOID>` +
           `<resolutionCode>null</resolutionCode>` +
           `<Idea>null</Idea>` +
           `<IdeaCode>null</IdeaCode>` +
           `<BusiField1>null</BusiField1>` +
           `<BusiField2>null</BusiField2>` +
-          `<InstanceID>` + parasm.InstanceID + `</InstanceID>` +
+          `<InstanceID>` +
+          parasm.InstanceID +
+          `</InstanceID>` +
           `</BC_WF_AssignTask_Idea>` +
           `<BC_WF_AssignTask_Idea UpdateKind="">` +
           `<AssignTaskOID>null</AssignTaskOID>` +
           `<resolutionCode>null</resolutionCode>` +
-          `<Idea>` + parasm.viewText + `</Idea>` +
-          `<IdeaCode>` + parasm.code + `</IdeaCode>` +
-          `<BusiField1>` + parasm.text + `</BusiField1>` +
-          `<BusiField2>` + parasm.code + `</BusiField2>` +
+          `<Idea>` +
+          parasm.viewText +
+          `</Idea>` +
+          `<IdeaCode>` +
+          parasm.code +
+          `</IdeaCode>` +
+          `<BusiField1>` +
+          parasm.text +
+          `</BusiField1>` +
+          `<BusiField2>` +
+          parasm.code +
+          `</BusiField2>` +
           `<InstanceID>null</InstanceID>` +
           `</BC_WF_AssignTask_Idea>` +
           `</root>`,
@@ -614,16 +635,68 @@ const cart = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_IntentionSKU.ProjectID ='" + ProjectID + "'",
+        "_parameters[SQLCondi]":
+          "SC_IntentionSKU.ProjectID ='" + ProjectID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": " ",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames:
+          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
-    })
+    });
   }
-}
-
+};
+//获取确定价格信息
+const conprice = {
+  getList(ProjectID) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_XJService",
+        _methodName: "getBCColumnsForJS",
+        "_parameters[BCName]": "BC_SC_IntentionSKU",
+        "_parameters[ProjectID]": ProjectID,
+        _paraNames: "ProjectID",
+        _pUrl: ""
+      }
+    });
+  }
+};
+// 获取合同信息
+const contractinfo = {
+  getList(ProjectID) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Contract_ListService",
+        _methodName: "getBCColumnsForJS",
+        "_parameters[BCName]": "BC_SC_IntentionSKU",
+        "_parameters[ProjectID]": ProjectID,
+        _paraNames: "ProjectID",
+        _pUrl: ""
+      }
+    });
+  }
+};
+//获取到货信息
+const arrival = {
+  getList(ProjectID) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_Deliver_ListService",
+        _methodName: "getBCColumnsForJS",
+        "_parameters[BCName]": "BC_SC_IntentionSKU",
+        "_parameters[ProjectID]": ProjectID,
+        _paraNames: "ProjectID",
+        _pUrl: ""
+      }
+    });
+  }
+};
 export {
   login,
   index,
@@ -635,5 +708,8 @@ export {
   users,
   supplier,
   task,
-  cart
+  cart,
+  conprice,
+  contractinfo,
+  arrival
 };
