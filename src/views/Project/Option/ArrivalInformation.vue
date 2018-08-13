@@ -12,7 +12,7 @@
             <div class="content-row">
               <span class="row-left">{{item[9]}}</span>
             </div>
-             <div class="content-row">
+            <div class="content-row">
               <span class="row-right">{{item[10]}}</span>
             </div>
             <div class="content-row">
@@ -49,11 +49,16 @@ export default {
       if (res && res.status === 1) {
         // console.log(res);
         const sp = res.text.split("[[");
-         const tsp = sp[1].split(";");
-         this.list = eval("[[" + tsp[0]);
-          console.log(this.list);
+        const tsp = sp[1].split(";");
+        this.list = eval("[[" + tsp[0]);
+        console.log(this.list);
       }
     });
+    if (!this.projectInfo.ProjectNo) {
+      this.$toast.fail("请先点击屏幕右上角按钮，选择项目");
+    } else {
+      this.$parent.title = this.projectInfo.ProjectName;
+    }
   }
 };
 </script>
