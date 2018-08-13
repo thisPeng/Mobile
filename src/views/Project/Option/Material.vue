@@ -13,10 +13,10 @@ export default {
   methods: {},
   computed,
   mounted() {
-    if (!this.projectInfo.ProjectNo) {
-      this.$toast.fail("请先点击屏幕右上角按钮，选择项目");
-    } else {
+    if (this.projectInfo.ProjectNo) {
       this.$parent.title = this.projectInfo.ProjectName;
+    } else {
+      this.$toast.fail("请先点击屏幕右上角按钮，选择项目");
     }
   }
 };

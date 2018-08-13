@@ -646,6 +646,58 @@ const cart = {
   }
 }
 
+//获取确定价格信息
+const conprice = {
+  getList(ProjectID) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_XJService",
+        _methodName: "getBCColumnsForJS",
+        "_parameters[BCName]": "BC_SC_IntentionSKU",
+        "_parameters[ProjectID]": ProjectID,
+        _paraNames: "ProjectID",
+        _pUrl: ""
+      }
+    });
+  }
+};
+// 获取合同信息
+const contractinfo = {
+  getList(ProjectID) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Contract_ListService",
+        _methodName: "getBCColumnsForJS",
+        "_parameters[BCName]": "BC_SC_IntentionSKU",
+        "_parameters[ProjectID]": ProjectID,
+        _paraNames: "ProjectID",
+        _pUrl: ""
+      }
+    });
+  }
+};
+//获取到货信息
+const arrival = {
+  getList(ProjectID) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_Deliver_ListService",
+        _methodName: "getBCColumnsForJS",
+        "_parameters[BCName]": "BC_SC_IntentionSKU",
+        "_parameters[ProjectID]": ProjectID,
+        _paraNames: "ProjectID",
+        _pUrl: ""
+      }
+    });
+  }
+};
+
 export {
   login,
   index,
@@ -657,5 +709,8 @@ export {
   users,
   supplier,
   task,
-  cart
+  cart,
+  conprice,
+  contractinfo,
+  arrival
 };

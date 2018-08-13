@@ -103,10 +103,6 @@ export default {
     .van-badge-group {
       width: 100%;
     }
-    .active {
-      background: #fff;
-      border-left: 2px solid #3190e8;
-    }
   }
   .right {
     position: absolute;

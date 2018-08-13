@@ -21,7 +21,7 @@
         </div>
         <div class="item-text">合同信息</div>
       </div>
-      <div class="row-item" @click="jumpPage('material')">
+      <div class="row-item" @click="jumpPage('arrivalinformation')">
         <div class="item-icon bg-green">
           <i class="iconfont icon-daohuofangshi" />
         </div>
@@ -35,7 +35,7 @@
         </div>
         <div class="item-text">付款信息</div>
       </div>
-      <div class="row-item" @click="jumpPage('material')">
+      <div class="row-item" @click="jumpPage('infoitem')">
         <div class="item-icon bg-mint">
           <i class="iconfont icon-gongcheng" />
         </div>
