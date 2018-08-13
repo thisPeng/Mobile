@@ -5,13 +5,14 @@
         <cly :topList="allTopList" :detailedList="allDetailedList"></cly>
       </van-tab>
       <van-tab v-for="(item,index) in list" :key="index" :title="item[5]">
-        <!-- <cly :topList="topList" :detailedList="detailedList"></cly> -->
+        <stp />
       </van-tab>
     </van-tabs>
   </div>
 </template>
 <script>
 import cly from "./../../components/Classify/Classify";
+import stp from "./../../components/Classify/Supplier";
 import computed from "./../../assets/js/computed.js";
 import { classify, supplier } from "./../../assets/js/api.js";
 
@@ -28,31 +29,28 @@ export default {
     };
   },
   components: {
-    cly
+    cly,
+    stp
   },
   methods: {
+    // 切换选项卡
     switchTabs(i) {
       if (i > 0) {
-        this.getSuppClassify(this.list[i - 1][2]);
+        this.$store.commit("suppParams", this.list[i - 1]);
       }
     },
-    getSuppClassify(id) {
-      classify.getSupplierType(id).then(res => {
-        if (res && res.status === 1) {
-          const sp = eval(res.text);
-          console.log(sp);
-        }
-      });
-    },
+    // 选择分类
     onNavClick(index) {
       this.active = index;
     },
+    // 跳转分类商品列表
     onItemClick(id) {
       this.$store.commit("goodsParams", { id });
       this.$router.push({
         name: "goodsList"
       });
     },
+    // 获取分类列表
     getClassifyList() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
       supplier.getList(page).then(res => {
@@ -148,7 +146,7 @@ export default {
 <style lang="less" scoped>
 .classify {
   width: 100%;
-  bottom: 40px !important;
+  bottom: 50px !important;
   overflow: hidden !important;
   .van-tabs {
     height: 100%;

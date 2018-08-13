@@ -1,7 +1,7 @@
 <template>
   <div class="classify">
     <div class="classify-search">
-      <van-search placeholder="请输入商品名称" v-model="keyword" @search="onSearch" @cancel="filterReset" />
+      <van-search placeholder="请输入商品名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
       <div class="flex-span">
         <div class="flex-1" @click="orderList('price')">单价
           <i class="iconfont icon-paixu-shang" v-show="!priceDesc"></i>
@@ -66,15 +66,15 @@
       </div>
     </van-popup>
     <!--购物车-->
-    <div class="cart-icon" @click="jumpCart">
-      <div class="van-badge__info">0</div>
+    <div class="cart-icon" @click="jumpCart" v-if="projectInfo.ProjectNo">
+      <div class="van-badge__info">{{goodsPages.RecordCount}}</div>
       <i class="iconfont icon-gouwuchekong"></i>
     </div>
   </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { classify } from "./../../assets/js/api.js";
+import { classify, cart } from "./../../assets/js/api.js";
 import { Sku } from "vant";
 
 export default {
@@ -114,7 +114,8 @@ export default {
         shop: "",
         taxRate: "",
         taxAll: ""
-      }
+      },
+      goodsPages: {}
     };
   },
   components: {
@@ -213,14 +214,34 @@ export default {
           DemandID: this.projectInfo.DemandID
         };
         classify.addCart(params).then(res => {
-          if (res && res.status === 1 && res.text === "True") {
-            this.$toast.success("添加成功");
-          } else {
-            this.$toast.fail("添加失败");
+          try {
+            if (res && res.status === 1 && res.text === "True") {
+              this.getCartList();
+              this.$toast.success("添加成功");
+            } else {
+              this.$toast.fail("添加失败");
+            }
+          } catch (e) {
+            console.log(e);
           }
         });
       } else {
         this.$toast("请先点击屏幕右上角按钮，选择项目");
+      }
+    },
+    // 获取购物车列表
+    getCartList() {
+      if (this.projectInfo.ProjectNo) {
+        cart.getList(this.projectInfo.SC_ProjectOID).then(res => {
+          try {
+            if (res && res.status === 1) {
+              const sp = res.text.split(";");
+              this.goodsPages = eval("(" + sp[1].split("=")[1] + ")");
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        });
       }
     },
     // 获取物资列表
@@ -320,6 +341,7 @@ export default {
     this.$nextTick().then(() => {
       if (this.projectInfo.ProjectNo) {
         this.$parent.title = this.projectInfo.ProjectName;
+        this.getCartList();
       }
     });
   }
@@ -344,6 +366,7 @@ export default {
       width: 100%;
       padding: 0 10px;
       .van-card {
+        background-color: #fff;
         border: 1px solid #eee;
         border-radius: 5px;
         margin-bottom: 10px;

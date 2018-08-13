@@ -1,26 +1,19 @@
 <template>
   <div class="cart">
-    <div class="check-model">
-      <van-cell-swipe :right-width="65">
-        <van-cell-group>
-          <van-checkbox v-model="check">
-            <van-icon name="shop" />土建</van-checkbox>
-        </van-cell-group>
+    <van-list v-model="loading" :finished="finished" @load="onLoad">
+      <van-cell-swipe>
+        <div class="check-shop" v-for="(item,index) in list" :key="index">
+          <van-checkbox v-model="check"></van-checkbox>
+          <van-card :title="item[14]" :desc="item[16] + ' | 单位：' + item[15]" price="2.00" :thumb="item[32]">
+            <div slot="footer">
+              <van-stepper v-model="shopmodel" :integer="true" />
+            </div>
+          </van-card>
+        </div>
         <span slot="right" class="right">删除</span>
       </van-cell-swipe>
-    </div>
-    <van-cell-swipe :right-width="65">
-      <div class="check-shop">
-        <van-checkbox v-model="check" span="2"></van-checkbox>
-        <van-card title="钢筋" desc="很多" num="2" price="2.00" :thumb="imageURL" span=23>
-          <div slot="footer">
-            <van-stepper v-model="shopmodel" />
-          </div>
-        </van-card>
-      </div>
-      <span slot="right" class="right">删除</span>
-    </van-cell-swipe>
-    <van-submit-bar :price="0" button-text="发起询价" @submit="onSubmit">
+    </van-list>
+    <van-submit-bar button-text="发起询价" @submit="onSubmit">
       <van-checkbox v-model="checked">全选</van-checkbox>
     </van-submit-bar>
   </div>
@@ -34,11 +27,14 @@ export default {
     return {
       checked: false,
       check: false,
-      imageURL: "img/ms_ico2.png",
-      shopmodel: 1
+      shopmodel: 1,
+      list: [],
+      loading: false,
+      finished: false
     };
   },
   methods: {
+    onLoad() {},
     onSubmit() {}
   },
   computed,
@@ -47,8 +43,24 @@ export default {
       if (this.projectInfo.ProjectNo) {
         this.$parent.title = this.projectInfo.ProjectName;
         cart.getList(this.projectInfo.SC_ProjectOID).then(res => {
-          console.log(res);
+          if (res && res.status === 1) {
+            const sp = res.text.split(";");
+            const list = eval(sp[0].split("=")[1]);
+            list.forEach(val => {
+              if (val[32]) {
+                val[32] = val[32].replace("~", this.servePath);
+              } else {
+                val[32] =
+                  this.servePath +
+                  "/SupplyChain/Images/MaterialType/default.jpg";
+              }
+            });
+            this.list = list;
+            console.log(list);
+          }
         });
+      } else {
+        this.$toast.fail("请先点击屏幕右上角按钮，选择项目");
       }
     });
   }
@@ -57,29 +69,29 @@ export default {
 <style lang="less" scoped>
 .cart {
   width: 100%;
-  .check-model {
-    padding: 5px 15px 0px;
-    background-color: white;
-    .left {
-      background-color: red;
+  .van-list {
+    padding: 10px;
+    margin-bottom: 40px;
+    .check-shop {
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+      background-color: white;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      .van-card {
+        width: 100%;
+        background-color: white;
+      }
     }
   }
-  .check-shop {
-    display: flex;
-    align-items: center;
-    padding: 5px 15px 0px;
-    background-color: white;
-  }
+
   .van-submit-bar {
     bottom: 50px;
     .van-checkbox {
       margin-left: 20px;
       background-color: white;
     }
-  }
-  .van-card {
-    width: 94%;
-    background-color: white;
   }
 }
 </style>

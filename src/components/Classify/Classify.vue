@@ -1,14 +1,14 @@
 <template>
   <div class="classify">
     <div class="left">
-      <ul>
-        <li v-for="(item,index) in topList" :key="index" @click="onNavClick(index)" :class="index===active? 'active' : ''">{{item.name}}</li>
-      </ul>
+      <van-badge-group :active-key="active">
+        <van-badge v-for="(item, index) in topList" :key="index" :title="item.name" @click="onNavClick" />
+      </van-badge-group>
     </div>
     <div class="right">
       <ul>
         <li v-for="(item,index) in detailedList" :key="index" v-if="item.pid == topList[active].id">
-          <div class="class-title">{{item.name}}</div>
+          <div class="class-title">—— {{item.name}} ——</div>
           <div v-for="(ite,idx) in item.list" :key="idx" class="class-item">
             <!-- <van-collapse v-model="activeNames" v-if="ite.list.length > 0" class="item-list">
               <van-collapse-item class="text-xs" :title="ite.name" :name="idx">
@@ -68,10 +68,6 @@ export default {
 .classify {
   width: 100%;
   font-size: 14px;
-  .actives {
-    border-bottom: 1px solid #3190e8;
-    color: #3190e8;
-  }
   .left {
     width: 25%;
     position: absolute;
@@ -79,17 +75,13 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    overflow-y: scroll;
-    ul {
-      list-style: none;
-      li {
-        padding: 15px 5px;
-        text-align: center;
-      }
+    overflow-y: auto;
+    z-index: 101;
+    .van-badge--select {
+      border-color: #00a0e9;
     }
-    .active {
-      background: #fff;
-      border-left: 2px solid #3190e8;
+    .van-badge-group {
+      width: 100%;
     }
   }
   .right {
@@ -98,14 +90,17 @@ export default {
     left: 25%;
     right: 0;
     bottom: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
+    z-index: 102;
     ul {
       list-style: none;
       li {
         background: #fff;
         .class-title {
-          padding: 7px 10px;
-          background: #eee;
+          padding: 7px 0;
+          color: #333;
+          font-weight: 600;
+          text-align: center;
         }
         .class-item {
           width: 33.33%;
@@ -123,6 +118,7 @@ export default {
               border-radius: 5px;
             }
             .title {
+              color: #666;
               padding-top: 5px;
               font-size: 12px;
               text-align: center;

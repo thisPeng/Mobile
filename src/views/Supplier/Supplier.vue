@@ -3,7 +3,7 @@
     <van-tabs v-model="active">
       <van-tab title="常用供应商">
         <div class="supplier-option">
-          <van-search v-model="keyword" placeholder="请输入供应商名称" @search="onSearch"></van-search>
+          <van-search v-model="keyword" placeholder="请输入供应商名称" @search="searchList" @cancel="cleanSearch" show-action></van-search>
         </div>
         <div class="supplier-list">
           <div class="supplier-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
@@ -31,7 +31,7 @@
       </van-tab>
       <van-tab title="全部供应商">
         <div class="supplier-option">
-          <van-search v-model="allKeyword" placeholder="请输入供应商名称" @search="onSearch"></van-search>
+          <van-search v-model="allKeyword" placeholder="请输入供应商名称" @search="searchAllList" @cancel="cleanAllSearch" show-action></van-search>
         </div>
         <div class="supplier-list">
           <div class="supplier-item" v-for="(item,index) in allList" :key="index" @click="jumpPage(item)">
@@ -84,9 +84,28 @@ export default {
     }
   },
   methods: {
+    searchList() {
+      this.curPage = 1;
+      this.getList();
+    },
+    searchAllList() {
+      this.curAllPage = 1;
+      this.getAllList();
+    },
+    cleanSearch() {
+      this.curPage = 1;
+      this.keyword = "";
+      this.getList();
+    },
+    cleanAllSearch() {
+      this.curAllPage = 1;
+      this.allKeyword = "";
+      this.getAllList();
+    },
+    // 获取常用供应商
     getList() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      supplier.getList(page).then(res => {
+      supplier.getList(page, this.keyword).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("]]");
@@ -94,32 +113,29 @@ export default {
             this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
           }
         } catch (e) {
-          console.log(e);
+          this.list = [];
+          this.pages = {};
         }
       });
     },
+    // 获取所有供应商
     getAllList() {
       const page = this.curAllPage > 0 ? this.curAllPage - 1 : 0;
-      supplier.getAllList(page).then(res => {
+      supplier.getAllList(page, this.allKeyword).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("]]");
             this.allList = eval(sp[0].split("=")[1] + "]]");
-            console.log(this.allList);
             this.allPages = eval(
               "(" + sp[1].split("=")[1].replace(";", "") + ")"
             );
           }
         } catch (e) {
-          console.log(e);
+          this.allList = [];
+          this.allPages = {};
         }
       });
     },
-    // 搜索
-    onSearch(res) {
-      console.log(res);
-    },
-    onCancel() {},
     // 添加收藏
     onCollect(item) {
       const params = {
@@ -143,10 +159,11 @@ export default {
     // 取消收藏
     onUnCollect(item) {
       console.log(item);
-      this.$toast("取消收藏成功");
+      // this.$toast("取消收藏成功");
     },
+    // 跳转供应商分类商品
     jumpPage(item) {
-      console.log(item);
+      this.$store.commit("suppParams", item);
       this.$router.push({
         name: "supplierType"
       });

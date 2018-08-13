@@ -38,6 +38,9 @@ export default mapState({
   goodsParams: state => {
     return state.goodsParams;
   },
+  suppParams: state => {
+    return state.suppParams;
+  },
   servePath: state => {
     return state.servePath;
   },

@@ -3,7 +3,7 @@ import axios from "./request";
 // 登录页面
 const login = {
   // 账号、密码验证
-  validate(params) {
+  validate(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -31,7 +31,7 @@ const index = {
 
 const project = {
   // 获取项目列表
-  getProjectList(params) {
+  getProjectList(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -69,7 +69,7 @@ const message = {
     })
   },
   // 获取未读消息
-  getUnReadMsg(page) {
+  getUnReadMsg(page = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -91,7 +91,7 @@ const message = {
     })
   },
   // 获取已读系统
-  getReadMsg(page) {
+  getReadMsg(page = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -113,7 +113,7 @@ const message = {
     })
   },
   // 标记已读
-  markRead(id) {
+  markRead(id = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -127,7 +127,7 @@ const message = {
     })
   },
   // 删除信息
-  deleteMsg(id) {
+  deleteMsg(id = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -172,7 +172,7 @@ const classify = {
     })
   },
   // 获取物资筛选项
-  getGoodsFilter(params) {
+  getGoodsFilter(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -188,7 +188,7 @@ const classify = {
     })
   },
   // 获取物资列表
-  getGoodsList(params, page) {
+  getGoodsList(params = {}, page = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -209,8 +209,30 @@ const classify = {
       }
     })
   },
+  // 获取供应商物资
+  getSuppGoods(SupplierID = "", page = 0) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_ProductSKUQueryService",
+        _methodName: "getCondiActorDataBCString",
+        '_parameters[BCName]': 'BC_SC_Supp_ProductSKU',
+        '_parameters[nStartPos]': page * 10,
+        '_parameters[nRecords]': 10,
+        '_parameters[fieldList]': '',
+        '_parameters[valueList]': '',
+        '_parameters[condiIndentList]': '',
+        '_parameters[SQLCondi]': "SC_Supp_ProductSKU.SupplierID='" + SupplierID + "'",
+        '_parameters[SQLCondiType]': 0,
+        '_parameters[SQLFix]': "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
   // 添加购物车
-  addCart(params) {
+  addCart(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -249,7 +271,7 @@ const contact = {
     });
   },
   // 获取列表详情
-  getListData(id) {
+  getListData(id = "") {
     return axios({
       url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=ORG_SUB&OID=" + id
     });
@@ -270,7 +292,7 @@ const users = {
     });
   },
   // 获取用户ID
-  userId(id) {
+  userId(id = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -284,7 +306,7 @@ const users = {
     })
   },
   // 更新用户密码
-  updatePwd(params) {
+  updatePwd(params = {}) {
     return axios({
       url: "UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -300,7 +322,7 @@ const users = {
     });
   },
   // 保存用户信息
-  saveInfo(params) {
+  saveInfo(params = {}) {
     return axios({
       url: "ucml_mobile/select_User_Org_Mobile.ashx?type=CHANGEINFO&sex=" +
         params.sex +
@@ -313,7 +335,7 @@ const users = {
     });
   },
   // 获取统计数据
-  getDemandData(id) {
+  getDemandData(id = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -330,7 +352,7 @@ const users = {
 
 const supplier = {
   // 供应商所有列表
-  getAllList(page) {
+  getAllList(page, keyword = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -345,14 +367,14 @@ const supplier = {
         '_parameters[condiIndentList]': '',
         '_parameters[SQLCondi]': '',
         '_parameters[SQLCondiType]': 0,
-        '_parameters[SQLFix]': '',
+        '_parameters[SQLFix]': "AND SC_Supplier.SupplierName LIKE '%" + keyword + "%'",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     })
   },
   // 常用供应商列表
-  getList(page) {
+  getList(page = 0, keyword = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -367,14 +389,14 @@ const supplier = {
         '_parameters[condiIndentList]': '',
         '_parameters[SQLCondi]': '',
         '_parameters[SQLCondiType]': 0,
-        '_parameters[SQLFix]': '',
+        '_parameters[SQLFix]': "AND supp.SupplierName LIKE '%" + keyword + "%'",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     })
   },
   // 收藏供应商
-  addCollect(params) {
+  addCollect(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -437,7 +459,7 @@ const task = {
     });
   },
   // 获取预存详情
-  getTaskYCInfo(params) {
+  getTaskYCInfo(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -459,7 +481,7 @@ const task = {
     });
   },
   // 获取支付详情
-  getTaskZFInfo(params) {
+  getTaskZFInfo(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -481,7 +503,7 @@ const task = {
     });
   },
   // 获取支付项目资金
-  getTaskZFMoney(ProjectID) {
+  getTaskZFMoney(ProjectID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -495,7 +517,7 @@ const task = {
     });
   },
   // 读取流程数据
-  getFlowAssignData(InstanceID) {
+  getFlowAssignData(InstanceID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -509,7 +531,7 @@ const task = {
     });
   },
   // 读取审核意见列表
-  getViewList(InstanceID) {
+  getViewList(InstanceID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -601,7 +623,7 @@ const task = {
 };
 
 const cart = {
-  getList(ProjectID) {
+  getList(ProjectID, page = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -609,14 +631,14 @@ const cart = {
         _bpoName: "BPO_Purchase_ProjectService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_IntentionSKU",
-        "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 10,
+        "_parameters[nStartPos]": page * 20,
+        "_parameters[nRecords]": 20,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
         "_parameters[SQLCondi]": "SC_IntentionSKU.ProjectID ='" + ProjectID + "'",
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": " ",
+        "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }

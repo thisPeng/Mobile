@@ -23,6 +23,7 @@ export default new Vuex.Store({
     projectModel: "",
     taskParams: {},
     goodsParams: {},
+    suppParams: {},
     servePath: "",
     tabsShow: true
   },
@@ -40,6 +41,7 @@ export default new Vuex.Store({
         state.projectModel = "";
         state.taskParams = {};
         state.goodsParams = {};
+        state.suppParams = {};
       }
     },
     userId: (state, val) => {
@@ -71,6 +73,9 @@ export default new Vuex.Store({
     },
     goodsParams: (state, val) => {
       state.goodsParams = val;
+    },
+    suppParams: (state, val) => {
+      state.suppParams = val;
     },
     servePath: (state, val) => {
       state.servePath = val;
