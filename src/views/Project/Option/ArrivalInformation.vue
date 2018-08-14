@@ -3,7 +3,7 @@
   <div class="arrivalinformation">
     <div class="arrival-data">
       <div class="arrival-card">
-        <div class="arrival-item" v-for="(item,index) in list" :key="index">
+        <div class="arrival-item" v-for="(item,index) in list" :key="index" @click="jumpage('deliverydetails')">
           <!-- v-for="(item,index) in list" :key="index" -->
           <div class="item-title">
             <span class="title">{{item[7]}}</span>
@@ -58,6 +58,11 @@ export default {
           console.log(e);
         }
       });
+    },
+    jumpage(name){
+      this.$router.push({
+        name
+      })
     }
   },
   mounted() {

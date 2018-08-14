@@ -23,6 +23,9 @@ import CapitalFlow from "./views/Project/Option/Payment/CapitalFlow";
 import Withholding from "./views/Project/Option/Payment/Withholding"
 import Frozen from "./views/Project/Option/Payment/Frozen";
 import OAinformation from "./views/Project/Option/Payment/OAinformation";
+import PriceDetails from "./views/Project/Option/Details/PriceDetails";
+import DeliveryDetails from "./views/Project/Option/Details/DeliveryDetails";
+import ContractDetails from "./views/Project/Option/Details/ContractDetails";
 import MsgList from "./views/Message/MsgList";
 import Message from "./views/Message/Message";
 import Apply from "./views/Apply/Apply";
@@ -365,7 +368,31 @@ export default new Router({
           meta:{
             title:"项目信息" //页面标题
           }
-        }
+        },
+        {
+          path:"/project/option/details/pricedetails",
+          name:"pricedetails",
+          component:PriceDetails,
+          meta:{
+            title:"询价单编辑" //页面标题
+          }
+        },
+        {
+          path:"/project/option/details/deliverydetails",
+          name:"deliverydetails",
+          component:DeliveryDetails,
+          meta:{
+            title:"发货单编辑" //页面标题
+          }
+        },
+        {
+          path:"/project/option/details/contractdetails",
+          name:"contractdetails",
+          component:ContractDetails,
+          meta:{
+            title:"合同清单详情" //页面标题
+          }
+        },
       ]
     }
   ]

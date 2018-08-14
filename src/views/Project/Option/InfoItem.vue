@@ -25,7 +25,6 @@
       <van-field value="" label="到期时间:" disabled />
       <van-field value="" label="建设单位:" disabled />
       <van-field value="" label="备注:" disabled />
-
     </van-cell-group>
   </div>
 </template>

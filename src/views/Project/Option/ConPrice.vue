@@ -3,7 +3,7 @@
   <div class="conprice">
     <div class="con-data">
       <div class="con-card">
-        <div class="con-item" v-for="(item,index) in list" :key="index">
+        <div class="con-item" v-for="(item,index) in list" :key="index" @click="jumpage('pricedetails')">
           <div class="item-title">
             <span class="title">{{item[9]}}</span>
           </div>
@@ -24,6 +24,7 @@
             </div>
           </div>
         </div>
+          <van-button type="danger">危险按钮</van-button><van-button type="primary">主要按钮</van-button>
       </div>
     </div>
   </div>
@@ -52,6 +53,11 @@ export default {
         } catch (e) {
           console.log(e);
         }
+      });
+    },
+    jumpage(name) {
+      this.$router.push({
+        name
       });
     }
   },
