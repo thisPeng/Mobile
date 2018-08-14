@@ -49,7 +49,10 @@ module.exports = {
   parallel: require("os").cpus().length > 1,
   // PWA 插件相关配置
   // see https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
-  pwa: {},
+  pwa: {
+    name: '材博汇',
+    themeColor: '#00a0e9'
+  },
   // webpack-dev-server 相关配置
   devServer: {
     open: process.platform === "darwin",

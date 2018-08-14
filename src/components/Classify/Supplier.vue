@@ -75,7 +75,8 @@ export default {
           console.log(e);
         }
       });
-    }
+    },
+    addCart() {}
   },
   computed,
   mounted() {
