@@ -1,25 +1,27 @@
- <template>
- <!-- 支付申请信息 -->
-  <div class="application">
-    <div class="app-data">
-      <div class="app-card">
-        <div class="app-item" v-for="(item,index) in list" :key="index">
+<template>
+<!-- 支付信息 -->
+  <div class="payinfomation">
+    <div class="pre-data">
+      <div class="pre-card">
+        <div class="pre-item">
           <!-- v-for="(item,index) in list" :key="index" -->
           <div class="item-title">
-            <span class="title">单号:{{item.consturction}}</span>
+            <span class="title">收款账号:{{item}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">申请说明:{{item.fhid}}</span>
-              <span class="row-right">申请金额:{{item.zddate}}</span>
+              <span class="row-left">收款单位:{{item}}</span>
+              <span class="row-right">支付类型:{{item}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">状态 :{{item.htmoney}}</span>
-              <span class="row-right">申请日期:{{item.qddate}}</span>
+              <span class="row-left">支付金额:{{item}}</span>
+              <span class="row-right">单据状态:{{item}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">申请类型:{{item.htmoney}}</span>
-              <span class="row-right">发货金额:{{item.qddate}}</span>
+              <span>支付日期:{{item}}</span>
+            </div>
+            <div class="content-row">
+              <span>申请单号:{{item}}</span>
             </div>
           </div>
         </div>
@@ -28,27 +30,29 @@
   </div>
 </template>
 <script>
-import computed from "./../../../../assets/js/computed.js";
+import computed from "./../../assets/js/computed.js";
 export default {
   data() {
     return {
-      list:[]
+      list: [],
+      item: "1"
     };
   },
   computed,
-  methods: {}
+  methods: {},
+  mounted() {}
 };
 </script>
 <style lang="less" scoped>
-.application {
+.payinfomation {
   width: 100%;
   padding: 10px;
   background-color: #eee;
-  .app-data {
+  .pre-data {
     margin-bottom: 40px;
-    .app-card {
+    .pre-card {
       width: 100%;
-      .app-item {
+      .pre-item {
         background-color: #fff;
         padding: 10px 15px;
         border-bottom: 1px solid #eee;

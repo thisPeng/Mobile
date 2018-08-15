@@ -111,6 +111,7 @@ export default {
             const sp = res.text.split("]]");
             this.list = eval(sp[0].split("=")[1] + "]]");
             this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
+            console.log(sp);
           }
         } catch (e) {
           this.list = [];
@@ -147,6 +148,7 @@ export default {
           if (res.text === "1") {
             this.$toast("供应商已经是常用供应商");
           } else if (res.text === "2") {
+            this.getList();
             this.$toast("添加收藏成功");
           } else {
             this.$toast("添加收藏失败，请刷新页面重试");
@@ -159,7 +161,24 @@ export default {
     // 取消收藏
     onUnCollect(item) {
       console.log(item);
-      // this.$toast("取消收藏成功");
+      const params = {
+        pid: this.userId.UCML_OrganizeOID,
+        sid: item[2]
+      };
+      supplier.cancelCollect(params).then(res => {
+        if (res && res.status === 1) {
+          if (res.text === "1") {
+            this.$toast("该供应商未收藏");
+          } else if (res.text === "2") {
+            this.getList();
+            this.$toast("取消收藏供应商成功");
+          } else {
+            this.$toast("供应商ID或合作商ID不存在");
+          }
+        } else if (res && res.text) {
+          this.$toast(res.text);
+        }
+      });
     },
     // 跳转供应商分类商品
     jumpPage(item) {
