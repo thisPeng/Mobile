@@ -8,6 +8,15 @@
     </div>
     <div class="right">
       <div class="classify-list">
+        <div class="flex-span">
+          <div class="flex-1" @click="orderList">单价
+            <i class="iconfont icon-paixu-shang" v-show="!priceDesc"></i>
+            <i class="iconfont icon-paixu-xia" v-show="priceDesc"></i>
+          </div>
+          <div class="flex-1" @click="screenshow=true">筛选
+            <i class="iconfont icon-shaixuanxuanzhong"></i>
+          </div>
+        </div>
         <div class="list-item" v-for="(item, index) in goodsList" :key="index">
           <van-card :title="item[22]" :thumb="item[41].replace('~',servePath) ">
             <div slot="desc">
@@ -23,6 +32,18 @@
         </div>
       </div>
     </div>
+    <van-popup v-model="screenshow" position="right">
+      <div class="screen">
+        <div class="screen-filter">
+          <span class="filter-item" v-for="(item, index) in filterList" :key="index">
+            <van-button :disabled="filterList.length === 1">{{item}}</van-button>
+          </span>
+        </div>
+        <div class="screen-button">
+          <van-button type="primary" size="large">重 置</van-button>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 <script>
@@ -32,28 +53,37 @@ import { classify } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
+      priceDesc: false,
+      screenshow: false,
       isSearch: false,
       keyword: "",
       activeKey: 0,
       typeList: [],
+      filterList: [],
       goodsList: []
     };
   },
   methods: {
+    orderList() {},
     // 选择分类
     selectKey(i) {
       this.activeKey = i;
-      this.getSuppGoodsList(this.typeList[i].SupplierID);
+      this.getSuppGoodsList(
+        this.typeList[i].SupplierID,
+        this.typeList[i].SC_SMaterialTypeOID
+      );
+      // 获取二级分类
+      this.getSuppType(false, this.typeList[i].SC_SMaterialTypeOID);
     },
     // 获取分类商品
-    getSuppGoodsList(id) {
-      classify.getSuppGoods(id).then(res => {
+    getSuppGoodsList(id = "", pid = "") {
+      classify.getSuppGoods(id, pid).then(res => {
         try {
           if (res.status === 1) {
             const sp = res.text.split("[[");
             const tsp = sp[1].split("]]");
             this.goodsList = eval("[[" + tsp[0] + "]]");
-            console.log(this.goodsList);
+            // console.log(this.goodsList);
             // console.log(tsp[1]);
           }
         } catch (e) {
@@ -62,13 +92,19 @@ export default {
       });
     },
     // 获取供应商分类
-    getSuppType(isLoad = false) {
-      classify.getSupplierType(this.suppParams[2]).then(res => {
+    getSuppType(isLoad = false, fk = "") {
+      classify.getSupplierType(this.suppParams[2], fk).then(res => {
         try {
           if (res.status === 1) {
-            this.typeList = JSON.parse(res.text);
-            if (isLoad && this.typeList.length > 0) {
-              this.getSuppGoodsList(this.typeList[0].SupplierID);
+            const arr = JSON.parse(res.text);
+            if (arr.length > 0) {
+              if (isLoad) {
+                this.typeList = arr;
+                this.selectKey(0);
+              } else {
+                console.log(arr);
+                this.filterList = arr;
+              }
             }
           }
         } catch (e) {
@@ -116,6 +152,23 @@ export default {
     .classify-list {
       width: 100%;
       padding: 0 10px;
+      .flex-span {
+        width: 100%;
+        height: 30px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .flex-1 {
+          text-align: center;
+          .iconfont {
+            font-size: 16px;
+          }
+          .icon-shaixuanxuanzhong {
+            font-size: 14px;
+          }
+        }
+      }
       .list-item {
         .van-card {
           background-color: #fff;
@@ -137,9 +190,27 @@ export default {
       }
     }
   }
-  .class-title {
-    padding: 7px 10px;
-    background: rgb(202, 195, 195);
+  .van-popup--right {
+    width: 90%;
+    height: 100%;
+    .screen {
+      height: 100%;
+      overflow-y: auto;
+      background-color: #fff;
+      .screen-filter {
+        margin-bottom: 40px;
+        .filter-item {
+          padding: 5px;
+        }
+      }
+      .screen-button {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
+      }
+    }
   }
 }
 </style>

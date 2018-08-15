@@ -144,20 +144,6 @@ const message = {
 
 
 const classify = {
-  // 供应商物资分类
-  getSupplierType(SupplierID = "") {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_SC_SMaterialTypeTreeService",
-        _methodName: "Get_SC_SMaterialType",
-        '_parameters[SupplierID]': SupplierID,
-        _paraNames: "SupplierID",
-        _pUrl: ""
-      }
-    })
-  },
   // 所有物资分类
   getProductType() {
     return axios({
@@ -209,8 +195,23 @@ const classify = {
       }
     })
   },
+  // 供应商物资分类
+  getSupplierType(SupplierID = "", ParentID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SC_SMaterialTypeTreeService",
+        _methodName: "Get_SC_SMaterialType",
+        '_parameters[SupplierID]': SupplierID,
+        '_parameters[ParentID]': ParentID,
+        _paraNames: "SupplierID,ParentID",
+        _pUrl: ""
+      }
+    })
+  },
   // 获取供应商物资
-  getSuppGoods(SupplierID = "", page = 0) {
+  getSuppGoods(SupplierID = "", SC_SMaterialType_FK = "", page = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -223,7 +224,7 @@ const classify = {
         '_parameters[fieldList]': '',
         '_parameters[valueList]': '',
         '_parameters[condiIndentList]': '',
-        '_parameters[SQLCondi]': "SC_Supp_ProductSKU.SupplierID='" + SupplierID + "'",
+        '_parameters[SQLCondi]': "SC_Supp_ProductSKU.SupplierID='" + SupplierID + "' AND (SC_SMaterialType_FK in (select SC_SMaterialTypeOID from SC_SMaterialType where SC_SMaterialType_FK='" + SC_SMaterialType_FK + "') OR SC_SMaterialType_FK = '" + SC_SMaterialType_FK + "' )",
         '_parameters[SQLCondiType]': 0,
         '_parameters[SQLFix]': "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
