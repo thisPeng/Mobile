@@ -409,8 +409,23 @@ const supplier = {
         _pUrl: ""
       }
     });
-  }
-}
+  },
+  //取消收藏供应商
+  cancelCollect(params = {}){
+    return axios({
+      url:"/UCMLWebServiceEntryForJs.aspx",
+      method:"post",
+      data:{
+        _bpoName:"BPO_Partner_SupplierService",
+        _methodName:"UnCollectSupplier",
+        "_parameters[PartnerID]": params.pid,
+        "_parameters[SupplierID]": params.sid,
+        _paraNames: "PartnerID,SupplierID",
+        _pUrl: ""
+      }
+    });
+  },
+};
 
 // 我的待办
 const task = {

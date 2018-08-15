@@ -1,24 +1,24 @@
 <template>
-<!-- 扣款信息 -->
-  <div class="withholding">
-    <div class="with-data">
-      <div class="with-card">
-        <div class="with-item">
+<!-- 冻结信息 -->
+  <div class="frozen">
+    <div class="fro-data">
+      <div class="fro-card">
+        <div class="fro-item">
           <!-- v-for="(item,index) in list" :key="index" -->
           <div class="item-title">
             <span class="title">单号:{{item}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">扣款说明:{{item}}</span>
-              <span class="row-right">扣款金额:{{item}}</span>
+              <span class="row-left">冻结说明:{{item}}</span>
+              <span class="row-right">交易金额:{{item}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">扣款日期:{{item}}</span>
-              <span class="row-right">经手人:{{item}}</span>
+              <span class="row-left">审核日期:{{item}}</span>
+              <span class="row-right">单据状态:{{item}}</span>
             </div>
             <div class="content-row">
-              <span>单据状态:{{item}}</span>
+              <span>经手人:{{item}}</span>
             </div>
           </div>
         </div>
@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-import computed from "./../../../../assets/js/computed.js";
+import computed from "./../../assets/js/computed.js";
 export default {
   data() {
     return {
@@ -36,19 +36,20 @@ export default {
     };
   },
   computed,
+  methods: {},
   mounted() {}
 };
 </script>
 <style lang="less" scoped>
-.withholding {
+.frozen {
   width: 100%;
   padding: 10px;
   background-color: #eee;
-  .with-data {
+  .fro-data {
     margin-bottom: 40px;
-    .with-card {
+    .fro-card {
       width: 100%;
-      .with-item {
+      .fro-item {
         background-color: #fff;
         padding: 10px 15px;
         border-bottom: 1px solid #eee;

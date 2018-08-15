@@ -14,15 +14,16 @@ import ConPrice from "./views/Project/Option/ConPrice";
 import ContractInfo from "./views/Project/Option/ContractInfo";
 import ArrivalInformation from "./views/Project/Option/ArrivalInformation";
 import InfoItem from "./views/Project/Option/InfoItem";
-import Application from "./views/Project/Option/Payment/Application";
-import PaymentInfo from "./views/Project/Option/Payment/PaymentInfo";
-import PreMemory from "./views/Project/Option/Payment/PreMemory";
-import PayInfomation from "./views/Project/Option/Payment/PayInfomation";
-import Appropriation from "./views/Project/Option/Payment/Appropriation";
-import CapitalFlow from "./views/Project/Option/Payment/CapitalFlow";
-import Withholding from "./views/Project/Option/Payment/Withholding"
-import Frozen from "./views/Project/Option/Payment/Frozen";
-import OAinformation from "./views/Project/Option/Payment/OAinformation";
+// import Application from "./views/Project/Option/Payment/Application";
+// import PaymentInfo from "./views/Project/Option/Payment/PaymentInfo";
+// import PreMemory from "./views/Project/Option/Payment/PreMemory";
+// import PayInfomation from "./views/Project/Option/Payment/PayInfomation";
+// import Appropriation from "./views/Project/Option/Payment/Appropriation";
+import PaymentLabel from "./views/Project/Option/PaymentLabel";
+// import CapitalFlow from "./views/Project/Option/Payment/CapitalFlow";
+// import Withholding from "./views/Project/Option/Payment/Withholding"
+// import Frozen from "./views/Project/Option/Payment/Frozen";
+// import OAinformation from "./views/Project/Option/Payment/OAinformation";
 import PriceDetails from "./views/Project/Option/Details/PriceDetails";
 import DeliveryDetails from "./views/Project/Option/Details/DeliveryDetails";
 import ContractDetails from "./views/Project/Option/Details/ContractDetails";
@@ -289,78 +290,78 @@ export default new Router({
             title: "到货信息" // 页面标题
           }
         },
-        {
-          path: "/project/option/payment/application",
-          name: "application",
-          component: Application,
-          meta: {
-            title: "支付申请信息" // 页面标题
-          }
-        },
-        {
-          path: "/project/option/payment/paymentinfo",
-          name: "paymentinfo",
-          component: PaymentInfo,
-          meta: {
-            title: "付款信息列表" // 页面标题
-          }
-        },
-        {
-          path: "/project/option/payment/prememory",
-          name: "prememory",
-          component: PreMemory,
-          meta: {
-            title: "预存列表" // 页面标题
-          }
-        },
-        {
-          path: "/project/option/payment/payinfomation",
-          name: "payinfomation",
-          component: PayInfomation,
-          meta: {
-            title: "支付信息" // 页面标题
-          }
-        },
-        {
-          path: "/project/option/payment/appropriation",
-          name: "appropriation",
-          component: Appropriation,
-          meta: {
-            title: "批款信息" // 页面标题
-          }
-        },
-        {
-          path: "/project/option/payment/frozen",
-          name: "frozen",
-          component: Frozen,
-          meta: {
-            title: "冻结信息" // 页面标题
-          }
-        },
-        {
-          path: "/project/option/payment/withholding",
-          name: "withholding",
-          component: Withholding,
-          meta: {
-            title: "扣款信息" // 页面标题
-          }
-        },
-        {
-          path: "/project/option/payment/capitalflow",
-          name: "capitalflow",
-          component: CapitalFlow,
-          meta: {
-            title: "资金流水" // 页面标题
-          }
-        },
-        {
-          path:"/project/option/payment/oainformation",
-          name:"oainformation",
-          component:OAinformation,
-          meta:{
-            title:"OA批款信息" //页面标题
-          }
-        },
+        // {
+        //   path: "/project/option/payment/application",
+        //   name: "application",
+        //   component: Application,
+        //   meta: {
+        //     title: "支付申请信息" // 页面标题
+        //   }
+        // },
+        // {
+        //   path: "/project/option/payment/paymentinfo",
+        //   name: "paymentinfo",
+        //   component: PaymentInfo,
+        //   meta: {
+        //     title: "付款信息列表" // 页面标题
+        //   }
+        // },
+        // {
+        //   path: "/project/option/payment/prememory",
+        //   name: "prememory",
+        //   component: PreMemory,
+        //   meta: {
+        //     title: "预存列表" // 页面标题
+        //   }
+        // },
+        // {
+        //   path: "/project/option/payment/payinfomation",
+        //   name: "payinfomation",
+        //   component: PayInfomation,
+        //   meta: {
+        //     title: "支付信息" // 页面标题
+        //   }
+        // },
+        // {
+        //   path: "/project/option/payment/appropriation",
+        //   name: "appropriation",
+        //   component: Appropriation,
+        //   meta: {
+        //     title: "批款信息" // 页面标题
+        //   }
+        // },
+        // {
+        //   path: "/project/option/payment/frozen",
+        //   name: "frozen",
+        //   component: Frozen,
+        //   meta: {
+        //     title: "冻结信息" // 页面标题
+        //   }
+        // },
+        // {
+        //   path: "/project/option/payment/withholding",
+        //   name: "withholding",
+        //   component: Withholding,
+        //   meta: {
+        //     title: "扣款信息" // 页面标题
+        //   }
+        // },
+        // {
+        //   path: "/project/option/payment/capitalflow",
+        //   name: "capitalflow",
+        //   component: CapitalFlow,
+        //   meta: {
+        //     title: "资金流水" // 页面标题
+        //   }
+        // },
+        // {
+        //   path:"/project/option/payment/oainformation",
+        //   name:"oainformation",
+        //   component:OAinformation,
+        //   meta:{
+        //     title:"OA批款信息" //页面标题
+        //   }
+        // },
         {
           path:"/project/option/infoitem",
           name:"infoitem",
@@ -391,6 +392,14 @@ export default new Router({
           component:ContractDetails,
           meta:{
             title:"合同清单详情" //页面标题
+          }
+        },
+        {
+          path:"/project/option/paymentlabel",
+          name:"paymentlabel",
+          component:PaymentLabel,
+          meta:{
+            title:"付款信息列表" //页面标题
           }
         },
       ]

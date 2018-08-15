@@ -77,7 +77,7 @@
               </div>
               <div class="project-text">到货信息</div>
             </div>
-            <div class="project-item" @click="jumpPage('paymentinfo')">
+            <div class="project-item" @click="jumpPage('paymentlabel')">
               <div class="item-icon bg-orange">
                 <i class="iconfont icon-fukuan" />
               </div>

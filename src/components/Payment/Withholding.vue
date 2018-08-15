@@ -1,27 +1,24 @@
 <template>
-<!-- 支付信息 -->
-  <div class="payinfomation">
-    <div class="pre-data">
-      <div class="pre-card">
-        <div class="pre-item">
+<!-- 扣款信息 -->
+  <div class="withholding">
+    <div class="with-data">
+      <div class="with-card">
+        <div class="with-item">
           <!-- v-for="(item,index) in list" :key="index" -->
           <div class="item-title">
-            <span class="title">收款账号:{{item}}</span>
+            <span class="title">单号:{{item}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">收款单位:{{item}}</span>
-              <span class="row-right">支付类型:{{item}}</span>
+              <span class="row-left">扣款说明:{{item}}</span>
+              <span class="row-right">扣款金额:{{item}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">支付金额:{{item}}</span>
-              <span class="row-right">单据状态:{{item}}</span>
+              <span class="row-left">扣款日期:{{item}}</span>
+              <span class="row-right">经手人:{{item}}</span>
             </div>
             <div class="content-row">
-              <span>支付日期:{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span>申请单号:{{item}}</span>
+              <span>单据状态:{{item}}</span>
             </div>
           </div>
         </div>
@@ -30,29 +27,28 @@
   </div>
 </template>
 <script>
-import computed from "./../../../../assets/js/computed.js"
+import computed from "./../../assets/js/computed.js";
 export default {
   data() {
     return {
-      list: [],
-      item: "1"
+      list:[],
+      item:""
     };
   },
   computed,
-  methods: {},
   mounted() {}
 };
 </script>
 <style lang="less" scoped>
-.payinfomation {
+.withholding {
   width: 100%;
   padding: 10px;
   background-color: #eee;
-  .pre-data {
+  .with-data {
     margin-bottom: 40px;
-    .pre-card {
+    .with-card {
       width: 100%;
-      .pre-item {
+      .with-item {
         background-color: #fff;
         padding: 10px 15px;
         border-bottom: 1px solid #eee;

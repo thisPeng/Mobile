@@ -30,7 +30,7 @@
   </div>
 </template>
 <script>
-import computed from "./../../../../assets/js/computed.js";
+import computed from "./../../assets/js/computed.js";
 export default {
   data() {
     return {

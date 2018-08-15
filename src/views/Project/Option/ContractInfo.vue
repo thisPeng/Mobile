@@ -1,11 +1,9 @@
 <template>
   <!-- 合同信息 -->
   <div class="contractinfo">
-    <div class="conprice">
-      <div class="con-data">
+    <!-- <div class="con-data">
         <div class="con-card">
           <div class="con-item" v-for="(item,index) in list" :key="index" @click="jumpage('contractdetails')">
-            <!-- v-for="(item,index) in list" :key="index" -->
             <div class="item-title">
               <span class="title">{{item[7]}}</span>
             </div>
@@ -22,6 +20,28 @@
                 <span class="row-right">{{item[10]}}</span>
               </div>
             </div>
+          </div>
+        </div>
+      </div> -->
+    <div class="con-data">
+      <div class="con-card">
+        <div class="con-item" v-for="(item,index) in list" :key="index" @click="jumpage('pricedetails')">
+          <div class="item-title">
+            <span class="title">{{item[9]}}</span>
+          </div>
+          <div class="item-content">
+            <div class="content-row">
+              <span class="row-left">{{item[13]}}</span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">{{item[11]}}</span>
+              <span class="row-right">{{item[17]}}</span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">{{item[14]}}</span>
+              <span class="row-left">{{item[12]}}</span>
+            </div>
+
           </div>
         </div>
       </div>
@@ -46,17 +66,17 @@ export default {
             const sp = res.text.split("[[");
             const tsp = sp[1].split(";");
             this.list = eval("[[" + tsp[0]);
-            // console.log(this.list);
+            console.log(this.list);
           }
         } catch (e) {
           console.log(e);
         }
       });
     },
-    jumpage(name){
+    jumpage(name) {
       this.$router.push({
         name
-      })
+      });
     }
   },
   mounted() {
@@ -70,7 +90,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.conprice {
+.contractinfo {
   width: 100%;
   padding: 10px;
   background-color: #eee;

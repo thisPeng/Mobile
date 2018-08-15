@@ -1,24 +1,25 @@
-<template>
-<!-- OA批款信息 -->
-  <div class="oainformation">
-    <div class="oa-data">
-      <div class="oa-card">
-        <div class="oa-item">
+ <template>
+ <!-- 支付申请信息 -->
+  <div class="application">
+    <div class="app-data">
+      <div class="app-card">
+        <div class="app-item" v-for="(item,index) in list" :key="index">
           <!-- v-for="(item,index) in list" :key="index" -->
           <div class="item-title">
-            <span class="title">批款单号:{{item}}</span>
+            <span class="title">单号:{{item.consturction}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">工程名称:{{item}}</span>
-              <span class="row-right">合作商名称:{{item}}</span>
+              <span class="row-left">申请说明:{{item.fhid}}</span>
+              <span class="row-right">申请金额:{{item.zddate}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">批款金额:{{item}}</span>
-              <span class="row-right">批款日期:{{item}}</span>
+              <span class="row-left">状态 :{{item.htmoney}}</span>
+              <span class="row-right">申请日期:{{item.qddate}}</span>
             </div>
             <div class="content-row">
-              <span>批款ID:{{item}}</span>
+              <span class="row-left">申请类型:{{item.htmoney}}</span>
+              <span class="row-right">发货金额:{{item.qddate}}</span>
             </div>
           </div>
         </div>
@@ -27,29 +28,27 @@
   </div>
 </template>
 <script>
-import computed from "./../../../../assets/js/computed.js";
+import computed from "./../../assets/js/computed.js";
 export default {
   data() {
     return {
-      list:[],
-      item:""
+      list:[]
     };
   },
   computed,
-  methods: {},
-  mounted() {}
+  methods: {}
 };
 </script>
 <style lang="less" scoped>
-.oainformation {
+.application {
   width: 100%;
+  height: 100%;
   padding: 10px;
-  background-color: #eee;
-  .oa-data {
+  .app-data {
     margin-bottom: 40px;
-    .oa-card {
+    .app-card {
       width: 100%;
-      .oa-item {
+      .app-item {
         background-color: #fff;
         padding: 10px 15px;
         border-bottom: 1px solid #eee;
@@ -85,4 +84,5 @@ export default {
   }
 }
 </style>
+
 

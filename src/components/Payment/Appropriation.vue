@@ -1,24 +1,28 @@
 <template>
-<!-- 冻结信息 -->
-  <div class="frozen">
-    <div class="fro-data">
-      <div class="fro-card">
-        <div class="fro-item">
+  <!-- 批款信息 -->
+  <div class="appropriation">
+    <div class="app-data">
+      <div class="app-card">
+        <div class="app-item">
           <!-- v-for="(item,index) in list" :key="index" -->
           <div class="item-title">
             <span class="title">单号:{{item}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">冻结说明:{{item}}</span>
-              <span class="row-right">交易金额:{{item}}</span>
+              <span class="row-left">到款金额:{{item}}</span>
+              <span class="row-right">批款金额:{{item}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">审核日期:{{item}}</span>
+              <span class="row-left">批款日期:{{item}}</span>
+              <span class="row-right">收款账号:{{item}}</span>
+            </div>
+            <div class="content-row">
+               <span class="row-left">经手人:{{item}}</span>
               <span class="row-right">单据状态:{{item}}</span>
             </div>
             <div class="content-row">
-              <span>经手人:{{item}}</span>
+              <span>备注:{{item}}</span>
             </div>
           </div>
         </div>
@@ -27,12 +31,12 @@
   </div>
 </template>
 <script>
-import computed from "./../../../../assets/js/computed.js";
+import computed from "./../../assets/js/computed.js";
 export default {
   data() {
     return {
       list:[],
-      item:""
+      item:"1"
     };
   },
   computed,
@@ -41,15 +45,15 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.frozen {
+.appropriation {
   width: 100%;
   padding: 10px;
   background-color: #eee;
-  .fro-data {
+  .app-data {
     margin-bottom: 40px;
-    .fro-card {
+    .app-card {
       width: 100%;
-      .fro-item {
+      .app-item {
         background-color: #fff;
         padding: 10px 15px;
         border-bottom: 1px solid #eee;
@@ -85,5 +89,4 @@ export default {
   }
 }
 </style>
-
 
