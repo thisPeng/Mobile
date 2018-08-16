@@ -713,6 +713,22 @@ const arrival = {
     });
   }
 };
+const offer = {
+  getList(parasm = {}) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_SetPriceService",
+        _methodName: "getBCColumnsForJS",
+        "_parameters[PartnerID]": parasm.pid,
+        "_parameters[SupplierID]": parasm.sid,
+        _paraNames: "PartnerID,SupplierID",
+        _pUrl: ""
+      }
+    });
+  }
+};
 
 export {
   login,
@@ -728,5 +744,6 @@ export {
   cart,
   conprice,
   contractinfo,
-  arrival
+  arrival,
+  offer
 };
