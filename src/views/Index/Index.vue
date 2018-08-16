@@ -106,6 +106,36 @@
           </div>
         </van-swipe-item> -->
       </van-swipe>
+      <van-swipe class="apply-project" v-else>
+        <van-swipe-item>
+          <div class="project">
+            <div class="project-item" @click="jumpPage('quotation')">
+              <div class="item-icon bg-mint">
+                <i class="iconfont icon-icon-price" />
+              </div>
+              <div class="project-text">物质报价</div>
+            </div>
+            <div class="project-item" @click="jumpPage('trancontract')">
+              <div class="item-icon bg-red">
+                <i class="iconfont icon-hetong" />
+              </div>
+              <div class="project-text">合同信息</div>
+            </div>
+            <div class="project-item" @click="jumpPage('shippinginfo')">
+              <div class="item-icon bg-green">
+                <i class="iconfont icon-daohuofangshi" />
+              </div>
+              <div class="project-text">发货信息</div>
+            </div>
+            <div class="project-item" @click="jumpPage('tranpayment')">
+              <div class="item-icon bg-orange">
+                <i class="iconfont icon-fukuan" />
+              </div>
+              <div class="project-text">付款信息</div>
+            </div>
+          </div>
+        </van-swipe-item>
+      </van-swipe>
     </div>
 
     <!--统计数据-->

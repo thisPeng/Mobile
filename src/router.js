@@ -14,16 +14,7 @@ import ConPrice from "./views/Project/Option/ConPrice";
 import ContractInfo from "./views/Project/Option/ContractInfo";
 import ArrivalInformation from "./views/Project/Option/ArrivalInformation";
 import InfoItem from "./views/Project/Option/InfoItem";
-// import Application from "./views/Project/Option/Payment/Application";
-// import PaymentInfo from "./views/Project/Option/Payment/PaymentInfo";
-// import PreMemory from "./views/Project/Option/Payment/PreMemory";
-// import PayInfomation from "./views/Project/Option/Payment/PayInfomation";
-// import Appropriation from "./views/Project/Option/Payment/Appropriation";
 import PaymentLabel from "./views/Project/Option/PaymentLabel";
-// import CapitalFlow from "./views/Project/Option/Payment/CapitalFlow";
-// import Withholding from "./views/Project/Option/Payment/Withholding"
-// import Frozen from "./views/Project/Option/Payment/Frozen";
-// import OAinformation from "./views/Project/Option/Payment/OAinformation";
 import PriceDetails from "./views/Project/Option/Details/PriceDetails";
 import DeliveryDetails from "./views/Project/Option/Details/DeliveryDetails";
 import ContractDetails from "./views/Project/Option/Details/ContractDetails";
@@ -45,11 +36,19 @@ import TaskKKFrom from "./views/TaskWait/TaskKKFrom";
 import TaskPKFrom from "./views/TaskWait/TaskPKFrom";
 import TaskJDFrom from "./views/TaskWait/TaskJDFrom";
 import TaskDJFrom from "./views/TaskWait/TaskDJFrom";
+import Quotation from "./views/Transaction/Quotation";
+import TranContract from "./views/Transaction/TranContract";
+import ShippingInfo from "./views/Transaction/ShippingInfo";
+import TranPayment from "./views/Transaction/TranPayment";
+import Tranrial from "./views/Transaction/Tranrial";
+import Inventory from "./views/Transaction/Inventory";
+import Customerlist from "./views/CustomerList/CustomerList"
 Vue.use(Router);
 
 export default new Router({
   // mode: "history",
-  routes: [{
+  routes: [
+    {
       path: "/login",
       name: "login",
       component: Login
@@ -58,7 +57,8 @@ export default new Router({
       path: "/",
       redirect: "/index",
       component: Home,
-      children: [{
+      children: [
+        {
           path: "/index",
           name: "index",
           component: Index,
@@ -290,116 +290,100 @@ export default new Router({
             title: "到货信息" // 页面标题
           }
         },
-        // {
-        //   path: "/project/option/payment/application",
-        //   name: "application",
-        //   component: Application,
-        //   meta: {
-        //     title: "支付申请信息" // 页面标题
-        //   }
-        // },
-        // {
-        //   path: "/project/option/payment/paymentinfo",
-        //   name: "paymentinfo",
-        //   component: PaymentInfo,
-        //   meta: {
-        //     title: "付款信息列表" // 页面标题
-        //   }
-        // },
-        // {
-        //   path: "/project/option/payment/prememory",
-        //   name: "prememory",
-        //   component: PreMemory,
-        //   meta: {
-        //     title: "预存列表" // 页面标题
-        //   }
-        // },
-        // {
-        //   path: "/project/option/payment/payinfomation",
-        //   name: "payinfomation",
-        //   component: PayInfomation,
-        //   meta: {
-        //     title: "支付信息" // 页面标题
-        //   }
-        // },
-        // {
-        //   path: "/project/option/payment/appropriation",
-        //   name: "appropriation",
-        //   component: Appropriation,
-        //   meta: {
-        //     title: "批款信息" // 页面标题
-        //   }
-        // },
-        // {
-        //   path: "/project/option/payment/frozen",
-        //   name: "frozen",
-        //   component: Frozen,
-        //   meta: {
-        //     title: "冻结信息" // 页面标题
-        //   }
-        // },
-        // {
-        //   path: "/project/option/payment/withholding",
-        //   name: "withholding",
-        //   component: Withholding,
-        //   meta: {
-        //     title: "扣款信息" // 页面标题
-        //   }
-        // },
-        // {
-        //   path: "/project/option/payment/capitalflow",
-        //   name: "capitalflow",
-        //   component: CapitalFlow,
-        //   meta: {
-        //     title: "资金流水" // 页面标题
-        //   }
-        // },
-        // {
-        //   path:"/project/option/payment/oainformation",
-        //   name:"oainformation",
-        //   component:OAinformation,
-        //   meta:{
-        //     title:"OA批款信息" //页面标题
-        //   }
-        // },
         {
-          path:"/project/option/infoitem",
-          name:"infoitem",
-          component:InfoItem,
-          meta:{
-            title:"项目信息" //页面标题
+          path: "/project/option/infoitem",
+          name: "infoitem",
+          component: InfoItem,
+          meta: {
+            title: "项目信息" //页面标题
           }
         },
         {
-          path:"/project/option/details/pricedetails",
-          name:"pricedetails",
-          component:PriceDetails,
-          meta:{
-            title:"询价单编辑" //页面标题
+          path: "/project/option/details/pricedetails",
+          name: "pricedetails",
+          component: PriceDetails,
+          meta: {
+            title: "询价单编辑" //页面标题
           }
         },
         {
-          path:"/project/option/details/deliverydetails",
-          name:"deliverydetails",
-          component:DeliveryDetails,
-          meta:{
-            title:"发货单编辑" //页面标题
+          path: "/project/option/details/deliverydetails",
+          name: "deliverydetails",
+          component: DeliveryDetails,
+          meta: {
+            title: "发货单编辑" //页面标题
           }
         },
         {
-          path:"/project/option/details/contractdetails",
-          name:"contractdetails",
-          component:ContractDetails,
-          meta:{
-            title:"合同清单详情" //页面标题
+          path: "/project/option/details/contractdetails",
+          name: "contractdetails",
+          component: ContractDetails,
+          meta: {
+            title: "合同清单详情" //页面标题
           }
         },
         {
-          path:"/project/option/paymentlabel",
-          name:"paymentlabel",
-          component:PaymentLabel,
-          meta:{
-            title:"付款信息列表" //页面标题
+          path: "/project/option/paymentlabel",
+          name: "paymentlabel",
+          component: PaymentLabel,
+          meta: {
+            title: "付款信息列表" //页面标题
+          }
+        },
+        {
+          path: "/transaction/quotation",
+          name: "quotation",
+          component: Quotation,
+          meta: {
+            title: "报价单" //页面标题
+          }
+        },
+        {
+          path: "/customerlist/customerlist",
+          name: "customerlist",
+          component: Customerlist,
+          meta: {
+            title: "客户列表" //页面标题
+          }
+        },
+        {
+          path: "/transaction/trancontract",
+          name: "trancontract",
+          component: TranContract,
+          meta: {
+            title: "合同信息" //页面标题
+          }
+        },
+        {
+          path: "/transaction/shippinginfo",
+          name: "shippinginfo",
+          component: ShippingInfo,
+          meta: {
+            title: "发货信息" //页面标题
+          }
+        },
+        {
+          path: "/transaction/tranpayment",
+          name: "tranpayment",
+          component: TranPayment,
+          meta: {
+            title: "付款信息" //页面标题
+          }
+        },
+        {
+          path: "/transaction/tranrial",
+          name: "tranrial",
+          component: Tranrial,
+          meta: {
+            title: "付款信息" //页面标题
+          }
+        },
+        {
+          path: "/transaction/inventory",
+          name: "inventory",
+          component: Inventory,
+          meta: {
+            title: "清单详情" //页面标题
           }
         },
       ]

@@ -65,7 +65,11 @@ export default {
     },
     onMenu() {
       // this.$router.push({ name: "msgList" });
-      this.$router.push({ name: "projectList" });
+      if (this.userType === 1) {
+        this.$router.push({ name: "projectList" });
+      } else {
+        this.$router.push({ name: "customerlist" });
+      }
     },
     jumpTabs(name) {
       this.$store.commit("tabActive", this.active);

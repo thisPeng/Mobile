@@ -1,23 +1,24 @@
 <template>
-  <!-- 合同信息 -->
-  <div class="contractinfo">
-    <div class="con-data">
-      <div class="con-card">
-        <div class="con-item" v-for="(item,index) in list" :key="index" @click="jumpage('pricedetails')">
+<!-- 合同信息 -->
+  <div class="trancontract">
+    <div class="tran-data">
+      <div class="tran-card">
+        <div class="tran-item"  @click="jumpage('inventory')">
+          <!-- v-for="(item,index) in list" :key="index" @click="jumpage('pricedetails')" -->
           <div class="item-title">
-            <span class="title">{{item[9]}}</span>
+            <span class="title">项目名称：{{item}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">{{item[13]}}</span>
+              <span class="row-left">合同编号{{item}}</span>
+              <span class="row-right">发货情况{{item}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">{{item[11]}}</span>
-              <span class="row-right">{{item[17]}}</span>
+              <span class="row-left">合同名称{{item}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">{{item[14]}}</span>
-              <span class="row-left">{{item[12]}}</span>
+              <span class="row-left">合同金额{{item}}</span>
+              <span class="row-left">签订日期{{item}}</span>
             </div>
 
           </div>
@@ -27,56 +28,34 @@
   </div>
 </template>
 <script>
-import computed from "./../../../assets/js/computed.js";
-import { contractinfo } from "./../../../assets/js/api.js";
+import computed from "./../../assets/js/computed.js";
 export default {
   data() {
     return {
-      list: []
+      item: ""
     };
   },
   computed,
   methods: {
-    getList() {
-      contractinfo.getList(this.projectInfo.SC_ProjectOID).then(res => {
-        try {
-          if (res && res.status === 1) {
-            const sp = res.text.split("[[");
-            const tsp = sp[1].split(";");
-            this.list = eval("[[" + tsp[0]);
-            console.log(this.list);
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      });
-    },
-    jumpage(name) {
+    jumpage(name){
       this.$router.push({
         name
-      });
+      })
     }
   },
-  mounted() {
-    if (this.projectInfo.ProjectNo) {
-      this.$parent.title = this.projectInfo.ProjectName;
-      this.getList();
-    } else {
-      this.$toast.fail("请先点击屏幕右上角按钮，选择项目");
-    }
-  }
+  mounted() {}
 };
 </script>
 <style lang="less" scoped>
-.contractinfo {
+.trancontract {
   width: 100%;
   padding: 10px;
   background-color: #eee;
-  .con-data {
+  .tran-data {
     margin-bottom: 40px;
-    .con-card {
+    .tran-card {
       width: 100%;
-      .con-item {
+      .tran-item {
         background-color: #fff;
         padding: 10px 15px;
         border-bottom: 1px solid #eee;
@@ -112,5 +91,3 @@ export default {
   }
 }
 </style>
-
-
