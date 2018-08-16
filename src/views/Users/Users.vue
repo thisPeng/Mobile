@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="users-wrap">
-      <van-cell-group class="margin-bottom-sm">
+      <van-cell-group class="margin-bottom-sm" v-if="userType === 1">
         <van-cell title="供应商设置" is-link @click="jumpPage('supplier')">
           <template slot="icon">
             <div class="icon">
