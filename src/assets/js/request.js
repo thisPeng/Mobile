@@ -33,7 +33,9 @@ axios.interceptors.request.use(
   config => {
     // 是否加全屏loding
     if (config.data !== false) {
-      window.vm.$toast.loading();
+      window.vm.$toast.loading({
+        forbidClick: true // 禁用背景点击
+      });
     }
     if (config.method === "post") {
       config.transformRequest = function (data) {

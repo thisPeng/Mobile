@@ -146,12 +146,16 @@ export default {
       supplier.addCollect(params).then(res => {
         if (res && res.status === 1) {
           if (res.text === "1") {
-            this.$toast("供应商已经是常用供应商");
+            this.$toast.fail("供应商已经是常用供应商");
           } else if (res.text === "2") {
             this.getList();
-            this.$toast("添加收藏成功");
+            this.$nextTick().then(() => {
+              setTimeout(() => {
+                this.$toast.success("添加收藏成功");
+              }, 300);
+            });
           } else {
-            this.$toast("添加收藏失败，请刷新页面重试");
+            this.$toast.fail("添加收藏失败，请刷新页面重试");
           }
         } else if (res && res.text) {
           this.$toast(res.text);
@@ -160,7 +164,6 @@ export default {
     },
     // 取消收藏
     onUnCollect(item) {
-      console.log(item);
       const params = {
         pid: this.userId.UCML_OrganizeOID,
         sid: item[2]
@@ -168,12 +171,16 @@ export default {
       supplier.cancelCollect(params).then(res => {
         if (res && res.status === 1) {
           if (res.text === "1") {
-            this.$toast("该供应商未收藏");
+            this.$toast.fail("该供应商未收藏");
           } else if (res.text === "2") {
             this.getList();
-            this.$toast("取消收藏供应商成功");
+            this.$nextTick().then(() => {
+              setTimeout(() => {
+                this.$toast.success("取消收藏成功");
+              }, 300);
+            });
           } else {
-            this.$toast("供应商ID或合作商ID不存在");
+            this.$toast.fail("供应商ID或合作商ID不存在");
           }
         } else if (res && res.text) {
           this.$toast(res.text);

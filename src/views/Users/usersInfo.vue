@@ -145,7 +145,7 @@ export default {
       users.saveInfo(params).then(res => {
         if (res) {
           this.$store.commit("userInfo", this.userInfo);
-          this.$toast("保存成功");
+          this.$toast.success("保存成功");
         }
       });
     },

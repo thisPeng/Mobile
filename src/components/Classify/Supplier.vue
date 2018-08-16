@@ -1,46 +1,50 @@
 <template>
   <div class="supplie-type">
-    <van-search placeholder="请输入商品名称" v-model="keyword" v-if="!isSearch" />
+    <van-search placeholder="请输入商品名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action v-if="!isSearch" />
     <div class="left">
       <van-badge-group :active-key="activeKey">
         <van-badge v-for="(item, index) in typeList" :key="index" :title="item.MaterialName" @click="selectKey" />
       </van-badge-group>
     </div>
     <div class="right">
-      <div class="classify-list">
-        <div class="flex-span">
-          <div class="flex-1" @click="orderList">单价
-            <i class="iconfont icon-paixu-shang" v-show="!priceDesc"></i>
-            <i class="iconfont icon-paixu-xia" v-show="priceDesc"></i>
-          </div>
-          <div class="flex-1" @click="screenshow=true">筛选
-            <i class="iconfont icon-shaixuanxuanzhong"></i>
-          </div>
+      <div class="flex-span">
+        <div class="flex-1" @click="orderList">单价
+          <i class="iconfont icon-paixu" v-show="priceDesc === ''" />
+          <i class="iconfont icon-paixu-shang" v-show="priceDesc === false"></i>
+          <i class="iconfont icon-paixu-xia" v-show="priceDesc === true"></i>
         </div>
-        <div class="list-item" v-for="(item, index) in goodsList" :key="index">
-          <van-card :title="item[22]" :thumb="item[41].replace('~',servePath) ">
-            <div slot="desc">
-              <div class="item-brand">
-                <van-tag plain type="success">品牌： {{item[24]}}</van-tag>
+        <div class="flex-1" @click="screenshow=true">筛选
+          <i class="iconfont icon-shaixuanxuanzhong"></i>
+        </div>
+      </div>
+      <div class="classify-list" id="classifyList">
+        <van-list v-model="loading" :finished="finished" :immediate-check="false" @load="onLoad">
+          <div class="list-item" v-for="(item, index) in goodsList" :key="index">
+            <van-card :title="item[22]" :thumb="item[41].replace('~',servePath) ">
+              <div slot="desc">
+                <div class="item-brand">
+                  <van-tag plain type="success">品牌： {{item[24]}}</van-tag>
+                </div>
+                <div class="item-price">￥ {{item[5]}}</div>
               </div>
-              <div class="item-price">￥ {{item[5]}}</div>
-            </div>
-            <div slot="footer">
-              <i class="iconfont icon-add " @click.stop="addCart(item)"></i>
-            </div>
-          </van-card>
-        </div>
+              <div slot="footer">
+                <i class="iconfont icon-add " @click.stop="addCart(item)"></i>
+              </div>
+            </van-card>
+          </div>
+        </van-list>
       </div>
     </div>
     <van-popup v-model="screenshow" position="right">
       <div class="screen">
         <div class="screen-filter">
+          <div class="filter-title">—— 筛选项 ——</div>
           <span class="filter-item" v-for="(item, index) in filterList" :key="index">
-            <van-button :disabled="filterList.length === 1">{{item}}</van-button>
+            <van-button @click="filterGoods(item, index)" :disabled="filterActive === index ? true : false">{{item.MaterialName}}</van-button>
           </span>
         </div>
         <div class="screen-button">
-          <van-button type="primary" size="large">重 置</van-button>
+          <van-button type="primary" size="large" @click="filterReset">重 置</van-button>
         </div>
       </div>
     </van-popup>
@@ -53,18 +57,74 @@ import { classify } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      priceDesc: false,
+      priceDesc: "",
       screenshow: false,
       isSearch: false,
       keyword: "",
       activeKey: 0,
       typeList: [],
       filterList: [],
-      goodsList: []
+      goodsList: [],
+      pages: {},
+      loading: false,
+      finished: false,
+      filterActive: "",
+      SQLFix: ""
     };
   },
   methods: {
-    orderList() {},
+    // 滚动加载
+    onLoad() {
+      const i = this.activeKey;
+      classify
+        .getSuppGoods(
+          this.typeList[i].SupplierID,
+          this.typeList[i].SC_SMaterialTypeOID,
+          this.keyword,
+          this.SQLFix,
+          this.goodsList.length
+        )
+        .then(res => {
+          try {
+            if (res.status === 1) {
+              const sp = res.text.split("[[");
+              const tsp = sp[1].split("]]");
+              let arr = [];
+              arr = eval("[[" + tsp[0] + "]]");
+              this.pages = eval(
+                "(" + tsp[1].split("=")[1].replace(";", "") + ")"
+              );
+              this.goodsList = this.goodsList.concat(arr);
+              this.loading = false;
+              this.finished = this.pages.RecordCount < this.pages.StartPos;
+            }
+          } catch (e) {
+            this.loading = false;
+            this.finished = true;
+          }
+        });
+    },
+    // 物资排序
+    orderList() {
+      const i = this.activeKey;
+      this.priceDesc = !this.priceDesc;
+      this.SQLFix = " ORDER BY Price ";
+      this.SQLFix += this.priceDesc ? "DESC" : "ASC";
+      this.getSuppGoodsList(
+        this.typeList[i].SupplierID,
+        this.typeList[i].SC_SMaterialTypeOID
+      );
+    },
+    onSearch() {
+      const i = this.activeKey;
+      this.priceDesc = !this.priceDesc;
+      this.SQLFix = " ORDER BY Price ";
+      this.SQLFix += this.priceDesc ? "DESC" : "ASC";
+      this.getSuppGoodsList(
+        this.typeList[i].SupplierID,
+        this.typeList[i].SC_SMaterialTypeOID
+      );
+    },
     // 选择分类
     selectKey(i) {
       this.activeKey = i;
@@ -72,22 +132,50 @@ export default {
         this.typeList[i].SupplierID,
         this.typeList[i].SC_SMaterialTypeOID
       );
+      this.filterActive = "";
       // 获取二级分类
       this.getSuppType(false, this.typeList[i].SC_SMaterialTypeOID);
     },
+    // 过滤分类
+    filterGoods(item, index) {
+      this.filterActive = index;
+      this.getSuppGoodsList(item.SupplierID, item.SC_SMaterialTypeOID);
+      this.screenshow = false;
+    },
+    // 重置过滤
+    filterReset() {
+      const i = this.activeKey;
+      this.filterActive = "";
+      this.getSuppGoodsList(
+        this.typeList[i].SupplierID,
+        this.typeList[i].SC_SMaterialTypeOID
+      );
+      this.screenshow = false;
+      this.loading = false;
+      this.finished = false;
+    },
     // 获取分类商品
     getSuppGoodsList(id = "", pid = "") {
-      classify.getSuppGoods(id, pid).then(res => {
+      classify.getSuppGoods(id, pid, this.keyword, this.SQLFix).then(res => {
         try {
           if (res.status === 1) {
+            document.querySelector("#classifyList").scrollTop = 0;
             const sp = res.text.split("[[");
             const tsp = sp[1].split("]]");
-            this.goodsList = eval("[[" + tsp[0] + "]]");
-            // console.log(this.goodsList);
-            // console.log(tsp[1]);
+            let arr = [];
+            arr = eval("[[" + tsp[0] + "]]");
+            this.pages = eval(
+              "(" + tsp[1].split("=")[1].replace(";", "") + ")"
+            );
+            this.goodsList = arr;
+            this.loading = false;
+            this.finished = false;
           }
         } catch (e) {
-          console.log(e);
+          this.goodsList = [];
+          this.loading = false;
+          this.finished = false;
+          // console.log(e);
         }
       });
     },
@@ -97,14 +185,11 @@ export default {
         try {
           if (res.status === 1) {
             const arr = JSON.parse(res.text);
-            if (arr.length > 0) {
-              if (isLoad) {
-                this.typeList = arr;
-                this.selectKey(0);
-              } else {
-                console.log(arr);
-                this.filterList = arr;
-              }
+            if (isLoad) {
+              this.typeList = arr;
+              this.selectKey(0);
+            } else {
+              this.filterList = arr;
             }
           }
         } catch (e) {
@@ -147,36 +232,42 @@ export default {
     left: 25%;
     right: 0;
     bottom: 0;
-    overflow-y: auto;
+    // overflow-y: auto;
     z-index: 102;
+    .flex-span {
+      width: 100%;
+      height: 30px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .flex-1 {
+        text-align: center;
+        .iconfont {
+          font-size: 16px;
+        }
+        .icon-shaixuanxuanzhong {
+          font-size: 14px;
+        }
+      }
+    }
     .classify-list {
       width: 100%;
       padding: 0 10px;
-      .flex-span {
-        width: 100%;
-        height: 30px;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        .flex-1 {
-          text-align: center;
-          .iconfont {
-            font-size: 16px;
-          }
-          .icon-shaixuanxuanzhong {
-            font-size: 14px;
-          }
-        }
-      }
+      position: absolute;
+      top: 35px;
+      bottom: 0;
+      z-index: 103;
+      overflow-y: auto;
       .list-item {
+        width: 100%;
         .van-card {
           background-color: #fff;
           border: 1px solid #eee;
           border-radius: 5px;
           margin-bottom: 10px;
           .item-brand {
-            padding: 10px 0;
+            padding: 5px 0;
           }
           .item-price {
             color: #ff4257;
@@ -191,7 +282,7 @@ export default {
     }
   }
   .van-popup--right {
-    width: 90%;
+    width: 75%;
     height: 100%;
     .screen {
       height: 100%;
@@ -199,6 +290,14 @@ export default {
       background-color: #fff;
       .screen-filter {
         margin-bottom: 40px;
+        .filter-title {
+          width: 100%;
+          padding: 10px 0;
+          color: #333;
+          font-weight: 600;
+          text-align: center;
+          border-bottom: 1px solid #eee;
+        }
         .filter-item {
           padding: 5px;
         }

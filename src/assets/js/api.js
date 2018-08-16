@@ -211,7 +211,7 @@ const classify = {
     })
   },
   // 获取供应商物资
-  getSuppGoods(SupplierID = "", SC_SMaterialType_FK = "", page = 0) {
+  getSuppGoods(SupplierID = "", SC_SMaterialType_FK = "", keyword = "", SQLFix = "", StartPos = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -219,14 +219,14 @@ const classify = {
         _bpoName: "BPO_Purchase_ProductSKUQueryService",
         _methodName: "getCondiActorDataBCString",
         '_parameters[BCName]': 'BC_SC_Supp_ProductSKU',
-        '_parameters[nStartPos]': page * 10,
-        '_parameters[nRecords]': 10,
+        '_parameters[nStartPos]': StartPos,
+        '_parameters[nRecords]': 20,
         '_parameters[fieldList]': '',
         '_parameters[valueList]': '',
         '_parameters[condiIndentList]': '',
         '_parameters[SQLCondi]': "SC_Supp_ProductSKU.SupplierID='" + SupplierID + "' AND (SC_SMaterialType_FK in (select SC_SMaterialTypeOID from SC_SMaterialType where SC_SMaterialType_FK='" + SC_SMaterialType_FK + "') OR SC_SMaterialType_FK = '" + SC_SMaterialType_FK + "' )",
         '_parameters[SQLCondiType]': 0,
-        '_parameters[SQLFix]': "",
+        '_parameters[SQLFix]': " and smt.SPUName LIKE '%" + keyword + "%'" + SQLFix,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
@@ -412,13 +412,13 @@ const supplier = {
     });
   },
   //取消收藏供应商
-  cancelCollect(params = {}){
+  cancelCollect(params = {}) {
     return axios({
-      url:"/UCMLWebServiceEntryForJs.aspx",
-      method:"post",
-      data:{
-        _bpoName:"BPO_Partner_SupplierService",
-        _methodName:"UnCollectSupplier",
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Partner_SupplierService",
+        _methodName: "UnCollectSupplier",
         "_parameters[PartnerID]": params.pid,
         "_parameters[SupplierID]": params.sid,
         _paraNames: "PartnerID,SupplierID",
@@ -490,7 +490,7 @@ const task = {
         "_parameters[condiIndentList]": "",
         "_parameters[SQLCondi]": "InstanceID='" + params.InstanceID + "'",
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": " ",
+        "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
@@ -512,7 +512,7 @@ const task = {
         "_parameters[condiIndentList]": "",
         "_parameters[SQLCondi]": "InstanceID='" + params.InstanceID + "'",
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": " ",
+        "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }

@@ -53,6 +53,8 @@ module.exports = {
     name: '材博汇',
     themeColor: '#00a0e9',
     msTileColor: '#ffffff',
+    appleMobileWebAppCapable: 'yes',
+    appleMobileWebAppStatusBarStyle: 'black',
     workboxPluginMode: 'InjectManifest'
   },
   // webpack-dev-server 相关配置
