@@ -138,6 +138,7 @@ export default {
   left: 0;
   right: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   .van-nav-bar {
     color: #fff;
     background-color: #00a0e9;
@@ -154,6 +155,7 @@ export default {
     top: 46px;
     bottom: 0;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 </style>

@@ -342,6 +342,7 @@ export default {
       min-height: 130px;
       max-height: 230px;
       overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
       .task-item {
         background-color: #fff;
         padding: 10px 15px;

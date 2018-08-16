@@ -362,6 +362,7 @@ export default {
     right: 0;
     bottom: 0;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     .classify-list {
       width: 100%;
       padding: 0 10px;
@@ -401,6 +402,7 @@ export default {
     .screen {
       height: 100%;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       background-color: #fff;
       .screen-filter {
         margin-bottom: 40px;

@@ -218,6 +218,7 @@ export default {
     right: 0;
     bottom: 0;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     z-index: 101;
     .van-badge--select {
       border-color: #00a0e9;
@@ -259,6 +260,7 @@ export default {
       bottom: 0;
       z-index: 103;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       .list-item {
         width: 100%;
         .van-card {
@@ -287,6 +289,7 @@ export default {
     .screen {
       height: 100%;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       background-color: #fff;
       .screen-filter {
         margin-bottom: 40px;

@@ -76,6 +76,7 @@ export default {
     right: 0;
     bottom: 0;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     z-index: 101;
     .van-badge--select {
       border-color: #00a0e9;
@@ -91,6 +92,7 @@ export default {
     right: 0;
     bottom: 0;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     z-index: 102;
     ul {
       list-style: none;
