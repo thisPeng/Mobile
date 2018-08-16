@@ -22,7 +22,7 @@ export default new Vuex.Store({
     projectInfo: {},
     projectModel: "",
     taskParams: {},
-    goodsParams: {},
+    goodsParams: "",
     suppParams: {},
     servePath: "",
     tabsShow: true
@@ -40,7 +40,7 @@ export default new Vuex.Store({
         state.projectInfo = {};
         state.projectModel = "";
         state.taskParams = {};
-        state.goodsParams = {};
+        state.goodsParams = "";
         state.suppParams = {};
       }
     },

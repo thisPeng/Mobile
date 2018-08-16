@@ -30,7 +30,7 @@
           </div>
           <div class="apply-text">内部消息</div>
         </div>
-        <div class="apply-item" @click="jumpPage('')">
+        <div class="apply-item" @click="jumpPage('goodsList','index')">
           <div class="item-icon bg-blue">
             <i class="iconfont icon-chaxun" />
           </div>
@@ -137,7 +137,6 @@
         </van-swipe-item>
       </van-swipe>
     </div>
-
     <!--统计数据-->
     <count />
   </div>
@@ -177,7 +176,7 @@ export default {
   computed,
   mounted() {
     this.$nextTick().then(() => {
-      if (this.projectInfo.ProjectNo) {
+      if (this.projectInfo.SC_ProjectOID) {
         this.$parent.title = this.projectInfo.ProjectName;
       }
     });

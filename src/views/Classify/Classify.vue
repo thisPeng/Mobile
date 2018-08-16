@@ -136,7 +136,7 @@ export default {
   mounted() {
     this.getClassifyList();
     this.$nextTick().then(() => {
-      if (this.projectInfo.ProjectNo) {
+      if (this.projectInfo.SC_ProjectOID) {
         this.$parent.title = this.projectInfo.ProjectName;
       }
     });

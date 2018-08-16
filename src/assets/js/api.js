@@ -189,7 +189,7 @@ const classify = {
         '_parameters[condiIndentList]': '',
         '_parameters[SQLCondi]': params.SQLCondi,
         '_parameters[SQLCondiType]': 0,
-        '_parameters[SQLFix]': " and smt.SPUName LIKE '%" + params.keyword + "%' " + params.SQLFix,
+        '_parameters[SQLFix]': " AND smt.SPUName LIKE '%" + params.keyword + "%' " + params.SQLFix,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
@@ -226,7 +226,7 @@ const classify = {
         '_parameters[condiIndentList]': '',
         '_parameters[SQLCondi]': "SC_Supp_ProductSKU.SupplierID='" + SupplierID + "' AND (SC_SMaterialType_FK in (select SC_SMaterialTypeOID from SC_SMaterialType where SC_SMaterialType_FK='" + SC_SMaterialType_FK + "') OR SC_SMaterialType_FK = '" + SC_SMaterialType_FK + "' )",
         '_parameters[SQLCondiType]': 0,
-        '_parameters[SQLFix]': " and smt.SPUName LIKE '%" + keyword + "%' " + SQLFix,
+        '_parameters[SQLFix]': " AND smt.SPUName LIKE '%" + keyword + "%' " + SQLFix,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }

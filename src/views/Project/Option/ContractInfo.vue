@@ -58,7 +58,7 @@ export default {
     }
   },
   mounted() {
-    if (this.projectInfo.ProjectNo) {
+    if (this.projectInfo.SC_ProjectOID) {
       this.$parent.title = this.projectInfo.ProjectName;
       this.getList();
     } else {

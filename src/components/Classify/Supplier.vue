@@ -241,7 +241,7 @@ export default {
     },
     // 添加购物车
     onBuyClicked() {
-      if (this.projectInfo.ProjectNo) {
+      if (this.projectInfo.SC_ProjectOID) {
         const params = {
           OIDCheckList: this.goods.id + "|" + this.goods.sid,
           PartnerID: this.userId.UCML_OrganizeOID,

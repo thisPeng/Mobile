@@ -4,12 +4,14 @@
       <van-search placeholder="请输入商品名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
       <div class="flex-span">
         <div class="flex-1" @click="orderList('price')">单价
-          <i class="iconfont icon-paixu-shang" v-show="!priceDesc"></i>
-          <i class="iconfont icon-paixu-xia" v-show="priceDesc"></i>
+          <i class="iconfont icon-paixu" v-show="priceDesc === ''" />
+          <i class="iconfont icon-paixu-shang" v-show="priceDesc === false"></i>
+          <i class="iconfont icon-paixu-xia" v-show="priceDesc === true"></i>
         </div>
         <div class="flex-1" @click="orderList('taxRate')">税率
-          <i class="iconfont icon-paixu-shang" v-show="!taxRateDesc"></i>
-          <i class="iconfont icon-paixu-xia" v-show="taxRateDesc"></i>
+          <i class="iconfont icon-paixu" v-show="taxRateDesc === ''" />
+          <i class="iconfont icon-paixu-shang" v-show="taxRateDesc === false"></i>
+          <i class="iconfont icon-paixu-xia" v-show="taxRateDesc === true"></i>
         </div>
         <div class="flex-1" @click="screenshow=true">筛选
           <i class="iconfont icon-shaixuanxuanzhong"></i>
@@ -86,7 +88,7 @@ import { Sku } from "vant";
 export default {
   data() {
     return {
-      params: { SQLCondi: "", SQLFix: "", keyword: "" },
+      params: { SQLCondi: "1=1 ", SQLFix: "", keyword: "" },
       keyword: "",
       BrandName: "",
       SKUList: "",
@@ -96,8 +98,8 @@ export default {
       goodsList: [],
       curPage: 1,
       pages: {},
-      priceDesc: false,
-      taxRateDesc: true,
+      priceDesc: "",
+      taxRateDesc: "",
       // 物资详情
       showBase: false,
       sku: {
@@ -211,7 +213,7 @@ export default {
     },
     // 添加购物车
     onBuyClicked() {
-      if (this.projectInfo.ProjectNo) {
+      if (this.projectInfo.SC_ProjectOID) {
         const params = {
           OIDCheckList: this.goods.id + "|" + this.goods.sid,
           PartnerID: this.userId.UCML_OrganizeOID,
@@ -236,7 +238,7 @@ export default {
     },
     // 获取购物车列表
     getCartList() {
-      if (this.projectInfo.ProjectNo) {
+      if (this.projectInfo.SC_ProjectOID) {
         cart.getList(this.projectInfo.SC_ProjectOID).then(res => {
           try {
             if (res && res.status === 1) {
@@ -260,6 +262,7 @@ export default {
             const sp = res.text.split("]]");
             this.goodsList = eval(sp[0].split("=")[1] + "]]");
             this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
+            // console.log(this.pages);
             this.getGoodsFilter();
             // console.log(this.goodsList);
           }
@@ -295,11 +298,11 @@ export default {
       } else {
         if (type === "品牌") {
           this.BrandName = val;
-          this.params.SQLCondi += " and BrandName='" + val + "'";
+          this.params.SQLCondi += " AND BrandName='" + val + "'";
         } else {
           this.SKUList += type + " : " + val + "|";
           this.params.SQLCondi +=
-            " and CHARINDEX('" + type + " : " + val + "',SKUUnionIDS)>0 ";
+            " AND CHARINDEX('" + type + " : " + val + "',SKUUnionIDS)>0 ";
         }
       }
       this.getGoodsList();
@@ -308,7 +311,32 @@ export default {
     filterReset() {
       this.keyword = this.BrandName = this.SKUList = "";
       this.curPage = 1;
+      if (this.goodsParams) {
+        const params = {
+          SQLCondi:
+            "(SC_Supp_ProductSKU.SC_MaterialType_FK = '" +
+            this.goodsParams +
+            "' OR SC_Supp_ProductSKU.Parent_MaterialType = '" +
+            this.goodsParams +
+            "')",
+          SQLFix: ""
+        };
+        this.params = params;
+      } else {
+        this.params = {
+          SQLCondi: "1=1 ",
+          SQLFix: ""
+        };
+      }
 
+      this.getGoodsList();
+    }
+  },
+  computed,
+  mounted() {
+    if (this.$router.history.current.params.model) {
+      this.$store.commit("goodsParams", "");
+    } else if (this.goodsParams) {
       const params = {
         SQLCondi:
           "(SC_Supp_ProductSKU.SC_MaterialType_FK = '" +
@@ -316,27 +344,13 @@ export default {
           "' or SC_Supp_ProductSKU.Parent_MaterialType = '" +
           this.goodsParams +
           "')",
-        SQLFix: " ORDER BY Price ASC, TaxRate DESC"
+        SQLFix: ""
       };
       this.params = params;
-      this.getGoodsList();
     }
-  },
-  computed,
-  mounted() {
-    const params = {
-      SQLCondi:
-        "(SC_Supp_ProductSKU.SC_MaterialType_FK = '" +
-        this.goodsParams +
-        "' or SC_Supp_ProductSKU.Parent_MaterialType = '" +
-        this.goodsParams +
-        "')",
-      SQLFix: " ORDER BY Price ASC, TaxRate DESC"
-    };
-    this.params = params;
     this.getGoodsList();
     this.$nextTick().then(() => {
-      if (this.projectInfo.ProjectNo) {
+      if (this.projectInfo.SC_ProjectOID) {
         this.$parent.title = this.projectInfo.ProjectName;
         this.getCartList();
       }

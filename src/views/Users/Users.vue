@@ -98,7 +98,7 @@ export default {
   computed,
   mounted() {
     this.$nextTick().then(() => {
-      if (this.projectInfo.ProjectNo) {
+      if (this.projectInfo.SC_ProjectOID) {
         this.$parent.title = this.projectInfo.ProjectName;
       }
     });
