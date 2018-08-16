@@ -20,6 +20,12 @@
       <div class="classify-list">
         <div class="list-item" v-for="(item, index) in goodsList" :key="index" @click="showInfo(item)">
           <van-card :title="item[22]" :desc="item[28]" :price="item[5]" :thumb="item[41].replace('~',servePath)">
+            <!-- <div slot="desc">
+              <div class="item-brand">
+                <van-tag plain type="success">品牌： {{item[24]}}</van-tag>
+              </div>
+              <div class="item-price">￥ {{item[5]}}</div>
+            </div> -->
             <div slot="footer">
               <!-- <i class="iconfont icon-xiangqing" @click="showInfo(item)"></i> -->
               <i class="iconfont icon-add" @click.stop="addCart(item)"></i>
@@ -80,9 +86,8 @@ import { Sku } from "vant";
 export default {
   data() {
     return {
-      params: { SQLCondi: "", SQLFix: "" },
+      params: { SQLCondi: "", SQLFix: "", keyword: "" },
       keyword: "",
-      searchSql: " and smt.SPUName LIKE '%%'",
       BrandName: "",
       SKUList: "",
       activeNames: [],
@@ -217,9 +222,9 @@ export default {
           try {
             if (res && res.status === 1 && res.text === "True") {
               this.getCartList();
-              this.$toast.success("添加成功");
+              this.$toast.success("添加物资成功");
             } else {
-              this.$toast.fail("添加失败");
+              this.$toast.fail("添加物资失败");
             }
           } catch (e) {
             console.log(e);
@@ -247,14 +252,7 @@ export default {
     // 获取物资列表
     getGoodsList() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      let SQLCondi = this.params.SQLCondi;
-      if (SQLCondi.indexOf(this.searchSql) > 0) {
-        const str = " and smt.SPUName LIKE '%" + this.keyword + "%'";
-        this.params.SQLCondi = SQLCondi.replace(this.searchSql, str);
-        this.searchSql = str;
-      } else {
-        this.params.SQLCondi += this.searchSql;
-      }
+      this.params.keyword = this.keyword;
 
       classify.getGoodsList(this.params, page).then(res => {
         try {
@@ -308,7 +306,6 @@ export default {
     },
     // 重置过滤选项
     filterReset() {
-      this.searchSql = " and smt.SPUName LIKE '%%'";
       this.keyword = this.BrandName = this.SKUList = "";
       this.curPage = 1;
 
@@ -366,15 +363,23 @@ export default {
     .classify-list {
       width: 100%;
       padding: 0 10px;
-      .van-card {
-        background-color: #fff;
-        border: 1px solid #eee;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        .iconfont {
-          color: #00a0e9;
-          font-size: 26px;
-          padding: 10px;
+      .list-item {
+        .van-card {
+          background-color: #fff;
+          border: 1px solid #eee;
+          border-radius: 5px;
+          margin-bottom: 10px;
+          .item-brand {
+            padding: 5px 0;
+          }
+          .item-price {
+            color: #ff4257;
+          }
+          .iconfont {
+            color: #00a0e9;
+            font-size: 26px;
+            padding: 10px;
+          }
         }
       }
     }
@@ -397,7 +402,7 @@ export default {
     }
   }
   .van-popup--right {
-    width: 90%;
+    width: 75%;
     height: 100%;
     .screen {
       height: 100%;
@@ -446,3 +451,13 @@ export default {
   }
 }
 </style>
+<style lang="less">
+.classify {
+  /* 物资列表 */
+  .van-card__desc {
+    overflow: inherit;
+    white-space: inherit;
+  }
+}
+</style>
+

@@ -7,7 +7,7 @@
       </van-badge-group>
     </div>
     <div class="right">
-      <div class="flex-span">
+      <div class="flex-span" v-if="goodsList.length > 0">
         <div class="flex-1" @click="orderList">单价
           <i class="iconfont icon-paixu" v-show="priceDesc === ''" />
           <i class="iconfont icon-paixu-shang" v-show="priceDesc === false"></i>
@@ -19,7 +19,7 @@
       </div>
       <div class="classify-list" id="classifyList">
         <van-list v-model="loading" :finished="finished" :immediate-check="false" @load="onLoad">
-          <div class="list-item" v-for="(item, index) in goodsList" :key="index">
+          <div class="list-item" v-for="(item, index) in goodsList" :key="index" @click="showInfo(item)">
             <van-card :title="item[22]" :thumb="item[41].replace('~',servePath) ">
               <div slot="desc">
                 <div class="item-brand">
@@ -32,6 +32,25 @@
               </div>
             </van-card>
           </div>
+          <!--商品详情-->
+          <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
+            <template slot="sku-body-top" slot-scope="props">
+              <van-cell-group>
+                <van-cell title="品牌名称" :value="goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
+                <van-cell title="税率" :value="goods.taxRate" :label="'可开票税率：' + goods.taxAll" />
+                <van-cell title="供应商" :value="goods.shop" />
+              </van-cell-group>
+            </template>
+            <template slot="sku-stepper" slot-scope="props">
+              <div></div>
+            </template>
+            <template slot="sku-actions" slot-scope="props">
+              <div class="van-sku-actions">
+                <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
+                <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">加入购物车</van-button>
+              </div>
+            </template>
+          </van-sku>
         </van-list>
       </div>
     </div>
@@ -69,7 +88,29 @@ export default {
       loading: false,
       finished: false,
       filterActive: "",
-      SQLFix: ""
+      SQLFix: "",
+      // 物资详情
+      showBase: false,
+      sku: {
+        tree: [],
+        price: "0.00", // 默认价格（单位元）
+        // stock_num: 0, // 商品总库存
+        // collection_id: 0, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
+        none_sku: true, // 是否无规格商品
+        hide_stock: true // 是否隐藏剩余库存
+      },
+      goods: {
+        id: "",
+        sid: "",
+        title: "", // 页面标题
+        picture: "", // 默认商品 sku 缩略图
+        brand: "",
+        info: "",
+        unit: "",
+        shop: "",
+        taxRate: "",
+        taxAll: ""
+      }
     };
   },
   methods: {
@@ -115,6 +156,7 @@ export default {
         this.typeList[i].SC_SMaterialTypeOID
       );
     },
+    // 搜索
     onSearch() {
       const i = this.activeKey;
       this.priceDesc = !this.priceDesc;
@@ -197,7 +239,65 @@ export default {
         }
       });
     },
-    addCart() {}
+    // 添加购物车
+    onBuyClicked() {
+      if (this.projectInfo.ProjectNo) {
+        const params = {
+          OIDCheckList: this.goods.id + "|" + this.goods.sid,
+          PartnerID: this.userId.UCML_OrganizeOID,
+          ProjectID: this.projectInfo.SC_ProjectOID,
+          DemandID: this.projectInfo.DemandID
+        };
+        classify.addCart(params).then(res => {
+          try {
+            if (res && res.status === 1 && res.text === "True") {
+              // this.getCartList();
+              this.$toast.success("添加物资成功");
+            } else {
+              this.$toast.fail("添加物资失败");
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        });
+      } else {
+        this.$toast("请先点击屏幕右上角按钮，选择项目");
+      }
+    },
+    // 添加物资到购物车
+    addCart(item) {
+      this.goods = {
+        id: item[0],
+        sid: item[31],
+        title: item[22],
+        picture: item[41].replace("~", this.servePath),
+        brand: item[24],
+        info: item[28],
+        unit: item[23],
+        shop: item[36],
+        taxRate: item[20],
+        taxAll: item[32]
+      };
+      this.onBuyClicked();
+      // console.log(item);
+    },
+    // 显示物资详情
+    showInfo(item) {
+      this.goods = {
+        id: item[0],
+        sid: item[31],
+        title: item[22],
+        picture: item[41].replace("~", this.servePath),
+        brand: item[24],
+        info: item[28],
+        unit: item[23],
+        shop: item[36],
+        taxRate: item[20],
+        taxAll: item[32]
+      };
+      this.showBase = true;
+      // console.log(item);
+    }
   },
   computed,
   mounted() {

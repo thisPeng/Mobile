@@ -25,7 +25,7 @@ module.exports = {
     loaderOptions: {
       css: {
         // options here will be passed to css-loader
-        test: /\.css$/,
+        test: /\.(css|less)(\?.*)?$/,
         use: [
           'to-string-loader',
           'css-loader'
@@ -33,7 +33,7 @@ module.exports = {
       },
       postcss: {
         // options here will be passed to postcss-loader
-        test: /\.css$/,
+        test: /\.(css|less)(\?.*)?$/,
         use: [
           'style-loader',
           {
