@@ -7,8 +7,8 @@ module.exports = {
   lintOnSave: true,
   // webpack配置
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
-  chainWebpack: () => { },
-  configureWebpack: () => { },
+  chainWebpack: () => {},
+  configureWebpack: () => {},
   // vue-loader 配置项
   // https://vue-loader.vuejs.org/en/options.html
   // 生产环境是否生成 sourceMap 文件
@@ -36,7 +36,12 @@ module.exports = {
         test: /\.css$/,
         use: [
           'style-loader',
-          { loader: 'css-loader', options: { importLoaders: 1 } },
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1
+            }
+          },
           'postcss-loader'
         ]
       }
@@ -55,7 +60,12 @@ module.exports = {
     msTileColor: '#ffffff',
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black',
-    workboxPluginMode: 'InjectManifest'
+    workboxPluginMode: 'InjectManifest',
+    workboxOptions: {
+      // swSrc is required in InjectManifest mode.
+      swSrc: 'src/registerServiceWorker.js',
+      // ...other Workbox options...
+    }
   },
   // webpack-dev-server 相关配置
   devServer: {
