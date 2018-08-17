@@ -38,9 +38,9 @@
         <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
           <template slot="sku-body-top" slot-scope="props">
             <van-cell-group>
-              <van-cell title="品牌名称" :value="goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
-              <van-cell title="税率" :value="goods.taxRate" :label="'可开票税率：' + goods.taxAll" />
-              <van-cell title="供应商" :value="goods.shop" />
+              <van-cell :title="'品牌： ' + goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
+              <van-cell :title="'税率：' + goods.taxRate + '%'" :label="'可开票税率：' + goods.taxAll" />
+              <van-cell :title="'供应商：' + goods.shop"/>
             </van-cell-group>
           </template>
           <template slot="sku-stepper" slot-scope="props">

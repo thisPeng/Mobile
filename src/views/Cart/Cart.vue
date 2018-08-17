@@ -1,27 +1,44 @@
 <template>
   <div class="cart">
     <van-list v-model="loading" :finished="finished" @load="onLoad" :immediate-check="false">
-      <van-cell-swipe :right-width="65" v-for="(item,index) in list" :key="index">
-        <div class="cart-item" @click="showInfo(item)">
-          <van-card :title="item[14]" :desc="item[16] + ' | 单位：' + item[15]" price="2.00" :thumb="item[32]">
-            <div slot="tags">
-              <van-tag plain type="primary">供应商： {{item[18]}}</van-tag>
+      <van-collapse v-model="activeNames">
+        <van-collapse-item title="供应商名称" name="1">
+          <van-cell-swipe :right-width="65" v-for="(item,index) in list" :key="index">
+            <!-- <span slot="left" class="left">
+              <van-checkbox v-model="item[21]" class="item-check"></van-checkbox>
+            </span> -->
+            <div :class="item[21] === false ? 'cart-item bg-gray' : 'cart-item'">
+              <van-checkbox v-model="item[21]" class="item-check">
+                <van-card :class="item[21] === false ? 'bg-gray' : ''" :desc="item[16] + ' | 单位：' + item[15]">
+                  <div slot="thumb" @click.stop="showInfo(item)">
+                    <img :src="item[32]" class="van-card__img">
+                  </div>
+                  <div slot="title" class="van-card__row" @click.stop="showInfo(item)">
+                    <div class="van-card__title">{{item[14]}}</div>
+                    <div class="van-card__price">{{'￥ '+item[19]}}</div>
+                  </div>
+                  <div slot="tags" @click.stop="showInfo(item)">
+                    <van-tag plain type="primary">供应商： {{item[18]}}</van-tag>
+                    <!-- <van-tag plain type="danger" class="margin-left-xs">历史均价：{{'￥ '+item[22]}}</van-tag> -->
+                  </div>
+                  <div slot="footer">
+                    <van-stepper v-model="item[3]" :integer="true" />
+                  </div>
+                </van-card>
+              </van-checkbox>
             </div>
-            <div slot="footer">
-              <van-stepper v-model="item[3]" :integer="true" />
-            </div>
-          </van-card>
-        </div>
-        <span slot="right" class="right">删除</span>
-      </van-cell-swipe>
+            <span slot="right" class="right">删除</span>
+          </van-cell-swipe>
+        </van-collapse-item>
+      </van-collapse>
     </van-list>
     <!--商品详情-->
     <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
-          <van-cell title="品牌名称" :value="goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
-          <!-- <van-cell title="税率" :value="goods.taxRate" :label="'可开票税率：' + goods.taxAll" /> -->
-          <van-cell title="供应商" :value="goods.shop" />
+          <van-cell :title="'品牌： '+ goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
+          <!-- <van-cell :title="'税率：' + goods.taxRate + '%'" :label="'可开票税率：' + goods.taxAll" /> -->
+          <van-cell :title="'供应商：' + goods.shop" />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">
@@ -30,16 +47,20 @@
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
           <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">删除</van-button>
+          <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">删 除</van-button>
         </div>
       </template>
     </van-sku>
     <!--订单提交栏-->
     <van-submit-bar button-text="发起询价" @submit="onSubmit">
-      <!-- <van-checkbox v-model="checked">清空</van-checkbox> -->
-      <div class="cart-clear" @click="cartClear">
+      <van-checkbox v-model="checkedAll">全选</van-checkbox>
+      <!-- <div class="cart-clear" @click="cartClear">
         <i class="iconfont icon-qingkong"></i>
         <span class="clear-text">清空</span>
+      </div> -->
+      <div class="cart-delete" @click="cartDelete">
+        <i class="iconfont icon-qingkong1"></i>
+        <span class="delete-text">删除</span>
       </div>
     </van-submit-bar>
   </div>
@@ -51,8 +72,8 @@ import { cart } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      checked: false,
-      check: false,
+      checkedAll: true,
+      activeNames: [],
       list: [],
       loading: false,
       finished: false,
@@ -87,6 +108,7 @@ export default {
           const sp = res.text.split(";");
           const list = eval(sp[0].split("=")[1]);
           list.forEach(val => {
+            val[21] = true;
             if (val[32]) {
               val[32] = val[32].replace("~", this.servePath);
             } else {
@@ -94,8 +116,8 @@ export default {
                 this.servePath + "/SupplyChain/Images/MaterialType/default.jpg";
             }
           });
-          this.list = list;
           console.log(list);
+          this.list = list;
         }
       });
     },
@@ -114,13 +136,26 @@ export default {
           // on cancel
         });
     },
+    cartDelete() {
+      this.$dialog
+        .confirm({
+          title: "提示",
+          message: "确认删除购物车已选物资？"
+        })
+        .then(() => {
+          // on confirm
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
     onSubmit() {},
     // 显示物资详情
     showInfo(item) {
       this.goods = {
         id: item[0],
         sid: item[1],
-        title: item[8],
+        title: item[14],
         picture: item[32].replace("~", this.servePath),
         brand: item[10],
         info: item[16],
@@ -152,14 +187,31 @@ export default {
 .cart {
   width: 100%;
   .van-list {
-    padding: 10px;
-    margin-bottom: 40px;
+    // padding: 10px;
+    margin-bottom: 50px;
     .cart-item {
-      margin-bottom: 10px;
+      // margin-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+      background-color: #fff;
+      .item-check {
+        width: 100%;
+        display: flex;
+        align-items: center;
+      }
       .van-card {
         background-color: #fff;
-        border-radius: 5px;
+        // border-radius: 5px;
       }
+    }
+    .left {
+      color: #ffffff;
+      font-size: 15px;
+      width: 65px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // background-color: #f44;
     }
     .right {
       color: #ffffff;
@@ -169,7 +221,6 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      line-height: 44px;
       background-color: #f44;
     }
   }
@@ -179,6 +230,17 @@ export default {
     .van-checkbox {
       margin-left: 20px;
       background-color: #fff;
+    }
+    .cart-delete {
+      margin-left: 25px;
+      .iconfont {
+        color: #333;
+        font-size: 18px;
+      }
+      .delete-text {
+        color: #333;
+        padding-left: 5px;
+      }
     }
     .cart-clear {
       padding-left: 15px;
@@ -194,3 +256,20 @@ export default {
   }
 }
 </style>
+<style lang="less">
+.cart {
+  .item-check {
+    .van-checkbox__label {
+      margin-left: 0;
+    }
+    .van-checkbox__icon {
+      padding-left: 15px;
+      text-align: center;
+    }
+    .van-checkbox__label {
+      overflow: hidden;
+    }
+  }
+}
+</style>
+

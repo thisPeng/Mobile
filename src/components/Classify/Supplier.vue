@@ -20,7 +20,7 @@
       <div class="classify-list" id="classifyList">
         <van-list v-model="loading" :finished="finished" :immediate-check="false" @load="onLoad">
           <div class="list-item" v-for="(item, index) in goodsList" :key="index" @click="showInfo(item)">
-            <van-card :title="item[22]" :thumb="item[41].replace('~',servePath) ">
+            <van-card :title="item[22]" :thumb="item[41].replace('~',servePath)">
               <div slot="desc">
                 <div class="item-brand">
                   <van-tag plain type="success">品牌： {{item[24]}}</van-tag>
@@ -28,7 +28,7 @@
                 <div class="item-price">￥ {{item[5]}}</div>
               </div>
               <div slot="footer">
-                <i class="iconfont icon-add " @click.stop="addCart(item)"></i>
+                <i class="iconfont icon-add" @click.stop="addCart(item)"></i>
               </div>
             </van-card>
           </div>
@@ -36,9 +36,9 @@
           <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
             <template slot="sku-body-top" slot-scope="props">
               <van-cell-group>
-                <van-cell title="品牌名称" :value="goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
-                <van-cell title="税率" :value="goods.taxRate" :label="'可开票税率：' + goods.taxAll" />
-                <van-cell title="供应商" :value="goods.shop" />
+                <van-cell :title="'品牌： '+ goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
+                <van-cell :title="'税率：' + goods.taxRate + '%'" :label="'可开票税率：' + goods.taxAll" />
+                <van-cell :title="'供应商：' + goods.shop" />
               </van-cell-group>
             </template>
             <template slot="sku-stepper" slot-scope="props">

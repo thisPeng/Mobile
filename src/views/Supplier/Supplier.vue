@@ -111,7 +111,7 @@ export default {
             const sp = res.text.split("]]");
             this.list = eval(sp[0].split("=")[1] + "]]");
             this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
-            console.log(sp);
+            // console.log(this.list);
           }
         } catch (e) {
           this.list = [];
@@ -130,6 +130,7 @@ export default {
             this.allPages = eval(
               "(" + sp[1].split("=")[1].replace(";", "") + ")"
             );
+            // console.log(this.allList);
           }
         } catch (e) {
           this.allList = [];
