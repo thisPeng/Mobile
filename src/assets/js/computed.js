@@ -1,11 +1,9 @@
-'use strict'
+"use strict";
 /**
  * @file DATA映射
  * @author DJ
  */
-import {
-  mapState
-} from 'vuex';
+import { mapState } from "vuex";
 
 export default mapState({
   userId: state => {
@@ -41,10 +39,13 @@ export default mapState({
   suppParams: state => {
     return state.suppParams;
   },
+  confirmParams: state => {
+    return state.confirmParams;
+  },
   servePath: state => {
     return state.servePath;
   },
   tabsShow: state => {
     return state.tabsShow;
   }
-})
+});

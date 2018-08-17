@@ -3,7 +3,7 @@
   <div class="conprice">
     <div class="con-data">
       <div class="con-card">
-        <div class="con-item" v-for="(item,index) in list" :key="index" @click="jumpage('pricedetails')">
+        <div class="con-item" v-for="(item,index) in list" :key="index" @click="jumpInfo(item)">
           <div class="item-title">
             <span class="title">{{item[9]}}</span>
           </div>
@@ -48,16 +48,17 @@ export default {
             const csp = sp[1].split(";");
             this.list = eval("[[" + csp[0]);
 
-            // console.log(this.list);
+            console.log(this.list);
           }
         } catch (e) {
           console.log(e);
         }
       });
     },
-    jumpage(name) {
+    jumpInfo(item) {
+      this.$store.commit("confirmParams", item);
       this.$router.push({
-        name
+        name: "pricedetails"
       });
     }
   },
