@@ -367,7 +367,7 @@ const supplier = {
         "_parameters[BCName]": "BC_Purchase_Supplier",
         "_parameters[nStartPos]": page * 10,
         "_parameters[nRecords]": 10,
-        "_parameters[fieldList]": " selese * ",
+        "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
         "_parameters[SQLCondi]": "",
@@ -717,7 +717,8 @@ const conprice = {
       }
     });
   },
-  getDetails(PurchaseOrderID, page = 0) {
+  //获取询价单明细详情
+  getDetails(PurchaseOrderID){
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -725,7 +726,7 @@ const conprice = {
         _bpoName: "BPO_Order_XJ_EditService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Order_Detail",
-        "_parameters[nStartPos]": page * 20,
+        "_parameters[nStartPos]": 0,
         "_parameters[nRecords]": 20,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
@@ -737,7 +738,48 @@ const conprice = {
         _pUrl: ""
       }
     });
-  }
+  },
+  //确认订单
+  confrimPrice(PurchaseOrderID){
+    return axios({
+      url:"/UCMLWebServiceEntryForJs.aspx",
+      method:"post",
+      data:{
+        _bponame:"BPO_Order_XJService",
+        _methodName: "ConfirmOrderBill",
+        "_parameters[PurchaseOrderID]": PurchaseOrderID,
+        _paraNames:"PurchaseOrderID",
+        _pUrl:""
+      }
+    });
+  },
+ //提議
+ conProposal(BillOID){
+   return axios({
+     url:"/UCMLWebServiceEntryForJs.aspx",
+     method:"post",
+     data:{
+       _bponame:"BPO_Order_XJService",
+       _methodName:"SendToSupplier",
+       "_parameters[BillOID]":BillOID,
+       _paraNames:"BillOID",
+       _pUrl:""
+     }
+   });
+ },
+ //删除
+ confirmDelete(params){
+   return axios({
+    url:"/UCMLWebServiceEntryForJs.aspx",
+    method:"post",
+    data:{
+      _bponame:"BPO_Order_XJService",
+      _methodName:"DeleteOrderBill",
+      "_parameters[BillOID]":params.BillOID,
+      "_parameters[ContractID]":params.ContractID,
+    }
+   })
+ }
 };
 // 获取合同信息
 const contractinfo = {

@@ -25,6 +25,7 @@ export default new Vuex.Store({
     goodsParams: "",
     suppParams: {},
     confirmParams: {},
+    infoDetails:{},
     servePath: "",
     tabsShow: true
   },
@@ -43,6 +44,7 @@ export default new Vuex.Store({
         state.goodsParams = "";
         state.suppParams = {};
         state.confirmParams = {};
+        state.infoDetails = {};
       }
     },
     userId: (state, val) => {
@@ -86,6 +88,9 @@ export default new Vuex.Store({
     },
     tabsShow: (state, val) => {
       state.tabsShow = val;
+    },
+    infoDetails: (state, val) => {
+      state.infoDetails = val;
     }
   }
 });

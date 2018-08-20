@@ -42,7 +42,8 @@ import ShippingInfo from "./views/Transaction/ShippingInfo";
 import TranPayment from "./views/Transaction/TranPayment";
 import Tranrial from "./views/Transaction/Tranrial";
 import Inventory from "./views/Transaction/Inventory";
-import Customerlist from "./views/CustomerList/CustomerList"
+import Customerlist from "./views/CustomerList/CustomerList";
+import InquiryDetails from "./views/Project/Option/Details/InquiryDetails";
 Vue.use(Router);
 
 export default new Router({
@@ -384,6 +385,14 @@ export default new Router({
           component: Inventory,
           meta: {
             title: "清单详情" //页面标题
+          }
+        },
+        {
+          path: "/project/option/details/inquirydetails",
+          name: "inquirydetails",
+          component: InquiryDetails,
+          meta: {
+            title: "询价单明细编辑" //页面标题
           }
         },
       ]
