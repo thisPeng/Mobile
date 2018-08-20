@@ -1,36 +1,34 @@
 <template>
   <div class="cart">
     <van-list v-model="loading" :finished="finished" @load="onLoad" :immediate-check="false">
-      <van-collapse v-model="activeNames">
-        <van-collapse-item title="供应商名称" name="1">
-          <van-cell-swipe :right-width="65" v-for="(item,index) in list" :key="index">
-            <!-- <span slot="left" class="left">
+      <van-cell-group>
+        <van-switch-cell v-model="checked" title="陈世坤" />
+      </van-cell-group>
+      <van-cell-swipe :right-width="65" v-for="(item,index) in list" :key="index" v-show="checked">
+        <!-- <span slot="left" class="left">
               <van-checkbox v-model="item[21]" class="item-check"></van-checkbox>
             </span> -->
-            <div :class="item[21] === false ? 'cart-item bg-gray' : 'cart-item'">
-              <van-checkbox v-model="item[21]" class="item-check">
-                <van-card :class="item[21] === false ? 'bg-gray' : ''" :desc="item[16] + ' | 单位：' + item[15]">
-                  <div slot="thumb" @click.stop="showInfo(item)">
-                    <img :src="item[32]" class="van-card__img">
-                  </div>
-                  <div slot="title" class="van-card__row" @click.stop="showInfo(item)">
-                    <div class="van-card__title">{{item[14]}}</div>
-                    <div class="van-card__price">{{'￥ '+item[19]}}</div>
-                  </div>
-                  <div slot="tags" @click.stop="showInfo(item)">
-                    <van-tag plain type="primary">供应商： {{item[18]}}</van-tag>
-                    <!-- <van-tag plain type="danger" class="margin-left-xs">历史均价：{{'￥ '+item[22]}}</van-tag> -->
-                  </div>
-                  <div slot="footer">
-                    <van-stepper v-model="item[3]" :integer="true" />
-                  </div>
-                </van-card>
-              </van-checkbox>
+        <div :class="item[35] === false ? 'cart-item bg-gray' : 'cart-item'">
+          <van-checkbox v-model="item[35]" class="item-check"></van-checkbox>
+          <van-card :class="item[35] === false ? 'bg-gray' : ''" :desc="item[16] + ' | 单位：' + item[15]">
+            <div slot="thumb" @click.stop="showInfo(item)">
+              <img :src="item[32]" class="van-card__img">
             </div>
-            <span slot="right" class="right">删除</span>
-          </van-cell-swipe>
-        </van-collapse-item>
-      </van-collapse>
+            <div slot="title" class="van-card__row" @click.stop="showInfo(item)">
+              <div class="van-card__title">{{item[14]}}</div>
+              <div class="van-card__price">{{'￥ '+item[19]}}</div>
+            </div>
+            <!-- <div slot="tags" @click.stop="showInfo(item)">
+                    <van-tag plain type="primary">供应商： {{item[18]}}</van-tag>
+                    <van-tag plain type="danger" class="margin-left-xs">历史均价：{{'￥ '+item[22]}}</van-tag>
+                  </div> -->
+            <div slot="footer">
+              <van-stepper v-model="item[3]" :integer="true" />
+            </div>
+          </van-card>
+        </div>
+        <span slot="right" class="right">删除</span>
+      </van-cell-swipe>
     </van-list>
     <!--商品详情-->
     <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
@@ -72,11 +70,11 @@ import { cart } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
+      checked: true,
       checkedAll: true,
-      activeNames: [],
       list: [],
       loading: false,
-      finished: false,
+      finished: true,
       // 物资详情
       showBase: false,
       sku: {
@@ -108,13 +106,14 @@ export default {
           const sp = res.text.split(";");
           const list = eval(sp[0].split("=")[1]);
           list.forEach(val => {
-            val[21] = true;
             if (val[32]) {
               val[32] = val[32].replace("~", this.servePath);
             } else {
               val[32] =
                 this.servePath + "/SupplyChain/Images/MaterialType/default.jpg";
             }
+            val[34] = true;
+            val[35] = true;
           });
           console.log(list);
           this.list = list;
@@ -187,20 +186,19 @@ export default {
 .cart {
   width: 100%;
   .van-list {
-    // padding: 10px;
-    margin-bottom: 50px;
+    margin-bottom: 85px;
     .cart-item {
-      // margin-bottom: 10px;
+      padding-left: 10px;
       border-bottom: 1px solid #ccc;
       background-color: #fff;
+      display: flex;
+      align-items: center;
       .item-check {
-        width: 100%;
-        display: flex;
-        align-items: center;
+        overflow: inherit;
       }
       .van-card {
         background-color: #fff;
-        // border-radius: 5px;
+        overflow: hidden;
       }
     }
     .left {
@@ -211,7 +209,6 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      // background-color: #f44;
     }
     .right {
       color: #ffffff;
@@ -252,22 +249,6 @@ export default {
         color: #333;
         padding-left: 5px;
       }
-    }
-  }
-}
-</style>
-<style lang="less">
-.cart {
-  .item-check {
-    .van-checkbox__label {
-      margin-left: 0;
-    }
-    .van-checkbox__icon {
-      padding-left: 15px;
-      text-align: center;
-    }
-    .van-checkbox__label {
-      overflow: hidden;
     }
   }
 }

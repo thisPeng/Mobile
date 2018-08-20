@@ -2,10 +2,10 @@
   <div class="classify">
     <van-tabs v-model="activeTabs" @click="switchTabs">
       <van-tab title="所有分类">
-        <cly :topList="allTopList" :detailedList="allDetailedList"></cly>
+        <cly :topList="topList" :detailedList="detailedList"></cly>
       </van-tab>
-      <van-tab v-for="(item,index) in list" :key="index" :title="item[5]">
-        <stp />
+      <van-tab title="常用供应商">
+        <stp :suppList="list" />
       </van-tab>
     </van-tabs>
   </div>
@@ -23,9 +23,7 @@ export default {
       list: [],
       pages: [],
       topList: [],
-      detailedList: [],
-      allTopList: [],
-      allDetailedList: []
+      detailedList: []
     };
   },
   components: {
@@ -58,7 +56,8 @@ export default {
           if (res && res.status === 1) {
             const sp = res.text.split("]]");
             this.list = eval(sp[0].split("=")[1] + "]]");
-            this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
+            // console.log(this.list);
+            // this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
           }
         } catch (e) {
           console.log(e);
@@ -77,7 +76,7 @@ export default {
           deIndex = -1;
         list.forEach(val => {
           if (val[8] === "00000000-0000-0000-0000-000000000000") {
-            this.allTopList.push({
+            this.topList.push({
               id: val[0],
               mid: val[4],
               code: val[1],
@@ -87,8 +86,8 @@ export default {
               list: []
             });
             topIndex++;
-          } else if (this.allTopList[topIndex].id === val[8]) {
-            this.allDetailedList.push({
+          } else if (this.topList[topIndex].id === val[8]) {
+            this.detailedList.push({
               id: val[0],
               mid: val[4],
               code: val[1],
@@ -98,8 +97,8 @@ export default {
               list: []
             });
             deIndex++;
-          } else if (this.allDetailedList[deIndex].id === val[8]) {
-            this.allDetailedList[deIndex].list.push({
+          } else if (this.detailedList[deIndex].id === val[8]) {
+            this.detailedList[deIndex].list.push({
               id: val[0],
               mid: val[4],
               code: val[1],
@@ -112,7 +111,7 @@ export default {
               list: []
             });
           } else {
-            this.allDetailedList[deIndex].list.forEach(v => {
+            this.detailedList[deIndex].list.forEach(v => {
               if (v.id === val[8]) {
                 v.list.push({
                   id: val[0],
@@ -130,7 +129,7 @@ export default {
           }
         });
       }
-      // console.log(this.allDetailedList);
+      // console.log(this.detailedList);
     });
   },
   mounted() {

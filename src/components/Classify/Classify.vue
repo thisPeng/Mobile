@@ -8,7 +8,7 @@
     <div class="right">
       <ul>
         <li v-for="(item,index) in detailedList" :key="index" v-if="item.pid == topList[active].id">
-          <div class="class-title">—— {{item.name}} ——</div>
+          <div class="class-title"> {{item.name}} </div>
           <div v-for="(ite,idx) in item.list" :key="idx" class="class-item">
             <!-- <van-collapse v-model="activeNames" v-if="ite.list.length > 0" class="item-list">
               <van-collapse-item class="text-xs" :title="ite.name" :name="idx">
@@ -99,10 +99,10 @@ export default {
       li {
         background: #fff;
         .class-title {
-          padding: 7px 0;
+          padding: 7px 15px;
           color: #333;
           font-weight: 600;
-          text-align: center;
+          background-color: #f6f6f6;
         }
         .class-item {
           width: 33.33%;

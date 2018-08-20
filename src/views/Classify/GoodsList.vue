@@ -40,7 +40,7 @@
             <van-cell-group>
               <van-cell :title="'品牌： ' + goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
               <van-cell :title="'税率：' + goods.taxRate + '%'" :label="'可开票税率：' + goods.taxAll" />
-              <van-cell :title="'供应商：' + goods.shop"/>
+              <van-cell :title="'供应商：' + goods.shop" />
             </van-cell-group>
           </template>
           <template slot="sku-stepper" slot-scope="props">
@@ -83,7 +83,6 @@
 <script>
 import computed from "./../../assets/js/computed.js";
 import { classify, cart } from "./../../assets/js/api.js";
-import { Sku } from "vant";
 
 export default {
   data() {
@@ -124,9 +123,6 @@ export default {
       },
       goodsPages: {}
     };
-  },
-  components: {
-    "van-sku": Sku
   },
   methods: {
     // 搜索
@@ -206,6 +202,7 @@ export default {
       this.showBase = true;
       // console.log(item);
     },
+    // 跳转购物车
     jumpCart() {
       this.$router.replace({
         name: "cart"
@@ -224,7 +221,11 @@ export default {
           try {
             if (res && res.status === 1 && res.text === "True") {
               this.getCartList();
-              this.$toast.success("添加物资成功");
+              this.$nextTick().then(() => {
+                setTimeout(() => {
+                  this.$toast.success("添加物资成功");
+                }, 300);
+              });
             } else {
               this.$toast.fail("添加物资失败");
             }
