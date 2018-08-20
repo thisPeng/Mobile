@@ -47,5 +47,8 @@ export default mapState({
   },
   tabsShow: state => {
     return state.tabsShow;
+  },
+  infoDetails:state => {
+    return state.infoDetails;
   }
 });
