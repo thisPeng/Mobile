@@ -34,7 +34,6 @@ export default new Vuex.Store({
       if (val) {
         state.userId = {};
         state.userInfo = {};
-        state.userType = 0; // 用户身份: 1、工程、合作； 2、供应商
         state.loginInfo = {};
         state.tabActive = 0;
         state.taskModel = "";

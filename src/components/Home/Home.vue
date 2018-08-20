@@ -4,7 +4,10 @@
       <!-- <van-icon name="pending-evaluate" slot="right" class="home-icon" /> -->
       <i slot="right" class="iconfont icon-qiehuan home-icon" />
     </van-nav-bar>
-    <router-view class="content"></router-view>
+    <keep-alive>
+      <router-view class="content" v-if="$route.meta.keepAlive"></router-view>
+    </keep-alive>
+    <router-view class="content" v-if="!$route.meta.keepAlive"></router-view>
     <van-tabbar v-model="active" v-show="isTabbar">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
       <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item>
@@ -121,9 +124,6 @@ export default {
           this.active = this.tabActive;
       }
     }
-  },
-  mounted() {
-    // this.active = this.tabActive;
   }
 };
 </script>

@@ -367,7 +367,7 @@ const supplier = {
         "_parameters[BCName]": "BC_Purchase_Supplier",
         "_parameters[nStartPos]": page * 10,
         "_parameters[nRecords]": 10,
-        "_parameters[fieldList]": "",
+        "_parameters[fieldList]": " selese * ",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
         "_parameters[SQLCondi]": "",

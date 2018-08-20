@@ -6,12 +6,12 @@
           <van-search v-model="keyword" placeholder="请输入供应商名称" @search="searchList" @cancel="cleanSearch" show-action></van-search>
         </div>
         <div class="supplier-list">
-          <div class="supplier-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
+          <div class="supplier-item" v-for="(item,index) in list" :key="index" @click.stop="onUnCollect(item)">
             <div class="item-title">
               <span class="title">{{item[5]}}</span>
-              <span class="option" @click.stop="onUnCollect(item)">取消收藏</span>
+              <span class="option">取消收藏</span>
             </div>
-            <div class="item-content">
+            <div class="item-content" @click="jumpPage(item)">
               <div class="content-row">
                 <span class="row-left">联系人：{{item[10]}}</span>
                 <span class="row-right">生产类别：{{item[6] | type}}</span>
@@ -34,12 +34,12 @@
           <van-search v-model="allKeyword" placeholder="请输入供应商名称" @search="searchAllList" @cancel="cleanAllSearch" show-action></van-search>
         </div>
         <div class="supplier-list">
-          <div class="supplier-item" v-for="(item,index) in allList" :key="index" @click="jumpPage(item)">
-            <div class="item-title">
+          <div class="supplier-item" v-for="(item,index) in allList" :key="index">
+            <div class="item-title" @click.stop="onCollect(item)">
               <span class="title">{{item[2]}}</span>
-              <span class="option" @click.stop="onCollect(item)">收藏</span>
+              <span class="option">收藏</span>
             </div>
-            <div class="item-content">
+            <div class="item-content" @click="jumpPage(item)">
               <div class="content-row">
                 <span class="row-left">联系人：{{item[13]}}</span>
                 <span class="row-right">生产类别：{{item[3] | type}}</span>
@@ -130,7 +130,6 @@ export default {
             this.allPages = eval(
               "(" + sp[1].split("=")[1].replace(";", "") + ")"
             );
-            // console.log(this.allList);
           }
         } catch (e) {
           this.allList = [];

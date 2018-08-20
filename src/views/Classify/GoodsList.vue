@@ -13,7 +13,7 @@
           <i class="iconfont icon-paixu-shang" v-show="taxRateDesc === false"></i>
           <i class="iconfont icon-paixu-xia" v-show="taxRateDesc === true"></i>
         </div>
-        <div class="flex-1" @click="screenshow=true">筛选
+        <div class="flex-1" @click="screenShow=true">筛选
           <i class="iconfont icon-shaixuanxuanzhong"></i>
         </div>
       </div>
@@ -56,7 +56,7 @@
       </div>
       <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getGoodsList" />
     </div>
-    <van-popup v-model="screenshow" position="right">
+    <van-popup v-model="screenShow" position="right">
       <div class="screen">
         <div class="screen-filter">
           <van-collapse v-model="activeNames">
@@ -92,7 +92,7 @@ export default {
       BrandName: "",
       SKUList: "",
       activeNames: [],
-      screenshow: false,
+      screenShow: false,
       filterList: [],
       goodsList: [],
       curPage: 1,

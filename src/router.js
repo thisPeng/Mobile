@@ -47,8 +47,7 @@ Vue.use(Router);
 
 export default new Router({
   // mode: "history",
-  routes: [
-    {
+  routes: [{
       path: "/login",
       name: "login",
       component: Login
@@ -57,8 +56,7 @@ export default new Router({
       path: "/",
       redirect: "/index",
       component: Home,
-      children: [
-        {
+      children: [{
           path: "/index",
           name: "index",
           component: Index,
@@ -255,7 +253,8 @@ export default new Router({
           name: "supplier",
           component: Supplier,
           meta: {
-            title: "供应商设置" // 页面标题
+            title: "供应商设置", // 页面标题
+            keepAlive: true // 需要被缓存
           }
         },
         {

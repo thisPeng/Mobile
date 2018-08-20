@@ -15,7 +15,7 @@
           <i class="iconfont icon-paixu-shang" v-show="priceDesc === false"></i>
           <i class="iconfont icon-paixu-xia" v-show="priceDesc === true"></i>
         </div>
-        <div class="flex-1" @click="screenshow=true">筛选
+        <div class="flex-1" @click="screenShow=true">筛选
           <i class="iconfont icon-shaixuanxuanzhong"></i>
         </div>
       </div>
@@ -56,11 +56,11 @@
         </van-list>
       </div>
     </div>
-    <van-popup v-model="screenshow" position="right">
+    <van-popup v-model="screenShow" position="right">
       <div class="screen">
         <div class="screen-filter">
           <van-collapse v-model="activeNames">
-            <van-collapse-item title="供应商" name="1">
+            <van-collapse-item title="供应商" name="1" v-if="isSearch">
               <span class="filter-item" v-for="(item, index) in suppList" :key="index">
                 <van-button @click="filterSupp(item, index)" :disabled="suppActive === index ? true : false">{{item[5]}}</van-button>
               </span>
@@ -86,9 +86,9 @@ import { classify } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      activeNames: ["1"],
+      activeNames: ["1", "2"],
       priceDesc: "",
-      screenshow: false,
+      screenShow: false,
       isSearch: false,
       keyword: "",
       activeKey: 0,
@@ -201,20 +201,20 @@ export default {
       this.suppActive = index;
       this.$store.commit("suppParams", item);
       this.getSuppType();
-      this.screenshow = false;
+      this.screenShow = false;
     },
     // 过滤分类
     filterGoods(item, index) {
       this.filterActive = index;
       this.getSuppGoodsList(item.SupplierID, item.SC_SMaterialTypeOID);
-      this.screenshow = false;
+      this.screenShow = false;
     },
     // 重置过滤
     filterReset() {
       this.suppActive = "";
       this.filterActive = "";
       this.getSuppType();
-      this.screenshow = false;
+      this.screenShow = false;
       this.loading = false;
       this.finished = false;
     },

@@ -51,7 +51,7 @@
     </van-sku>
     <!--订单提交栏-->
     <van-submit-bar button-text="发起询价" @submit="onSubmit">
-      <van-checkbox v-model="checkedAll">全选</van-checkbox>
+      <van-checkbox v-model="checkedAll" ref="checkedAll">全选</van-checkbox>
       <!-- <div class="cart-clear" @click="cartClear">
         <i class="iconfont icon-qingkong"></i>
         <span class="clear-text">清空</span>
@@ -135,6 +135,7 @@ export default {
           // on cancel
         });
     },
+    // 购物车删除
     cartDelete() {
       this.$dialog
         .confirm({
@@ -147,6 +148,38 @@ export default {
         .catch(() => {
           // on cancel
         });
+    },
+    // 选中物资
+    onSelectItem(res) {
+      // console.log(this.$refs["checkedAll"]);
+      if (res) {
+        let isAll = true;
+        this.list.forEach(val => {
+          if (val[35] === false) {
+            isAll = false;
+          }
+        });
+        if (isAll) {
+          this.$refs["checkedAll"].toggle();
+        }
+        // this.checkedAll = isAll;
+      } else {
+        this.$refs["checkedAll"].toggle();
+        // this.checkedAll = false;
+      }
+    },
+    // 全选物资
+    onSelectAll(res) {
+      console.log(res);
+      if (res) {
+        this.list.forEach(val => {
+          val[35] = true;
+        });
+      } else {
+        this.list.forEach(val => {
+          val[35] = false;
+        });
+      }
     },
     onSubmit() {},
     // 显示物资详情
