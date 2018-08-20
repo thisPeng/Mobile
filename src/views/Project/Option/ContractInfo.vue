@@ -5,19 +5,19 @@
       <div class="con-card">
         <div class="con-item" v-for="(item,index) in list" :key="index" @click="jumpage('contractdetails')">
           <div class="item-title">
-            <span class="title">{{item[9]}}</span>
+            <span class="title">{{item[10]}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">{{item[13]}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">{{item[11]}}</span>
-              <span class="row-right">{{item[17]}}</span>
-            </div>
-            <div class="content-row">
               <span class="row-left">{{item[14]}}</span>
+            </div>
+            <div class="content-row">
               <span class="row-left">{{item[12]}}</span>
+              <span class="row-right colors">{{item[18]}}</span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">{{item[15]}}</span>
+              <span class="row-left">{{item[13]}}</span>
             </div>
 
           </div>
@@ -46,7 +46,7 @@ export default {
             console.log(sp);
             const tsp = sp[1].split(";");
             this.list = eval("[[" + tsp[0]);
-            // console.log(this.list);
+            console.log(this.list);
           }
         } catch (e) {
           console.log(e);
@@ -111,6 +111,9 @@ export default {
         }
       }
     }
+  }
+  .colors{
+    color: rgb(236, 9, 54);
   }
 }
 </style>
