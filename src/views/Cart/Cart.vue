@@ -4,31 +4,30 @@
       <van-cell-group>
         <van-switch-cell v-model="checked" title="陈世坤" />
       </van-cell-group>
-      <van-cell-swipe :right-width="65" v-for="(item,index) in list" :key="index" v-show="checked">
-        <!-- <span slot="left" class="left">
-              <van-checkbox v-model="item[21]" class="item-check"></van-checkbox>
-            </span> -->
-        <div :class="item[35] === false ? 'cart-item bg-gray' : 'cart-item'">
-          <van-checkbox v-model="item[35]" class="item-check"></van-checkbox>
-          <van-card :class="item[35] === false ? 'bg-gray' : ''" :desc="item[16] + ' | 单位：' + item[15]">
-            <div slot="thumb" @click.stop="showInfo(item)">
-              <img :src="item[32]" class="van-card__img">
-            </div>
-            <div slot="title" class="van-card__row" @click.stop="showInfo(item)">
-              <div class="van-card__title">{{item[14]}}</div>
-              <div class="van-card__price">{{'￥ '+item[19]}}</div>
-            </div>
-            <!-- <div slot="tags" @click.stop="showInfo(item)">
-                    <van-tag plain type="primary">供应商： {{item[18]}}</van-tag>
-                    <van-tag plain type="danger" class="margin-left-xs">历史均价：{{'￥ '+item[22]}}</van-tag>
-                  </div> -->
-            <div slot="footer">
-              <van-stepper v-model="item[3]" :integer="true" />
-            </div>
-          </van-card>
-        </div>
-        <span slot="right" class="right">删除</span>
-      </van-cell-swipe>
+      <van-checkbox-group v-model="checkedArr" @change="onSelectItem">
+        <van-cell-swipe :right-width="65" v-for="(item,index) in list" :key="index" v-show="checked">
+          <div :class="item[35] === false ? 'cart-item bg-gray' : 'cart-item'">
+            <van-checkbox :name="item[0]" class="item-check" ref="checked"></van-checkbox>
+            <van-card :class="item[35] === false ? 'bg-gray' : ''" :desc="item[16] + ' | 单位：' + item[15]">
+              <div slot="thumb" @click.stop="showInfo(item)">
+                <img :src="item[32]" class="van-card__img">
+              </div>
+              <div slot="title" class="van-card__row" @click.stop="showInfo(item)">
+                <div class="van-card__title">{{item[14]}}</div>
+                <div class="van-card__price">{{'￥ '+item[19]}}</div>
+              </div>
+              <!-- <div slot="tags" @click.stop="showInfo(item)">
+                <van-tag plain type="primary">供应商： {{item[18]}}</van-tag>
+                <van-tag plain type="danger" class="margin-left-xs">历史均价：{{'￥ '+item[22]}}</van-tag>
+              </div> -->
+              <div slot="footer">
+                <van-stepper v-model="item[3]" :integer="true" />
+              </div>
+            </van-card>
+          </div>
+          <span slot="right" class="right">删除</span>
+        </van-cell-swipe>
+      </van-checkbox-group>
     </van-list>
     <!--商品详情-->
     <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
@@ -51,7 +50,7 @@
     </van-sku>
     <!--订单提交栏-->
     <van-submit-bar button-text="发起询价" @submit="onSubmit">
-      <van-checkbox v-model="checkedAll" ref="checkedAll">全选</van-checkbox>
+      <van-checkbox v-model="checkedAll" ref="checkedAll" @change="onSelectAll">全选</van-checkbox>
       <!-- <div class="cart-clear" @click="cartClear">
         <i class="iconfont icon-qingkong"></i>
         <span class="clear-text">清空</span>
@@ -71,8 +70,10 @@ export default {
   data() {
     return {
       checked: true,
+      checkedArr: [],
       checkedAll: true,
       list: [],
+      pages: {},
       loading: false,
       finished: true,
       // 物资详情
@@ -100,27 +101,41 @@ export default {
     };
   },
   methods: {
-    getCart() {
-      cart.getList(this.projectInfo.SC_ProjectOID).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split(";");
-          const list = eval(sp[0].split("=")[1]);
-          list.forEach(val => {
-            if (val[32]) {
-              val[32] = val[32].replace("~", this.servePath);
-            } else {
-              val[32] =
-                this.servePath + "/SupplyChain/Images/MaterialType/default.jpg";
-            }
-            val[34] = true;
-            val[35] = true;
-          });
-          console.log(list);
-          this.list = list;
+    getCart(nStartPos = 0) {
+      cart.getList(this.projectInfo.SC_ProjectOID, nStartPos).then(res => {
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split(";");
+            const list = eval(sp[0].split("=")[1]);
+            const arr = [];
+            list.forEach(val => {
+              if (val[32]) {
+                val[32] = val[32].replace("~", this.servePath);
+              } else {
+                val[32] =
+                  this.servePath +
+                  "/SupplyChain/Images/MaterialType/default.jpg";
+              }
+              val[34] = true;
+              val[35] = true;
+              arr.push(val[0]);
+            });
+            this.pages = eval("(" + sp[1].split("=")[1] + ")");
+            this.loading = false;
+            this.finished = this.pages.RecordCount <= nStartPos;
+            this.checkedArr = this.checkedArr.concat(arr);
+            this.list = this.list.concat(list);
+          }
+        } catch (e) {
+          this.loading = false;
+          this.finished = true;
         }
       });
     },
-    onLoad() {},
+    // 滚动加载
+    onLoad() {
+      this.getCart(this.list.length);
+    },
     // 清空购物车
     cartClear() {
       this.$dialog
@@ -150,36 +165,25 @@ export default {
         });
     },
     // 选中物资
-    onSelectItem(res) {
-      // console.log(this.$refs["checkedAll"]);
-      if (res) {
-        let isAll = true;
-        this.list.forEach(val => {
-          if (val[35] === false) {
-            isAll = false;
-          }
-        });
-        if (isAll) {
-          this.$refs["checkedAll"].toggle();
-        }
-        // this.checkedAll = isAll;
-      } else {
-        this.$refs["checkedAll"].toggle();
-        // this.checkedAll = false;
-      }
+    onSelectItem() {
+      console.log(this.checkedArr);
     },
     // 全选物资
     onSelectAll(res) {
-      console.log(res);
       if (res) {
         this.list.forEach(val => {
-          val[35] = true;
+          this.checkedArr.push(val[0]);
         });
       } else {
-        this.list.forEach(val => {
-          val[35] = false;
-        });
+        this.checkedArr = [];
       }
+      /*
+      this.list.forEach((val, idx) => {
+        if (val[35] !== res) {
+          this.$refs["checked"][idx].toggle();
+        }
+      });
+      */
     },
     onSubmit() {},
     // 显示物资详情
@@ -199,6 +203,7 @@ export default {
       this.showBase = true;
       // console.log(item);
     },
+    // 发起询价
     onBuyClicked() {}
   },
   computed,
@@ -218,8 +223,9 @@ export default {
 <style lang="less" scoped>
 .cart {
   width: 100%;
+  background-color: #fff !important;
   .van-list {
-    margin-bottom: 85px;
+    margin-bottom: 110px;
     .cart-item {
       padding-left: 10px;
       border-bottom: 1px solid #ccc;
@@ -254,7 +260,7 @@ export default {
       background-color: #f44;
     }
   }
-
+  // 订单提交栏
   .van-submit-bar {
     bottom: 50px;
     .van-checkbox {

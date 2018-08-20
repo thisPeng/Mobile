@@ -653,9 +653,10 @@ const task = {
     });
   }
 };
-
+// 购物车
 const cart = {
-  getList(ProjectID, page = 0) {
+  // 获取购物车列表
+  getList(ProjectID, nStartPos = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -663,7 +664,7 @@ const cart = {
         _bpoName: "BPO_Purchase_ProjectService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_IntentionSKU",
-        "_parameters[nStartPos]": page * 20,
+        "_parameters[nStartPos]": nStartPos,
         "_parameters[nRecords]": 20,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",

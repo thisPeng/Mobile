@@ -85,7 +85,8 @@ export default new Router({
           name: "cart",
           component: Cart,
           meta: {
-            title: "购物车" // 页面标题
+            title: "购物车",
+            // keepAlive: true // 需要被缓存
           }
         },
         {

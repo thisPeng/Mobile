@@ -155,7 +155,7 @@ export default {
               );
               this.goodsList = this.goodsList.concat(arr);
               this.loading = false;
-              this.finished = this.pages.RecordCount < this.pages.StartPos;
+              this.finished = this.pages.RecordCount <= this.goodsList.length;
             }
           } catch (e) {
             this.loading = false;
