@@ -85,8 +85,7 @@ const message = {
         "_parameters[SQLCondi]": "",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -108,8 +107,7 @@ const message = {
         "_parameters[SQLCondi]": "",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -190,10 +188,8 @@ const classify = {
         "_parameters[condiIndentList]": "",
         "_parameters[SQLCondi]": params.SQLCondi,
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]":
-          " AND smt.SPUName LIKE '%" + params.keyword + "%' " + params.SQLFix,
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        "_parameters[SQLFix]": " AND smt.SPUName LIKE '%" + params.keyword + "%' " + params.SQLFix,
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -233,8 +229,7 @@ const classify = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]":
-          "SC_Supp_ProductSKU.SupplierID='" +
+        "_parameters[SQLCondi]": "SC_Supp_ProductSKU.SupplierID='" +
           SupplierID +
           "' AND (SC_SMaterialType_FK in (select SC_SMaterialTypeOID from SC_SMaterialType where SC_SMaterialType_FK='" +
           SC_SMaterialType_FK +
@@ -242,10 +237,8 @@ const classify = {
           SC_SMaterialType_FK +
           "' )",
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]":
-          " AND smt.SPUName LIKE '%" + keyword + "%' " + SQLFix,
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        "_parameters[SQLFix]": " AND smt.SPUName LIKE '%" + keyword + "%' " + SQLFix,
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -342,8 +335,7 @@ const users = {
   // 保存用户信息
   saveInfo(params = {}) {
     return axios({
-      url:
-        "ucml_mobile/select_User_Org_Mobile.ashx?type=CHANGEINFO&sex=" +
+      url: "ucml_mobile/select_User_Org_Mobile.ashx?type=CHANGEINFO&sex=" +
         params.sex +
         "&telno=" +
         params.telno +
@@ -386,10 +378,8 @@ const supplier = {
         "_parameters[condiIndentList]": "",
         "_parameters[SQLCondi]": "",
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]":
-          "AND SC_Supplier.SupplierName LIKE '%" + keyword + "%'",
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        "_parameters[SQLFix]": "AND SC_Supplier.SupplierName LIKE '%" + keyword + "%'",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -411,8 +401,7 @@ const supplier = {
         "_parameters[SQLCondi]": "",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "AND supp.SupplierName LIKE '%" + keyword + "%'",
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -468,8 +457,7 @@ const task = {
         "_parameters[SQLCondi]": "",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": " ORDER BY AssignTask.SYS_Created DESC",
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -491,8 +479,7 @@ const task = {
         "_parameters[SQLCondi]": "",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": " ORDER BY AssignTask.SYS_Created DESC",
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -514,8 +501,7 @@ const task = {
         "_parameters[SQLCondi]": "InstanceID='" + params.InstanceID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -537,8 +523,7 @@ const task = {
         "_parameters[SQLCondi]": "InstanceID='" + params.InstanceID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -631,8 +616,7 @@ const task = {
       data: {
         _bpoName: "BPO_WF_YC_InOutFormService",
         _methodName: "FinishMyTask",
-        "_parameters[DeltaXml]":
-          `<root>` +
+        "_parameters[DeltaXml]": `<root>` +
           `<BC_WF_AssignTask_Idea UpdateKind="ukModify">` +
           `<AssignTaskOID>` +
           parasm.TaskOID +
@@ -691,18 +675,29 @@ const cart = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]":
-          "SC_IntentionSKU.ProjectID ='" + ProjectID + "'",
+        "_parameters[SQLCondi]": "SC_IntentionSKU.ProjectID ='" + ProjectID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    });
+  },
+  // 删除购物车物资
+  delCartMaterials(IntentionSKUOID = '') {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_ProjectService",
+        _methodName: "DeleteRec",
+        "_parameters[IntentionSKUOID]": IntentionSKUOID,
+        _paraNames: "IntentionSKUOID",
         _pUrl: ""
       }
     });
   }
 };
-
 //获取确定价格信息
 const conprice = {
   getList(ProjectID) {
@@ -733,12 +728,10 @@ const conprice = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]":
-          "SC_Order_MasterOID  = '" + PurchaseOrderID + "'",
+        "_parameters[SQLCondi]": "SC_Order_MasterOID  = '" + PurchaseOrderID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });
@@ -760,8 +753,7 @@ const conprice = {
         "_parameters[SQLCondi]": "PurchaseOrderID='" + PurchaseOrderID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });

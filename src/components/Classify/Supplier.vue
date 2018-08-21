@@ -98,7 +98,7 @@ export default {
       pages: {},
       loading: false,
       finished: false,
-      suppActive: "",
+      suppActive: 0,
       filterActive: "",
       SQLFix: "",
       // 物资详情

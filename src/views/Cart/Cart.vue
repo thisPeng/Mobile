@@ -2,35 +2,37 @@
   <div class="cart">
     <van-list v-model="loading" :finished="finished" @load="onLoad" :immediate-check="false">
       <van-cell-group>
-        <van-switch-cell v-model="checked" title="陈世坤" />
+        <van-switch-cell v-model="checked" :title="'供应商分组一'" />
       </van-cell-group>
       <van-checkbox-group v-model="checkedArr" @change="onSelectItem">
         <van-cell-swipe :right-width="65" v-for="(item,index) in list" :key="index" v-show="checked">
-          <div :class="item[35] === false ? 'cart-item bg-gray' : 'cart-item'">
-            <van-checkbox :name="item[0]" class="item-check" ref="checked"></van-checkbox>
-            <van-card :class="item[35] === false ? 'bg-gray' : ''" :desc="item[16] + ' | 单位：' + item[15]">
-              <div slot="thumb" @click.stop="showInfo(item)">
-                <img :src="item[32]" class="van-card__img">
-              </div>
-              <div slot="title" class="van-card__row" @click.stop="showInfo(item)">
-                <div class="van-card__title">{{item[14]}}</div>
-                <div class="van-card__price">{{'￥ '+item[19]}}</div>
-              </div>
-              <!-- <div slot="tags" @click.stop="showInfo(item)">
+          <transition name="van-slide-bottom">
+            <div :class="item[35] === false ? 'cart-item bg-gray' : 'cart-item'" v-show="item[35]">
+              <van-checkbox :name="item[0]" class="item-check" ref="checked"></van-checkbox>
+              <van-card :class="item[35] === false ? 'bg-gray' : ''" :desc="item[16] + ' | 单位：' + item[15]">
+                <div slot="thumb" @click.stop="showInfo(item,index)">
+                  <img :src="item[32]" class="van-card__img">
+                </div>
+                <div slot="title" class="van-card__row" @click.stop="showInfo(item,index)">
+                  <div class="van-card__title">{{item[14]}}</div>
+                  <div class="van-card__price">{{'￥ '+item[19]}}</div>
+                </div>
+                <!-- <div slot="tags" @click.stop="showInfo(item)">
                 <van-tag plain type="primary">供应商： {{item[18]}}</van-tag>
                 <van-tag plain type="danger" class="margin-left-xs">历史均价：{{'￥ '+item[22]}}</van-tag>
               </div> -->
-              <div slot="footer">
-                <van-stepper v-model="item[3]" :integer="true" />
-              </div>
-            </van-card>
-          </div>
-          <span slot="right" class="right">删除</span>
+                <div slot="footer">
+                  <van-stepper v-model="item[3]" :integer="true" />
+                </div>
+              </van-card>
+            </div>
+          </transition>
+          <span slot="right" class="right" @click="onDeleteItem(item[0],index)">删除</span>
         </van-cell-swipe>
       </van-checkbox-group>
     </van-list>
     <!--商品详情-->
-    <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
+    <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="searchSame(goods.title)">
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
           <van-cell :title="'品牌： '+ goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
@@ -43,13 +45,12 @@
       </template>
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
-          <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">删 除</van-button>
+          <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">找同款</van-button>
         </div>
       </template>
     </van-sku>
     <!--订单提交栏-->
-    <van-submit-bar button-text="发起询价" @submit="onSubmit">
+    <van-submit-bar :button-text="pages.RecordCount > 999 ? '询价(999+)' : '询价('+pages.RecordCount+')'" @submit="onSubmit">
       <van-checkbox v-model="checkedAll" ref="checkedAll" @change="onSelectAll">全选</van-checkbox>
       <!-- <div class="cart-clear" @click="cartClear">
         <i class="iconfont icon-qingkong"></i>
@@ -158,7 +159,28 @@ export default {
           message: "确认删除购物车已选物资？"
         })
         .then(() => {
-          // on confirm
+          let str = "";
+          this.checkedArr.forEach(val => {
+            str += val + "|";
+          });
+          str = str.substr(0, str.length - 1);
+          // 多个删除
+          cart.delCartMaterials(str).then(res => {
+            try {
+              if (res.status === 1 && res.text === "True") {
+                this.$toast.success("选择的物资都已删除");
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.getCart();
+                  }, 1000);
+                });
+              } else {
+                this.$toast.fail("删除失败，请刷新页面重试");
+              }
+            } catch (e) {
+              this.$toast.fail("删除失败，请刷新页面重试");
+            }
+          });
         })
         .catch(() => {
           // on cancel
@@ -177,17 +199,19 @@ export default {
       } else {
         this.checkedArr = [];
       }
-      /*
-      this.list.forEach((val, idx) => {
-        if (val[35] !== res) {
-          this.$refs["checked"][idx].toggle();
-        }
-      });
-      */
     },
+    // 找同款
+    searchSame(name) {
+      console.log(name);
+      this.$store.commit("goodsParams", { keyword: name });
+      this.$router.push({
+        name: "goodsList"
+      });
+    },
+    // 发起询价
     onSubmit() {},
     // 显示物资详情
-    showInfo(item) {
+    showInfo(item, index) {
       this.goods = {
         id: item[0],
         sid: item[1],
@@ -198,13 +222,32 @@ export default {
         unit: item[15],
         shop: item[18],
         taxRate: "",
-        taxAll: ""
+        taxAll: "",
+        index: index
       };
       this.showBase = true;
       // console.log(item);
     },
-    // 发起询价
-    onBuyClicked() {}
+    // 删除物资
+    onDeleteItem(id, i) {
+      cart.delCartMaterials(id).then(res => {
+        try {
+          if (res.status === 1 && res.text === "True") {
+            this.$toast.success("物资已删除");
+            this.list.splice(i, 1);
+            this.$nextTick().then(() => {
+              setTimeout(() => {
+                this.getCart();
+              }, 1000);
+            });
+          } else {
+            this.$toast.fail("删除失败，请刷新页面重试");
+          }
+        } catch (e) {
+          this.$toast.fail("删除失败，请刷新页面重试");
+        }
+      });
+    }
   },
   computed,
   mounted() {
@@ -274,6 +317,7 @@ export default {
         font-size: 18px;
       }
       .delete-text {
+        font-size: 14px;
         color: #333;
         padding-left: 5px;
       }
@@ -288,6 +332,16 @@ export default {
         color: #333;
         padding-left: 5px;
       }
+    }
+  }
+}
+</style>
+<style lang="less">
+.cart {
+  .van-submit-bar__bar {
+    .van-button__text,
+    .van-checkbox__label {
+      font-size: 14px !important;
     }
   }
 }

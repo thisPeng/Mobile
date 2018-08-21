@@ -62,7 +62,7 @@ export default new Router({
           name: "index",
           component: Index,
           meta: {
-            title: "首页" // 页面标题
+            title: "首页"
           }
         },
         {
@@ -70,7 +70,8 @@ export default new Router({
           name: "classify",
           component: Classify,
           meta: {
-            title: "物资分类" // 页面标题
+            title: "物资分类",
+            keepAlive: true
           }
         },
         {
@@ -78,7 +79,7 @@ export default new Router({
           name: "goodsList",
           component: GoodsList,
           meta: {
-            title: "物资列表" // 页面标题
+            title: "物资列表"
           }
         },
         {
@@ -87,7 +88,7 @@ export default new Router({
           component: Cart,
           meta: {
             title: "购物车",
-            // keepAlive: true // 需要被缓存
+            // keepAlive: true
           }
         },
         {
@@ -95,7 +96,7 @@ export default new Router({
           name: "taskWait",
           component: TaskWait,
           meta: {
-            title: "待办列表" // 页面标题
+            title: "待办列表"
           }
         },
         {
@@ -103,7 +104,7 @@ export default new Router({
           name: "taskList",
           component: TaskList,
           meta: {
-            title: "待办事宜" // 页面标题
+            title: "待办事宜"
           }
         },
         {
@@ -111,7 +112,7 @@ export default new Router({
           name: "projectList",
           component: ProjectList,
           meta: {
-            title: "选择项目" // 页面标题
+            title: "选择项目"
           }
         },
         {
@@ -119,7 +120,7 @@ export default new Router({
           name: "project",
           component: Project,
           meta: {
-            title: "合作项目" // 页面标题
+            title: "合作项目"
           }
         },
         {
@@ -127,7 +128,7 @@ export default new Router({
           name: "option",
           component: Option,
           meta: {
-            title: "项目功能" // 页面标题
+            title: "项目功能"
           }
         },
         {
@@ -135,7 +136,7 @@ export default new Router({
           name: "material",
           component: Material,
           meta: {
-            title: "项目详情" // 页面标题
+            title: "项目详情"
           }
         },
         {
@@ -143,7 +144,7 @@ export default new Router({
           name: "taskYCFrom",
           component: TaskYCFrom,
           meta: {
-            title: "预存单审核" // 页面标题
+            title: "预存单审核"
           }
         },
         {
@@ -151,7 +152,7 @@ export default new Router({
           name: "taskZFFrom",
           component: TaskZFFrom,
           meta: {
-            title: "支付申请审核" // 页面标题
+            title: "支付申请审核"
           }
         },
         {
@@ -159,7 +160,7 @@ export default new Router({
           name: "taskKKFrom",
           component: TaskKKFrom,
           meta: {
-            title: "扣款申请审核" // 页面标题
+            title: "扣款申请审核"
           }
         },
         {
@@ -167,7 +168,7 @@ export default new Router({
           name: "taskJDFrom",
           component: TaskJDFrom,
           meta: {
-            title: "解冻申请审核" // 页面标题
+            title: "解冻申请审核"
           }
         },
         {
@@ -175,7 +176,7 @@ export default new Router({
           name: "taskPKFrom",
           component: TaskPKFrom,
           meta: {
-            title: "批款申请审核" // 页面标题
+            title: "批款申请审核"
           }
         },
         {
@@ -183,7 +184,7 @@ export default new Router({
           name: "taskDJFrom",
           component: TaskDJFrom,
           meta: {
-            title: "冻结申请审核" // 页面标题
+            title: "冻结申请审核"
           }
         },
         {
@@ -191,7 +192,7 @@ export default new Router({
           name: "msgList",
           component: MsgList,
           meta: {
-            title: "消息列表" // 页面标题
+            title: "消息列表"
           }
         },
         {
@@ -199,7 +200,7 @@ export default new Router({
           name: "message",
           component: Message,
           meta: {
-            title: "我的消息" // 页面标题
+            title: "我的消息"
           }
         },
         {
@@ -207,7 +208,7 @@ export default new Router({
           name: "apply",
           component: Apply,
           meta: {
-            title: "应用" // 页面标题
+            title: "应用"
           }
         },
         {
@@ -215,7 +216,7 @@ export default new Router({
           name: "contact",
           component: Contact,
           meta: {
-            title: "通讯录" // 页面标题
+            title: "通讯录"
           }
         },
         {
@@ -223,7 +224,7 @@ export default new Router({
           name: "count",
           component: Count,
           meta: {
-            title: "数据统计" // 页面标题
+            title: "数据统计"
           }
         },
         {
@@ -231,7 +232,7 @@ export default new Router({
           name: "users",
           component: Users,
           meta: {
-            title: "用户中心" // 页面标题
+            title: "用户中心"
           }
         },
         {
@@ -239,7 +240,7 @@ export default new Router({
           name: "usersPwd",
           component: UsersPwd,
           meta: {
-            title: "修改密码" // 页面标题
+            title: "修改密码"
           }
         },
         {
@@ -247,7 +248,7 @@ export default new Router({
           name: "usersInfo",
           component: UsersInfo,
           meta: {
-            title: "个人信息" // 页面标题
+            title: "个人信息"
           }
         },
         {
@@ -255,7 +256,7 @@ export default new Router({
           name: "supplier",
           component: Supplier,
           meta: {
-            title: "供应商设置", // 页面标题
+            title: "供应商设置",
             keepAlive: true // 需要被缓存
           }
         },
@@ -264,7 +265,7 @@ export default new Router({
           name: "supplierType",
           component: SupplieType,
           meta: {
-            title: "供应商物资" // 页面标题
+            title: "供应商物资"
           }
         },
         {
@@ -272,7 +273,7 @@ export default new Router({
           name: "conprice",
           component: ConPrice,
           meta: {
-            title: "确认价格" // 页面标题
+            title: "确认价格"
           }
         },
         {
@@ -280,7 +281,7 @@ export default new Router({
           name: "contractinfo",
           component: ContractInfo,
           meta: {
-            title: "合同信息" // 页面标题
+            title: "合同信息"
           }
         },
         {
@@ -288,7 +289,7 @@ export default new Router({
           name: "arrivalinformation",
           component: ArrivalInformation,
           meta: {
-            title: "到货信息" // 页面标题
+            title: "到货信息"
           }
         },
         {

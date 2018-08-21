@@ -55,7 +55,7 @@ export default {
       this.active = index;
     },
     onItemClick(id) {
-      this.$store.commit("goodsParams", id);
+      this.$store.commit("goodsParams", { id });
       this.$router.push({
         name: "goodsList"
       });

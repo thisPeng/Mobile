@@ -137,7 +137,7 @@ export default {
     // 获取物资种类
     getGoodsFilter() {
       const params = {
-        MaterialTypeID: this.goodsParams,
+        MaterialTypeID: this.goodsParams.id,
         BrandName: this.BrandName,
         SKUList: this.SKUList
       };
@@ -312,13 +312,13 @@ export default {
     filterReset() {
       this.keyword = this.BrandName = this.SKUList = "";
       this.curPage = 1;
-      if (this.goodsParams) {
+      if (this.goodsParams.id) {
         const params = {
           SQLCondi:
             "(SC_Supp_ProductSKU.SC_MaterialType_FK = '" +
-            this.goodsParams +
+            this.goodsParams.id +
             "' OR SC_Supp_ProductSKU.Parent_MaterialType = '" +
-            this.goodsParams +
+            this.goodsParams.id +
             "')",
           SQLFix: ""
         };
@@ -335,19 +335,22 @@ export default {
   },
   computed,
   mounted() {
+    console.log(this.goodsParams);
     if (this.$router.history.current.params.model) {
       this.$store.commit("goodsParams", "");
-    } else if (this.goodsParams) {
+    } else if (this.goodsParams.id) {
       const params = {
         SQLCondi:
           "(SC_Supp_ProductSKU.SC_MaterialType_FK = '" +
-          this.goodsParams +
+          this.goodsParams.id +
           "' or SC_Supp_ProductSKU.Parent_MaterialType = '" +
-          this.goodsParams +
+          this.goodsParams.id +
           "')",
         SQLFix: ""
       };
       this.params = params;
+    } else if (this.goodsParams.keyword) {
+      this.keyword = this.goodsParams.keyword;
     }
     this.getGoodsList();
     this.$nextTick().then(() => {
@@ -467,12 +470,12 @@ export default {
 }
 </style>
 <style lang="less">
-.classify {
-  /* 物资列表 */
-  .van-card__desc {
-    overflow: inherit;
-    white-space: inherit;
-  }
-}
+// .classify {
+//   /* 物资列表 */
+//   .van-card__desc {
+//     overflow: inherit;
+//     white-space: inherit;
+//   }
+// }
 </style>
 
