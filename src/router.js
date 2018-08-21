@@ -44,6 +44,7 @@ import Tranrial from "./views/Transaction/Tranrial";
 import Inventory from "./views/Transaction/Inventory";
 import Customerlist from "./views/CustomerList/CustomerList";
 import InquiryDetails from "./views/Project/Option/Details/InquiryDetails";
+import ContractWork from "./views/Project/Option/Details/ContractWork";
 Vue.use(Router);
 
 export default new Router({
@@ -393,6 +394,14 @@ export default new Router({
           component: InquiryDetails,
           meta: {
             title: "询价单明细编辑" //页面标题
+          }
+        },
+        {
+          path: "/project/option/details/contractwork",
+          name: "contractwork",
+          component: ContractWork,
+          meta: {
+            title: "合同编辑" //页面标题
           }
         },
       ]
