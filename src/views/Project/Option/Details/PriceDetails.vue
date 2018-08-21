@@ -57,7 +57,7 @@
     <van-button type="default">添加物资</van-button>
     <van-button type="default" @click="confirmDelete">删除</van-button>
     <van-button type="default">保存</van-button>
-    <van-button type="default">合同编辑</van-button>
+    <van-button type="default" @click="jumpage('contractwork')">合同编辑</van-button>
   </div>
 </template>
 <script>

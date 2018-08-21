@@ -199,7 +199,7 @@ export default {
         flex: 1;
       }
       .sex-select {
-        flex: 5;
+        flex: 4;
       }
     }
     .info-type {

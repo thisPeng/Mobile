@@ -83,7 +83,6 @@ export default {
   },
   methods: {
     onConfirm(res) {
-      // console.log(res);
       this.payment = res;
       this.columns[res] = this.paymentShow = false;
     }
