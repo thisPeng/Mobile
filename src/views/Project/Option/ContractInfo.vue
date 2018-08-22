@@ -3,7 +3,7 @@
   <div class="contractinfo">
     <div class="con-data">
       <div class="con-card">
-        <div class="con-item" v-for="(item,index) in list" :key="index" @click="jumpage('contractdetails')">
+        <div class="con-item" v-for="(item,index) in list" :key="index" @click="jumpage('contractlabor')">
           <div class="item-title">
             <span class="title">{{item[10]}}</span>
           </div>
@@ -43,10 +43,10 @@ export default {
           if (res && res.status === 1) {
             // console.log(res.text);
             const sp = res.text.split("[[");
-            console.log(sp);
+            // console.log(sp);
             const tsp = sp[1].split(";");
             this.list = eval("[[" + tsp[0]);
-            console.log(this.list);
+            // console.log(this.list);
           }
         } catch (e) {
           console.log(e);
