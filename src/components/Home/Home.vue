@@ -4,10 +4,10 @@
       <!-- <van-icon name="pending-evaluate" slot="right" class="home-icon" /> -->
       <i slot="right" class="iconfont icon-qiehuan home-icon" />
     </van-nav-bar>
-    <keep-alive>
-      <router-view class="content" v-if="$route.meta.keepAlive"></router-view>
+    <keep-alive v-if="$route.meta.keepAlive">
+      <router-view class="content" ref="routerView"></router-view>
     </keep-alive>
-    <router-view class="content" v-if="!$route.meta.keepAlive"></router-view>
+    <router-view class="content" ref="routerView" v-else></router-view>
     <van-tabbar v-model="active" v-show="isTabbar">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
       <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item>
@@ -30,8 +30,12 @@ export default {
     };
   },
   watch: {
-    $route(to) {
-      this.title = to.meta.title;
+    $route(to, from) {
+      if (this.projectInfo.SC_ProjectOID) {
+        this.title = this.projectInfo.ProjectName;
+      } else {
+        this.title = to.meta.title;
+      }
       if (
         to.name !== "index" &&
         to.name !== "classify" &&
@@ -60,6 +64,15 @@ export default {
             this.active = this.tabActive;
         }
       }
+      if (from.name === "projectList" && to.meta.keepAlive) {
+        try {
+          if (typeof this.$refs.routerView.pageInit === "function") {
+            this.$refs.routerView.pageInit();
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
     }
   },
   methods: {
@@ -81,13 +94,16 @@ export default {
   computed,
   created() {
     const current = this.$router.history.current;
-    this.title = current.meta.title;
+    if (this.projectInfo.SC_ProjectOID) {
+      this.title = this.projectInfo.ProjectName;
+    } else {
+      this.title = current.meta.title;
+    }
 
     users.userInfo().then(result => {
       if (result && this.userInfo.oid !== result.oid) {
         this.$store.commit("cleanStore", true);
         this.$store.commit("userInfo", result);
-        this.title = current.meta.title;
         users.userId(result.oid).then(res => {
           if (res && res.status === 1) {
             this.$store.commit("userId", JSON.parse(res.text)[0]);

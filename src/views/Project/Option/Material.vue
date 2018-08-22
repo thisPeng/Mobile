@@ -13,9 +13,7 @@ export default {
   methods: {},
   computed,
   mounted() {
-    if (this.projectInfo.SC_ProjectOID) {
-      this.$parent.title = this.projectInfo.ProjectName;
-    } else {
+    if (!this.projectInfo.SC_ProjectOID) {
       this.$toast("请先点击屏幕右上角按钮，选择项目");
     }
   }

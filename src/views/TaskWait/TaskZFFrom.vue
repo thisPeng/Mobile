@@ -98,7 +98,6 @@ export default {
       try {
         if (result && result.status === 1) {
           let sp = result.text.split(";");
-
           this.data = eval(sp[0].split("=")[1])[0];
           this.dataTable = eval(sp[2].split("=")[1]);
           this.payment = this.columns[this.data[9] - 1];

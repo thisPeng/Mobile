@@ -95,14 +95,7 @@ export default {
       });
     }
   },
-  computed,
-  mounted() {
-    this.$nextTick().then(() => {
-      if (this.projectInfo.SC_ProjectOID) {
-        this.$parent.title = this.projectInfo.ProjectName;
-      }
-    });
-  }
+  computed
 };
 </script>
 <style lang="less" scoped>

@@ -6,10 +6,10 @@
           <van-search v-model="keyword" placeholder="请输入供应商名称" @search="searchList" @cancel="cleanSearch" show-action></van-search>
         </div>
         <div class="supplier-list">
-          <div class="supplier-item" v-for="(item,index) in list" :key="index" @click.stop="onUnCollect(item)">
+          <div class="supplier-item" v-for="(item,index) in list" :key="index">
             <div class="item-title">
               <span class="title">{{item[5]}}</span>
-              <span class="option">取消收藏</span>
+              <span class="option" @click.stop="onUnCollect(item)">取消收藏</span>
             </div>
             <div class="item-content" @click="jumpPage(item)">
               <div class="content-row">
@@ -35,9 +35,9 @@
         </div>
         <div class="supplier-list">
           <div class="supplier-item" v-for="(item,index) in allList" :key="index">
-            <div class="item-title" @click.stop="onCollect(item)">
+            <div class="item-title">
               <span class="title">{{item[2]}}</span>
-              <span class="option">收藏</span>
+              <span class="option" @click.stop="onCollect(item)">添加收藏</span>
             </div>
             <div class="item-content" @click="jumpPage(item)">
               <div class="content-row">
@@ -219,7 +219,7 @@ export default {
       border-radius: 5px;
       margin-bottom: 10px;
       .item-title {
-        padding: 10px 0;
+        // padding: 10px 0;
         border-bottom: 1px solid #f6f6f6;
         display: flex;
         align-items: center;
@@ -229,6 +229,7 @@ export default {
           font-size: 16px;
         }
         .option {
+          padding: 10px 15px;
           font-size: 12px;
           color: #00a0e9;
           text-decoration: underline;

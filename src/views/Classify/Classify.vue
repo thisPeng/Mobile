@@ -63,6 +63,10 @@ export default {
           console.log(e);
         }
       });
+    },
+    // 页面初始化
+    pageInit() {
+      this.getClassifyList();
     }
   },
   computed,
@@ -133,12 +137,7 @@ export default {
     });
   },
   mounted() {
-    this.getClassifyList();
-    this.$nextTick().then(() => {
-      if (this.projectInfo.SC_ProjectOID) {
-        this.$parent.title = this.projectInfo.ProjectName;
-      }
-    });
+    this.pageInit();
   }
 };
 </script>

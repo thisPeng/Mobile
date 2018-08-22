@@ -671,14 +671,27 @@ const cart = {
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_IntentionSKU",
         "_parameters[nStartPos]": nStartPos,
-        "_parameters[nRecords]": 20,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
         "_parameters[SQLCondi]": "SC_IntentionSKU.ProjectID ='" + ProjectID + "'",
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": "",
+        "_parameters[SQLFix]": " ORDER BY SupplierName ASC",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    });
+  },
+  // 获取购物车列表
+  getAllList() {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_ProjectService",
+        _methodName: "BusiViewString",
+        _paraNames: "",
         _pUrl: ""
       }
     });
@@ -800,7 +813,7 @@ const conprice = {
     });
   },
   // 合同编辑
-  conContract(ContractOID){
+  conContract(ContractOID) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -816,8 +829,7 @@ const conprice = {
         "_parameters[SQLCondi]": "SC_Order_ContractOID='" + ContractOID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
-        _paraNames:
-          "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });

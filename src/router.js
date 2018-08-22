@@ -63,7 +63,8 @@ export default new Router({
           name: "index",
           component: Index,
           meta: {
-            title: "首页"
+            title: "首页",
+            keepAlive: true
           }
         },
         {
@@ -71,7 +72,8 @@ export default new Router({
           name: "classify",
           component: Classify,
           meta: {
-            title: "物资分类"
+            title: "物资分类",
+            // keepAlive: true
           }
         },
         {
@@ -232,7 +234,8 @@ export default new Router({
           name: "users",
           component: Users,
           meta: {
-            title: "用户中心"
+            title: "用户中心",
+            keepAlive: true
           }
         },
         {

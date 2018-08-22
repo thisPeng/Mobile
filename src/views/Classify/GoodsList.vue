@@ -356,7 +356,6 @@ export default {
     this.getGoodsList();
     this.$nextTick().then(() => {
       if (this.projectInfo.SC_ProjectOID) {
-        this.$parent.title = this.projectInfo.ProjectName;
         this.getCartList();
       }
     });
