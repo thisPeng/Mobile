@@ -57,7 +57,7 @@
       <van-button type="default" @click="conProposal">提议</van-button>
       <van-button type="default">添加物资</van-button>
     </div>
-    <div class="firm-button">
+    <div class="con-button">
       <van-button type="default" @click="confirmDelete">删除</van-button>
       <van-button type="default">保存</van-button>
       <van-button type="default" @click="jumpage('contractwork')">合同编辑</van-button>
@@ -242,18 +242,23 @@ export default {
     color: #00a0e9;
     background-color: #f7f7f7;
   }
-   .van-button--normal {
-     padding: 0px 30px;
-   }
+  .van-button--normal {
+    padding: 0px 30px;
+  }
   .con-button {
     display: flex;
     width: 100%;
-    flex: 1;
+    flex-direction: row;
+    justify-content: center;
+    margin: 2px 0;
+    button{
+      width: 30%;
+      flex: 1;
+
+    }
   }
-  .firm-button {
-    display: flex;
-    width: 100%;
-    flex: 1;
+  .con-data{
+    margin-bottom: 12px;
   }
 }
 </style>

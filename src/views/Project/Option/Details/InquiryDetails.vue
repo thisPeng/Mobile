@@ -14,7 +14,7 @@
       <van-field v-model="infoDetails[16]" label="产品编码:" disabled />
     </van-cell-group>
     <div class="deletebutton">
-    <van-button type="danger">删除</van-button>
+      <van-button type="danger">删除</van-button>
     </div>
   </div>
 </template>
@@ -22,9 +22,7 @@
 import computed from "./../../../../assets/js/computed.js";
 export default {
   data() {
-    return {
-
-    };
+    return {};
   },
   // methods: {
   //   fn_getxmlKind(bcname, value, mode) {
@@ -45,13 +43,13 @@ export default {
 
   computed,
   methods: {
-  //   fn_getxml(s) {
-  //     // let s = '';
-  //     // s = fn_getxmlKind("BC_SC_Order_Detail", "ukModify", 0);
-  //     s = this.function.fn_getxmlroot("str");
-  //     console.log(s);
-  //   }
-  // },
+    //   fn_getxml(s) {
+    //     // let s = '';
+    //     // s = fn_getxmlKind("BC_SC_Order_Detail", "ukModify", 0);
+    //     s = this.function.fn_getxmlroot("str");
+    //     console.log(s);
+    //   }
+    // },
   },
   mounted() {}
 };
@@ -59,9 +57,15 @@ export default {
 <style lang="less" scoped>
 .inquirydetails {
   width: 100%;
-  .deletebutton{
-      padding-top: 10px;
-    text-align: center;
+  .deletebutton {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .van-button--normal {
+    padding: 0px 46px;
+    font-size: 15px;
   }
 }
 </style>

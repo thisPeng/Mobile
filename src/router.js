@@ -45,6 +45,7 @@ import Inventory from "./views/Transaction/Inventory";
 import Customerlist from "./views/CustomerList/CustomerList";
 import InquiryDetails from "./views/Project/Option/Details/InquiryDetails";
 import ContractWork from "./views/Project/Option/Details/ContractWork";
+import ContractLabor from "./views/Project/Option/Details/ContractLabor";
 Vue.use(Router);
 
 export default new Router({
@@ -404,7 +405,15 @@ export default new Router({
           name: "contractwork",
           component: ContractWork,
           meta: {
-            title: "合同编辑" //页面标题
+            title: "材料合同编辑" //页面标题
+          }
+        },
+        {
+          path: "/project/option/details/contractlabor",
+          name: "contractlabor",
+          component: ContractLabor,
+          meta: {
+            title: "劳务合同编辑" //页面标题
           }
         },
       ]
