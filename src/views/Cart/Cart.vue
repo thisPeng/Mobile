@@ -260,7 +260,7 @@ export default {
         this.getCart();
       } else {
         this.finished = true;
-        this.$toast.fail("请先点击屏幕右上角按钮，选择项目");
+        this.$toast("请先点击屏幕右上角按钮，选择项目");
       }
     });
   }
@@ -269,9 +269,9 @@ export default {
 <style lang="less" scoped>
 .cart {
   width: 100%;
-  overflow: hidden !important;
   background-color: #fff !important;
   .van-list {
+    overflow: hidden;
     margin-bottom: 110px;
     .cart-item {
       padding-left: 10px;

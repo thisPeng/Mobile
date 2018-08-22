@@ -29,7 +29,7 @@ export default {
   },
   mounted() {
     if (!this.projectInfo.SC_ProjectOID) {
-      this.$toast.fail("请先点击屏幕右上角按钮，选择项目");
+      this.$toast("请先点击屏幕右上角按钮，选择项目");
     } else {
       this.$parent.title = this.projectInfo.ProjectName;
     }
