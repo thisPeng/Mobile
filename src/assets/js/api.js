@@ -709,6 +709,21 @@ const cart = {
         _pUrl: ""
       }
     });
+  },
+  // 提交询价
+  addOrder(pid, ppid) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_ProjectService",
+        _methodName: "CreateOrderBill",
+        "_parameters[PartnerID]": pid,
+        "_parameters[ProjectID_ucmlparams_0]": ppid,
+        _paraNames: "PartnerID,ProjectID_ucmlparams_0",
+        _pUrl: ""
+      }
+    });
   }
 };
 //获取确定价格信息

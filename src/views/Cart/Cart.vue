@@ -7,7 +7,7 @@
           <van-cell-group>
             <van-switch-cell v-model="ite.checked" :title="ite.name" @change="switechSupp(idx)" />
           </van-cell-group>
-          <van-checkbox-group v-model="checkedArr" @change="onSelectItem">
+          <van-checkbox-group v-model="checkedArr">
             <van-cell-swipe :right-width="65" v-for="(item,index) in ite.list" :key="index" v-show="ite.checked">
               <transition name="van-slide-bottom">
                 <div class="cart-item">
@@ -57,7 +57,8 @@
     </van-sku>
 
     <!--订单提交栏-->
-    <van-submit-bar :button-text="pages.RecordCount > 999 ? '询价(999+)' : '询价('+checkedArr.length+')'" @submit="onSubmit">
+    <!-- <van-submit-bar :button-text="pages.RecordCount > 999 ? '询价(999+)' : '询价('+checkedArr.length+')'" @submit="onSubmit"> -->
+    <van-submit-bar button-text="发起询价" @submit="onSubmit">
       <van-checkbox v-model="checkedAll" ref="checkedAll" @change="onSelectAll">全选</van-checkbox>
       <!-- <div class="cart-clear" @click="cartClear">
         <i class="iconfont icon-qingkong"></i>
@@ -157,7 +158,7 @@ export default {
             // this.list = this.list.concat(list);
           }
         } catch (e) {
-          console.log(e);
+          // console.log(e);
           this.loading = false;
           this.finished = true;
         }
@@ -196,42 +197,40 @@ export default {
     },
     // 购物车删除
     cartDelete() {
-      this.$dialog
-        .confirm({
-          title: "提示",
-          message: "确认删除购物车已选物资？"
-        })
-        .then(() => {
-          let str = "";
-          this.checkedArr.forEach(val => {
-            str += val + "|";
-          });
-          str = str.substr(0, str.length - 1);
-          // 多个删除
-          cart.delCartMaterials(str).then(res => {
-            try {
-              if (res.status === 1 && res.text === "True") {
-                this.$toast.success("选择的物资都已删除");
-                this.$nextTick().then(() => {
-                  setTimeout(() => {
-                    this.getCart();
-                  }, 1000);
-                });
-              } else {
+      if (this.checkedArr.length > 0) {
+        this.$dialog
+          .confirm({
+            title: "提示",
+            message: "确认删除购物车已选物资？"
+          })
+          .then(() => {
+            let str = "";
+            this.checkedArr.forEach(val => {
+              str += val + "|";
+            });
+            str = str.substr(0, str.length - 1);
+            // 多个删除
+            cart.delCartMaterials(str).then(res => {
+              try {
+                if (res.status === 1 && res.text === "True") {
+                  this.$toast.success("已删除");
+                  this.$nextTick().then(() => {
+                    setTimeout(() => {
+                      this.getCart();
+                    }, 1000);
+                  });
+                } else {
+                  this.$toast.fail("删除失败，请刷新页面重试");
+                }
+              } catch (e) {
                 this.$toast.fail("删除失败，请刷新页面重试");
               }
-            } catch (e) {
-              this.$toast.fail("删除失败，请刷新页面重试");
-            }
+            });
+          })
+          .catch(() => {
+            // on cancel
           });
-        })
-        .catch(() => {
-          // on cancel
-        });
-    },
-    // 选中物资
-    onSelectItem() {
-      // console.log(this.checkedArr);
+      }
     },
     // 全选物资
     onSelectAll(res) {
@@ -251,7 +250,37 @@ export default {
       });
     },
     // 发起询价
-    onSubmit() {},
+    onSubmit() {
+      this.$dialog
+        .confirm({
+          title: "提示",
+          message: "确认提交【所有】物资询价？"
+        })
+        .then(() => {
+          cart
+            .addOrder(
+              this.projectInfo.PartnerID,
+              this.projectInfo.SC_ProjectOID
+            )
+            .then(res => {
+              try {
+                if (res.status === 1 && res.text !== "") {
+                  this.$toast.success("提交成功");
+                  this.$nextTick().then(() => {
+                    setTimeout(() => {
+                      this.getCart();
+                    }, 1000);
+                  });
+                }
+              } catch (e) {
+                console.log(e);
+              }
+            });
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
     // 显示物资详情
     showInfo(item, index) {
       this.goods = {
@@ -275,7 +304,7 @@ export default {
       cart.delCartMaterials(id).then(res => {
         try {
           if (res.status === 1 && res.text === "True") {
-            this.$toast.success("物资已删除");
+            this.$toast.success("已删除");
             this.list.splice(i, 1);
             this.$nextTick().then(() => {
               setTimeout(() => {
