@@ -42,12 +42,11 @@ export default {
 <style lang="less" scoped>
 .infoitem {
   width: 100%;
-  .van-cell{
+  .van-cell {
     font-size: 15px;
-    color:rgb(153, 148, 148);
+    color: rgb(153, 148, 148);
   }
-  }
-
+}
 </style>
 
 

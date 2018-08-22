@@ -111,7 +111,7 @@ export default {
       }
     }
   }
-  .colors{
+  .colors {
     color: rgb(236, 9, 54);
   }
 }

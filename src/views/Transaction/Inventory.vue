@@ -16,15 +16,15 @@
               <span class="row-left">实际数量{{item}}</span>
               <span class="row-left">赠送数量{{item}}</span>
             </div>
-               <div class="content-row">
+            <div class="content-row">
               <span class="row-left">单位{{item}}</span>
               <span class="row-left">小计{{item}}</span>
             </div>
-               <div class="content-row">
+            <div class="content-row">
               <span class="row-left">税率{{item}}</span>
               <span class="row-left">产品编号{{item}}</span>
             </div>
-               <div class="content-row">
+            <div class="content-row">
               <span class="row-left">备注{{item}}</span>
             </div>
           </div>
@@ -39,7 +39,7 @@ import computed from "./../../assets/js/computed.js";
 export default {
   data() {
     return {
-      item:""
+      item: ""
     };
   },
   computed,

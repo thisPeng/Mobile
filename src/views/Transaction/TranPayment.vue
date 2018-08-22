@@ -1,5 +1,5 @@
 <template>
-<!-- 付款信息 -->
+  <!-- 付款信息 -->
   <div class="tranpayment">
     <div class="pay-data">
       <div class="pay-card">

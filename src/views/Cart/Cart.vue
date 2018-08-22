@@ -57,8 +57,8 @@
     </van-sku>
 
     <!--订单提交栏-->
-    <!-- <van-submit-bar :button-text="pages.RecordCount > 999 ? '询价(999+)' : '询价('+checkedArr.length+')'" @submit="onSubmit"> -->
-    <van-submit-bar button-text="发起询价" @submit="onSubmit">
+    <!-- <van-submit-bar :button-text="checkedArr.length > 999 ? '询价(999+)' : '询价('+checkedArr.length+')'" @submit="onSubmit"> -->
+    <van-submit-bar :button-text="pages.RecordCount > 999 ? '询价(999+)' : '询价('+pages.RecordCount+')'" @submit="onSubmit">
       <van-checkbox v-model="checkedAll" ref="checkedAll" @change="onSelectAll">全选</van-checkbox>
       <!-- <div class="cart-clear" @click="cartClear">
         <i class="iconfont icon-qingkong"></i>

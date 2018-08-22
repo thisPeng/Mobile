@@ -59,10 +59,10 @@ export default {
         }
       });
     },
-    jumpage(name){
+    jumpage(name) {
       this.$router.push({
         name
-      })
+      });
     }
   },
   mounted() {

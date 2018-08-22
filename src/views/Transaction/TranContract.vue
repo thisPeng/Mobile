@@ -1,9 +1,9 @@
 <template>
-<!-- 合同信息 -->
+  <!-- 合同信息 -->
   <div class="trancontract">
     <div class="tran-data">
       <div class="tran-card">
-        <div class="tran-item"  @click="jumpage('inventory')">
+        <div class="tran-item" @click="jumpage('inventory')">
           <!-- v-for="(item,index) in list" :key="index" @click="jumpage('pricedetails')" -->
           <div class="item-title">
             <span class="title">项目名称：{{item}}</span>
@@ -37,10 +37,10 @@ export default {
   },
   computed,
   methods: {
-    jumpage(name){
+    jumpage(name) {
       this.$router.push({
         name
-      })
+      });
     }
   },
   mounted() {}

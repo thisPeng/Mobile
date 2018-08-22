@@ -1,16 +1,17 @@
 <template>
-<!-- 报价单 -->
+  <!-- 报价单 -->
   <div class="quotation">
     <div class="quo-data">
       <div class="quo-card">
-        <div class="quo-item" @click="jump('tranrial')"> <!-- v-for="(item,index) in list" :key="index" -->
+        <div class="quo-item" @click="jump('tranrial')">
+          <!-- v-for="(item,index) in list" :key="index" -->
           <div class="item-title">
             <span class="title">项目名称{{item}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
               <span class="row-left">订单编号{{item}}</span>
-                <span class="row-right">待报价{{item}}</span>
+              <span class="row-right">待报价{{item}}</span>
             </div>
             <div class="content-row">
               <span class="row-left">数量{{item}}</span>
@@ -45,21 +46,21 @@ export default {
     //     }
     //   });
     // }
-    jump(name){
-     this.$router.push({
-       name
-     })
+    jump(name) {
+      this.$router.push({
+        name
+      });
     }
   },
   mounted() {
-  //   const c = {
-  //     pid: "222",
-  //     sid: "333"
-  //   }
-  //   this.getList(c);
-  // }
-},
-}
+    //   const c = {
+    //     pid: "222",
+    //     sid: "333"
+    //   }
+    //   this.getList(c);
+    // }
+  }
+};
 </script>
 <style lang="less" scoped>
 .quotation {

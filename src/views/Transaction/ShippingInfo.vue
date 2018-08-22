@@ -1,5 +1,5 @@
 <template>
-<!-- 发货信息 -->
+  <!-- 发货信息 -->
   <div class="shippinginfo">
     <div class="info-data">
       <div class="info-card">

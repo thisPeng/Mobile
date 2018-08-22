@@ -1,5 +1,5 @@
 <template>
-<!-- 付款信息列表 -->
+  <!-- 付款信息列表 -->
   <div class="paymentlabel">
     <van-tabs>
       <van-tab title='支付申请信息'>
@@ -18,10 +18,10 @@
         <frozen />
       </van-tab>
       <van-tab title='扣款信息'>
-       <withholding />
+        <withholding />
       </van-tab>
       <van-tab title='资金流水'>
-       <capitalFlow />
+        <capitalFlow />
       </van-tab>
       <van-tab title='OA批款信息'>
         <oainformation />
@@ -31,14 +31,14 @@
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
-import application from "./../../../components/Payment/Application";//支付申请信息
-import preMemory from "./../../../components/Payment/PreMemory";//预存列表
-import payInfomation from "./../../../components/Payment/PayInfomation";//支付信息
-import appropriation from "./../../../components/Payment/Appropriation";//批款信息
-import frozen from "./../../../components/Payment/Frozen";//冻结信息
-import withholding from "./../../../components/Payment/Withholding";//扣款信息
-import capitalFlow from "./../../../components/Payment/CapitalFlow";//资金流水
-import oainformation from "./../../../components/Payment/OAinformation";//OA批款信息
+import application from "./../../../components/Payment/Application"; //支付申请信息
+import preMemory from "./../../../components/Payment/PreMemory"; //预存列表
+import payInfomation from "./../../../components/Payment/PayInfomation"; //支付信息
+import appropriation from "./../../../components/Payment/Appropriation"; //批款信息
+import frozen from "./../../../components/Payment/Frozen"; //冻结信息
+import withholding from "./../../../components/Payment/Withholding"; //扣款信息
+import capitalFlow from "./../../../components/Payment/CapitalFlow"; //资金流水
+import oainformation from "./../../../components/Payment/OAinformation"; //OA批款信息
 
 export default {
   data() {
