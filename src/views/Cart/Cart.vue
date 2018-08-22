@@ -1,5 +1,6 @@
 <template>
   <div class="cart">
+    <!--列表-->
     <van-list v-model="loading" :finished="finished" @load="onLoad" :immediate-check="false">
       <van-cell-group>
         <van-switch-cell v-model="checked" :title="'供应商分组一'" />
@@ -31,6 +32,7 @@
         </van-cell-swipe>
       </van-checkbox-group>
     </van-list>
+
     <!--商品详情-->
     <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="searchSame(goods.title)">
       <template slot="sku-body-top" slot-scope="props">
@@ -49,6 +51,7 @@
         </div>
       </template>
     </van-sku>
+
     <!--订单提交栏-->
     <van-submit-bar :button-text="pages.RecordCount > 999 ? '询价(999+)' : '询价('+pages.RecordCount+')'" @submit="onSubmit">
       <van-checkbox v-model="checkedAll" ref="checkedAll" @change="onSelectAll">全选</van-checkbox>
@@ -266,6 +269,7 @@ export default {
 <style lang="less" scoped>
 .cart {
   width: 100%;
+  overflow: hidden !important;
   background-color: #fff !important;
   .van-list {
     margin-bottom: 110px;

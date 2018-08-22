@@ -71,8 +71,7 @@ export default new Router({
           name: "classify",
           component: Classify,
           meta: {
-            title: "物资分类",
-            keepAlive: true
+            title: "物资分类"
           }
         },
         {

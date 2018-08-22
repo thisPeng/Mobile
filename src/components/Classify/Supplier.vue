@@ -34,27 +34,27 @@
               </div>
             </van-card>
           </div>
-          <!--商品详情-->
-          <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
-            <template slot="sku-body-top" slot-scope="props">
-              <van-cell-group>
-                <van-cell :title="'品牌： '+ goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
-                <van-cell :title="'税率：' + goods.taxRate + '%'" :label="'可开票税率：' + goods.taxAll" />
-                <van-cell :title="'供应商：' + goods.shop" />
-              </van-cell-group>
-            </template>
-            <template slot="sku-stepper" slot-scope="props">
-              <div></div>
-            </template>
-            <template slot="sku-actions" slot-scope="props">
-              <div class="van-sku-actions">
-                <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-                <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">加入购物车</van-button>
-              </div>
-            </template>
-          </van-sku>
         </van-list>
       </div>
+      <!--商品详情-->
+      <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
+        <template slot="sku-body-top" slot-scope="props">
+          <van-cell-group>
+            <van-cell :title="'品牌： '+ goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
+            <van-cell :title="'税率：' + goods.taxRate + '%'" :label="'可开票税率：' + goods.taxAll" />
+            <van-cell :title="'供应商：' + goods.shop" />
+          </van-cell-group>
+        </template>
+        <template slot="sku-stepper" slot-scope="props">
+          <div></div>
+        </template>
+        <template slot="sku-actions" slot-scope="props">
+          <div class="van-sku-actions">
+            <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
+            <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">加入购物车</van-button>
+          </div>
+        </template>
+      </van-sku>
     </div>
     <van-popup v-model="screenShow" position="right">
       <div class="screen">
