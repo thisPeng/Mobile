@@ -3,7 +3,7 @@
   <div class="contractwork">
     <van-cell-group>
       <div class="title-delivery">基本合同信息</div>
-      <van-field v-model="cspList[1]" label="合同编号" class="vmodel" disabled/>
+      <van-field v-model="cspList[1]" label="合同编号" disabled/>
       <van-field v-model="cspList[2]" label="合同名称" />
       <van-field v-model="cspList[11]" label="合同金额" />
       <van-cell-group class="tact-price">
@@ -55,31 +55,31 @@
       <van-field v-model="cspList[28]" label="乙方违约(‰)" />
       <van-field v-model="cspList[29]" label="甲方违约(‰)" />
       <div class="title-delivery">甲方信息</div>
-      <van-field v-model="cspList[31]" label="甲方(盖章签名处)" class="vmodel" disabled/>
-      <van-field v-model="cspList[32]" label="甲方银行账号" class="vmodel" disabled/>
-      <van-field v-model="cspList[33]" label="甲方开户行" class="vmodel" disabled />
-      <van-field v-model="cspList[34]" label="甲方纳税识别码" class="vmodel" disabled/>
-      <van-field v-model="cspList[36]" label="甲方电话" class="vmodel" disabled/>
+      <van-field v-model="cspList[31]" label="甲方(盖章签名处)"  disabled/>
+      <van-field v-model="cspList[32]" label="甲方银行账号"  disabled/>
+      <van-field v-model="cspList[33]" label="甲方开户行"  disabled />
+      <van-field v-model="cspList[34]" label="甲方纳税识别码"  disabled/>
+      <van-field v-model="cspList[36]" label="甲方电话"  disabled/>
       <van-field v-model="cspList[37]" label="甲方代表人" />
       <van-cell-group class="con-price">
         <span class="con-label">甲方签订日期</span>
         <span class="con-select" @click="showDatathree=true">{{cspList[38]}}</span>
         <van-datetime-picker v-model="currentDate" v-show="showDatathree" type="date" class="contract-date" @confirm="jiafangDate" @cancel="showDatathree=false" />
       </van-cell-group>
-      <van-field v-model="cspList[35]" label="甲方地址" class="vmodel" disabled/>
+      <van-field v-model="cspList[35]" label="甲方地址"  disabled/>
       <div class="title-delivery">乙方信息</div>
-      <van-field v-model="cspList[39]" label="乙方(盖章签名处)" class="vmodel" disabled/>
-      <van-field v-model="cspList[40]" label="乙方银行账号" class="vmodel" disabled />
-      <van-field v-model="cspList[41]" label="乙方开户行" class="vmodel" disabled/>
-      <van-field v-model="cspList[42]" label="乙方纳税识别码" class="vmodel" disabled/>
-      <van-field v-model="cspList[44]" label="乙方电话" class="vmodel" disabled/>
+      <van-field v-model="cspList[39]" label="乙方(盖章签名处)"  disabled/>
+      <van-field v-model="cspList[40]" label="乙方银行账号"  disabled />
+      <van-field v-model="cspList[41]" label="乙方开户行"  disabled/>
+      <van-field v-model="cspList[42]" label="乙方纳税识别码"  disabled/>
+      <van-field v-model="cspList[44]" label="乙方电话"  disabled/>
       <van-field v-model="cspList[45]" label="乙方代表人" />
       <van-cell-group class="con-price">
         <span class="con-label">乙方签订日期</span>
         <span class="con-select" @click="showDatafour=true">{{cspList[46]}}</span>
         <van-datetime-picker v-model="currentDate" v-show="showDatafour" type="date" class="contract-date" @confirm="yifangDate" @cancel="showDatafour=false" />
       </van-cell-group>
-      <van-field v-model="cspList[43]" label="乙方地址" class="vmodel" disabled/>
+      <van-field v-model="cspList[43]" label="乙方地址"  disabled/>
     </van-cell-group>
     <div class="button">
       <van-button size="normal" type="primary">
@@ -224,9 +224,6 @@ export default {
   }
   .tact-select {
     flex: 5;
-  }
-  .vmodel {
-    background-color: darkgrey;
   }
   .button {
     width: 100%;
