@@ -1,6 +1,6 @@
 <template>
   <!-- 合同信息 -->
-  <div class="contractinfo">
+  <div class="contractInfo">
     <div class="con-data">
       <div class="con-card">
         <div class="con-item" v-for="(item,index) in list" :key="index" @click="jumpage('contractlabor')">
@@ -28,7 +28,7 @@
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
-import { contractinfo } from "./../../../assets/js/api.js";
+import { contractInfo } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -38,7 +38,7 @@ export default {
   computed,
   methods: {
     getList() {
-      contractinfo.getList(this.projectInfo.SC_ProjectOID).then(res => {
+      contractInfo.getList(this.projectInfo.SC_ProjectOID).then(res => {
         try {
           if (res && res.status === 1) {
             // console.log(res.text);
@@ -69,7 +69,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.contractinfo {
+.contractInfo {
   width: 100%;
   padding: 10px;
   background-color: #eee;

@@ -281,8 +281,8 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/contractinfo",
-          name: "contractinfo",
+          path: "/project/option/contractInfo",
+          name: "contractInfo",
           component: ContractInfo,
           meta: {
             title: "合同信息"

@@ -65,7 +65,7 @@
               </div>
               <div class="project-text">确认价格</div>
             </div>
-            <div class="project-item" @click="jumpPage('contractinfo')">
+            <div class="project-item" @click="jumpPage('contractInfo')">
               <div class="item-icon bg-red">
                 <i class="iconfont icon-hetong" />
               </div>

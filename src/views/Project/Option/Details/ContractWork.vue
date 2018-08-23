@@ -89,7 +89,7 @@
 </template>
 <script>
 import computed from "./../../../../assets/js/computed.js";
-import { conprice } from "../../../../assets/js/api.js";
+import { conprice, contractInfo } from "../../../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -149,22 +149,23 @@ export default {
           const csp = sp[1].split(";");
           // console.log(csp);
           this.cspList = eval("[[" + csp[0])[0];
-          if (this.cspList[9]) {
-            this.cspList[9] = "请选择时间"; // 确认时间
-          }
-          if (this.cspList[23]) {
-            this.cspList[23] = "请选择时间"; //交货时间
-          }
-          if (this.cspList[14]) {
-            this.cspList[14] = "请选择时间"; //保质结束时间
-          }
-          if (this.cspList[38]) {
-            this.cspList[38] = "请选择时间"; //甲方
-          }
-          if (this.cspList[46]) {
-            this.cspList[46] = "请选择时间"; //乙方
-          }
-          // console.log(this.cspList);
+
+          // if (this.cspList[9]) {
+          //   this.cspList[9] = "请选择时间"; // 确认时间
+          // }
+          // if (this.cspList[23]) {
+          //   this.cspList[23] = "请选择时间"; //交货时间
+          // }
+          // if (this.cspList[14]) {
+          //   this.cspList[14] = "请选择时间"; //保质结束时间
+          // }
+          // if (this.cspList[38]) {
+          //   this.cspList[38] = "请选择时间"; //甲方
+          // }
+          // if (this.cspList[46]) {
+          //   this.cspList[46] = "请选择时间"; //乙方
+          // }
+          console.log(this.cspList);
         }
       });
     },
@@ -185,50 +186,292 @@ export default {
                 SC_Order_ContractOID: cspList[0]
               },
               {
-                Contract_No: cspList[1]
+                Contract_Name: "null"
               },
               {
-                Contract_Name: cspList[1]
+                Partner_Name: "null"
               },
               {
-                Partner_Name: cspList[1]
+                Supplier_Name: "null"
               },
               {
-                Supplier_Name: cspList[1]
+                PartnerID: "null"
               },
               {
-                PartnerID: cspList[1]
+                SupplierID: "null"
               },
               {
-                SupplierID: cspList[1]
+                BusinessID: "null"
               },
               {
-                BusinessID: cspList[1]
+                Deliver_Addr: "null"
               },
               {
-                Deliver_Addr: cspList[1]
+                Deliver_Time: "null"
               },
               {
-                Deliver_Time: cspList[1]
+                Accept_Valid_Day: "null"
               },
               {
-                Accept_Valid_Day: cspList[1]
+                Contract_Amt: "null"
               },
               {
-                Contract_Amt: null
+                Pay_Mode: "null"
+              },
+              {
+                Signt_Valid_Day: "null"
+              },
+              {
+                Signt_Percent: "null"
+              },
+              {
+                In_Valid_Day: "null"
+              },
+              {
+                In_Pay_Percent: "null"
+              },
+              {
+                Payment_Other: "null"
+              },
+              {
+                Contract_Tax_Amt: "null"
+              },
+              {
+                TaxRate: "null"
+              },
+              {
+                Ensure_Valid_Day: "null"
+              },
+              {
+                Ensure_Pay_Percent: "null"
+              },
+              {
+                Ensure_Day: "null"
+              },
+              {
+                Ensure_Begin_Date: "null"
+              },
+              {
+                Ensure_End_Date: "null"
+              },
+              {
+                Ensure_Amt_Percent: "null"
+              },
+              {
+                Ensure_Deal_Day: "null"
+              },
+              {
+                Ensure_Deal_Remark: "null"
+              },
+              {
+                Supplier_Breach: "null"
+              },
+              {
+                Partner_Breach: "null"
+              },
+              {
+                Court_Sue: "null"
+              },
+              // {
+              //   Partner_Sign: null
+              // },
+              // {
+              //   Partner_BankNO: null
+              // },
+              // {
+              //   Partner_BankName: null
+              // },
+              // {
+              //   Partner_TaxNO: null
+              // },
+              // {
+              //   Partner_Addr: null
+              // },
+              // {
+              //   Partner_TaxNO: null
+              // },
+              // {
+              //   Partner_Tel: null
+              // },
+              // {
+              //   Partner_Behalf: null
+              // },
+              {
+                Partner_Sign_Date: "null"
+              },
+              // {
+              //   Supplier_Sign: null
+              // },
+              // {
+              //   Supplier_BankNO: null
+              // },
+              // {
+              //   Supplier_BankName: null
+              // },
+              // {
+              //   Supplier_TaxNO: null
+              // },
+              // {
+              //   Supplier_Addr: null
+              // },
+              // {
+              //   Supplier_Tel: null
+              // },
+              // {
+              //   Supplier_Behalf: null
+              // },
+              {
+                Supplier_Sign_Date: "null"
+              },
+              {
+                ProjectID: "null"
+              },
+              {
+                Approve_Flag: "null"
+              },
+              {
+                Seal_Flag: "null"
+              },
+              {
+                Edit_Flag: "null"
+              },
+              {
+                Contract_Type: "null"
+              },
+              {
+                Return_Flag: "null"
+              }
+            ]
+          },
+          {
+            BC_SC_Order_Contract: [
+              {
+                _attr: {
+                  UpdateKind: ""
+                }
+              },
+              {
+                SC_Order_ContractOID: "null"
+              },
+              {
+                Contract_Name: cspList[2]
+              },
+              {
+                Partner_Name: cspList[31]
+              },
+              {
+                Supplier_Name: cspList[39]
+              },
+              {
+                PartnerID: "null"
+              },
+              {
+                SupplierID:"null"
+              },
+              {
+                BusinessID: "null"
+              },
+              {
+                Deliver_Addr: cspList[8]
+              },
+              {
+                Deliver_Time: cspList[23]
+              },
+              {
+                Accept_Valid_Day: cspList[10]
+              },
+              {
+                Contract_Amt: cspList[11]
+              },
+              {
+                Pay_Mode: "null"
+              },
+              {
+                Signt_Valid_Day: "null"
+              },
+              {
+                Signt_Percent: "null"
+              },
+              {
+                In_Valid_Day: "null"
+              },
+              {
+                In_Pay_Percent: "null"
+              },
+              {
+                Payment_Other: "null"
+              },
+              {
+                Contract_Tax_Amt: "null"
+              },
+              {
+                TaxRate: "null"
+              },
+              {
+                Ensure_Valid_Day: "null"
+              },
+              {
+                Ensure_Pay_Percent: "null"
+              },
+              {
+                Ensure_Day: "null"
+              },
+              {
+                Ensure_Begin_Date: "null"
+              },
+              {
+                Ensure_End_Date: "null"
+              },
+              {
+                Ensure_Amt_Percent: "null"
+              },
+              {
+                Ensure_Deal_Day: cspList[26]
+              },
+              {
+                Ensure_Deal_Remark: "null"
+              },
+              {
+                Supplier_Breach: cspList[28]
+              },
+              {
+                Partner_Breach: cspList[29]
+              },
+              {
+                Court_Sue: "null"
+              },
+              {
+                Partner_Sign_Date: "null"
+              },
+              {
+                Supplier_Sign_Date: "null"
+              },
+              {
+                ProjectID: "null"
+              },
+              {
+                Approve_Flag: "null"
+              },
+              {
+                Seal_Flag: "null"
+              },
+              {
+                Edit_Flag:"null"
+              },
+              {
+                Contract_Type: "null"
+              },
+              {
+                Return_Flag: "null"
               }
             ]
           }
-          // {
-          //   BC_SC_Order_Contract: {
-          //     _attr: {
-          //       UpdateKind: ""
-          //     }
-          //   }
-          // }
         ]
       });
-      console.log(xmlString);
+      // console.log(xmlString);
+      contractInfo.saveContract(xmlString).then(res => {
+        console.log(res);
+      });
     }
   },
   mounted() {

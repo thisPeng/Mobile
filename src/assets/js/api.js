@@ -865,7 +865,7 @@ const conprice = {
   }
 };
 // 获取合同信息
-const contractinfo = {
+const contractInfo = {
   getList(ProjectID) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -879,6 +879,19 @@ const contractinfo = {
         _pUrl: ""
       }
     });
+  },
+  saveContract(xml){
+    return axios({
+      url:"/UCMLWebServiceEntryForJs.aspx",
+      method:"post",
+      data:{
+        _bpoName: "BPO_Order_Contract_EditService",
+        _methodName:"BusinessSubmit",
+        "_parameters[xmlData]":xml,
+        _paraNames: "xmlData",
+        _pUrl:""
+      }
+    })
   }
 };
 //获取到货信息
@@ -929,7 +942,7 @@ export {
   task,
   cart,
   conprice,
-  contractinfo,
+  contractInfo,
   arrival,
   offer
 };

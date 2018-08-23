@@ -14,7 +14,7 @@
       <van-field v-model="infoDetails[16]" label="产品编码:" disabled />
     </van-cell-group>
     <div class="deletebutton">
-      <van-button type="danger">删除</van-button>
+      <van-button type="danger" @click="fn_getxml">删除</van-button>
     </div>
   </div>
 </template>
@@ -24,32 +24,28 @@ export default {
   data() {
     return {};
   },
-  // methods: {
-  //   fn_getxmlKind(bcname, value, mode) {
-  //     if (mode == 0) {
-  //       return "<(" + bcname + ",  UpdateKind=" + value + ">";
-  //     } else {
-  //       return "<\\" + bcname + ">";
-  //     }
-  //   },
-  //   fn_getxmlfied(fiedname, value) {
-  //     return "<" + fiedname + ">" + value + "<//fiedname>";
-  //   },
-  //  fn_getxmlroot(str) {
-  //     let s = "<root>" + str + "<\\root>";
-  //     return s;
-  //   }
-  // },
-
   computed,
   methods: {
-    //   fn_getxml(s) {
-    //     // let s = '';
-    //     // s = fn_getxmlKind("BC_SC_Order_Detail", "ukModify", 0);
-    //     s = this.function.fn_getxmlroot("str");
-    //     console.log(s);
-    //   }
-    // },
+  //   fn_getxml(s) {
+  //     // let s = '';
+  //     // s = fn_getxmlKind("BC_SC_Order_Detail", "ukModify", 0);
+  //     s = this.function.fn_getxmlroot("str");
+  //     console.log(s);
+  //   }
+  // },
+  // fn_getxmlKind(bcname, value, mode) {
+  //   if (mode == 0) {
+  //     return "<(" + bcname + ",  UpdateKind=" + value + ">";
+  //   } else {
+  //     return "<\\" + bcname + ">";
+  //   }
+  // },
+  // fn_getxmlfied(fiedname, value) {
+  //   return "<" + fiedname + ">" + value + "<//fiedname>";
+  // },
+  // fn_getxmlroot(str) {
+  //   let s = "<root>" + str + "<\\root>";
+  //   return s;
   },
   mounted() {}
 };
