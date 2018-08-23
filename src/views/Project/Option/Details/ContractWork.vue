@@ -81,10 +81,9 @@
       </van-cell-group>
       <van-field v-model="cspList[43]" label="乙方地址" disabled/>
     </van-cell-group>
-    <div class="title-delivery">合同附件表</div>
+    <!-- <div class="title-delivery">合同附件表</div>  -->
     <div class="button">
-      <van-button size="normal" type="primary">
-        <van-icon name="passed" />提交</van-button>
+      <van-button size="large" type="primary" @click="submitWork">提交</van-button>
     </div>
   </div>
 </template>
@@ -168,6 +167,68 @@ export default {
           // console.log(this.cspList);
         }
       });
+    },
+    // 提交
+    submitWork() {
+      const cspList = this.cspList;
+      const xml = require("xml");
+      const xmlString = xml({
+        root: [
+          {
+            BC_SC_Order_Contract: [
+              {
+                _attr: {
+                  UpdateKind: "ukModify"
+                }
+              },
+              {
+                SC_Order_ContractOID: cspList[0]
+              },
+              {
+                Contract_No: cspList[1]
+              },
+              {
+                Contract_Name: cspList[1]
+              },
+              {
+                Partner_Name: cspList[1]
+              },
+              {
+                Supplier_Name: cspList[1]
+              },
+              {
+                PartnerID: cspList[1]
+              },
+              {
+                SupplierID: cspList[1]
+              },
+              {
+                BusinessID: cspList[1]
+              },
+              {
+                Deliver_Addr: cspList[1]
+              },
+              {
+                Deliver_Time: cspList[1]
+              },
+              {
+                Accept_Valid_Day: cspList[1]
+              },
+              {
+                Contract_Amt: null
+              }
+            ]
+          }
+          // {
+          //   BC_SC_Order_Contract: {
+          //     _attr: {
+          //       UpdateKind: ""
+          //     }
+          //   }
+          // }
+        ]
+      });
+      console.log(xmlString);
     }
   },
   mounted() {
@@ -230,16 +291,12 @@ export default {
   .button {
     width: 100%;
     display: flex;
-    flex-direction: row;
     justify-content: center;
-    // button {
-    //   width: 30%;
-    //   flex: 1;
-    // }
-  }
-  .van-button--normal {
-    padding: 0px 46px;
-    font-size: 15px;
+    margin: 20px 0;
+    button {
+      width: 95%;
+      text-align: center;
+    }
   }
 }
 </style>

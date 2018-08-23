@@ -710,6 +710,20 @@ const cart = {
       }
     });
   },
+  // 保存购物车
+  saveOrder(xmlData) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_ProjectService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xmlData,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    });
+  },
   // 提交询价
   addOrder(pid, ppid) {
     return axios({

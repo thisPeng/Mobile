@@ -8,7 +8,7 @@
             <van-switch-cell v-model="ite.checked" :title="ite.name" @change="switechSupp(idx)" />
           </van-cell-group>
           <van-checkbox-group v-model="checkedArr">
-            <van-cell-swipe :right-width="65" v-for="(item,index) in ite.list" :key="index" v-show="ite.checked">
+            <van-swipe-cell :right-width="65" v-for="(item,index) in ite.list" :key="index" v-show="ite.checked">
               <transition name="van-slide-bottom">
                 <div class="cart-item">
                   <van-checkbox :name="item[0]" class="item-check" ref="checked"></van-checkbox>
@@ -25,13 +25,13 @@
                       <van-tag plain type="danger" class="margin-left-xs">历史均价：{{'￥ '+item[22]}}</van-tag>
                     </div> -->
                     <div slot="footer">
-                      <van-stepper v-model="item[3]" :integer="true" />
+                      <van-stepper v-model="item[3]" :integer="true" @change="onChangeNumber" />
                     </div>
                   </van-card>
                 </div>
               </transition>
               <span slot="right" class="right" @click="onDeleteItem(item[0],index)">删除</span>
-            </van-cell-swipe>
+            </van-swipe-cell>
           </van-checkbox-group>
         </div>
       </van-list>
@@ -180,6 +180,16 @@ export default {
         const sArr = new Set(this.listOrder[i].idList);
         this.checkedArr = this.checkedArr.filter(x => !sArr.has(x));
       }
+    },
+    onChangeNumber(val) {
+      const xml = require("xml");
+      const elem = xml.element({ _attr: { UpdateKind: "ukModify" } });
+      const stream = xml({ BC_SC_IntentionSKU: elem });
+      stream.on("data", function(chunk) {
+        console.log(chunk);
+      });
+      elem.push({ Order_Qty: val });
+      elem.close();
     },
     // 清空购物车
     cartClear() {

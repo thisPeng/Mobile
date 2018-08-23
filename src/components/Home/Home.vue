@@ -4,10 +4,10 @@
       <!-- <van-icon name="pending-evaluate" slot="right" class="home-icon" /> -->
       <i slot="right" class="iconfont icon-qiehuan home-icon" />
     </van-nav-bar>
-    <keep-alive v-if="$route.meta.keepAlive">
-      <router-view class="content" ref="routerView"></router-view>
+    <keep-alive>
+      <router-view class="content" ref="routerView" v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
-    <router-view class="content" ref="routerView" v-else></router-view>
+    <router-view class="content" ref="routerView" v-if="!$route.meta.keepAlive"></router-view>
     <van-tabbar v-model="active" v-show="isTabbar">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
       <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item>
@@ -30,7 +30,7 @@ export default {
     };
   },
   watch: {
-    $route(to, from) {
+    $route(to) {
       if (this.projectInfo.SC_ProjectOID) {
         this.title = this.projectInfo.ProjectName;
       } else {
@@ -64,7 +64,7 @@ export default {
             this.active = this.tabActive;
         }
       }
-      if (from.name === "projectList" && to.meta.keepAlive) {
+      if (to.meta.keepAlive) {
         try {
           if (typeof this.$refs.routerView.pageInit === "function") {
             this.$refs.routerView.pageInit();
