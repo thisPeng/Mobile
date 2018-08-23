@@ -2,27 +2,30 @@
   <!-- 确认价格 -->
   <div class="conprice">
     <div class="con-data">
-      <div class="con-card">
-        <div class="con-item" v-for="(item,index) in list" :key="index" @click="jumpInfo(item)">
-          <div class="item-title">
-            <span class="title">{{item[9]}}</span>
-          </div>
-          <div class="item-content">
-            <div class="content-row">
-              <span class="row-left">{{item[14]}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">{{item[11]}} {{item[12]}}</span>
-              <span class="row-right"></span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">{{item[15]}}</span>
-              <!-- <span class="row-right">制单人:{{item.zdren}}</span> -->
-            </div>
-            <div class="content-row">
-              <span>{{item[16]}}</span>
-            </div>
-          </div>
+      <div class="data-item" v-for="(ite,idx) in listOrder" :key="idx">
+        <van-cell-group>
+          <van-switch-cell v-model="ite.checked" :title="ite.name" class="item-title " />
+        </van-cell-group>
+        <div class="con-card" v-show="ite.checked">
+          <van-cell-group>
+            <van-cell is-link class="con-item" v-for="(item,index) in ite.list" :key="index" @click="jumpInfo(item)">
+              <div class="item-content">
+                <div class="content-row">
+                  <span class="row-left">{{item[14]}}</span>
+                </div>
+                <div class="content-row">
+                  <span class="row-left">{{item[11]}} {{item[12]}}</span>
+                  <span class="row-right"></span>
+                </div>
+                <div class="content-row">
+                  <span class="row-left">{{item[15]}}</span>
+                </div>
+                <div class="content-row">
+                  <span>{{item[16]}}</span>
+                </div>
+              </div>
+            </van-cell>
+          </van-cell-group>
         </div>
       </div>
     </div>
@@ -35,7 +38,7 @@ import { conprice } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-      list: []
+      listOrder: []
     };
   },
   computed,
@@ -46,9 +49,24 @@ export default {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");
             const csp = sp[1].split(";");
-            this.list = eval("[[" + csp[0]);
-
-            // console.log(this.list);
+            const list = eval("[[" + csp[0]);
+            const listOrder = [];
+            let tmp = "";
+            // 数据分组
+            list.forEach(val => {
+              if (val[2] !== tmp) {
+                listOrder.push({
+                  name: val[9],
+                  checked: true,
+                  list: []
+                });
+                listOrder[listOrder.length - 1].list.push(val);
+                tmp = val[2];
+              } else {
+                listOrder[listOrder.length - 1].list.push(val);
+              }
+            });
+            this.listOrder = listOrder;
           }
         } catch (e) {
           console.log(e);
@@ -79,37 +97,27 @@ export default {
   background-color: #eee;
   .con-data {
     margin-bottom: 40px;
-    .con-card {
-      width: 100%;
-      .con-item {
-        background-color: #fff;
-        padding: 10px 15px;
-        border-bottom: 1px solid #eee;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        .item-title {
-          padding: 10px 0;
-          border-bottom: 1px solid #f6f6f6;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          .title {
-            font-weight: 600;
-            font-size: 16px;
-          }
-          .icon {
-            font-size: 14px;
-          }
-        }
-        .item-content {
-          padding: 5px 0;
-          font-size: 13px;
-          color: #666;
-          .content-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+    .data-item {
+      background-color: #fff;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      .item-title {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .con-card {
+        width: 100%;
+        .con-item {
+          .item-content {
             padding: 5px 0;
+            font-size: 13px;
+            color: #666;
+            .content-row {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 5px 0;
+            }
           }
         }
       }

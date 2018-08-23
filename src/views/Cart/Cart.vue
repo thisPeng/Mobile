@@ -5,11 +5,12 @@
       <van-list v-model="loading" :finished="finished" @load="onLoad" :immediate-check="false">
         <div class="list-item" v-for="(ite, idx) in listOrder" :key="idx">
           <van-cell-group>
-            <van-switch-cell v-model="ite.checked" :title="ite.name" @change="switechSupp(idx)" />
+            <van-switch-cell class="text-bold" v-model="ite.checked" :title="ite.name" @change="switechSupp(idx)" />
           </van-cell-group>
           <van-checkbox-group v-model="checkedArr">
-            <van-swipe-cell :right-width="65" v-for="(item,index) in ite.list" :key="index" v-show="ite.checked">
-              <transition name="van-slide-bottom">
+            <!-- <transition name="van-fade"> -->
+            <div v-show="ite.checked">
+              <van-swipe-cell :right-width="65" v-for="(item,index) in ite.list" :key="index">
                 <div class="cart-item">
                   <van-checkbox :name="item[0]" class="item-check" ref="checked"></van-checkbox>
                   <van-card :desc="item[16] + ' | 单位：' + item[15]">
@@ -25,13 +26,14 @@
                       <van-tag plain type="danger" class="margin-left-xs">历史均价：{{'￥ '+item[22]}}</van-tag>
                     </div> -->
                     <div slot="footer">
-                      <van-stepper v-model="item[3]" :integer="true" @change="onChangeNumber" />
+                      <van-stepper v-model="item[3]" :integer="true" @change="onChangNumber(item)" />
                     </div>
                   </van-card>
                 </div>
-              </transition>
-              <span slot="right" class="right" @click="onDeleteItem(item[0],index)">删除</span>
-            </van-swipe-cell>
+                <span slot="right" class="right" @click="onDeleteItem(item[0],index)">删除</span>
+              </van-swipe-cell>
+            </div>
+            <!-- </transition> -->
           </van-checkbox-group>
         </div>
       </van-list>
@@ -129,11 +131,15 @@ export default {
                   list: [],
                   idList: []
                 });
-                listOrder[listOrder.length - 1].list.push(val);
+                if (val[23] == 1) {
+                  listOrder[listOrder.length - 1].list.push(val);
+                }
                 listOrder[listOrder.length - 1].idList.push(val[0]);
                 tmp = val[18];
               } else {
-                listOrder[listOrder.length - 1].list.push(val);
+                if (val[23] == 1) {
+                  listOrder[listOrder.length - 1].list.push(val);
+                }
                 listOrder[listOrder.length - 1].idList.push(val[0]);
               }
 
@@ -147,11 +153,13 @@ export default {
               }
               arr.push(val[0]);
             });
+            // console.log(list);
             this.list = list;
             this.listOrder = listOrder;
             this.checkedArr = arr;
             this.pages = eval("(" + sp[1].split("=")[1] + ")");
             this.loading = false;
+
             /* 上拉加载 */
             // this.finished = this.pages.RecordCount <= nStartPos;
             // this.checkedArr = this.checkedArr.concat(arr);
@@ -181,15 +189,74 @@ export default {
         this.checkedArr = this.checkedArr.filter(x => !sArr.has(x));
       }
     },
-    onChangeNumber(val) {
-      const xml = require("xml");
-      const elem = xml.element({ _attr: { UpdateKind: "ukModify" } });
-      const stream = xml({ BC_SC_IntentionSKU: elem });
-      stream.on("data", function(chunk) {
-        console.log(chunk);
+    // 修改数量
+    onChangNumber(item) {
+      const xmlString = "<root>" + this.xmlString(item) + "</root>";
+      cart.saveOrder(xmlString).then(res => {
+        if (res.status !== 1) {
+          this.$toast.fail("修改失败");
+        }
       });
-      elem.push({ Order_Qty: val });
-      elem.close();
+    },
+    // 拼接XML
+    xmlString(item) {
+      const xml = require("xml");
+      return xml([
+        {
+          BC_SC_IntentionSKU: [
+            {
+              _attr: {
+                UpdateKind: "ukModify"
+              }
+            },
+            {
+              SC_IntentionSKUOID: item[0]
+            },
+            {
+              Order_Qty: "null"
+            },
+            {
+              Remark: "null"
+            },
+            {
+              SKU_Status: "null"
+            },
+            {
+              SYS_LAST_UPD: "null"
+            }
+            // {
+            //   SYS_LAST_UPD_BY: "null"
+            // }
+          ]
+        },
+        {
+          BC_SC_IntentionSKU: [
+            {
+              _attr: {
+                UpdateKind: ""
+              }
+            },
+            {
+              SC_IntentionSKUOID: "null"
+            },
+            {
+              Order_Qty: item[3]
+            },
+            {
+              Remark: "null"
+            },
+            {
+              SKU_Status: "null"
+            },
+            {
+              SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss")
+            }
+            // {
+            //   SYS_LAST_UPD_BY: this.userInfo.oid
+            // }
+          ]
+        }
+      ]);
     },
     // 清空购物车
     cartClear() {
