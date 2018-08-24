@@ -495,14 +495,16 @@ export default {
     line-height: 32px;
     position: relative;
     background-color: #fff;
-    color: #333;
+    color: #999494;
     font-size: 14px;
     overflow: hidden;
     .con-label {
+      color:#999494;
       min-width: 130px;
       flex: 1;
     }
     .con-select {
+      color:#999494;
       flex: 5;
     }
     .contract-date {
@@ -520,15 +522,17 @@ export default {
     line-height: 32px;
     position: relative;
     background-color: #fff;
-    color: #333;
+    color:#999494;
     font-size: 14px;
     overflow: hidden;
   }
   .tact-label {
+    color:#999494;
     min-width: 129px;
     flex: 1;
   }
   .tact-select {
+    color:#999494;
     flex: 5;
   }
   .button {
@@ -540,6 +544,9 @@ export default {
       width: 95%;
       text-align: center;
     }
+  }
+  .van-cell{
+    color:#999494;
   }
 }
 </style>
