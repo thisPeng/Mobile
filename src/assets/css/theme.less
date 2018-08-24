@@ -26,6 +26,28 @@ body {
 }
 */
 
+// 物资描述
+.van-card {
+  .van-card__title {
+    display: inline-block;
+    word-wrap: normal;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .van-card__desc {
+    margin-top: 3px;
+    overflow: hidden;
+    max-height: inherit;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    white-space: normal;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-height: inherit;
+  }
+}
+
 .van-field__control:disabled {
   color: #888;
 }

@@ -31,47 +31,45 @@ export default {
   },
   watch: {
     $route(to) {
-      if (this.projectInfo.SC_ProjectOID) {
-        this.title = this.projectInfo.ProjectName;
-      } else {
-        this.title = to.meta.title;
-      }
-      if (
-        to.name !== "index" &&
-        to.name !== "classify" &&
-        to.name !== "cart" &&
-        to.name !== "users"
-      ) {
-        this.isBack = true;
-        this.isTabbar = false;
-      } else {
-        this.isBack = false;
-        this.isTabbar = true;
-        switch (to.name) {
-          case "index":
-            this.active = 0;
-            break;
-          case "classify":
-            this.active = 1;
-            break;
-          case "cart":
-            this.active = 2;
-            break;
-          case "users":
-            this.active = 3;
-            break;
-          default:
-            this.active = this.tabActive;
+      try {
+        if (this.projectInfo.SC_ProjectOID) {
+          this.title = this.projectInfo.ProjectName;
+        } else {
+          this.title = to.meta.title;
         }
-      }
-      if (to.meta.keepAlive) {
-        try {
+        if (
+          to.name !== "index" &&
+          to.name !== "classify" &&
+          to.name !== "cart" &&
+          to.name !== "users"
+        ) {
+          this.isBack = true;
+          this.isTabbar = false;
+        } else {
+          this.isBack = false;
+          this.isTabbar = true;
+          switch (to.name) {
+            case "index":
+              this.active = 0;
+              break;
+            case "classify":
+              this.active = 1;
+              break;
+            case "cart":
+              this.active = 2;
+              break;
+            case "users":
+              this.active = 3;
+              break;
+          }
+        }
+        if (to.meta.keepAlive) {
           if (typeof this.$refs.routerView.pageInit === "function") {
             this.$refs.routerView.pageInit();
           }
-        } catch (e) {
-          console.log(e);
         }
+      } catch (e) {
+        console.log(e);
       }
     }
   },
@@ -136,8 +134,6 @@ export default {
         case "users":
           this.active = 3;
           break;
-        default:
-          this.active = this.tabActive;
       }
     }
   }

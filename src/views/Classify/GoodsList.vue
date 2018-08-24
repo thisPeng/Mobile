@@ -21,7 +21,7 @@
     <div class="classify-data">
       <div class="classify-list">
         <div class="list-item" v-for="(item, index) in goodsList" :key="index" @click="showInfo(item)">
-          <van-card :title="item[22]" :desc="item[28]" :price="item[5]" :thumb="item[41].replace('~',servePath)">
+          <van-card :title="item[22]" :desc="item[28] + ' | 单位：' + item[23]" :price="item[5]" :thumb="item[41].replace('~',servePath)">
             <!-- <div slot="desc">
               <div class="item-brand">
                 <van-tag plain type="success">品牌： {{item[24]}}</van-tag>
@@ -138,7 +138,7 @@ export default {
     // 获取物资种类
     getGoodsFilter() {
       const params = {
-        MaterialTypeID: this.goodsParams.id,
+        MaterialTypeID: this.goodsParams.id || "",
         BrandName: this.BrandName,
         SKUList: this.SKUList
       };
@@ -336,7 +336,6 @@ export default {
   },
   computed,
   mounted() {
-    console.log(this.goodsParams);
     if (this.$router.history.current.params.model) {
       this.$store.commit("goodsParams", "");
     } else if (this.goodsParams.id) {
