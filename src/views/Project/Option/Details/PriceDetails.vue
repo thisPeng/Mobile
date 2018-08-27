@@ -16,11 +16,10 @@
       <van-field v-model="item[26]" label="员工姓名:" disabled />
       <van-field label="备注:" type="textarea" />
     </van-cell-group>
-    <van-tabs>
-      <van-tab title="询价单明细">
+      <!-- <van-tab title="询价单明细">
         <div class="con-data">
           <div class="con-card">
-            <div class="con-item" v-for="(item,index) in dspList" :key="index" @click="jumpInfo(item)">
+            <div class="con-item" v-for="(item,index) in dspList" :key="index" >"
               <div class="item-title">
                 <span class="title">品名:{{item[4]}}</span>
               </div>
@@ -29,7 +28,7 @@
                   <span>规格/型号:{{item[8]}}</span>
                 </div>
                 <div class="content-row">
-                  <span class="row-left">实际数量:{{item[10]}}</span>
+                  <span class="row-left">实际数量:<input v-model="item[10]" /></span>
                   <span class="row-right">赠送数量:{{item[12]}}</span>
                 </div>
                 <div class="content-row">
@@ -38,20 +37,22 @@
                 </div>
                 <div class="content-row">
                   <span class="row-left">小计:{{item[15]}}</span>
-                  <span class="row-right">税率:{{item[16]}}</span>
+                  <span class="row-right">税率:<input v-model="item[16]" /></span>
                 </div>
                 <div class="content-row">
-                  <span>备注:</span>
+                  <span>备注:<input /></span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </van-tab>
-      <van-tab title="询价单附件">
-        <!-- <div class="title-price">询价单附件</div> -->
-      </van-tab>
-    </van-tabs>
+      </van-tab> -->
+      <!-- <van-tab title="询价单附件">
+        <div class="title-price">询价单附件</div>
+      </van-tab>-->
+      <van-cell-group>
+        <van-cell title="询价单明细" is-link value="详情"  @click="jumpInfo(item)"/>
+      </van-cell-group>
     <div class="con-button">
       <van-button type="default" @click="confrimPrice">确认</van-button>
       <van-button type="default" @click="conProposal">提议</van-button>
@@ -71,7 +72,7 @@ export default {
   data() {
     return {
       list: [],
-      dspList: [],
+      // dspList: [],
       item: []
     };
   },
@@ -89,17 +90,17 @@ export default {
         }
       });
     },
-    // 询价单明细
-    getDetails() {
-      conprice.getDetails(this.confirmParams[0]).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split("[[");
-          const dsp = sp[1].split(";");
-          this.dspList = eval("[[" + dsp[0]);
-          // console.log(this.dspList);
-        }
-      });
-    },
+    // // 询价单明细
+    // getDetails() {
+    //   conprice.getDetails(this.confirmParams[0]).then(res => {
+    //     if (res && res.status === 1) {
+    //       const sp = res.text.split("[[");
+    //       const dsp = sp[1].split(";");
+    //       this.dspList = eval("[[" + dsp[0]);
+    //       // console.log(this.dspList);
+    //     }
+    //   });
+    // },
     //确认按钮
     confrimPrice() {
       this.$dialog
@@ -185,7 +186,7 @@ export default {
   },
   mounted() {
     this.getInfo();
-    this.getDetails();
+    // this.getDetails();
   }
 };
 </script>
@@ -251,13 +252,12 @@ export default {
     flex-direction: row;
     justify-content: center;
     margin: 2px 0;
-    button{
+    button {
       width: 30%;
       flex: 1;
-
     }
   }
-  .con-data{
+  .con-data {
     margin-bottom: 12px;
   }
 }
