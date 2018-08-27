@@ -476,6 +476,7 @@ export default {
         })
         .then(() => {
           contractInfo.saveContract(xmlString).then(res => {
+            // console.log(res);
             if(res &&res.status ===1){
                 this.$nextTick().then(() => {
                   setTimeout(() => {

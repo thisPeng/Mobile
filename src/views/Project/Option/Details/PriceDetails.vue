@@ -11,10 +11,15 @@
       <van-field v-model="item[9]" label="订单数量:" disabled />
       <van-field v-model="item[10]" label="订单金额:" disabled />
       <van-field v-model="item[39]" label="订单状态:" disabled />
-      <van-field v-model="item[17]" label="订货有效期:" />
-      <van-field label="业务员:" />
+      <!-- <van-field v-model="item[17]" label="订货有效期:" /> -->
+      <van-cell-group class="con-price">
+        <span class="con-label">订货有效期:</span>
+        <span class="con-select" @click="showData=true">{{item[17]}}</span>
+        <van-datetime-picker v-model="currentDate" v-show="showData" type="date" class="contract-date" @confirm="dinghuoDate" @cancel="showDatafour=false" />
+      </van-cell-group>
+      <van-field v-model="item[18]" label="业务员:" />
       <van-field v-model="item[26]" label="员工姓名:" disabled />
-      <van-field label="备注:" type="textarea" />
+      <van-field v-model="item[21]" label="备注:" type="textarea" />
     </van-cell-group>
     <!-- <van-tab title="询价单明细">
         <div class="con-data">
@@ -61,24 +66,32 @@
     </div>
     <div class="con-button">
       <van-button type="default" @click="confirmDelete">删除</van-button>
-      <van-button type="default">保存</van-button>
+      <van-button type="default" @click="keepWork ">保存</van-button>
       <van-button type="default" @click="jumpage('contractwork')">合同编辑</van-button>
     </div>
   </div>
 </template>
 <script>
 import computed from "./../../../../assets/js/computed.js";
-import { conprice } from "../../../../assets/js/api.js";
+import { conprice, contractInfo } from "../../../../assets/js/api.js";
+
 export default {
   data() {
     return {
       list: [],
       // dspList: [],
-      item: []
+      item: [],
+      currentDate: new Date(),
+      showData: false
     };
   },
   computed,
   methods: {
+    //订货有效期
+    dinghuoDate(val) {
+      this.item[17] = new Date(val).Format("yyyy-MM-dd");
+      this.showData = false;
+    },
     // 询价单主表
     getInfo() {
       conprice.getInfo(this.confirmParams[0]).then(res => {
@@ -87,7 +100,7 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0]);
-          //console.log(this.list);
+          // console.log(this.list);
         }
       });
     },
@@ -183,8 +196,95 @@ export default {
       this.$router.push({
         name: "inquirydetails"
       });
+    },
+    //保存
+    keepWork() {
+      const list = this.list[0];
+      console.log(list);
+      const xml = require("xml");
+      const xmlString = xml({
+        root: [
+          {
+            BC_SC_Order_Master: [
+              {
+                _attr: {
+                  UpdateKind: "ukMobify"
+                }
+              },
+              {
+                SC_Order_MasterOID: list[0]
+              },
+              {
+                Valid_Date: "null"
+              },
+              {
+                Order_Man: "null"
+              },
+              {
+                Remark: "null"
+              },
+
+              {
+                ProjectID: list[7]
+              },
+              {
+                PartnerID: list[8]
+              }
+            ]
+          },
+          {
+            BC_SC_Order_Master: [
+              {
+                _attr: {
+                  UpdateKind: ""
+                }
+              },
+              {
+                SC_Order_MasterOID: "null"
+              },
+              {
+                Valid_Date: list[17]
+              },
+              {
+                Order_Man: list[18]
+              },
+              {
+                Remark: list[21]
+              },
+              {
+                ProjectID: "null"
+              },
+              {
+                PartnerID: "null"
+              }
+            ]
+          }
+        ]
+      });
+      // console.log(xmlString);
+      this.$dialog
+        .confirm({
+          title: "保存",
+          message: "确认保存该询价单？"
+        })
+        .then(() => {
+          contractInfo.keepContract(xmlString).then(res => {
+            if (res && res.status === 1) {
+              console.log(res);
+              this.$nextTick().then(() => {
+                setTimeout(() => {
+                  this.$toast.success("保存成功");
+                }, 300);
+              });
+              this.$router.replace({
+                name: "conprice"
+              });
+            }
+          });
+        });
     }
   },
+
   mounted() {
     this.getInfo();
     // this.getDetails();
@@ -194,8 +294,34 @@ export default {
 <style lang="less" scoped>
 .pricedetails {
   width: 100%;
-  padding: 10px;
   background-color: #eee;
+  .con-price {
+    display: flex;
+    padding: 4px 15px;
+    box-sizing: border-box;
+    line-height: 32px;
+    position: relative;
+    background-color: #fff;
+    color: #999494;
+    font-size: 14px;
+    overflow: hidden;
+    .con-label {
+      color: #999494;
+      min-width: 92px;
+      flex: 1;
+    }
+    .con-select {
+      color: #999494;
+      flex: 5;
+    }
+    .contract-date {
+      width: 100%;
+      position: fixed;
+      z-index: 9999;
+      bottom: 0;
+      padding-right: 30px;
+    }
+  }
   .con-data {
     margin-bottom: 40px;
     .con-card {
@@ -234,6 +360,7 @@ export default {
       }
     }
   }
+
   .van-cell {
     font-size: 15px;
     color: rgb(153, 148, 148);
