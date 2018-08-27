@@ -923,6 +923,19 @@ const contractInfo = {
         _pUrl:""
       }
     })
+  },
+  keepContract(xml){
+    return axios({
+      url:"/UCMLWebServiceEntryForJs.aspx",
+      method:"post",
+      data:{
+        _bpoName:"BPO_Order_XJ_EditService",
+        _methodName:"BusinessSubmit",
+        "_parameters[xmlData]":xml,
+        _paraNames:"xmlData",
+        _pUrl:""
+      }
+    })
   }
 };
 //获取到货信息
