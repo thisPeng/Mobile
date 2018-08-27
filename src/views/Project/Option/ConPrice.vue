@@ -94,7 +94,6 @@ export default {
 <style lang="less" scoped>
 .conprice {
   width: 100%;
-  background-color: #eee;
   .con-data {
     .data-item {
       background-color: #fff;
@@ -107,7 +106,6 @@ export default {
         width: 100%;
         .con-item {
           .item-content {
-            padding: 5px 0;
             font-size: 13px;
             color: #666;
             .content-row {

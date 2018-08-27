@@ -18,7 +18,7 @@
               <span class="row-right">收款账号:{{item}}</span>
             </div>
             <div class="content-row">
-               <span class="row-left">经手人:{{item}}</span>
+              <span class="row-left">经手人:{{item}}</span>
               <span class="row-right">单据状态:{{item}}</span>
             </div>
             <div class="content-row">
@@ -35,8 +35,8 @@ import computed from "./../../assets/js/computed.js";
 export default {
   data() {
     return {
-      list:[],
-      item:"1"
+      list: [],
+      item: "1"
     };
   },
   computed,
@@ -48,7 +48,6 @@ export default {
 .appropriation {
   width: 100%;
   padding: 10px;
-  background-color: #eee;
   .app-data {
     margin-bottom: 40px;
     .app-card {

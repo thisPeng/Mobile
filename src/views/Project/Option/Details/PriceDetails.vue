@@ -11,15 +11,14 @@
       <van-field v-model="item[9]" label="订单数量:" disabled />
       <van-field v-model="item[10]" label="订单金额:" disabled />
       <van-field v-model="item[39]" label="订单状态:" disabled />
-      <!-- <van-field v-model="item[17]" label="订货有效期:" /> -->
       <van-cell-group class="con-price">
         <span class="con-label">订货有效期:</span>
         <span class="con-select" @click="showData=true">{{item[17]}}</span>
         <van-datetime-picker v-model="currentDate" v-show="showData" type="date" class="contract-date" @confirm="dinghuoDate" @cancel="showDatafour=false" />
       </van-cell-group>
-      <van-field v-model="item[18]" label="业务员:" />
+      <van-field v-model="item[18]" label="业务员:" placeholder="请输入业务员" />
       <van-field v-model="item[26]" label="员工姓名:" disabled />
-      <van-field v-model="item[21]" label="备注:" type="textarea" />
+      <van-field v-model="item[21]" label="备注:" type="textarea" placeholder="请输入业务员" />
     </van-cell-group>
     <!-- <van-tab title="询价单明细">
         <div class="con-data">
@@ -65,8 +64,8 @@
       <van-button type="default">添加物资</van-button>
     </div>
     <div class="con-button">
-      <van-button type="default" @click="confirmDelete">删除</van-button>
       <van-button type="default" @click="keepWork ">保存</van-button>
+      <van-button type="default" @click="confirmDelete">删除</van-button>
       <van-button type="default" @click="jumpage('contractwork')">合同编辑</van-button>
     </div>
   </div>
@@ -294,7 +293,6 @@ export default {
 <style lang="less" scoped>
 .pricedetails {
   width: 100%;
-  background-color: #eee;
   .con-price {
     display: flex;
     padding: 4px 15px;
@@ -302,16 +300,13 @@ export default {
     line-height: 32px;
     position: relative;
     background-color: #fff;
-    color: #999494;
     font-size: 14px;
     overflow: hidden;
     .con-label {
-      color: #999494;
       min-width: 92px;
       flex: 1;
     }
     .con-select {
-      color: #999494;
       flex: 5;
     }
     .contract-date {
@@ -361,10 +356,6 @@ export default {
     }
   }
 
-  .van-cell {
-    font-size: 15px;
-    color: rgb(153, 148, 148);
-  }
   .title-price {
     font-size: 16px;
     padding: 10px;
@@ -378,11 +369,12 @@ export default {
     display: flex;
     width: 100%;
     flex-direction: row;
-    justify-content: center;
-    margin: 2px 0;
+    justify-content: space-around;
+    margin: 5px 0;
     button {
-      width: 30%;
-      flex: 1;
+      width: 32%;
+      padding: 0;
+      // flex: 1;
     }
   }
   .con-data {

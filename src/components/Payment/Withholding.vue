@@ -1,5 +1,5 @@
 <template>
-<!-- 扣款信息 -->
+  <!-- 扣款信息 -->
   <div class="withholding">
     <div class="with-data">
       <div class="with-card">
@@ -31,8 +31,8 @@ import computed from "./../../assets/js/computed.js";
 export default {
   data() {
     return {
-      list:[],
-      item:""
+      list: [],
+      item: ""
     };
   },
   computed,
@@ -43,7 +43,6 @@ export default {
 .withholding {
   width: 100%;
   padding: 10px;
-  background-color: #eee;
   .with-data {
     margin-bottom: 40px;
     .with-card {

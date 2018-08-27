@@ -51,7 +51,6 @@ export default {
 .inventory {
   width: 100%;
   padding: 10px;
-  background-color: #eee;
   .inv-data {
     margin-bottom: 40px;
     .inv-card {

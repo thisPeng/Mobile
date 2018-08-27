@@ -68,7 +68,6 @@ export default {
 .tranrial {
   width: 100%;
   padding: 10px;
-  background-color: #eee;
   .delivery-data {
     margin-bottom: 40px;
     .delivery-card {

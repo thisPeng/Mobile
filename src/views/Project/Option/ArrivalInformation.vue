@@ -7,36 +7,34 @@
           <van-switch-cell v-model="ite.checked" :title="ite.name" class="item-title " />
         </van-cell-group>
         <div class="arrival-card" v-show="ite.checked">
-          <van-cell-group>
-            <van-cell is-link class="arrival-item" v-for="(item,index) in ite.list" :key="index" @click="jumpage('deliverydetails')">
-              <div class="item-content">
-                <div class="content-row">
-                  <span class="row-left">{{item[9]}}</span>
-                </div>
-                <div class="content-row">
-                  <span class="row-right">{{item[10]}}</span>
-                </div>
-                <div class="content-row">
-                  <span class="row-left">{{item[15]}}</span>
-                  <span class="row-right">
-                    <van-tag type="success" v-if="item[13] === '发货状态：已发货'">{{item[13]}}</van-tag>
-                    <van-tag type="danger" v-else>{{item[13]}}</van-tag>
-                  </span>
-                </div>
-                <div class="content-row">
-                  <span class="row-left">{{item[18]}}</span>
-                  <span class="row-right" v-if="item[13] === '发货状态：已发货'">
-                    <van-tag plain type="success" v-if="item[17] === '签收状态：已签收'">{{item[17]}}</van-tag>
-                    <van-tag plain type="danger" v-else>{{item[17]}}</van-tag>
-                  </span>
-                </div>
-                <div class="content-row">
-                  <span class="row-left">{{item[11]}}</span>
-                  <span class="row-right">{{item[12]}}</span>
-                </div>
+          <van-cell is-link class="arrival-item" v-for="(item,index) in ite.list" :key="index" @click="jumpage('deliverydetails')">
+            <div class="item-content">
+              <div class="content-row">
+                <span class="row-left">{{item[9]}}</span>
               </div>
-            </van-cell>
-          </van-cell-group>
+              <div class="content-row">
+                <span class="row-right">{{item[10]}}</span>
+              </div>
+              <div class="content-row">
+                <span class="row-left">{{item[15]}}</span>
+                <span class="row-right">
+                  <van-tag type="success" v-if="item[13] === '发货状态：已发货'">{{item[13]}}</van-tag>
+                  <van-tag type="danger" v-else>{{item[13]}}</van-tag>
+                </span>
+              </div>
+              <div class="content-row">
+                <span class="row-left">{{item[18]}}</span>
+                <span class="row-right" v-if="item[13] === '发货状态：已发货'">
+                  <van-tag plain type="success" v-if="item[17] === '签收状态：已签收'">{{item[17]}}</van-tag>
+                  <van-tag plain type="danger" v-else>{{item[17]}}</van-tag>
+                </span>
+              </div>
+              <div class="content-row">
+                <span class="row-left">{{item[11]}}</span>
+                <span class="row-right">{{item[12]}}</span>
+              </div>
+            </div>
+          </van-cell>
         </div>
       </div>
     </div>
@@ -102,12 +100,10 @@ export default {
 <style lang="less" scoped>
 .arrivalinformation {
   width: 100%;
-  background-color: #eee;
   .arrival-data {
     .data-item {
       background-color: #fff;
       margin-bottom: 10px;
-      border-radius: 5px;
       .item-title {
         font-size: 14px;
         font-weight: 600;

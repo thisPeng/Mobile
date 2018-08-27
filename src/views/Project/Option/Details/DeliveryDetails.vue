@@ -69,7 +69,6 @@ export default {
 <style lang="less" scoped>
 .deliverydetails {
   width: 100%;
-  background-color: #eee;
   .delivery-data {
     .delivery-card {
       width: 100%;

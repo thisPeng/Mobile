@@ -1,5 +1,5 @@
 <template>
-<!-- 支付信息 -->
+  <!-- 支付信息 -->
   <div class="payinfomation">
     <div class="pre-data">
       <div class="pre-card">
@@ -47,7 +47,6 @@ export default {
 .payinfomation {
   width: 100%;
   padding: 10px;
-  background-color: #eee;
   .pre-data {
     margin-bottom: 40px;
     .pre-card {

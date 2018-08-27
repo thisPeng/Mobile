@@ -1,7 +1,7 @@
 <template>
-<!-- 合同清单详情 -->
+  <!-- 合同清单详情 -->
   <div class="contractdetails">
-      <div class="title-contract">合同清单详情</div>
+    <div class="title-contract">合同清单详情</div>
     <div class="contract-data">
       <div class="contract-card">
         <div class="contract-item">
@@ -27,7 +27,7 @@
             <div class="content-row">
               <span>备注:{{item}}</span>
             </div>
-              <div class="content-row">
+            <div class="content-row">
               <span>产品编码:{{item}}</span>
             </div>
           </div>
@@ -41,7 +41,7 @@ import computed from "./../../../../assets/js/computed.js";
 export default {
   data() {
     return {
-      item:""
+      item: ""
     };
   },
   computed,
@@ -52,8 +52,7 @@ export default {
 <style lang="less" scoped>
 .contractdetails {
   width: 100%;
-   padding: 10px;
-  background-color: #eee;
+  padding: 10px;
   .contract-data {
     margin-bottom: 40px;
     .contract-card {

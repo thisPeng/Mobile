@@ -40,7 +40,6 @@ export default {
 .shippinginfo {
   width: 100%;
   padding: 10px;
-  background-color: #eee;
   .info-data {
     margin-bottom: 40px;
     .info-card {

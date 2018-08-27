@@ -50,7 +50,6 @@ export default {
 .tranpayment {
   width: 100%;
   padding: 10px;
-  background-color: #eee;
   .pay-data {
     margin-bottom: 40px;
     .pay-card {

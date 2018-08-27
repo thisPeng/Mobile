@@ -94,7 +94,6 @@ export default {
 <style lang="less" scoped>
 .contractInfo {
   width: 100%;
-  background-color: #eee;
   .con-data {
     .data-item {
       background-color: #fff;
@@ -108,7 +107,6 @@ export default {
         .con-item {
           background-color: #fff;
           padding: 5px 15px;
-          border-bottom: 1px solid #eee;
           .item-title {
             padding: 10px 0;
             border-bottom: 1px solid #f6f6f6;
