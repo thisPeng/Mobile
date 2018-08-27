@@ -516,7 +516,7 @@ export default {
     font-size: 14px;
     overflow: hidden;
     .con-label {
-      color: #999494;
+      color: black;
       min-width: 130px;
       flex: 1;
     }
@@ -544,7 +544,7 @@ export default {
     overflow: hidden;
   }
   .tact-label {
-    color: #999494;
+    color: black;
     min-width: 129px;
     flex: 1;
   }
@@ -570,6 +570,7 @@ export default {
 <style lang="less">
 .contractwork {
   .van-field .van-cell__title {
+    color:black;
     max-width: 130px;
   }
 }

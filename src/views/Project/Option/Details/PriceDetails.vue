@@ -306,7 +306,7 @@ export default {
     font-size: 14px;
     overflow: hidden;
     .con-label {
-      color: #999494;
+      color: black;
       min-width: 92px;
       flex: 1;
     }
@@ -365,6 +365,7 @@ export default {
     font-size: 15px;
     color: rgb(153, 148, 148);
   }
+
   .title-price {
     font-size: 16px;
     padding: 10px;
@@ -390,4 +391,12 @@ export default {
   }
 }
 </style>
+<style lang="less">
+.pricedetails {
+  .van-field .van-cell__title {
+    color: black;
+  }
+}
+</style>
+
 
