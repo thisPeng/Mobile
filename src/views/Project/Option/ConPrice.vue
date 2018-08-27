@@ -12,6 +12,7 @@
               <div class="item-content">
                 <div class="content-row">
                   <span class="row-left">{{item[14]}}</span>
+                  <span class="row-right">{{item[13]}}</span>
                 </div>
                 <div class="content-row">
                   <span class="row-left">{{item[11]}} {{item[12]}}</span>
@@ -50,7 +51,7 @@ export default {
             const sp = res.text.split("[[");
             const csp = sp[1].split(";");
             const list = eval("[[" + csp[0]);
-            console.log(list);
+            // console.log(list);
             const listOrder = [];
             let tmp = "";
             // 数据分组

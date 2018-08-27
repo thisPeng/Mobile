@@ -52,6 +52,7 @@
       </van-tab>-->
       <van-cell-group>
         <van-cell title="询价单明细" is-link value="详情"  @click="jumpInfo(item)"/>
+         <van-cell title="询价单附件" is-link value="详情"/>
       </van-cell-group>
     <div class="con-button">
       <van-button type="default" @click="confrimPrice">确认</van-button>
