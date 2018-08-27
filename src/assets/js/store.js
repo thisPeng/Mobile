@@ -25,7 +25,7 @@ export default new Vuex.Store({
     goodsParams: "",
     suppParams: {},
     confirmParams: {},
-    infoDetails:{},
+    infoDetails: {},
     servePath: "",
     tabsShow: true
   },
@@ -36,7 +36,6 @@ export default new Vuex.Store({
         state.userId = {};
         state.userInfo = {};
         state.loginInfo = {};
-        state.tabActive = 0;
         state.taskModel = "";
         state.projectInfo = {};
         state.projectModel = "";

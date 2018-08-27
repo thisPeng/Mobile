@@ -47,7 +47,6 @@ export default {
 .prememory {
   width: 100%;
   padding: 10px;
-  background-color: #eee;
   .pre-data {
     margin-bottom: 40px;
     .pre-card {

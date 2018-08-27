@@ -662,7 +662,7 @@ const task = {
 // 购物车
 const cart = {
   // 获取购物车列表
-  getList(ProjectID, nStartPos = 0) {
+  getList(ProjectID) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -670,7 +670,7 @@ const cart = {
         _bpoName: "BPO_Purchase_ProjectService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_IntentionSKU",
-        "_parameters[nStartPos]": nStartPos,
+        "_parameters[nStartPos]": 0,
         "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
@@ -710,8 +710,23 @@ const cart = {
       }
     });
   },
+  // 购物车选择
+  cartSelect(ProjectID = "", OIDList = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_ProjectService",
+        _methodName: "SetBillSelect",
+        "_parameters[ProjectID]": ProjectID,
+        "_parameters[OIDList]": OIDList,
+        _paraNames: "ProjectID,OIDList",
+        _pUrl: ""
+      }
+    });
+  },
   // 保存购物车
-  saveOrder(xmlData) {
+  saveCart(xmlData = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -725,16 +740,16 @@ const cart = {
     });
   },
   // 提交询价
-  addOrder(pid, ppid) {
+  addOrder(PartnerID = "", ProjectID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
         _bpoName: "BPO_Purchase_ProjectService",
         _methodName: "CreateOrderBill",
-        "_parameters[PartnerID]": pid,
-        "_parameters[ProjectID_ucmlparams_0]": ppid,
-        _paraNames: "PartnerID,ProjectID_ucmlparams_0",
+        "_parameters[PartnerID]": PartnerID,
+        "_parameters[ProjectID]": ProjectID,
+        _paraNames: "PartnerID,ProjectID",
         _pUrl: ""
       }
     });
@@ -911,16 +926,16 @@ const contractInfo = {
       }
     });
   },
-  saveContract(xml){
+  saveContract(xml) {
     return axios({
-      url:"/UCMLWebServiceEntryForJs.aspx",
-      method:"post",
-      data:{
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
         _bpoName: "BPO_Order_Contract_EditService",
-        _methodName:"BusinessSubmit",
-        "_parameters[xmlData]":xml,
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xml,
         _paraNames: "xmlData",
-        _pUrl:""
+        _pUrl: ""
       }
     })
   },

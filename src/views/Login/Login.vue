@@ -73,7 +73,6 @@ export default {
                   login: this.loginName,
                   pwd: this.password
                 });
-                this.$store.commit("tabActive", 0);
                 users.userId(result.oid).then(res => {
                   if (res && res.status === 1) {
                     this.$store.commit("userId", JSON.parse(res.text)[0]);

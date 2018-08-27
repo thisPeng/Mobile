@@ -2,25 +2,24 @@
   <div class="cart">
     <div class="cart-list">
       <!--列表-->
-      <van-checkbox-group v-model="checkedArr" @change="onChangeItem">
+      <van-checkbox-group v-model="checkedArr">
         <div class="list-item" v-for="(ite, idx) in listOrder" :key="idx">
           <van-cell-group>
-            <van-switch-cell class="text-bold" v-model="ite.checked" :title="ite.name" @change="switechSupp(idx)" />
+            <van-switch-cell class="text-bold" v-model="ite.checked" :title="ite.name" @change="onSwitechSupp(idx)" />
           </van-cell-group>
           <div v-show="ite.checked">
             <van-swipe-cell :right-width="65" v-for="(item,index) in ite.list" :key="index">
               <div class="cart-item">
                 <van-checkbox :name="item" class="item-check" ref="checked"></van-checkbox>
-                <!-- <van-checkbox v-model="item[35]" class="item-check" ref="checked" @change="onChangeItem(item)"></van-checkbox> -->
                 <van-card :desc="item[16] + ' | 单位：' + item[15]">
-                  <div slot="thumb" @click.stop="showInfo(item,index)">
+                  <div slot="thumb" @click.stop="onShowInfo(item,index)">
                     <img :src="item[32]" class="van-card__img">
                   </div>
-                  <div slot="title" class="van-card__row" @click.stop="showInfo(item,index)">
+                  <div slot="title" class="van-card__row" @click.stop="onShowInfo(item,index)">
                     <div class="van-card__title">{{item[14]}}</div>
                     <div class="van-card__price">{{'￥ '+item[19]}}</div>
                   </div>
-                  <!-- <div slot="tags" @click.stop="showInfo(item)">
+                  <!-- <div slot="tags" @click.stop="onShowInfo(item)">
                       <van-tag plain type="primary">供应商： {{item[18]}}</van-tag>
                       <van-tag plain type="danger" class="margin-left-xs">历史均价：{{'￥ '+item[22]}}</van-tag>
                     </div> -->
@@ -29,7 +28,7 @@
                   </div>
                 </van-card>
               </div>
-              <span slot="right" class="right" @click="onDeleteItem(item[0],idx)">删除</span>
+              <span slot="right" class="right" @click="onDeleteItem(item[0])">删除</span>
             </van-swipe-cell>
           </div>
         </div>
@@ -37,7 +36,7 @@
     </div>
 
     <!--商品详情-->
-    <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="searchSame(goods.title)">
+    <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onSearchSame(goods.title)">
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
           <van-cell :title="'品牌： '+ goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
@@ -58,7 +57,7 @@
     <!--订单提交栏-->
     <van-submit-bar :button-text="checkedArr.length > 999 ? '询价(999+)' : '询价('+checkedArr.length+')'" @submit="onSubmit">
       <van-checkbox v-model="checkedAll" ref="checkedAll" @change="onSelectAll">全选</van-checkbox>
-      <div class="cart-delete" @click="cartDelete">
+      <div class="cart-delete" @click="onCartDelete">
         <i class="iconfont icon-qingkong1"></i>
         <span class="delete-text">删除</span>
       </div>
@@ -72,9 +71,8 @@ import { cart } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      checked: true,
       checkedArr: [],
-      checkedAll: true,
+      checkedAll: false,
       list: [],
       listOrder: [],
       pages: {},
@@ -103,8 +101,8 @@ export default {
     };
   },
   methods: {
-    getCart(nStartPos = 0) {
-      cart.getList(this.projectInfo.SC_ProjectOID, nStartPos).then(res => {
+    getCart() {
+      cart.getList(this.projectInfo.SC_ProjectOID).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split(";");
@@ -117,7 +115,7 @@ export default {
               if (val[18] !== tmp) {
                 listOrder.push({
                   name: val[18],
-                  checked: true,
+                  checked: false,
                   list: []
                 });
                 listOrder[listOrder.length - 1].list.push(val);
@@ -136,95 +134,65 @@ export default {
               }
               if (val[23] === "1") {
                 arr.push(val);
-                val[35] = true;
-              } else {
-                val[35] = false;
+                listOrder[listOrder.length - 1].checked = true;
               }
             });
+            this.list = list;
             this.listOrder = listOrder;
             this.checkedArr = arr;
             this.pages = eval("(" + sp[1].split("=")[1] + ")");
           }
         } catch (e) {
+          this.list = [];
           this.listOrder = [];
           this.checkedArr = [];
         }
       });
     },
     // 供应商开关
-    switechSupp(i) {
+    onSwitechSupp(i) {
       const listOrder = this.listOrder[i];
       if (listOrder.checked) {
-        listOrder.list.forEach(val => {
-          if (val[23] === "1") {
-            this.checkedArr.push(val);
-          }
-        });
         // 并集
-        // this.checkedArr = Array.from(
-        //   new Set([...this.checkedArr, ...listOrder.list])
-        // );
+        this.checkedArr = Array.from(
+          new Set([...this.checkedArr, ...listOrder.list])
+        );
       } else {
         // 差集
         const sArr = new Set(listOrder.list);
         this.checkedArr = this.checkedArr.filter(x => !sArr.has(x));
       }
-      // listOrder.list.forEach(val => {
-      //   console.log(val);
-      //   val[23] = this.listOrder[i].checked ? "1" : "0";
-      //   // val[35] = this.listOrder[i].checked;
-      // });
     },
     // 勾选物资项
+    /*
     onChangeItem(arr) {
       let item = [];
       if (arr.length > this.list.length) {
         const sArr = new Set(this.list);
         item = arr.filter(x => !sArr.has(x));
-        item[23] = "1";
+        item[0][23] = "1";
         this.list = arr;
       } else if (arr.length < this.list.length) {
         const sArr = new Set(arr);
         item = this.list.filter(x => !sArr.has(x));
-        item[23] = "0";
+        item[0][23] = "0";
         this.list = arr;
-      } else {
+      }
+      if (item.length !== 1) {
         return;
       }
-      const xmlString = "<root>" + this.xmlString(item) + "</root>";
-      cart.saveOrder(xmlString).then(res => {
+      const xmlString = "<root>" + this.xmlString(item[0]) + "</root>";
+      cart.saveCart(xmlString).then(res => {
         if (res.status !== 1) {
           this.$toast.fail("勾选失败");
         }
       });
-
-      /*
-      if (item[23] === "1") {
-        item[23] = "0";
-        item[35] = false;
-        for (const i in this.checkedArr) {
-          if (this.checkedArr[i][0] === item[0]) {
-            this.checkedArr.splice(i, 1);
-            break;
-          }
-        }
-      } else {
-        item[23] = "1";
-        item[35] = true;
-        this.checkedArr.push(item);
-      }
-      const xmlString = "<root>" + this.xmlString(item) + "</root>";
-      cart.saveOrder(xmlString).then(res => {
-        if (res.status !== 1) {
-          this.$toast.fail("勾选失败");
-        }
-      });
-      */
     },
+    */
     // 修改数量
     onChangNumber(item) {
       const xmlString = "<root>" + this.xmlString(item) + "</root>";
-      cart.saveOrder(xmlString).then(res => {
+      cart.saveCart(xmlString).then(res => {
         if (res.status !== 1) {
           this.$toast.fail("修改失败");
         }
@@ -290,22 +258,8 @@ export default {
         }
       ]);
     },
-    // 清空购物车
-    cartClear() {
-      this.$dialog
-        .confirm({
-          title: "提示",
-          message: "确认清空购物车所有物资？"
-        })
-        .then(() => {
-          // on confirm
-        })
-        .catch(() => {
-          // on cancel
-        });
-    },
     // 购物车删除
-    cartDelete() {
+    onCartDelete() {
       if (this.checkedArr.length > 0) {
         this.$dialog
           .confirm({
@@ -343,18 +297,26 @@ export default {
     },
     // 全选物资
     onSelectAll(res) {
-      if (res) {
-        this.listOrder.forEach(val => {
-          val.list.forEach(v => {
-            this.checkedArr.push(v);
-          });
-        });
-      } else {
-        this.checkedArr = [];
-      }
+      this.listOrder.forEach(val => {
+        val.checked = res;
+      });
+      /*
+      const str = res ? "-1" : "";
+      cart.cartSelect(this.projectInfo.SC_ProjectOID, str).then(res => {
+        try {
+          if (res.status === 1 && res.text === "True") {
+            this.getCart();
+            return;
+          }
+          throw "全选失败，请刷新页面重试";
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
+      */
     },
     // 找同款
-    searchSame(name) {
+    onSearchSame(name) {
       this.$store.commit("goodsParams", { keyword: name });
       this.$router.push({
         name: "goodsList"
@@ -362,10 +324,15 @@ export default {
     },
     // 发起询价
     onSubmit() {
+      if (this.checkedArr.length === 0) {
+        this.$toast.fail("请选择需要询价的物资");
+        return;
+      }
+      this.saveCart();
       this.$dialog
         .confirm({
           title: "提示",
-          message: "确认提交【所有】物资询价？"
+          message: "确认提交[" + this.checkedArr.length + "]个物资询价？"
         })
         .then(() => {
           cart
@@ -373,18 +340,23 @@ export default {
               this.projectInfo.PartnerID,
               this.projectInfo.SC_ProjectOID
             )
-            .then(res => {
+            .then(result => {
               try {
-                if (res.status === 1 && res.text !== "") {
-                  this.$toast.success("提交成功");
-                  this.$nextTick().then(() => {
-                    setTimeout(() => {
-                      this.getCart();
-                    }, 1000);
-                  });
+                if (result.status === 1) {
+                  const res = JSON.parse(result.text)[0];
+                  if (res.iReturn === "1") {
+                    this.$toast.success("提交成功");
+                    this.$nextTick().then(() => {
+                      setTimeout(() => {
+                        this.getCart();
+                      }, 1000);
+                    });
+                    return;
+                  }
                 }
+                throw "提交失败，请刷新页面重试";
               } catch (e) {
-                console.log(e);
+                this.$toast.fail(e);
               }
             });
         })
@@ -393,7 +365,7 @@ export default {
         });
     },
     // 显示物资详情
-    showInfo(item, index) {
+    onShowInfo(item, index) {
       this.goods = {
         id: item[0],
         sid: item[1],
@@ -410,22 +382,21 @@ export default {
       this.showBase = true;
     },
     // 删除物资
-    onDeleteItem(id, i) {
+    onDeleteItem(id) {
       cart.delCartMaterials(id).then(res => {
         try {
           if (res.status === 1 && res.text === "True") {
             this.$toast.success("已删除");
-            this.checkedArr.splice(i, 1);
             this.$nextTick().then(() => {
               setTimeout(() => {
                 this.getCart();
               }, 1000);
             });
           } else {
-            this.$toast.fail("删除失败，请刷新页面重试");
+            throw "删除失败，请刷新页面重试";
           }
         } catch (e) {
-          this.$toast.fail("删除失败，请刷新页面重试");
+          this.$toast.fail(e);
         }
       });
     },
@@ -433,19 +404,33 @@ export default {
     pageInit() {
       this.$nextTick().then(() => {
         if (this.projectInfo.SC_ProjectOID) {
-          this.getCart();
+          setTimeout(() => {
+            this.getCart();
+          }, 200);
         } else {
           this.$toast("请先点击屏幕右上角按钮，选择项目");
         }
       });
     },
-    saveCart() {}
+    // 保存购物车选择
+    saveCart() {
+      let str = "";
+      if (this.checkedArr.length === this.list.length) {
+        str = "-1";
+      } else {
+        this.checkedArr.forEach(val => {
+          str += val[0] + "|";
+        });
+        str = str.substr(0, str.length - 1);
+      }
+      cart.cartSelect(this.projectInfo.SC_ProjectOID, str);
+    }
   },
   computed,
   mounted() {
     this.pageInit();
   },
-  destroyed() {
+  beforeDestroy() {
     this.saveCart();
   }
 };

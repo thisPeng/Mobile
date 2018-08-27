@@ -1,5 +1,5 @@
 <template>
-<!-- OA批款信息 -->
+  <!-- OA批款信息 -->
   <div class="oainformation">
     <div class="oa-data">
       <div class="oa-card">
@@ -31,8 +31,8 @@ import computed from "./../../assets/js/computed.js";
 export default {
   data() {
     return {
-      list:[],
-      item:""
+      list: [],
+      item: ""
     };
   },
   computed,
@@ -44,7 +44,6 @@ export default {
 .oainformation {
   width: 100%;
   padding: 10px;
-  background-color: #eee;
   .oa-data {
     margin-bottom: 40px;
     .oa-card {

@@ -50,7 +50,6 @@ export default {
 .trancontract {
   width: 100%;
   padding: 10px;
-  background-color: #eee;
   .tran-data {
     margin-bottom: 40px;
     .tran-card {

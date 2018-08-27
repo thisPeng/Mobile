@@ -573,6 +573,7 @@ export default {
     color:black;
     max-width: 130px;
   }
+
 }
 </style>
 

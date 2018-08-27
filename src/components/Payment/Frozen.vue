@@ -1,5 +1,5 @@
 <template>
-<!-- 冻结信息 -->
+  <!-- 冻结信息 -->
   <div class="frozen">
     <div class="fro-data">
       <div class="fro-card">
@@ -31,8 +31,8 @@ import computed from "./../../assets/js/computed.js";
 export default {
   data() {
     return {
-      list:[],
-      item:""
+      list: [],
+      item: ""
     };
   },
   computed,
@@ -44,7 +44,6 @@ export default {
 .frozen {
   width: 100%;
   padding: 10px;
-  background-color: #eee;
   .fro-data {
     margin-bottom: 40px;
     .fro-card {

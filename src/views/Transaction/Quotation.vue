@@ -66,7 +66,6 @@ export default {
 .quotation {
   width: 100%;
   padding: 10px;
-  background-color: #eee;
   .quo-data {
     margin-bottom: 40px;
     .quo-card {
