@@ -165,7 +165,7 @@ export default {
           // if (this.cspList[46]) {
           //   this.cspList[46] = "请选择时间"; //乙方
           // }
-          console.log(this.cspList);
+          // console.log(this.cspList);
         }
       });
     },
@@ -366,7 +366,7 @@ export default {
                 PartnerID: "null"
               },
               {
-                SupplierID:"null"
+                SupplierID: "null"
               },
               {
                 BusinessID: "null"
@@ -456,7 +456,7 @@ export default {
                 Seal_Flag: "null"
               },
               {
-                Edit_Flag:"null"
+                Edit_Flag: "null"
               },
               {
                 Contract_Type: "null"
@@ -469,9 +469,25 @@ export default {
         ]
       });
       // console.log(xmlString);
-      contractInfo.saveContract(xmlString).then(res => {
-        console.log(res);
-      });
+      this.$dialog
+        .confirm({
+          title: "提交",
+          message: "确认提交该合同？"
+        })
+        .then(() => {
+          contractInfo.saveContract(xmlString).then(res => {
+            if(res &&res.status ===1){
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.$toast.success("提交成功");
+                  }, 300);
+                });
+                 this.$router.replace({
+                  name:"pricedetails"
+                })
+            }
+          });
+        });
     }
   },
   mounted() {
@@ -499,12 +515,12 @@ export default {
     font-size: 14px;
     overflow: hidden;
     .con-label {
-      color:#999494;
+      color: #999494;
       min-width: 130px;
       flex: 1;
     }
     .con-select {
-      color:#999494;
+      color: #999494;
       flex: 5;
     }
     .contract-date {
@@ -522,17 +538,17 @@ export default {
     line-height: 32px;
     position: relative;
     background-color: #fff;
-    color:#999494;
+    color: #999494;
     font-size: 14px;
     overflow: hidden;
   }
   .tact-label {
-    color:#999494;
+    color: #999494;
     min-width: 129px;
     flex: 1;
   }
   .tact-select {
-    color:#999494;
+    color: #999494;
     flex: 5;
   }
   .button {
@@ -545,8 +561,8 @@ export default {
       text-align: center;
     }
   }
-  .van-cell{
-    color:#999494;
+  .van-cell {
+    color: #999494;
   }
 }
 </style>

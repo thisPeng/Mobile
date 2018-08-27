@@ -852,7 +852,9 @@ const conprice = {
         _bponame: "BPO_Order_XJService",
         _methodName: "DeleteOrderBill",
         "_parameters[BillOID]": params.BillOID,
-        "_parameters[ContractID]": params.ContractID
+        "_parameters[ContractID]": params.ContractID,
+        _paraNames: "BillOID,ContractID",
+        _pUrl:""
       }
     });
   },
@@ -877,6 +879,35 @@ const conprice = {
         _pUrl: ""
       }
     });
+  },
+  //询价单明细删除
+  conDetailsDelete(params){
+    return axios({
+      url:"/UCMLWebServiceEntryForJs.aspx",
+      method:"post",
+      data:{
+        _bpoName:"BPO_Order_XJ_EditService",
+        _methodName:"DeleteRec",
+        "_parameters[PurchaseOrderID]":params.PurchaseOrderID,
+        "_parameters[DetailOIDList]":params.DetailOIDList,
+        _paraNames:"PurchaseOrderID,DetailOIDList",
+        _pUrl:""
+      }
+    })
+  },
+  //询价单明细删除增加后更新主表的合计和数量
+  conUpdateDelete(PurchaseOrderID){
+    return axios({
+      url:"/UCMLWebServiceEntryForJs.aspx",
+      method:"post",
+      data:{
+        _bpoName:"BPO_Order_XJ_EditService",
+        _methodName:"UpdateDetailSum",
+        "_parameters[PurchaseOrderID]":PurchaseOrderID,
+        _paraNames:"PurchaseOrderID",
+        _pUrl:""
+      }
+    })
   }
 };
 // 获取合同信息

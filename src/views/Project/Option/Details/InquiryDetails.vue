@@ -10,7 +10,7 @@
         <div class="list-item" v-for="(item, index) in dspList" :key="index" @click="showInfo(item)">
           <van-card :title="item[4]" :desc="item[8]">
             <div slot="footer">
-              <van-button size="mini" type="danger">删除</van-button>
+              <van-button size="mini" type="danger" @click.stop="conDetailsDelete(item[0])">删除</van-button>
             </div>
           </van-card>
         </div>
@@ -110,10 +110,51 @@ export default {
       };
       this.showBase = true;
       // console.log(item);
+    },
+
+    //询价单明细删除
+    conDetailsDelete(item) {
+      this.$dialog
+        .confirm({
+          title: "删除",
+          message: "确认删除此产品记录？"
+        })
+        .then(() => {
+          const params = {
+            PurchaseOrderID: this.confirmParams[0],
+            DetailOIDList: item
+          };
+          conprice.conDetailsDelete(params).then(res => {
+            if (res.status === 1) {
+              // this.getDetails();
+              if (res.text === "-1") {
+                this.$toast.fail("明细至少有一条记录");
+              } else if (res.text === "-2") {
+                this.$toast.fail("删除数量不能大于等于现有记录数量");
+              } else {
+                this.conUpdateDelete();
+                this.getDetails();
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.$toast.success("删除成功");
+                  }, 300);
+                });
+              }
+            }
+          });
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    //删除增加后更新主表的合计和数量
+    conUpdateDelete() {
+      conprice.conUpdateDelete(this.confirmParams[0]);
     }
   },
   mounted() {
     this.getDetails();
+    this.conUpdateDelete();
   }
 };
 </script>
