@@ -16,7 +16,7 @@
       <van-field v-model="item[26]" label="员工姓名:" disabled />
       <van-field label="备注:" type="textarea" />
     </van-cell-group>
-      <!-- <van-tab title="询价单明细">
+    <!-- <van-tab title="询价单明细">
         <div class="con-data">
           <div class="con-card">
             <div class="con-item" v-for="(item,index) in dspList" :key="index" >"
@@ -47,13 +47,13 @@
           </div>
         </div>
       </van-tab> -->
-      <!-- <van-tab title="询价单附件">
+    <!-- <van-tab title="询价单附件">
         <div class="title-price">询价单附件</div>
       </van-tab>-->
-      <van-cell-group>
-        <van-cell title="询价单明细" is-link value="详情"  @click="jumpInfo(item)"/>
-         <van-cell title="询价单附件" is-link value="详情"/>
-      </van-cell-group>
+    <van-cell-group>
+      <van-cell title="询价单明细" is-link value="详情" @click="jumpInfo(item)" />
+      <van-cell title="询价单附件" is-link value="详情" />
+    </van-cell-group>
     <div class="con-button">
       <van-button type="default" @click="confrimPrice">确认</van-button>
       <van-button type="default" @click="conProposal">提议</van-button>

@@ -58,7 +58,7 @@ import computed from "./../../../../assets/js/computed.js";
 export default {
   data() {
     return {
-      item:""
+      item: ""
     };
   },
   computed,
@@ -69,10 +69,8 @@ export default {
 <style lang="less" scoped>
 .deliverydetails {
   width: 100%;
-  padding: 10px;
   background-color: #eee;
   .delivery-data {
-    margin-bottom: 40px;
     .delivery-card {
       width: 100%;
       .delivery-item {

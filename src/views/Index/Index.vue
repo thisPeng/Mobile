@@ -8,7 +8,6 @@
         </van-swipe-item>
       </van-swipe>
     </div>
-
     <!--应用-->
     <div class="index-apply">
       <div class="apply">
@@ -36,7 +35,6 @@
           </div>
           <div class="apply-text">物资查询</div>
         </div>
-
         <!-- <div class="apply-item" @click="jumpPage('project', '自营项目')">
           <div class="item-icon bg-orange">
             <i class="iconfont icon-ziying" />

@@ -7,26 +7,26 @@
           <van-switch-cell v-model="ite.checked" :title="ite.name" class="item-title " />
         </van-cell-group>
         <div class="con-card" v-show="ite.checked">
-          <van-cell-group>
-            <van-cell is-link class="con-item" v-for="(item,index) in ite.list" :key="index" @click="jumpInfo(item)">
-              <div class="item-content">
-                <div class="content-row">
-                  <span class="row-left">{{item[14]}}</span>
-                  <span class="row-right">{{item[13]}}</span>
-                </div>
-                <div class="content-row">
-                  <span class="row-left">{{item[11]}} {{item[12]}}</span>
-                  <span class="row-right"></span>
-                </div>
-                <div class="content-row">
-                  <span class="row-left">{{item[15]}}</span>
-                </div>
-                <div class="content-row">
-                  <span>{{item[16]}}</span>
-                </div>
+          <van-cell is-link class="con-item" v-for="(item,index) in ite.list" :key="index" @click="jumpInfo(item)">
+            <div class="item-content">
+              <div class="content-row">
+                <span class="row-left">{{item[14]}}</span>
+                <span class="row-right">
+                  <van-tag :type="item[13] === '初始状态' ? '' : 'danger'">{{item[13]}}</van-tag>
+                </span>
               </div>
-            </van-cell>
-          </van-cell-group>
+              <div class="content-row">
+                <span class="row-left">{{item[11]}} {{item[12]}}</span>
+                <span class="row-right"></span>
+              </div>
+              <div class="content-row">
+                <span class="row-left">{{item[15]}}</span>
+              </div>
+              <div class="content-row">
+                <span>{{item[16]}}</span>
+              </div>
+            </div>
+          </van-cell>
         </div>
       </div>
     </div>
@@ -51,7 +51,6 @@ export default {
             const sp = res.text.split("[[");
             const csp = sp[1].split(";");
             const list = eval("[[" + csp[0]);
-            // console.log(list);
             const listOrder = [];
             let tmp = "";
             // 数据分组
@@ -95,14 +94,11 @@ export default {
 <style lang="less" scoped>
 .conprice {
   width: 100%;
-  padding: 10px;
   background-color: #eee;
   .con-data {
-    margin-bottom: 40px;
     .data-item {
       background-color: #fff;
       margin-bottom: 10px;
-      border-radius: 5px;
       .item-title {
         font-size: 14px;
         font-weight: 600;
@@ -118,7 +114,7 @@ export default {
               display: flex;
               align-items: center;
               justify-content: space-between;
-              padding: 5px 0;
+              padding: 2px 0;
             }
           }
         }
