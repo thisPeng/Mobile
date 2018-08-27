@@ -85,7 +85,7 @@ export default {
       }
     },
     jumpTabs(name) {
-      this.$store.commit("tabActive", this.active);
+      // this.$store.commit("tabActive", this.active);
       this.$router.replace({ name });
     }
   },
