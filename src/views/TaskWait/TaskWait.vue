@@ -8,7 +8,7 @@
       <div class="task-card">
         <div class="task-item" v-for="(item,index) in tableData" :key="item[0]" @click="selectItem(index)">
           <div class="item-title">
-            <span class="title">{{taskModel === '我的已办' ? item[25] : item[33]}}</span>
+            <span class="title">{{taskModel === '我的已办' ? item[25] || item[26] : item[33] || item[34]}}</span>
             <span class="icon">
               <van-icon name="arrow" />
             </span>
@@ -82,6 +82,7 @@ export default {
               this.tableData = eval("[[" + sp[0].split("[[")[1]);
               const pages = "(" + sp[1].split("=")[1] + ")";
               this.tablePages = eval(pages);
+              // console.log(this.tableData)
             } catch (e) {
               console.log(e);
             }
@@ -93,6 +94,7 @@ export default {
             try {
               const sp = res.text.split(";");
               this.tableData = eval("[[" + sp[0].split("[[")[1]);
+              console.log(this.tableData);
               const pages = "(" + sp[1].split("=")[1] + ")";
               this.tablePages = eval(pages);
             } catch (e) {
@@ -169,6 +171,10 @@ export default {
       } else if (this.params.name.indexOf("冻结") >= 0) {
         this.$router.push({
           name: "taskDJFrom"
+        });
+      } else if (this.params.name.indexOf("供应商") >= 0) {
+        this.$router.push({
+          name: "taskGYSFrom"
         });
       }
     }

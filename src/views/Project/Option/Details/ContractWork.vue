@@ -33,12 +33,12 @@
         <van-field v-model="item.id" label="订金付款期限(天)" placeholder="请输入订金付款期限(天)" />
         <van-field v-model="item.id" label="进场付款期限(天)" placeholder="请输入付款期限(天)" />
         <van-field v-model="item.id" label="保质付款期限(天)" placeholder="请输入保质付款期限(天)" />
-        <van-field v-model="item.id" label="订金比例(%)" placeholder="请输入交货地点" />
-        <van-field v-model="item.id" label="进场付款比例(%)" placeholder="请输入交货地点" />
-        <van-field v-model="item.id" label="保质付款比例(%)" placeholder="请输入交货地点" />
+        <van-field v-model="item.id" label="订金比例(%)" placeholder="请输入订金比例" />
+        <van-field v-model="item.id" label="进场付款比例(%)" placeholder="请输入进场付款比例" />
+        <van-field v-model="item.id" label="保质付款比例(%)" placeholder="请输入保质付款比例" />
       </div>
       <div class="title-delivery">保质与违约</div>
-      <van-field v-model="cspList[13]" label="保质期（天）" />
+      <van-field v-model="cspList[13]" label="保质期（天）" placeholder="请输入保质期（天）"/>
       <van-cell-group class="con-price">
         <span class="con-label">保质开始时间</span>
         <span class="con-select" @click="showDate=true">{{cspList[9]}}</span>
@@ -49,18 +49,18 @@
         <span class="con-select" @click="showDatatwo=true">{{cspList[14]}}</span>
         <van-datetime-picker v-model="currentDate" v-show="showDatatwo" type="date" class="contract-date" @confirm="jieshuDate" @cancel="showDatetwo=false" />
       </van-cell-group>
-      <van-field v-model="cspList[15]" label="保证金比例(%)" />
-      <van-field v-model="cspList[26]" label="保质期处理期限(天)" />
-      <van-field v-model="cspList[27]" label="保质期处理备注" />
-      <van-field v-model="cspList[28]" label="乙方违约(‰)" />
-      <van-field v-model="cspList[29]" label="甲方违约(‰)" />
+      <van-field v-model="cspList[15]" label="保证金比例(%)" placeholder="请输入保证金比例"/>
+      <van-field v-model="cspList[26]" label="保质期处理期限(天)" placeholder="请输入保质期处理期限"/>
+      <van-field v-model="cspList[27]" label="保质期处理备注" placeholder="请输入保质期处理备注"/>
+      <van-field v-model="cspList[28]" label="乙方违约(‰)" placeholder="请输入乙方违约"/>
+      <van-field v-model="cspList[29]" label="甲方违约(‰)" placeholder="请输入甲方违约"/>
       <div class="title-delivery">甲方信息</div>
       <van-field v-model="cspList[31]" label="甲方(盖章签名处)" disabled/>
       <van-field v-model="cspList[32]" label="甲方银行账号" disabled/>
       <van-field v-model="cspList[33]" label="甲方开户行" disabled />
       <van-field v-model="cspList[34]" label="甲方纳税识别码" disabled/>
       <van-field v-model="cspList[36]" label="甲方电话" disabled/>
-      <van-field v-model="cspList[37]" label="甲方代表人" />
+      <van-field v-model="cspList[37]" label="甲方代表人" placeholder="请输入甲方代表人"/>
       <van-cell-group class="con-price">
         <span class="con-label">甲方签订日期</span>
         <span class="con-select" @click="showDatathree=true">{{cspList[38]}}</span>
@@ -73,7 +73,7 @@
       <van-field v-model="cspList[41]" label="乙方开户行" disabled/>
       <van-field v-model="cspList[42]" label="乙方纳税识别码" disabled/>
       <van-field v-model="cspList[44]" label="乙方电话" disabled/>
-      <van-field v-model="cspList[45]" label="乙方代表人" />
+      <van-field v-model="cspList[45]" label="乙方代表人" placeholder="请输入乙方代表人"/>
       <van-cell-group class="con-price">
         <span class="con-label">乙方签订日期</span>
         <span class="con-select" @click="showDatafour=true">{{cspList[46]}}</span>
@@ -165,7 +165,7 @@ export default {
           // if (this.cspList[46]) {
           //   this.cspList[46] = "请选择时间"; //乙方
           // }
-          // console.log(this.cspList);
+           console.log(this.cspList);
         }
       });
     },

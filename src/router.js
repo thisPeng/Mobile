@@ -36,6 +36,8 @@ import TaskKKFrom from "./views/TaskWait/TaskKKFrom";
 import TaskPKFrom from "./views/TaskWait/TaskPKFrom";
 import TaskJDFrom from "./views/TaskWait/TaskJDFrom";
 import TaskDJFrom from "./views/TaskWait/TaskDJFrom";
+import TaskGYSFrom from "./views/TaskWait/TaskGYSFrom";
+import TaskGYSDetails from "./views/TaskWait/TaskGYSDetails";
 import Quotation from "./views/Transaction/Quotation";
 import TranContract from "./views/Transaction/TranContract";
 import ShippingInfo from "./views/Transaction/ShippingInfo";
@@ -188,6 +190,22 @@ export default new Router({
           component: TaskDJFrom,
           meta: {
             title: "冻结申请审核"
+          }
+        },
+        {
+          path: "/taskWait/taskGYSFrom",
+          name: "taskGYSFrom",
+          component: TaskGYSFrom,
+          meta: {
+            title: "供应商审核"
+          }
+        },
+        {
+          path: "/taskWait/taskgysDetails",
+          name: "taskgysDetails",
+          component: TaskGYSDetails,
+          meta: {
+            title: "供应商审核证明"
           }
         },
         {
