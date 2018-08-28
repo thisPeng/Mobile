@@ -5,13 +5,13 @@
       <i slot="right" class="iconfont icon-qiehuan home-icon" />
     </van-nav-bar>
     <keep-alive>
-      <router-view class="content" ref="routerView" v-if="$route.meta.keepAlive"></router-view>
+      <router-view class="content" ref="routerView" v-show="$route.meta.keepAlive"></router-view>
     </keep-alive>
-    <router-view class="content" ref="routerView" v-if="!$route.meta.keepAlive"></router-view>
+    <router-view class="content" v-show="!$route.meta.keepAlive"></router-view>
     <van-tabbar v-model="active" v-show="isTabbar">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
       <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item>
-      <van-tabbar-item icon="cart" @click="jumpTabs('cart')" v-if="userType === 1">购物车</van-tabbar-item>
+      <van-tabbar-item icon="cart" @click="jumpTabs('cart')" v-show="userType === 1">购物车</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -30,7 +30,7 @@ export default {
     };
   },
   watch: {
-    $route(to) {
+    $route(to, from) {
       try {
         if (this.projectInfo.SC_ProjectOID) {
           this.title = this.projectInfo.ProjectName;
@@ -63,10 +63,8 @@ export default {
               break;
           }
         }
-        if (to.meta.keepAlive) {
-          if (typeof this.$refs.routerView.pageInit === "function") {
-            this.$refs.routerView.pageInit();
-          }
+        if (from.name === "projectList" && to.meta.keepAlive) {
+          this.$router.go(0);
         }
       } catch (e) {
         console.log(e);
@@ -85,7 +83,6 @@ export default {
       }
     },
     jumpTabs(name) {
-      // this.$store.commit("tabActive", this.active);
       this.$router.replace({ name });
     }
   },

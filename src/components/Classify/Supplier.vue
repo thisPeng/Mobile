@@ -199,7 +199,7 @@ export default {
     // 过滤供应商
     filterSupp(item, index) {
       this.suppActive = index;
-      this.$store.commit("suppParams", item);
+      this.$store.commit("suppParams", item[2]);
       this.getSuppType();
       this.screenShow = false;
     },
@@ -245,7 +245,7 @@ export default {
     },
     // 获取供应商分类
     getSuppType(isLoad = true, fk = "") {
-      classify.getSupplierType(this.suppParams[2], fk).then(res => {
+      classify.getSupplierType(this.suppParams, fk).then(res => {
         try {
           if (res.status === 1) {
             const arr = JSON.parse(res.text);
@@ -275,14 +275,15 @@ export default {
         };
         classify.addCart(params).then(res => {
           try {
-            if (res && res.status === 1 && res.text === "True") {
-              // this.getCartList();
+            if (res.status === 1 && res.text === "1") {
               this.$toast.success("添加物资成功");
-            } else {
-              this.$toast.fail("添加物资失败");
+              return;
+            } else if (res.status === 1 && res.text === "-1") {
+              throw "供应商未通过审核，添加物资失败";
             }
+            throw "添加失败，请刷新页面后重试";
           } catch (e) {
-            console.log(e);
+            this.$toast.fail(e);
           }
         });
       } else {

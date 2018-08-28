@@ -61,7 +61,7 @@
     <div class="con-button">
       <van-button type="default" @click="confrimPrice">确认</van-button>
       <van-button type="default" @click="conProposal">提议</van-button>
-      <van-button type="default">添加物资</van-button>
+      <van-button type="default" @click="conAddGoods">添加物资</van-button>
     </div>
     <div class="con-button">
       <van-button type="default" @click="keepWork ">保存</van-button>
@@ -103,7 +103,7 @@ export default {
         }
       });
     },
-    // // 询价单明细
+    // 询价单明细
     // getDetails() {
     //   conprice.getDetails(this.confirmParams[0]).then(res => {
     //     if (res && res.status === 1) {
@@ -114,12 +114,19 @@ export default {
     //     }
     //   });
     // },
+    // 添加物资
+    conAddGoods() {
+      this.$store.commit("suppParams", this.list[0][11]);
+      this.$router.push({
+        name: "supplierType"
+      });
+    },
     //确认按钮
     confrimPrice() {
       this.$dialog
         .confirm({
           title: "确认",
-          message: "是否确认订单"
+          message: "是否确认订单？"
         })
         .then(() => {
           conprice.confrimPrice(this.confirmParams[0]).then(res => {
@@ -150,7 +157,7 @@ export default {
       this.$dialog
         .confirm({
           title: "提议",
-          message: "是否确认提议"
+          message: "是否确认提议？"
         })
         .then(() => {
           conprice.confrimPrice(this.confirmParams[0]).then(res => {
@@ -170,7 +177,7 @@ export default {
       this.$dialog
         .confirm({
           title: "删除",
-          message: "是否删除此单号记录"
+          message: "是否删除此单号记录？"
         })
         .then(() => {
           conprice.confrimPrice(this.confirmParams[0]).then(res => {
@@ -199,7 +206,6 @@ export default {
     //保存
     keepWork() {
       const list = this.list[0];
-      console.log(list);
       const xml = require("xml");
       const xmlString = xml({
         root: [

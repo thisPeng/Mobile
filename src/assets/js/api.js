@@ -363,7 +363,7 @@ const users = {
 
 const supplier = {
   // 供应商所有列表
-  getAllList(page, keyword = "") {
+  getAllList(page, keyword = "", DemandID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -376,7 +376,7 @@ const supplier = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "",
+        "_parameters[SQLCondi]": "ComSupplier.Organize_ID='" + DemandID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "AND SC_Supplier.SupplierName LIKE '%" + keyword + "%'",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -385,7 +385,7 @@ const supplier = {
     });
   },
   // 常用供应商列表
-  getList(page = 0, keyword = "") {
+  getList(page = 0, keyword = "", DemandID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -398,9 +398,31 @@ const supplier = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "",
+        "_parameters[SQLCondi]": "ComSupplier.Organize_ID='" + DemandID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "AND supp.SupplierName LIKE '%" + keyword + "%'",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    });
+  },
+  // 所有常用供应商列表
+  getSuppList(DemandID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Partner_SupplierService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Partner_Supplier",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "ComSupplier.Organize_ID='" + DemandID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
@@ -854,7 +876,7 @@ const conprice = {
         "_parameters[BillOID]": params.BillOID,
         "_parameters[ContractID]": params.ContractID,
         _paraNames: "BillOID,ContractID",
-        _pUrl:""
+        _pUrl: ""
       }
     });
   },
@@ -881,31 +903,31 @@ const conprice = {
     });
   },
   //询价单明细删除
-  conDetailsDelete(params){
+  conDetailsDelete(params) {
     return axios({
-      url:"/UCMLWebServiceEntryForJs.aspx",
-      method:"post",
-      data:{
-        _bpoName:"BPO_Order_XJ_EditService",
-        _methodName:"DeleteRec",
-        "_parameters[PurchaseOrderID]":params.PurchaseOrderID,
-        "_parameters[DetailOIDList]":params.DetailOIDList,
-        _paraNames:"PurchaseOrderID,DetailOIDList",
-        _pUrl:""
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_XJ_EditService",
+        _methodName: "DeleteRec",
+        "_parameters[PurchaseOrderID]": params.PurchaseOrderID,
+        "_parameters[DetailOIDList]": params.DetailOIDList,
+        _paraNames: "PurchaseOrderID,DetailOIDList",
+        _pUrl: ""
       }
     })
   },
   //询价单明细删除增加后更新主表的合计和数量
-  conUpdateDelete(PurchaseOrderID){
+  conUpdateDelete(PurchaseOrderID) {
     return axios({
-      url:"/UCMLWebServiceEntryForJs.aspx",
-      method:"post",
-      data:{
-        _bpoName:"BPO_Order_XJ_EditService",
-        _methodName:"UpdateDetailSum",
-        "_parameters[PurchaseOrderID]":PurchaseOrderID,
-        _paraNames:"PurchaseOrderID",
-        _pUrl:""
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_XJ_EditService",
+        _methodName: "UpdateDetailSum",
+        "_parameters[PurchaseOrderID]": PurchaseOrderID,
+        _paraNames: "PurchaseOrderID",
+        _pUrl: ""
       }
     })
   }
@@ -939,16 +961,16 @@ const contractInfo = {
       }
     })
   },
-  keepContract(xml){
+  keepContract(xml) {
     return axios({
-      url:"/UCMLWebServiceEntryForJs.aspx",
-      method:"post",
-      data:{
-        _bpoName:"BPO_Order_XJ_EditService",
-        _methodName:"BusinessSubmit",
-        "_parameters[xmlData]":xml,
-        _paraNames:"xmlData",
-        _pUrl:""
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_XJ_EditService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xml,
+        _paraNames: "xmlData",
+        _pUrl: ""
       }
     })
   }
