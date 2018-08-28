@@ -27,7 +27,7 @@ import Users from "./views/Users/Users";
 import UsersPwd from "./views/Users/UsersPwd";
 import UsersInfo from "./views/Users/UsersInfo";
 import Supplier from "./views/Supplier/Supplier";
-import SupplieType from "./views/Supplier/SupplieType";
+import SupplierType from "./views/Supplier/SupplierType";
 import TaskList from "./views/TaskWait/TaskList";
 import TaskWait from "./views/TaskWait/TaskWait";
 import TaskYCFrom from "./views/TaskWait/TaskYCFrom";
@@ -285,7 +285,7 @@ export default new Router({
         {
           path: "/users/supplier/type",
           name: "supplierType",
-          component: SupplieType,
+          component: SupplierType,
           meta: {
             title: "供应商物资"
           }

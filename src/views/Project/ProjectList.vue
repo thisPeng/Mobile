@@ -60,9 +60,6 @@ export default {
       this.getData(res);
     },
     jumpPage(item) {
-      // this.$router.push({
-      //   name: "option"
-      // });
       this.$store.commit("projectInfo", item);
       this.$router.go(-1);
     }

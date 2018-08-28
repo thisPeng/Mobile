@@ -4,7 +4,7 @@
     <div class="con-data">
       <div class="data-item" v-for="(ite,idx) in listOrder" :key="idx">
         <van-cell-group>
-          <van-switch-cell v-model="ite.checked" :title="ite.name" class="item-title " />
+          <van-switch-cell v-model="ite.checked" :title="ite.name" class="item-title" />
         </van-cell-group>
         <div class="con-card" v-show="ite.checked">
           <van-cell is-link class="con-item" v-for="(item,index) in ite.list" :key="index" @click="jumpInfo(item)">

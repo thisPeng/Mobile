@@ -150,7 +150,7 @@ export default {
     //删除增加后更新主表的合计和数量
     conUpdateDelete() {
       conprice.conUpdateDelete(this.confirmParams[0]);
-    },
+    }
     // priceDetails(){
     //   const dspList = this.dspList;
     //   const xml = require("xml");

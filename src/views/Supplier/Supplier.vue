@@ -11,20 +11,30 @@
               <span class="title">{{item[5]}}</span>
               <span class="option" @click.stop="onUnCollect(item)">取消收藏</span>
             </div>
-            <div class="item-content" @click="jumpPage(item)">
-              <div class="content-row">
-                <span class="row-left">联系人：{{item[10]}}</span>
-                <span class="row-right">生产类别：{{item[6] | type}}</span>
+            <van-cell is-link @click="jumpPage(item, 0)">
+              <div class="item-content">
+                <div class="content-row">
+                  <span class="row-left">联系人：{{item[10]}}</span>
+                  <span class="row-right">生产类别：{{item[6] | type}}</span>
+                </div>
+                <div class="content-row">
+                  <span class="row-left">联系电话：{{item[11]}}</span>
+                  <span class="row-right">固定电话：{{item[12]}}</span>
+                </div>
+                <div class="content-row">
+                  <span class="row-left">开票税率：{{item[14]}}</span>
+                  <span class="row-right">审核状态：
+                    <van-tag type="danger" v-if="item[27] === '1'">待审批</van-tag>
+                    <van-tag type="primary" v-if="item[27] === '2'">审批中</van-tag>
+                    <van-tag type="success" v-if="item[27] === '3'">已审批</van-tag>
+                    <van-tag v-else>未审批</van-tag>
+                  </span>
+                </div>
+                <div class="content-row">
+                  <span class="row-left">营业执照：{{item[7]}}</span>
+                </div>
               </div>
-              <div class="content-row">
-                <span class="row-left">联系电话：{{item[11]}}</span>
-                <span class="row-right">固定电话：{{item[12]}}</span>
-              </div>
-              <div class="content-row">
-                <span class="row-left">营业执照：{{item[7]}}</span>
-                <span class="row-right">开票税率：{{item[14]}}</span>
-              </div>
-            </div>
+            </van-cell>
           </div>
         </div>
         <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="supplier-pages" @change="getList" />
@@ -39,20 +49,30 @@
               <span class="title">{{item[2]}}</span>
               <span class="option" @click.stop="onCollect(item)">添加收藏</span>
             </div>
-            <div class="item-content" @click="jumpPage(item)">
-              <div class="content-row">
-                <span class="row-left">联系人：{{item[13]}}</span>
-                <span class="row-right">生产类别：{{item[3] | type}}</span>
+            <van-cell is-link @click="jumpPage(item, 1)">
+              <div class="item-content">
+                <div class="content-row">
+                  <span class="row-left">联系人：{{item[13]}}</span>
+                  <span class="row-right">生产类别：{{item[3] | type}}</span>
+                </div>
+                <div class="content-row">
+                  <span class="row-left">联系电话：{{item[14]}}</span>
+                  <span class="row-right">固定电话：{{item[15]}}</span>
+                </div>
+                <div class="content-row">
+                  <span class="row-left">开票税率：{{item[24]}}</span>
+                  <span class="row-right">审核状态：
+                    <van-tag type="danger" v-if="item[46] === '1'">待审批</van-tag>
+                    <van-tag type="primary" v-if="item[46] === '2'">审批中</van-tag>
+                    <van-tag type="success" v-if="item[46] === '3'">已审批</van-tag>
+                    <van-tag v-else>未审批</van-tag>
+                  </span>
+                </div>
+                <div class="content-row">
+                  <span class="row-left">营业执照：{{item[4]}}</span>
+                </div>
               </div>
-              <div class="content-row">
-                <span class="row-left">联系电话：{{item[14]}}</span>
-                <span class="row-right">固定电话：{{item[15]}}</span>
-              </div>
-              <div class="content-row">
-                <span class="row-left">营业执照：{{item[9]}}</span>
-                <span class="row-right">开票税率：{{item[24]}}</span>
-              </div>
-            </div>
+            </van-cell>
           </div>
         </div>
         <van-pagination v-model="curAllPage" :total-items="allPages.RecordCount" :items-per-page="10" mode="simple" class="supplier-pages" @change="getAllList" />
@@ -105,37 +125,44 @@ export default {
     // 获取常用供应商
     getList() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      supplier.getList(page, this.keyword).then(res => {
-        try {
-          if (res && res.status === 1) {
-            const sp = res.text.split("]]");
-            this.list = eval(sp[0].split("=")[1] + "]]");
-            this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
-            // console.log(this.list);
+      supplier
+        .getList(page, this.keyword, this.projectInfo.DemandID)
+        .then(res => {
+          try {
+            if (res && res.status === 1) {
+              const sp = res.text.split("]]");
+              this.list = eval(sp[0].split("=")[1] + "]]");
+              this.pages = eval(
+                "(" + sp[1].split("=")[1].replace(";", "") + ")"
+              );
+              // console.log(this.list);
+            }
+          } catch (e) {
+            this.list = [];
+            this.pages = {};
           }
-        } catch (e) {
-          this.list = [];
-          this.pages = {};
-        }
-      });
+        });
     },
     // 获取所有供应商
     getAllList() {
       const page = this.curAllPage > 0 ? this.curAllPage - 1 : 0;
-      supplier.getAllList(page, this.allKeyword).then(res => {
-        try {
-          if (res && res.status === 1) {
-            const sp = res.text.split("]]");
-            this.allList = eval(sp[0].split("=")[1] + "]]");
-            this.allPages = eval(
-              "(" + sp[1].split("=")[1].replace(";", "") + ")"
-            );
+      supplier
+        .getAllList(page, this.allKeyword, this.projectInfo.DemandID)
+        .then(res => {
+          try {
+            if (res && res.status === 1) {
+              const sp = res.text.split("]]");
+              this.allList = eval(sp[0].split("=")[1] + "]]");
+              this.allPages = eval(
+                "(" + sp[1].split("=")[1].replace(";", "") + ")"
+              );
+              // console.log(this.allList);
+            }
+          } catch (e) {
+            this.allList = [];
+            this.allPages = {};
           }
-        } catch (e) {
-          this.allList = [];
-          this.allPages = {};
-        }
-      });
+        });
     },
     // 添加收藏
     onCollect(item) {
@@ -188,17 +215,27 @@ export default {
       });
     },
     // 跳转供应商分类商品
-    jumpPage(item) {
-      this.$store.commit("suppParams", item);
+    jumpPage(item, type) {
+      this.$store.commit("suppParams", type ? item[0] : item[2]);
       this.$router.push({
         name: "supplierType"
+      });
+    },
+    // 页面初始化
+    pageInit() {
+      this.$nextTick().then(() => {
+        if (this.projectInfo.SC_ProjectOID) {
+          this.getList();
+          this.getAllList();
+        } else {
+          this.$toast("请先点击屏幕右上角按钮，选择项目");
+        }
       });
     }
   },
   computed,
-  mounted() {
-    this.getList();
-    this.getAllList();
+  created() {
+    this.pageInit();
   }
 };
 </script>
@@ -235,15 +272,16 @@ export default {
           text-decoration: underline;
         }
       }
-      .item-content {
+      .van-cell {
         padding: 5px 0;
+      }
+      .item-content {
         font-size: 12px;
         color: #666;
         .content-row {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 5px 0;
           .row-left {
             flex: 1;
           }

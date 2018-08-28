@@ -4,24 +4,24 @@
     <van-cell-group>
       <div class="title-delivery">基本合同信息</div>
       <van-field v-model="cspList[1]" label="合同编号" disabled/>
-      <van-field v-model="cspList[2]" label="合同名称" />
-      <van-field v-model="cspList[11]" label="合同金额" />
+      <van-field v-model="cspList[2]" label="合同名称" placeholder="请输入合同名称" />
+      <van-field v-model="cspList[11]" label="合同金额" placeholder="请输入合同金额" />
       <van-cell-group class="tact-price">
         <span class="tact-label">税率(%)</span>
         <span class="tact-select">
           <van-stepper v-model="cspList[19]" />
         </span>
       </van-cell-group>
-      <van-field v-model="cspList[18]" label="合同含税金额" />
-      <van-field v-model="cspList[31]" label="甲方" />
-      <van-field v-model="cspList[39]" label="乙方" />
-      <van-field v-model="cspList[10]" label="验收限期(天)" />
+      <van-field v-model="cspList[18]" label="合同含税金额" placeholder="请输入合同含税金额" />
+      <van-field v-model="cspList[31]" label="甲方" placeholder="请输入甲方" />
+      <van-field v-model="cspList[39]" label="乙方" placeholder="请输入乙方" />
+      <van-field v-model="cspList[10]" label="验收限期(天)" placeholder="请输入验收限期(天)" />
       <van-cell-group class="con-price">
         <span class="con-label">交货时间</span>
         <span class="con-select" @click="showDateone=true">{{cspList[23]}}</span>
         <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" class="contract-date" @confirm="jiaohuoDate" @cancel="showDateone=false" />
       </van-cell-group>
-      <van-field v-model="cspList[8]" label="交货地点" />
+      <van-field v-model="cspList[8]" label="交货地点" placeholder="请输入交货地点" />
       <van-cell-group class="con-price">
         <span class="con-label">付款方式</span>
         <span class="con-select" @click="paymentShow=true">{{item.payment}}</span>
@@ -30,12 +30,12 @@
         </van-popup>
       </van-cell-group>
       <div v-if="item.payment == '第三种付款方式'">
-        <van-field v-model="item.id" label="订金付款期限(天)" />
-        <van-field v-model="item.id" label="进场付款期限(天)" />
-        <van-field v-model="item.id" label="保质付款期限(天)" />
-        <van-field v-model="item.id" label="订金比例(%)" />
-        <van-field v-model="item.id" label="进场付款比例(%)" />
-        <van-field v-model="item.id" label="保质付款比例(%)" />
+        <van-field v-model="item.id" label="订金付款期限(天)" placeholder="请输入订金付款期限(天)" />
+        <van-field v-model="item.id" label="进场付款期限(天)" placeholder="请输入付款期限(天)" />
+        <van-field v-model="item.id" label="保质付款期限(天)" placeholder="请输入保质付款期限(天)" />
+        <van-field v-model="item.id" label="订金比例(%)" placeholder="请输入交货地点" />
+        <van-field v-model="item.id" label="进场付款比例(%)" placeholder="请输入交货地点" />
+        <van-field v-model="item.id" label="保质付款比例(%)" placeholder="请输入交货地点" />
       </div>
       <div class="title-delivery">保质与违约</div>
       <van-field v-model="cspList[13]" label="保质期（天）" />
@@ -477,15 +477,15 @@ export default {
         .then(() => {
           contractInfo.saveContract(xmlString).then(res => {
             // console.log(res);
-            if(res &&res.status ===1){
-                this.$nextTick().then(() => {
-                  setTimeout(() => {
-                    this.$toast.success("提交成功");
-                  }, 300);
-                });
-                 this.$router.replace({
-                  name:"pricedetails"
-                })
+            if (res && res.status === 1) {
+              this.$nextTick().then(() => {
+                setTimeout(() => {
+                  this.$toast.success("提交成功");
+                }, 300);
+              });
+              this.$router.replace({
+                name: "pricedetails"
+              });
             }
           });
         });
@@ -512,16 +512,13 @@ export default {
     line-height: 32px;
     position: relative;
     background-color: #fff;
-    color: #999494;
     font-size: 14px;
     overflow: hidden;
     .con-label {
-      color: black;
       min-width: 130px;
       flex: 1;
     }
     .con-select {
-      color: #999494;
       flex: 5;
     }
     .contract-date {
@@ -539,17 +536,14 @@ export default {
     line-height: 32px;
     position: relative;
     background-color: #fff;
-    color: #999494;
     font-size: 14px;
     overflow: hidden;
   }
   .tact-label {
-    color: black;
     min-width: 129px;
     flex: 1;
   }
   .tact-select {
-    color: #999494;
     flex: 5;
   }
   .button {
@@ -562,18 +556,14 @@ export default {
       text-align: center;
     }
   }
-  .van-cell {
-    color: #999494;
-  }
 }
 </style>
 <style lang="less">
 .contractwork {
   .van-field .van-cell__title {
-    color:black;
+    color: black;
     max-width: 130px;
   }
-
 }
 </style>
 

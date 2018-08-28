@@ -1,6 +1,6 @@
 <template>
   <div class="classify">
-    <van-tabs v-model="activeTabs" @click="switchTabs">
+    <van-tabs v-model="activeTabs">
       <van-tab title="所有分类">
         <cly :topList="topList" :detailedList="detailedList"></cly>
       </van-tab>
@@ -31,12 +31,6 @@ export default {
     stp
   },
   methods: {
-    // 切换选项卡
-    switchTabs(i) {
-      if (i > 0) {
-        this.$store.commit("suppParams", this.list[i - 1]);
-      }
-    },
     // 选择分类
     onNavClick(index) {
       this.active = index;
@@ -50,8 +44,7 @@ export default {
     },
     // 获取分类列表
     getClassifyList() {
-      const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      supplier.getList(page).then(res => {
+      supplier.getSuppList(this.projectInfo.DemandID).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("]]");

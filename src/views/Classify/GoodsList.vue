@@ -220,18 +220,20 @@ export default {
         };
         classify.addCart(params).then(res => {
           try {
-            if (res && res.status === 1 && res.text === "True") {
+            if (res.status === 1 && res.text === "1") {
               this.getCartList();
               this.$nextTick().then(() => {
                 setTimeout(() => {
                   this.$toast.success("添加物资成功");
                 }, 300);
               });
-            } else {
-              this.$toast.fail("添加物资失败");
+              return;
+            } else if (res.status === 1 && res.text === "-1") {
+              throw "供应商未通过审核，添加物资失败";
             }
+            throw "添加失败，请刷新页面后重试";
           } catch (e) {
-            console.log(e);
+            this.$toast.fail(e);
           }
         });
       } else {

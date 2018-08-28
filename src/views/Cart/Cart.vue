@@ -5,7 +5,14 @@
       <van-checkbox-group v-model="checkedArr">
         <div class="list-item" v-for="(ite, idx) in listOrder" :key="idx">
           <van-cell-group>
-            <van-switch-cell class="text-bold" v-model="ite.checked" :title="ite.name" @change="onSwitechSupp(idx)" />
+            <van-cell class="text-bold" :title="ite.name" @change="onSwitechSupp(idx)">
+              <template slot="title">
+                <div @click="jumpSupp(ite)">{{ite.name}}</div>
+              </template>
+              <template slot="right-icon">
+                <van-switch v-model="ite.checked" size="26px" />
+              </template>
+            </van-cell>
           </van-cell-group>
           <div v-show="ite.checked">
             <van-swipe-cell :right-width="65" v-for="(item,index) in ite.list" :key="index">
@@ -112,18 +119,18 @@ export default {
             let tmp = "";
             // 供应商分组
             list.forEach(val => {
-              if (val[18] !== tmp) {
+              if (val[17] !== tmp) {
                 listOrder.push({
+                  id: val[17],
                   name: val[18],
                   checked: false,
                   list: []
                 });
                 listOrder[listOrder.length - 1].list.push(val);
-                tmp = val[18];
+                tmp = val[17];
               } else {
                 listOrder[listOrder.length - 1].list.push(val);
               }
-
               // 默认图片路径
               if (val[32]) {
                 val[32] = val[32].replace("~", this.servePath);
@@ -147,6 +154,12 @@ export default {
           this.listOrder = [];
           this.checkedArr = [];
         }
+      });
+    },
+    jumpSupp(item) {
+      this.$store.commit("suppParams", item.id);
+      this.$router.push({
+        name: "supplierType"
       });
     },
     // 供应商开关
