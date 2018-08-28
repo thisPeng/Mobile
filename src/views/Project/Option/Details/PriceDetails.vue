@@ -64,7 +64,7 @@
       <van-button type="default">添加物资</van-button>
     </div>
     <div class="con-button">
-      <van-button type="default" @click="keepWork ">保存</van-button>
+      <van-button type="default" @click="keepWork">保存</van-button>
       <van-button type="default" @click="confirmDelete">删除</van-button>
       <van-button type="default" @click="jumpage('contractwork')">合同编辑</van-button>
     </div>
@@ -99,7 +99,7 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0]);
-          // console.log(this.list);
+          console.log(this.list);
         }
       });
     },
@@ -260,7 +260,7 @@ export default {
           }
         ]
       });
-      // console.log(xmlString);
+      console.log(xmlString);
       this.$dialog
         .confirm({
           title: "保存",
@@ -281,7 +281,10 @@ export default {
             }
           });
         });
-    }
+    },
+    // constxml() {
+    //   console.log(this.GetDeltaXml());
+    // }
   },
 
   mounted() {
