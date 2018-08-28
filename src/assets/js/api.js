@@ -260,6 +260,26 @@ const classify = {
         _pUrl: ""
       }
     });
+  },
+  // 询价单-添加物资
+  addCartForOrder(params) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Supp_ProductSKU_QueryService",
+        _methodName: "SaveIntentionSKU",
+        "_parameters[BCName]": "BC_SC_Supp_ProductSKU",
+        "_parameters[OIDCheckList]": params.OIDCheckList,
+        "_parameters[PartnerID]": params.PartnerID,
+        "_parameters[ProjectID]": params.ProjectID,
+        "_parameters[DemandID]": params.DemandID,
+        "_parameters[SupplierID]": params.SupplierID,
+        "_parameters[PurchaseOrderID]": params.PurchaseOrderID,
+        _paraNames: "OIDCheckList,PartnerID,ProjectID,DemandID,SupplierID,PurchaseOrderID",
+        _pUrl: ""
+      }
+    });
   }
 };
 

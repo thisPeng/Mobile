@@ -3,9 +3,14 @@
  * @file DATA映射
  * @author DJ
  */
-import { mapState } from "vuex";
+import {
+  mapState
+} from "vuex";
 
 export default mapState({
+  isReload: state => {
+    return state.isReload;
+  },
   userId: state => {
     return state.userId;
   },
@@ -17,9 +22,6 @@ export default mapState({
   },
   loginInfo: state => {
     return state.loginInfo;
-  },
-  tabActive: state => {
-    return state.tabActive;
   },
   taskModel: state => {
     return state.taskModel;
@@ -48,7 +50,7 @@ export default mapState({
   tabsShow: state => {
     return state.tabsShow;
   },
-  infoDetails:state => {
+  infoDetails: state => {
     return state.infoDetails;
   }
 });

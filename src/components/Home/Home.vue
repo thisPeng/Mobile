@@ -5,9 +5,9 @@
       <i slot="right" class="iconfont icon-qiehuan home-icon" />
     </van-nav-bar>
     <keep-alive>
-      <router-view class="content" ref="routerView" v-show="$route.meta.keepAlive"></router-view>
+      <router-view class="content" v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
-    <router-view class="content" v-show="!$route.meta.keepAlive"></router-view>
+    <router-view class="content" v-if="!$route.meta.keepAlive"></router-view>
     <van-tabbar v-model="active" v-show="isTabbar">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
       <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item>
@@ -63,7 +63,8 @@ export default {
               break;
           }
         }
-        if (from.name === "projectList" && to.meta.keepAlive) {
+        if (from.name === "projectList" && to.meta.keepAlive && this.isReload) {
+          this.$store.commit("isReload", false);
           this.$router.go(0);
         }
       } catch (e) {

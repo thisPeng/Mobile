@@ -14,8 +14,13 @@
             <van-cell is-link @click="jumpPage(item, 0)">
               <div class="item-content">
                 <div class="content-row">
-                  <span class="row-left">联系人：{{item[10]}}</span>
-                  <span class="row-right">生产类别：{{item[6] | type}}</span>
+                  <span class="row-left flex-3">联系人：{{item[10]}}</span>
+                  <span class="row-right text-right">
+                    <van-tag type="danger" v-if="item[27] === '1'">待审批</van-tag>
+                    <van-tag type="primary" v-if="item[27] === '2'">审批中</van-tag>
+                    <van-tag type="success" v-if="item[27] === '3'">已审批</van-tag>
+                    <van-tag v-else>未审批</van-tag>
+                  </span>
                 </div>
                 <div class="content-row">
                   <span class="row-left">联系电话：{{item[11]}}</span>
@@ -23,12 +28,7 @@
                 </div>
                 <div class="content-row">
                   <span class="row-left">开票税率：{{item[14]}}</span>
-                  <span class="row-right">审核状态：
-                    <van-tag type="danger" v-if="item[27] === '1'">待审批</van-tag>
-                    <van-tag type="primary" v-if="item[27] === '2'">审批中</van-tag>
-                    <van-tag type="success" v-if="item[27] === '3'">已审批</van-tag>
-                    <van-tag v-else>未审批</van-tag>
-                  </span>
+                  <span class="row-right">生产类别：{{item[6] | type}}</span>
                 </div>
                 <div class="content-row">
                   <span class="row-left">营业执照：{{item[7]}}</span>
@@ -52,8 +52,13 @@
             <van-cell is-link @click="jumpPage(item, 1)">
               <div class="item-content">
                 <div class="content-row">
-                  <span class="row-left">联系人：{{item[13]}}</span>
-                  <span class="row-right">生产类别：{{item[3] | type}}</span>
+                  <span class="row-left flex-3">联系人：{{item[13]}}</span>
+                  <span class="row-right text-right">
+                    <van-tag type="danger" v-if="item[46] === '1'">待审批</van-tag>
+                    <van-tag type="primary" v-if="item[46] === '2'">审批中</van-tag>
+                    <van-tag type="success" v-if="item[46] === '3'">已审批</van-tag>
+                    <van-tag v-else>未审批</van-tag>
+                  </span>
                 </div>
                 <div class="content-row">
                   <span class="row-left">联系电话：{{item[14]}}</span>
@@ -61,12 +66,7 @@
                 </div>
                 <div class="content-row">
                   <span class="row-left">开票税率：{{item[24]}}</span>
-                  <span class="row-right">审核状态：
-                    <van-tag type="danger" v-if="item[46] === '1'">待审批</van-tag>
-                    <van-tag type="primary" v-if="item[46] === '2'">审批中</van-tag>
-                    <van-tag type="success" v-if="item[46] === '3'">已审批</van-tag>
-                    <van-tag v-else>未审批</van-tag>
-                  </span>
+                  <span class="row-right">生产类别：{{item[3] | type}}</span>
                 </div>
                 <div class="content-row">
                   <span class="row-left">营业执照：{{item[4]}}</span>
@@ -216,7 +216,7 @@ export default {
     },
     // 跳转供应商分类商品
     jumpPage(item, type) {
-      this.$store.commit("suppParams", type ? item[0] : item[2]);
+      this.$store.commit("suppParams", { id: type ? item[0] : item[2] });
       this.$router.push({
         name: "supplierType"
       });

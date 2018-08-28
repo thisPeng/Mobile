@@ -14,8 +14,8 @@
       <van-cell-group class="con-price">
         <span class="con-label">订货有效期:</span>
         <span class="con-select" @click="showData=true">{{item[17]}}</span>
-        <van-datetime-picker v-model="currentDate" v-show="showData" type="date" class="contract-date" @confirm="dinghuoDate" @cancel="showDatafour=false" />
       </van-cell-group>
+      <van-datetime-picker v-model="currentDate" v-show="showData" type="date" class="contract-date" @confirm="dinghuoDate" @cancel="showData=false" />
       <van-field v-model="item[18]" label="业务员:" placeholder="请输入业务员" />
       <van-field v-model="item[26]" label="员工姓名:" disabled />
       <van-field v-model="item[21]" label="备注:" type="textarea" placeholder="请输入业务员" />
@@ -54,10 +54,8 @@
     <!-- <van-tab title="询价单附件">
         <div class="title-price">询价单附件</div>
       </van-tab>-->
-    <van-cell-group>
-      <van-cell title="询价单明细" is-link value="详情" @click="jumpInfo(item)" />
-      <van-cell title="询价单附件" is-link value="详情" />
-    </van-cell-group>
+    <van-cell title="询价单明细" is-link value="详情" @click="jumpInfo(item)" />
+    <van-cell title="询价单附件" is-link value="详情" />
     <div class="con-button">
       <van-button type="default" @click="confrimPrice">确认</van-button>
       <van-button type="default" @click="conProposal">提议</van-button>
@@ -116,7 +114,11 @@ export default {
     // },
     // 添加物资
     conAddGoods() {
-      this.$store.commit("suppParams", this.list[0][11]);
+      console.log(this.list[0]);
+      this.$store.commit("suppParams", {
+        id: this.list[0][11],
+        oid: this.list[0][0]
+      });
       this.$router.push({
         name: "supplierType"
       });
@@ -315,13 +317,12 @@ export default {
     .con-select {
       flex: 5;
     }
-    .contract-date {
-      width: 100%;
-      position: fixed;
-      z-index: 9999;
-      bottom: 0;
-      padding-right: 30px;
-    }
+  }
+  .contract-date {
+    width: 100%;
+    position: fixed;
+    z-index: 9999;
+    bottom: 0;
   }
   .con-data {
     margin-bottom: 40px;

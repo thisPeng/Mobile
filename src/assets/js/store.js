@@ -13,11 +13,11 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   //数据源申明
   state: {
+    isReload: false,
     userId: {},
     userInfo: {},
     userType: 0, // 用户身份: 1、工程、合作； 2、供应商
     loginInfo: {},
-    tabActive: 0,
     taskModel: "",
     projectInfo: {},
     projectModel: "",
@@ -33,6 +33,7 @@ export default new Vuex.Store({
   mutations: {
     cleanStore: (state, val) => {
       if (val) {
+        state.isReload = true;
         state.userId = {};
         state.userInfo = {};
         state.loginInfo = {};
@@ -46,6 +47,9 @@ export default new Vuex.Store({
         state.infoDetails = {};
       }
     },
+    isReload: (state, val) => {
+      state.isReload = val;
+    },
     userId: (state, val) => {
       state.userId = val;
     },
@@ -57,9 +61,6 @@ export default new Vuex.Store({
     },
     loginInfo: (state, val) => {
       state.loginInfo = val;
-    },
-    tabActive: (state, val) => {
-      state.tabActive = val;
     },
     taskModel: (state, val) => {
       state.taskModel = val;

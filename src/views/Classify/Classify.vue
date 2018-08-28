@@ -1,6 +1,6 @@
 <template>
   <div class="classify">
-    <van-tabs v-model="activeTabs">
+    <van-tabs v-model="activeTabs" @change="onSwitech">
       <van-tab title="所有分类">
         <cly :topList="topList" :detailedList="detailedList"></cly>
       </van-tab>
@@ -31,6 +31,15 @@ export default {
     stp
   },
   methods: {
+    onSwitech(i) {
+      if (i === 1) {
+        this.$nextTick().then(() => {
+          if (!this.projectInfo.SC_ProjectOID) {
+            this.$toast("请先点击屏幕右上角按钮，选择项目");
+          }
+        });
+      }
+    },
     // 选择分类
     onNavClick(index) {
       this.active = index;

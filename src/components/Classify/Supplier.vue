@@ -165,14 +165,18 @@ export default {
     },
     // 物资排序
     orderList() {
-      const i = this.activeKey;
-      this.priceDesc = !this.priceDesc;
-      this.SQLFix = " ORDER BY Price ";
-      this.SQLFix += this.priceDesc ? "DESC" : "ASC";
-      this.getSuppGoodsList(
-        this.typeList[i].SupplierID,
-        this.typeList[i].SC_SMaterialTypeOID
-      );
+      try {
+        const i = this.activeKey;
+        this.priceDesc = !this.priceDesc;
+        this.SQLFix = " ORDER BY Price ";
+        this.SQLFix += this.priceDesc ? "DESC" : "ASC";
+        this.getSuppGoodsList(
+          this.typeList[i].SupplierID,
+          this.typeList[i].SC_SMaterialTypeOID
+        );
+      } catch (e) {
+        console.log(e);
+      }
     },
     // 搜索
     onSearch() {
@@ -199,7 +203,7 @@ export default {
     // 过滤供应商
     filterSupp(item, index) {
       this.suppActive = index;
-      this.$store.commit("suppParams", item[2]);
+      this.$store.commit("suppParams", { id: item[2] });
       this.getSuppType();
       this.screenShow = false;
     },
@@ -245,7 +249,7 @@ export default {
     },
     // 获取供应商分类
     getSuppType(isLoad = true, fk = "") {
-      classify.getSupplierType(this.suppParams, fk).then(res => {
+      classify.getSupplierType(this.suppParams.id, fk).then(res => {
         try {
           if (res.status === 1) {
             const arr = JSON.parse(res.text);
@@ -267,25 +271,49 @@ export default {
     // 添加购物车
     onBuyClicked() {
       if (this.projectInfo.SC_ProjectOID) {
-        const params = {
-          OIDCheckList: this.goods.id + "|" + this.goods.sid,
-          PartnerID: this.userId.UCML_OrganizeOID,
-          ProjectID: this.projectInfo.SC_ProjectOID,
-          DemandID: this.projectInfo.DemandID
-        };
-        classify.addCart(params).then(res => {
-          try {
-            if (res.status === 1 && res.text === "1") {
-              this.$toast.success("添加物资成功");
-              return;
-            } else if (res.status === 1 && res.text === "-1") {
-              throw "供应商未通过审核，添加物资失败";
+        if (this.suppParams.oid) {
+          const params = {
+            OIDCheckList: this.goods.id + "|" + this.goods.sid,
+            PartnerID: this.userId.UCML_OrganizeOID,
+            ProjectID: this.projectInfo.SC_ProjectOID,
+            DemandID: this.projectInfo.DemandID,
+            SupplierID: this.suppParams.id,
+            PurchaseOrderID: this.suppParams.oid
+          };
+          classify.addCartForOrder(params).then(res => {
+            try {
+              if (res.status === 1 && res.text === "1") {
+                this.$toast.success("添加物资成功");
+                return;
+              } else if (res.status === 1 && res.text === "-1") {
+                throw "供应商未通过审核，添加物资失败";
+              }
+              throw "添加失败，请刷新页面后重试";
+            } catch (e) {
+              this.$toast.fail(e);
             }
-            throw "添加失败，请刷新页面后重试";
-          } catch (e) {
-            this.$toast.fail(e);
-          }
-        });
+          });
+        } else {
+          const params = {
+            OIDCheckList: this.goods.id + "|" + this.goods.sid,
+            PartnerID: this.userId.UCML_OrganizeOID,
+            ProjectID: this.projectInfo.SC_ProjectOID,
+            DemandID: this.projectInfo.DemandID
+          };
+          classify.addCart(params).then(res => {
+            try {
+              if (res.status === 1 && res.text === "1") {
+                this.$toast.success("添加物资成功");
+                return;
+              } else if (res.status === 1 && res.text === "-1") {
+                throw "供应商未通过审核，添加物资失败";
+              }
+              throw "添加失败，请刷新页面后重试";
+            } catch (e) {
+              this.$toast.fail(e);
+            }
+          });
+        }
       } else {
         this.$toast("请先点击屏幕右上角按钮，选择项目");
       }
