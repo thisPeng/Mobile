@@ -181,6 +181,7 @@ export default {
         })
         .then(() => {
           conprice.confrimPrice(this.confirmParams[0]).then(res => {
+            console.log(res);
             if (res && res.text === "1") {
               this.$router.replace({
                 name: "conprice"
