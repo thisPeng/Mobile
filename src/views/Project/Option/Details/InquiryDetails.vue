@@ -1,10 +1,9 @@
 <template>
   <!-- 询价单明细详情编辑 -->
   <div class="inquirydetails">
-    <form action="/">
+    <!-- <form action="/">
       <van-search v-model="search" placeholder="请输入搜索关键词" show-action />
-      <!-- @search="onSearch" @cancel="onCancel" -->
-    </form>
+    </form> -->
     <div class="inquiry-data">
       <div class="inquiry-list">
         <div class="list-item" v-for="(item, index) in dspList" :key="index" @click="showInfo(item)">
@@ -21,10 +20,10 @@
         <van-cell-group>
           <van-cell :title="'品名： ' + goods.brand" :label="'规格/型号：' + goods.unit" />
           <van-cell :title="'赠送数量：' + goods.taxAll" :label="'单位：' + goods.shop" />
-          <van-cell :title="'实价： ' + goods.howMuch" :label="'小计：' + goods.howMoney" />
-          <van-field label="实际数量：" v-model="goods.taxRate" />
-          <van-field label="税率(%)：" v-model="goods.taxRadio" />
-          <van-field label="备注：" v-model="goods.reMarks" />
+          <van-cell :title="'税率：' + goods.taxRadio + '%'" />
+          <!-- <van-cell :title="'实价： ' + goods.howMuch" :label="'小计：' + goods.howMoney" /> -->
+          <van-field label="订购数量：" v-model="goods.taxRate" type="number" required placeholder="请输入订购数量" />
+          <van-field label="备注：" v-model="goods.reMarks" placeholder="请输入物资备注" />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">
@@ -83,7 +82,6 @@ export default {
           const sp = res.text.split("[[");
           const dsp = sp[1].split(";");
           this.dspList = eval("[[" + dsp[0]);
-          console.log(this.dspList);
         }
       });
     },
@@ -123,7 +121,6 @@ export default {
           };
           conprice.conDetailsDelete(params).then(res => {
             if (res.status === 1) {
-              // this.getDetails();
               if (res.text === "-1") {
                 this.$toast.fail("明细至少有一条记录");
               } else if (res.text === "-2") {
@@ -149,48 +146,10 @@ export default {
       conprice.conUpdateDelete(this.confirmParams[0]);
     },
     priceDetails() {
-      const dspList = this.dspList[0];
       const xml = require("xml");
-      // console.log(xml);
       const xmlString = xml({
         root: [
           {
-            BC_SC_Order_Master: [
-              {
-                _attr: {
-                  UpdateKind: "ukModify"
-                }
-              },
-              {
-                SC_Order_MasterOID: dspList[0]
-              },
-              {
-                Order_Qty: "null"
-              },
-              {
-                Order_Amt: "null"
-              }
-            ]
-          },
-          {
-            BC_SC_Order_Master: [
-              {
-                _attr: {
-                  UpdateKind: ""
-                }
-              },
-              {
-                SC_Order_MasterOID: "null"
-              },
-              {
-                Order_Qty: dspList[9]
-              },
-              {
-                Order_Amt: dspList[10]
-              }
-            ]
-          },
-          {
             BC_SC_Order_Detail: [
               {
                 _attr: {
@@ -198,38 +157,8 @@ export default {
                 }
               },
               {
-                SC_Order_DetailOID: dspList[0]
-              },
-              {
-                Real_Qty: "null"
-              },
-              {
-                Sheet_Tax: "null"
-              },
-              {
-                Remark: "null"
+                SC_Order_DetailOID: this.goods.id
               }
-              // {
-              //   SKU_ID: dspList[2]
-              // },
-              // {
-              //   SPU_ID: dspList[3]
-              // },
-              // {
-              //   Supp_SPU_ID: dspList[6]
-              // },
-              // {
-              //   Supp_SKU_ID: dspList[7]
-              // },
-              // {
-              //   PurchaseOrderID: dspList[21]
-              // },
-              // {
-              //   ContractID: dspList[23]
-              // },
-              // {
-              //   SC_Brand_FK: dspList[27]
-              // }
             ]
           },
           {
@@ -240,40 +169,18 @@ export default {
                 }
               },
               {
-                Real_Qty: dspList[11]
+                Real_Qty: this.goods.taxRate
               },
               {
-                Sheet_Tax: dspList[16]
+                Sub_Amt: this.goods.taxRate * this.goods.howMuch
               },
               {
-                Remark: dspList[19]
+                Remark: this.goods.reMarks
               }
-              // {
-              //   SKU_ID: "null"
-              // },
-              // {
-              //   SPU_ID: "null"
-              // },
-              // {
-              //   Supp_SPU_ID: "null"
-              // },
-              // {
-              //   Supp_SKU_ID: "null"
-              // },
-              // {
-              //   PurchaseOrderID: "null"
-              // },
-              // {
-              //   ContractID: "null"
-              // },
-              // {
-              //   SC_Brand_FK: "null"
-              // }
             ]
           }
         ]
       });
-      console.log(xmlString);
       this.$dialog
         .confirm({
           title: "保存",
@@ -281,13 +188,19 @@ export default {
         })
         .then(() => {
           contractInfo.keepContract(xmlString).then(res => {
-            console.log(res);
-            if (res && res.status === 1) {
-              this.$nextTick().then(() => {
-                setTimeout(() => {
-                  this.$toast.success("保存成功");
-                }, 300);
-              });
+            try {
+              if (res.status === 1) {
+                this.conUpdateDelete();
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.$toast.success("保存成功");
+                  }, 300);
+                });
+                return;
+              }
+              throw "保存失败，请刷新页面重试";
+            } catch (e) {
+              this.$toast.fail(e);
             }
           });
         });
@@ -295,7 +208,7 @@ export default {
   },
   mounted() {
     this.getDetails();
-    this.conUpdateDelete();
+    // this.conUpdateDelete();
   }
 };
 </script>
@@ -307,7 +220,7 @@ export default {
   }
   .inquiry-data {
     position: absolute;
-    top: 50px;
+    top: 10px;
     left: 0;
     right: 0;
     bottom: 0;
