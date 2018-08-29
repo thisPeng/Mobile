@@ -24,18 +24,18 @@
       <van-field v-model="cspList[8]" label="交货地点" placeholder="请输入交货地点" />
       <van-cell-group class="con-price">
         <span class="con-label">付款方式</span>
-        <span class="con-select" @click="paymentShow=true">{{item.payment}}</span>
+        <span class="con-select" @click="paymentShow=true">{{payment}}</span>
         <van-popup v-model="paymentShow" position="bottom">
           <van-picker show-toolbar :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
         </van-popup>
       </van-cell-group>
-      <div v-if="item.payment == '第三种付款方式'">
-        <van-field v-model="item.id" label="订金付款期限(天)" placeholder="请输入订金付款期限(天)" />
-        <van-field v-model="item.id" label="进场付款期限(天)" placeholder="请输入付款期限(天)" />
-        <van-field v-model="item.id" label="保质付款期限(天)" placeholder="请输入保质付款期限(天)" />
-        <van-field v-model="item.id" label="订金比例(%)" placeholder="请输入订金比例" />
-        <van-field v-model="item.id" label="进场付款比例(%)" placeholder="请输入进场付款比例" />
-        <van-field v-model="item.id" label="保质付款比例(%)" placeholder="请输入保质付款比例" />
+      <div v-if="payment == '第三种付款方式'">
+        <van-field v-model="item" label="订金付款期限(天)" placeholder="请输入订金付款期限(天)" />
+        <van-field v-model="item" label="进场付款期限(天)" placeholder="请输入付款期限(天)" />
+        <van-field v-model="item" label="保质付款期限(天)" placeholder="请输入保质付款期限(天)" />
+        <van-field v-model="item" label="订金比例(%)" placeholder="请输入订金比例" />
+        <van-field v-model="item" label="进场付款比例(%)" placeholder="请输入进场付款比例" />
+        <van-field v-model="item" label="保质付款比例(%)" placeholder="请输入保质付款比例" />
       </div>
       <div class="title-delivery">保质与违约</div>
       <van-field v-model="cspList[13]" label="保质期（天）" placeholder="请输入保质期（天）"/>
@@ -94,9 +94,7 @@ export default {
   data() {
     return {
       cspList: [],
-      item: {
-        payment: "请选择付款方式"
-      },
+        payment: "请选择付款方式",
       currentDate: new Date(),
       columns: ["第一种付款方式", "第二种付款方式", "第三种付款方式"],
       paymentShow: false,
@@ -111,7 +109,7 @@ export default {
   methods: {
     //付款方式
     onConfirm(res) {
-      this.item.payment = res;
+      this.payment = res;
       this.paymentShow = false;
     },
     // 确认时间
@@ -165,7 +163,10 @@ export default {
           // if (this.cspList[46]) {
           //   this.cspList[46] = "请选择时间"; //乙方
           // }
-           //console.log(this.cspList);
+          const i  = this.cspList[12];
+          this.payment = this.columns[i]
+          console.log(this.payment);
+          // console.log(this.cspList)
         }
       });
     },

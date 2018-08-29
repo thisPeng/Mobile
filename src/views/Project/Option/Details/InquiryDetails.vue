@@ -155,6 +155,42 @@ export default {
       const xmlString = xml({
         root: [
           {
+            BC_SC_Order_Master: [
+              {
+                _attr: {
+                  UpdateKind: "ukModify"
+                }
+              },
+              {
+                SC_Order_MasterOID: dspList[0]
+              },
+              {
+                Order_Qty: "null"
+              },
+              {
+                Order_Amt: "null"
+              }
+            ]
+          },
+          {
+            BC_SC_Order_Master: [
+              {
+                _attr: {
+                  UpdateKind: ""
+                }
+              },
+              {
+                SC_Order_MasterOID: "null"
+              },
+              {
+                Order_Qty: dspList[9]
+              },
+              {
+                Order_Amt: dspList[10]
+              }
+            ]
+          },
+          {
             BC_SC_Order_Detail: [
               {
                 _attr: {
@@ -172,28 +208,28 @@ export default {
               },
               {
                 Remark: "null"
-              },
-              {
-                SKU_ID: dspList[2]
-              },
-              {
-                SPU_ID: dspList[3]
-              },
-              {
-                Supp_SPU_ID: dspList[6]
-              },
-              {
-                Supp_SKU_ID: dspList[7]
-              },
-              {
-                PurchaseOrderID: dspList[21]
-              },
-              {
-                ContractID: dspList[23]
-              },
-              {
-                SC_Brand_FK:dspList[27]
-              },
+              }
+              // {
+              //   SKU_ID: dspList[2]
+              // },
+              // {
+              //   SPU_ID: dspList[3]
+              // },
+              // {
+              //   Supp_SPU_ID: dspList[6]
+              // },
+              // {
+              //   Supp_SKU_ID: dspList[7]
+              // },
+              // {
+              //   PurchaseOrderID: dspList[21]
+              // },
+              // {
+              //   ContractID: dspList[23]
+              // },
+              // {
+              //   SC_Brand_FK: dspList[27]
+              // }
             ]
           },
           {
@@ -211,28 +247,28 @@ export default {
               },
               {
                 Remark: dspList[19]
-              },
-              {
-                SKU_ID: "null"
-              },
-              {
-                SPU_ID: "null"
-              },
-              {
-                Supp_SPU_ID: "null"
-              },
-              {
-                Supp_SKU_ID: "null"
-              },
-              {
-                PurchaseOrderID: "null"
-              },
-              {
-                ContractID: "null"
-              },
-              {
-                SC_Brand_FK:"null"
               }
+              // {
+              //   SKU_ID: "null"
+              // },
+              // {
+              //   SPU_ID: "null"
+              // },
+              // {
+              //   Supp_SPU_ID: "null"
+              // },
+              // {
+              //   Supp_SKU_ID: "null"
+              // },
+              // {
+              //   PurchaseOrderID: "null"
+              // },
+              // {
+              //   ContractID: "null"
+              // },
+              // {
+              //   SC_Brand_FK: "null"
+              // }
             ]
           }
         ]
