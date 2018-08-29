@@ -97,7 +97,7 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0]);
-          console.log(this.list);
+         // console.log(this.list);
         }
       });
     },
@@ -265,7 +265,7 @@ export default {
         .then(() => {
           contractInfo.keepContract(xmlString).then(res => {
             if (res && res.status === 1) {
-              console.log(res);
+              // console.log(res);
               this.$nextTick().then(() => {
                 setTimeout(() => {
                   this.$toast.success("保存成功");

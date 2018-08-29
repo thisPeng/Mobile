@@ -25,7 +25,6 @@
           <van-field label="实际数量：" v-model="goods.taxRate" />
           <van-field label="税率(%)：" v-model="goods.taxRadio" />
           <van-field label="备注：" v-model="goods.reMarks" />
-          <van-field label="产品编码：" v-model="goods.coding" disabled/>
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">
@@ -34,7 +33,7 @@
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
           <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">保存修改</van-button>
+          <van-button type="primary" bottom-action @click="priceDetails">保存修改</van-button>
         </div>
       </template>
     </van-sku>
@@ -42,12 +41,11 @@
 </template>
 <script>
 import computed from "./../../../../assets/js/computed.js";
-import { conprice } from "../../../../assets/js/api.js";
+import { conprice, contractInfo } from "../../../../assets/js/api.js";
 export default {
   data() {
     return {
       search: "",
-      item: [],
       dspList: [],
       showBase: false,
       sku: {
@@ -72,8 +70,7 @@ export default {
         howMuch: "",
         howMoney: "",
         taxRadio: "",
-        reMarks: "",
-        coding: ""
+        reMarks: ""
       }
     };
   },
@@ -86,11 +83,12 @@ export default {
           const sp = res.text.split("[[");
           const dsp = sp[1].split(";");
           this.dspList = eval("[[" + dsp[0]);
-          // console.log(this.dspList);
+          console.log(this.dspList);
         }
       });
     },
     showInfo(item) {
+      this.sku.price = item[14];
       this.goods = {
         id: item[0],
         sid: item[4],
@@ -100,13 +98,12 @@ export default {
         info: item[28],
         unit: item[8],
         shop: item[28],
-        taxRate: item[10],
+        taxRate: item[11],
         taxAll: item[12],
-        howMuch: item[13],
+        howMuch: item[14],
         howMoney: item[15],
         taxRadio: item[16],
-        reMarks: item[16],
-        coding: item[16]
+        reMarks: item[19]
       };
       this.showBase = true;
       // console.log(item);
@@ -150,18 +147,115 @@ export default {
     //删除增加后更新主表的合计和数量
     conUpdateDelete() {
       conprice.conUpdateDelete(this.confirmParams[0]);
+    },
+    priceDetails() {
+      const dspList = this.dspList[0];
+      const xml = require("xml");
+      // console.log(xml);
+      const xmlString = xml({
+        root: [
+          {
+            BC_SC_Order_Detail: [
+              {
+                _attr: {
+                  UpdateKind: "ukModify"
+                }
+              },
+              {
+                SC_Order_DetailOID: dspList[0]
+              },
+              {
+                Real_Qty: "null"
+              },
+              {
+                Sheet_Tax: "null"
+              },
+              {
+                Remark: "null"
+              },
+              {
+                SKU_ID: dspList[2]
+              },
+              {
+                SPU_ID: dspList[3]
+              },
+              {
+                Supp_SPU_ID: dspList[6]
+              },
+              {
+                Supp_SKU_ID: dspList[7]
+              },
+              {
+                PurchaseOrderID: dspList[21]
+              },
+              {
+                ContractID: dspList[23]
+              },
+              {
+                SC_Brand_FK:dspList[27]
+              },
+            ]
+          },
+          {
+            BC_SC_Order_Detail: [
+              {
+                _attr: {
+                  UpdateKind: ""
+                }
+              },
+              {
+                Real_Qty: dspList[11]
+              },
+              {
+                Sheet_Tax: dspList[16]
+              },
+              {
+                Remark: dspList[19]
+              },
+              {
+                SKU_ID: "null"
+              },
+              {
+                SPU_ID: "null"
+              },
+              {
+                Supp_SPU_ID: "null"
+              },
+              {
+                Supp_SKU_ID: "null"
+              },
+              {
+                PurchaseOrderID: "null"
+              },
+              {
+                ContractID: "null"
+              },
+              {
+                SC_Brand_FK:"null"
+              }
+            ]
+          }
+        ]
+      });
+      console.log(xmlString);
+      this.$dialog
+        .confirm({
+          title: "保存",
+          message: "确认保存该询价单？"
+        })
+        .then(() => {
+          contractInfo.keepContract(xmlString).then(res => {
+            console.log(res);
+            if (res && res.status === 1) {
+              this.$nextTick().then(() => {
+                setTimeout(() => {
+                  this.$toast.success("保存成功");
+                }, 300);
+              });
+            }
+          });
+        });
     }
-    // priceDetails(){
-    //   const dspList = this.dspList;
-    //   const xml = require("xml");
-    //   const xmlString =xml({
-    //     root:[
-    //       {
-
-    //       }
-    //     ]
-    //   })
-    // }
   },
   mounted() {
     this.getDetails();
