@@ -845,7 +845,7 @@ const conprice = {
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Order_Detail",
         "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 20,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
