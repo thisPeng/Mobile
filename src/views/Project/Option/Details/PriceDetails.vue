@@ -216,7 +216,7 @@ export default {
             BC_SC_Order_Master: [
               {
                 _attr: {
-                  UpdateKind: "ukMobify"
+                  UpdateKind: "ukModify"
                 }
               },
               {
@@ -230,13 +230,6 @@ export default {
               },
               {
                 Remark: "null"
-              },
-
-              {
-                ProjectID: list[7]
-              },
-              {
-                PartnerID: list[8]
               }
             ]
           },
@@ -258,12 +251,6 @@ export default {
               },
               {
                 Remark: list[21]
-              },
-              {
-                ProjectID: "null"
-              },
-              {
-                PartnerID: "null"
               }
             ]
           }
@@ -290,7 +277,7 @@ export default {
             }
           });
         });
-    },
+    }
     // constxml() {
     //   console.log(this.GetDeltaXml());
     // }

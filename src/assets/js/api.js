@@ -267,16 +267,16 @@ const classify = {
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_Supp_ProductSKU_QueryService",
+        _bpoName: "BPO_Purchase_ProductSKUQueryService",
         _methodName: "SaveIntentionSKU",
         "_parameters[BCName]": "BC_SC_Supp_ProductSKU",
         "_parameters[OIDCheckList]": params.OIDCheckList,
         "_parameters[PartnerID]": params.PartnerID,
+        "_parameters[SupplierID]": params.SupplierID,
         "_parameters[ProjectID]": params.ProjectID,
         "_parameters[DemandID]": params.DemandID,
-        "_parameters[SupplierID]": params.SupplierID,
         "_parameters[PurchaseOrderID]": params.PurchaseOrderID,
-        _paraNames: "OIDCheckList,PartnerID,ProjectID,DemandID,SupplierID,PurchaseOrderID",
+        _paraNames: "OIDCheckList,PartnerID,SupplierID,ProjectID,DemandID,PurchaseOrderID",
         _pUrl: ""
       }
     });
