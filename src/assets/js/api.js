@@ -806,7 +806,6 @@ const conprice = {
       data: {
         _bpoName: "BPO_Order_XJService",
         _methodName: "getBCColumnsForJS",
-        "_parameters[BCName]": "BC_SC_IntentionSKU",
         "_parameters[ProjectID]": ProjectID,
         _paraNames: "ProjectID",
         _pUrl: ""

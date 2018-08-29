@@ -16,9 +16,9 @@
         <span class="con-select" @click="showData=true">{{item[17]}}</span>
       </van-cell-group>
       <van-datetime-picker v-model="currentDate" v-show="showData" type="date" class="contract-date" @confirm="dinghuoDate" @cancel="showData=false" />
-      <van-field v-model="item[18]" label="业务员:" placeholder="请输入业务员" />
+      <van-field v-model="item[18]" label="业务员:" placeholder="请输入业务员" required/>
       <van-field v-model="item[26]" label="员工姓名:" disabled />
-      <van-field v-model="item[21]" label="备注:" type="textarea" placeholder="请输入业务员" />
+      <van-field v-model="item[21]" label="备注:" type="textarea" placeholder="请输入备注" />
     </van-cell-group>
     <!-- <van-tab title="询价单明细">
         <div class="con-data">
