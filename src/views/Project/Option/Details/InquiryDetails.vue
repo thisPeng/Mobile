@@ -47,6 +47,8 @@ export default {
       search: "",
       dspList: [],
       showBase: false,
+      loading: false,
+      finished: false,
       sku: {
         tree: [],
         price: "0.00", // 默认价格（单位元）
@@ -77,13 +79,24 @@ export default {
   methods: {
     // 询价单明细
     getDetails() {
-      conprice.getDetails(this.confirmParams[0]).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split("[[");
-          const dsp = sp[1].split(";");
-          this.dspList = eval("[[" + dsp[0]);
-        }
-      });
+      conprice
+        .getDetails(this.confirmParams[0], this.dspList.length)
+        .then(res => {
+          try {
+            if (res && res.status === 1) {
+              const sp = res.text.split("[[");
+              const dsp = sp[1].split(";");
+              const arr = eval("[[" + dsp[0]);
+              // console.log(dsp);
+              this.dspList = this.dspList.concat(arr);
+              this.loading = false;
+              this.finished = this.pages.RecordCount <= this.goodsList.length;
+            }
+          } catch (e) {
+            this.loading = false;
+            this.finished = true;
+          }
+        });
     },
     showInfo(item) {
       this.sku.price = item[14];

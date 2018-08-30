@@ -1,42 +1,66 @@
 <template>
   <div class="infoitem">
     <van-cell-group>
-      <van-field value="" label="工程编号:" disabled />
-      <van-field value="" label="项目编号:" disabled />
-      <van-field value="工程名称" label="工程名称:" disabled />
-      <van-field value="" label="业务类型:" disabled />
-      <van-field value="" label="工程地址:" disabled />
-      <van-field value="" label="联系人:" disabled />
-      <van-field value="" label="联系电话:" disabled />
-      <van-field value="" label="登记时间:" disabled />
-      <van-field value="" label="合作商名称:" disabled />
-      <van-field value="" label="单位电话:" disabled />
-      <van-field value="" label="工程单位:" disabled />
-      <van-field value="" label="项目类型:" disabled />
-      <van-field value="" label="合作方式:" disabled />
-      <van-field value="" label="工程造价:" disabled />
-      <van-field value="" label="计征方式:" disabled />
-      <van-field value="" label="计征区域:" disabled />
-      <van-field value="" label="税务组织:" disabled />
-      <van-field value="" label="项目状态:" disabled />
-      <van-field value="" label="工期:" disabled />
-      <van-field value="" label="公开状态:" disabled />
-      <van-field value="" label="开通时间:" disabled />
-      <van-field value="" label="到期时间:" disabled />
-      <van-field value="" label="建设单位:" disabled />
-      <van-field value="" label="备注:" disabled />
+      <van-field v-model="info[2]" label="工程编号：" disabled />
+      <van-field v-model="info[55]" label="项目编号：" disabled />
+      <van-field v-model="info[1]" label="工程名称：" disabled />
+      <van-field v-model="info[57]" label="业务类型：" disabled />
+      <van-field v-model="info[18]" label="工程地址：" disabled />
+      <van-field v-model="info[21]" label="联系人：" disabled />
+      <van-field v-model="info[24]" label="联系电话：" disabled />
+      <van-field v-model="info[25]" label="登记时间：" disabled />
+      <van-field v-model="info[34]" label="合作商名称：" disabled />
+      <van-field v-model="info[49]" label="单位电话：" disabled />
+      <van-field v-model="info[31]" label="工程单位：" disabled />
+      <van-field v-model="this.projectInfo.pro_TypeName" label="项目类型：" disabled />
+      <van-field v-model="info[26]" label="合作方式：" disabled />
+      <van-field v-model="info[27]" label="工程造价：" disabled />
+      <van-field v-model="info[28]" label="计征方式：" disabled />
+      <van-field v-model="info[29]" label="计征区域：" disabled />
+      <van-field v-model="info[30]" label="税务组织：" disabled />
+      <van-field v-model="info[6]" label="项目状态：" disabled />
+      <van-field v-model="info[4]" label="工期：" disabled />
+      <van-field v-model="info[17]" label="公开状态：" disabled />
+      <van-field v-model="info[4]" label="开通时间：" disabled />
+      <van-field v-model="info[5]" label="到期时间：" disabled />
+      <van-field v-model="info[22]" label="建设单位：" disabled />
+      <van-field v-model="info[7]" label="备注：" disabled />
     </van-cell-group>
   </div>
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
+import { project } from "./../../../assets/js/api.js";
+
 export default {
   data() {
-    return {};
+    return {
+      info: {}
+    };
   },
   computed,
-  methods: {},
-  mounted() {}
+  methods: {
+    getData() {
+      project.getParojectInfo(this.projectInfo.SC_ProjectOID).then(res => {
+        try {
+          if (res.status === 1) {
+            const sp = res.text.split(";");
+            this.info = eval(sp[0].split("=")[1])[0];
+            // console.log(this.info);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      });
+    }
+  },
+  mounted() {
+    if (this.projectInfo.SC_ProjectOID) {
+      this.getData();
+    } else {
+      this.$toast("请先点击屏幕右上角按钮，选择项目");
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
