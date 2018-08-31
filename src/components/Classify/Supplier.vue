@@ -16,7 +16,7 @@
         <van-tag type="primary" v-else-if="suppInfo[3] === '2'">审核中</van-tag>
         <van-tag type="success" v-else-if="suppInfo[3] === '3'">已审核</van-tag>
         <van-tag v-else>未审核</van-tag>
-        <van-icon class="padding-left" name="arrow" size="20px" />
+        <van-icon class="padding-left-xs" name="arrow" size="20px" />
       </div>
     </div>
 
@@ -153,9 +153,24 @@ export default {
   },
   methods: {
     jumpInfo() {
-      this.$router.push({
-        name: "taskGYSFrom"
-      });
+      supplier
+        .getSuppTaskId(this.projectInfo.DemandID, this.suppParams.id)
+        .then(res => {
+          try {
+            if (res.status === 1) {
+              const params = {
+                name: "供应商详情",
+                TaskGYSID: "SC_Company_SupplierOID='" + res.text + "'"
+              };
+              this.$store.commit("taskParams", params);
+              this.$router.push({
+                name: "taskGYSFrom"
+              });
+            }
+          } catch (e) {
+            this.$toast.fail(e);
+          }
+        });
     },
     // 滚动加载
     onLoad() {
@@ -414,6 +429,8 @@ export default {
     .info-left {
       display: flex;
       .info-img {
+        display: flex;
+        align-items: center;
         img {
           height: 50px;
         }
@@ -425,7 +442,7 @@ export default {
         flex-direction: column;
         justify-content: space-between;
         .text-name {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 600;
         }
         .text-address {
@@ -437,6 +454,9 @@ export default {
     .info-right {
       display: flex;
       align-items: center;
+      .van-tag {
+        width: 50px;
+      }
     }
   }
   .left {

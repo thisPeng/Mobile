@@ -1,9 +1,9 @@
 <template>
   <div class="taskgysFrom">
     <van-cell-group>
-      <van-field v-model="data[35]" label="供应商编号:"  disabled/>
-      <van-field v-model="data[22]" label="单位名称:"  disabled/>
-      <van-field v-model="data[24]" label="统一社会信用代码:"  disabled/>
+      <van-field v-model="data[35]" label="供应商编号:" disabled/>
+      <van-field v-model="data[22]" label="单位名称:" disabled/>
+      <van-field v-model="data[24]" label="统一社会信用代码:" disabled/>
       <van-field v-model="data[22]" label="单位类别:" disabled/>
       <van-field v-model="data[22]" label="纳税人类别:" disabled/>
       <van-field v-model="data[27]" label="税率:" disabled/>
@@ -34,7 +34,7 @@ export default {
       // taskTabs: {
       //   codeJson: []
       // }
-      data:[]
+      data: []
     };
   },
   computed,
@@ -50,14 +50,16 @@ export default {
   },
   mounted() {
     this.$parent.title = this.taskParams.name;
-    task.getInquiry(this.taskParams.TaskGYSID).then(result => {
-      console.log(result);
-      if(result && result.status ===1){
-        // console.log(result.status)
-        const sp = result.text.split(";");
-        console.log(sp);
-        this.data = eval(sp[0].split("=")[1])[0];
-        console.log(this.data)
+    task.getInquiry(this.taskParams.TaskGYSID).then(res => {
+      try {
+        if (res.status === 1) {
+          const sp = res.text.split("[[");
+          const tsp = sp[1].split("]]");
+          this.data = eval(eval("[[" + tsp[0] + "]]"))[0];
+          // console.log(this.data);
+        }
+      } catch (e) {
+        console.log(e);
       }
     });
   }

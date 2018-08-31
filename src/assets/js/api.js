@@ -521,13 +521,28 @@ const supplier = {
         _pUrl: ""
       }
     });
+  },
+  // 获取供应商待办ID
+  getSuppTaskId(DemandID = "", SupplierID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_SupplierListService",
+        _methodName: "GetCompanySupplier",
+        "_parameters[DemandID]": DemandID,
+        "_parameters[SupplierID]": SupplierID,
+        _paraNames: "DemandID,SupplierID",
+        _pUrl: ""
+      }
+    });
   }
 };
 
 // 我的待办
 const task = {
   //获取供应商审核（询价单主表）
-  getInquiry(InstanceID = "") {
+  getInquiry(SQLCondi = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -540,7 +555,7 @@ const task = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "InstanceID='" + InstanceID + "'",
+        "_parameters[SQLCondi]": SQLCondi,
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
