@@ -44,6 +44,9 @@ export default mapState({
   confirmParams: state => {
     return state.confirmParams;
   },
+  contractParams: state => {
+    return state.contractParams;
+  },
   servePath: state => {
     return state.servePath;
   },

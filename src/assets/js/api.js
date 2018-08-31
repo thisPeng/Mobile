@@ -208,9 +208,9 @@ const classify = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": params.SQLCondi,
+        "_parameters[SQLCondi]": params.SQLCondi + " AND smt.SPUName LIKE '%" + params.keyword + "%' ",
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": " AND smt.SPUName LIKE '%" + params.keyword + "%' " + params.SQLFix,
+        "_parameters[SQLFix]": params.SQLFix,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
@@ -257,9 +257,9 @@ const classify = {
           SC_SMaterialType_FK +
           "') OR SC_SMaterialType_FK = '" +
           SC_SMaterialType_FK +
-          "' )",
+          "' )" + " AND smt.SPUName LIKE '%" + keyword + "%' ",
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": " AND smt.SPUName LIKE '%" + keyword + "%' " + SQLFix,
+        "_parameters[SQLFix]": SQLFix,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
@@ -418,9 +418,9 @@ const supplier = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "ComSupplier.Organize_ID='" + DemandID + "'",
+        "_parameters[SQLCondi]": "ComSupplier.Organize_ID='" + DemandID + "' AND SC_Supplier.SupplierName LIKE '%" + keyword + "%'",
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": "AND SC_Supplier.SupplierName LIKE '%" + keyword + "%'",
+        "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
@@ -440,9 +440,9 @@ const supplier = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "ComSupplier.Organize_ID='" + DemandID + "'",
+        "_parameters[SQLCondi]": "ComSupplier.Organize_ID='" + DemandID + "' AND supp.SupplierName LIKE '%" + keyword + "%'",
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": "AND supp.SupplierName LIKE '%" + keyword + "%'",
+        "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
@@ -1063,7 +1063,7 @@ const contractInfo = {
       data: {
         bpoName: "BPO_Labor_Contract_EditService",
         _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": BCName, // BC_SC_Contract_Valuation 合同计价方式   BC_SC_Contract_Pay 合同付款补充 	 BC_Labor_Contract_Detail 劳务合同附表
+        "_parameters[BCName]": BCName, //BC_Labor_Contract 劳务合同   BC_SC_Contract_Valuation 合同计价方式   BC_SC_Contract_Pay 合同付款补充 	 BC_Labor_Contract_Detail 劳务合同附表
         "_parameters[nStartPos]": 0,
         "_parameters[nRecords]": 20,
         "_parameters[fieldList]": "",

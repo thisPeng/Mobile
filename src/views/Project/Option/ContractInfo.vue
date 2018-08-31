@@ -7,7 +7,7 @@
           <van-switch-cell v-model="ite.checked" :title="ite.name" class="item-title " />
         </van-cell-group>
         <div class="con-card" v-show="ite.checked">
-          <van-cell is-link class="con-item" v-for="(item,index) in ite.list" :key="index" @click="jumpage('contractlabor')">
+          <van-cell is-link class="con-item" v-for="(item,index) in ite.list" :key="index" @click="jumpPage(item)">
             <div class="item-content">
               <div class="content-row">
                 <span class="row-left">{{item[14]}}</span>
@@ -53,7 +53,7 @@ export default {
             const list = eval("[[" + tsp[0]);
             const listOrder = [];
             let tmp = "";
-            console.log(list);
+            // console.log(list);
             // 数据分组
             list.forEach(val => {
               if (val[2] !== tmp) {
@@ -75,15 +75,16 @@ export default {
         }
       });
     },
-    jumpage(name) {
-      this.$parent.title = this.projectInfo.ProjectName;
+    jumpPage(item) {
+      this.$store.commit("contractParams", item);
       this.$router.push({
-        name
+        name: "contractlabor"
       });
     }
   },
   mounted() {
     if (this.projectInfo.SC_ProjectOID) {
+      this.$parent.title = this.projectInfo.ProjectName;
       this.getList();
     } else {
       this.$toast("请先点击屏幕右上角按钮，选择项目");
