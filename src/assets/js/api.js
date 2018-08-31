@@ -504,6 +504,28 @@ const supplier = {
 
 // 我的待办
 const task = {
+  //获取供应商审核（询价单主表）
+  getInquiry(SupplierOID = "", page = 0) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Company_Supplier",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_Company_Supplier",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Company_SupplierOID='" + SupplierOID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    });
+  },
   // 获取我的待办
   getWaitData(page) {
     return axios({
