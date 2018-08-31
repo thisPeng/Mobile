@@ -44,6 +44,28 @@ const project = {
         _pUrl: ""
       }
     });
+  },
+  // 获取项目信息
+  getParojectInfo(id = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_Project_InfoService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Project",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": " SC_ProjectOID='" + id + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    });
   }
 };
 
@@ -835,7 +857,7 @@ const conprice = {
     });
   },
   //获取询价单明细详情
-  getDetails(PurchaseOrderID) {
+  getDetails(PurchaseOrderID, nStartPos = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -843,8 +865,8 @@ const conprice = {
         _bpoName: "BPO_Order_XJ_EditService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Order_Detail",
-        "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": -1,
+        "_parameters[nStartPos]": nStartPos,
+        "_parameters[nRecords]": 20,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
@@ -870,7 +892,7 @@ const conprice = {
       }
     });
   },
-  //提議
+  //提议
   conProposal(BillOID) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -900,7 +922,7 @@ const conprice = {
     });
   },
   // 合同编辑
-  conContract(ContractOID) {
+  conContract(ContractOID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -953,20 +975,36 @@ const conprice = {
 };
 // 获取合同信息
 const contractInfo = {
-  getList(ProjectID) {
+  // 获取合同列表
+  getList(ProjectID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
         _bpoName: "BPO_Contract_ListService",
         _methodName: "getBCColumnsForJS",
-        "_parameters[BCName]": "BC_SC_IntentionSKU",
         "_parameters[ProjectID]": ProjectID,
         _paraNames: "ProjectID",
         _pUrl: ""
       }
     });
   },
+  // 合同回退
+  returnContract(ContractID = "", Contract_Type = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Contract_ListService",
+        _methodName: "ReturnContract",
+        "_parameters[ContractID]": ContractID,
+        "_parameters[Contract_Type]": Contract_Type,
+        _paraNames: "ContractID, Contract_Type",
+        _pUrl: ""
+      }
+    });
+  },
+  // 保存合同信息
   saveContract(xml) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -980,6 +1018,44 @@ const contractInfo = {
       }
     })
   },
+  // 合同盖章
+  updateSealFlag(ContractID = "", Seal_Flag = 2) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Contract_ListService",
+        _methodName: "UpdateSealFlag",
+        "_parameters[ContractID]": ContractID,
+        "_parameters[Seal_Flag]": Seal_Flag,
+        _paraNames: "ContractID, Seal_Flag",
+        _pUrl: ""
+      }
+    })
+  },
+  // 获取劳务合同
+  getLaborList(ContractOID = "", BCName = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        bpoName: "BPO_Labor_Contract_EditService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": BCName, // BC_SC_Contract_Valuation 合同计价方式   BC_SC_Contract_Pay 合同付款补充 	 BC_Labor_Contract_Detail 劳务合同附表
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Order_ContractOID='" + ContractOID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //
   keepContract(xml) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
