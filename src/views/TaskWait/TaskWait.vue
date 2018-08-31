@@ -111,14 +111,16 @@ export default {
           TaskID: this.tableData[i][8],
           InstanceID: this.tableData[i][4],
           name: this.tableData[i][2],
-          bpoName: this.tableData[i][3]
+          bpoName: this.tableData[i][3],
+          TaskGYSID: this.tableData[i][5]
         };
       } else {
         this.params = {
           TaskID: this.tableData[i][9],
           InstanceID: this.tableData[i][5],
           name: this.tableData[i][2],
-          bpoName: this.tableData[i][3]
+          bpoName: this.tableData[i][3],
+          TaskGYSID: this.tableData[i][5]
         };
       }
       this.exeTask();
