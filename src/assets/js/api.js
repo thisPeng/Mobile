@@ -485,7 +485,7 @@ const supplier = {
       }
     });
   },
-  //取消收藏供应商
+  // 取消收藏供应商
   cancelCollect(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -496,6 +496,28 @@ const supplier = {
         "_parameters[PartnerID]": params.pid,
         "_parameters[SupplierID]": params.sid,
         _paraNames: "PartnerID,SupplierID",
+        _pUrl: ""
+      }
+    });
+  },
+  // 获取供应商详情
+  getSuppInfo(DemandID = "", SupplierID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Company_SupplierService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_Company_Supplier",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "Organize_ID='" + DemandID + "' AND SupplierID='" + SupplierID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     });

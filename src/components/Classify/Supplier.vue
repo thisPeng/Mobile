@@ -1,12 +1,22 @@
 <template>
   <div class="supplie-type">
     <van-search placeholder="请输入商品名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action v-if="!isSearch" />
-    <div class="supplie-info">
+    <div class="supplie-info" v-if="suppInfo.length > 0" @click="jumpInfo">
       <div class="info-left">
-        <img src="img/icons/android-chrome-512x512.png" alt="" />
+        <div class="info-img">
+          <img src="img/icons/android-chrome-512x512.png" alt="" />
+        </div>
+        <div class="info-text">
+          <div class="text-name">{{suppInfo[22]}}</div>
+          <div class="text-address">{{suppInfo[30]}}</div>
+        </div>
       </div>
       <div class="info-right">
-        <div></div>
+        <van-tag type="danger" v-if="suppInfo[3] === '1'">待审核</van-tag>
+        <van-tag type="primary" v-else-if="suppInfo[3] === '2'">审核中</van-tag>
+        <van-tag type="success" v-else-if="suppInfo[3] === '3'">已审核</van-tag>
+        <van-tag v-else>未审核</van-tag>
+        <van-icon class="padding-left" name="arrow" size="20px" />
       </div>
     </div>
 
@@ -90,7 +100,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { classify } from "./../../assets/js/api.js";
+import { classify, supplier } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -110,6 +120,7 @@ export default {
       suppActive: 0,
       filterActive: "",
       SQLFix: "",
+      suppInfo: [],
       // 物资详情
       showBase: false,
       sku: {
@@ -141,6 +152,11 @@ export default {
     }
   },
   methods: {
+    jumpInfo() {
+      this.$router.push({
+        name: "taskGYSFrom"
+      });
+    },
     // 滚动加载
     onLoad() {
       const i = this.activeKey;
@@ -212,7 +228,7 @@ export default {
     // 过滤供应商
     filterSupp(item, index) {
       this.suppActive = index;
-      this.$store.commit("suppParams", { id: item[2], name: item[2] });
+      this.$store.commit("suppParams", { id: item[2] });
       this.getSuppType();
       this.screenShow = false;
     },
@@ -360,12 +376,26 @@ export default {
       };
       this.showBase = true;
       // console.log(item);
+    },
+    // 获取供应商详情
+    getSuppInfo() {
+      supplier
+        .getSuppInfo(this.projectInfo.DemandID, this.suppParams.id)
+        .then(res => {
+          if (res.status === 1) {
+            const sp = res.text.split("[[");
+            const tsp = sp[1].split("]]");
+            this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
+            console.log(this.suppInfo);
+          }
+        });
     }
   },
   computed,
   mounted() {
     this.isSearch = this.$parent.index ? true : false;
     this.getSuppType();
+    this.getSuppInfo();
   }
 };
 </script>
@@ -374,23 +404,45 @@ export default {
   width: 100%;
   overflow: hidden !important;
   .supplie-info {
+    width: 100%;
+    height: 80px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
     .info-left {
-      width: 20%;
-      display: inline-block;
-      text-align: center;
-      img {
-        height: 50px;
+      display: flex;
+      .info-img {
+        img {
+          height: 50px;
+        }
+      }
+      .info-text {
+        padding: 5px 0;
+        margin-left: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .text-name {
+          font-size: 16px;
+          font-weight: 600;
+        }
+        .text-address {
+          color: #666;
+          font-size: 12px;
+        }
       }
     }
     .info-right {
-      width: 80%;
-      display: inline-block;
+      display: flex;
+      align-items: center;
     }
   }
   .left {
     width: 25%;
     position: absolute;
-    top: 115px;
+    top: 125px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -406,7 +458,7 @@ export default {
   }
   .right {
     position: absolute;
-    top: 115px;
+    top: 125px;
     left: 25%;
     right: 0;
     bottom: 0;
