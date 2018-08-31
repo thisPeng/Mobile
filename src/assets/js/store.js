@@ -25,6 +25,7 @@ export default new Vuex.Store({
     goodsParams: "",
     suppParams: {},
     confirmParams: {},
+    contractParams: {},
     infoDetails: {},
     servePath: "",
     tabsShow: true
@@ -44,6 +45,7 @@ export default new Vuex.Store({
         state.goodsParams = "";
         state.suppParams = {};
         state.confirmParams = {};
+        state.contractParams = {};
         state.infoDetails = {};
       }
     },
@@ -82,6 +84,9 @@ export default new Vuex.Store({
     },
     confirmParams: (state, val) => {
       state.confirmParams = val;
+    },
+    contractParams: (state, val) => {
+      state.contractParams = val;
     },
     servePath: (state, val) => {
       state.servePath = val;

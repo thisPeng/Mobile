@@ -1,6 +1,15 @@
 <template>
   <div class="supplie-type">
     <van-search placeholder="请输入商品名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action v-if="!isSearch" />
+    <div class="supplie-info">
+      <div class="info-left">
+        <img src="img/icons/android-chrome-512x512.png" alt="" />
+      </div>
+      <div class="info-right">
+        <div></div>
+      </div>
+    </div>
+
     <div class="left">
       <div class="van-hairline--top-bottom van-badge-group">
         <div :class="activeKey === index ? 'van-badge van-hairline van-badge--select' : 'van-badge van-hairline'" v-for="(item, index) in typeList" :key="index" @click="selectKey(index)">
@@ -203,7 +212,7 @@ export default {
     // 过滤供应商
     filterSupp(item, index) {
       this.suppActive = index;
-      this.$store.commit("suppParams", { id: item[2] });
+      this.$store.commit("suppParams", { id: item[2], name: item[2] });
       this.getSuppType();
       this.screenShow = false;
     },
@@ -364,10 +373,24 @@ export default {
 .supplie-type {
   width: 100%;
   overflow: hidden !important;
+  .supplie-info {
+    .info-left {
+      width: 20%;
+      display: inline-block;
+      text-align: center;
+      img {
+        height: 50px;
+      }
+    }
+    .info-right {
+      width: 80%;
+      display: inline-block;
+    }
+  }
   .left {
     width: 25%;
     position: absolute;
-    top: 45px;
+    top: 115px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -383,7 +406,7 @@ export default {
   }
   .right {
     position: absolute;
-    top: 45px;
+    top: 115px;
     left: 25%;
     right: 0;
     bottom: 0;

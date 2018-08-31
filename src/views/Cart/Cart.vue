@@ -157,7 +157,12 @@ export default {
       });
     },
     jumpSupp(item) {
-      this.$store.commit("suppParams", { id: item.id });
+      console.log(item);
+      this.$store.commit("suppParams", {
+        id: item.id,
+        name: item.name,
+        status: item.status
+      });
       this.$router.push({
         name: "supplierType"
       });

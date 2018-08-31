@@ -38,6 +38,8 @@
 </template>
 <script>
 import computed from "./../../../../assets/js/computed.js";
+import { contractInfo } from "./../../../../assets/js/api.js";
+
 export default {
   data() {
     return {
@@ -45,8 +47,18 @@ export default {
     };
   },
   computed,
-  methods: {},
-  mounted() {}
+  methods: {
+    getData() {
+      contractInfo
+        .getLaborList(this.contractParams[0], "BC_SC_Contract_Pay")
+        .then(res => {
+          console.log(res);
+        });
+    }
+  },
+  mounted() {
+    this.getData();
+  }
 };
 </script>
 <style lang="less" scoped>

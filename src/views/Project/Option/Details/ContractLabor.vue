@@ -13,16 +13,16 @@
       <van-field v-model="item" label="合同金额:" />
       <van-field v-model="item" label="分包范围:" />
       <van-field v-model="item" label="施工承包方式:" />
-      <van-cell-group class="con-price">
+      <div class="con-price">
         <span class="con-label">分包开工日期</span>
         <span class="con-select" @click="showDateone=true">{{paytime}}</span>
-        <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" class="contract-date" @confirm="saveDate" @cancel="showDateone=false" />
-      </van-cell-group>
-      <van-cell-group class="con-price">
+      </div>
+      <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" class="contract-date" @confirm="saveDate" @cancel="showDateone=false" />
+      <div class="con-price">
         <span class="con-label">分包完工日期</span>
         <span class="con-select" @click="showDatetwo=true">{{paytime}}</span>
-        <van-datetime-picker v-model="currentDate" v-show="showDatetwo" type="date" class="contract-date" @confirm="wangongDate" @cancel="showDatetwo=false" />
-      </van-cell-group>
+      </div>
+      <van-datetime-picker v-model="currentDate" v-show="showDatetwo" type="date" class="contract-date" @confirm="wangongDate" @cancel="showDatetwo=false" />
       <van-field v-model="item" label="质量评定等级:" />
       <van-field v-model="item" label="标准规范:" />
       <van-field v-model="item" label="图纸提交期限:" />
@@ -31,13 +31,13 @@
       <van-field v-model="item" label="工程商驻地代表:" />
       <van-field v-model="item" label="劳务分包驻地代表:" />
       <van-field v-model="item" label="材料采购费用:" />
-      <van-cell-group class="con-price">
+      <div class="con-price">
         <span class="con-label">计价方式</span>
         <span class="con-select" @click="paymentShow=true">{{payment}}</span>
         <van-popup v-model="paymentShow" position="bottom">
           <van-picker show-toolbar :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
         </van-popup>
-      </van-cell-group>
+      </div>
       <div v-if="payment =='第一种计价方式'">
         <span class="explain">说明:固定合同价款</span>
         <van-field v-model="item" label="合同价款共计:" />
@@ -74,11 +74,11 @@
       </div>
       <van-field v-model="item" label="约定其他:" />
       <van-field v-model="item" label="预付款:" />
-      <van-cell-group class="con-price">
+      <div class="con-price">
         <span class="con-label">支付时间:</span>
         <span class="con-select" @click="showDatethree=true">{{paytime}}</span>
-        <van-datetime-picker v-model="currentDate" v-show="showDatethree" type="date" class="contract-date" @confirm="zhifuDate" @cancel="showDatethree=false" />
-      </van-cell-group>
+      </div>
+      <van-datetime-picker v-model="currentDate" v-show="showDatethree" type="date" class="contract-date" @confirm="zhifuDate" @cancel="showDatethree=false" />
       <van-field v-model="item" label="支付金额:" />
       <van-field v-model="item" label="计时支付方法:" />
       <van-field v-model="item" label="分包人违约千分比:" />
@@ -97,11 +97,11 @@
       <van-field v-model="item" label="纳税识别码:" disabled/>
       <van-field v-model="item" label="电话:" disabled/>
       <van-field v-model="item" label="法定代表人:" disabled/>
-      <van-cell-group class="con-price">
+      <div class="con-price">
         <span class="con-label">签订日期:</span>
         <span class="con-select" @click="showDatefour=true">{{paytime}}</span>
-        <van-datetime-picker v-model="currentDate" v-show="showDatefour" type="date" class="contract-date" @confirm="qiandingDate" @cancel="showDatefour=false" />
-      </van-cell-group>
+      </div>
+      <van-datetime-picker v-model="currentDate" v-show="showDatefour" type="date" class="contract-date" @confirm="qiandingDate" @cancel="showDatefour=false" />
       <van-field v-model="item" label="地址:" disabled/>
 
       <div class="title-delivery">劳务分包人信息</div>
@@ -111,17 +111,20 @@
       <van-field v-model="item" label="纳税识别码:" disabled/>
       <van-field v-model="item" label="电话:" disabled/>
       <van-field v-model="item" label="法定代表人:" disabled/>
-      <van-cell-group class="con-price">
+      <div class="con-price">
         <span class="con-label">签订日期:</span>
         <span class="con-select" @click="showDatefive=true">{{paytime}}</span>
-        <van-datetime-picker v-model="currentDate" v-show="showDatefive" type="date" class="contract-date" @confirm="fenbaoDate" @cancel="showDatefive=false" />
-      </van-cell-group>
+      </div>
+      <van-datetime-picker v-model="currentDate" v-show="showDatefive" type="date" class="contract-date" @confirm="fenbaoDate" @cancel="showDatefive=false" />
+
       <van-field v-model="item" label="地址:" disabled/>
     </van-cell-group>
   </div>
 </template>
 <script>
 import computed from "./../../../../assets/js/computed.js";
+import { contractInfo } from "./../../../../assets/js/api.js";
+
 export default {
   data() {
     return {
@@ -168,9 +171,18 @@ export default {
     fenbaoDate(val) {
       this.paytime = new Date(val).Format("yyyy-MM-dd");
       this.showDatefive = false;
+    },
+    getData() {
+      contractInfo
+        .getLaborList(this.contractParams[0], "BC_Labor_Contract")
+        .then(res => {
+          console.log(res);
+        });
     }
   },
-  mounted() {}
+  mounted() {
+    this.getData();
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -199,13 +211,13 @@ export default {
     .con-select {
       flex: 5;
     }
-    .contract-date {
-      width: 100%;
-      position: fixed;
-      z-index: 9999;
-      bottom: 0;
-      padding-right: 30px;
-    }
+  }
+  .contract-date {
+    width: 100%;
+    position: fixed;
+    z-index: 9999;
+    bottom: 0;
+    padding-right: 30px;
   }
   .explain {
     font-size: 14px;
