@@ -2,17 +2,17 @@
   <div class="contractlabor">
     <van-cell-group>
       <div class="title-delivery">基本合同信息</div>
-      <van-field v-model="item" label="合同编号:" disabled/>
-      <van-field v-model="item" label="合同名称:" />
-      <van-field v-model="item" label="工程承包人:" />
-      <van-field v-model="item" label="劳务分包人:" />
-      <van-field v-model="item" label="资质证书号码:" disabled/>
+      <van-field v-model="item[1]" label="合同编号:" disabled/>
+      <van-field v-model="item[2]" label="合同名称:" />
+      <van-field v-model="item[3]" label="工程承包人:" />
+      <van-field v-model="item[4]" label="劳务分包人:" />
+      <van-field v-model="item[0]" label="资质证书号码:" disabled/>
       <van-field v-model="item" label="发证机关:" disabled/>
       <van-field v-model="item" label="资质专业等级:" disabled/>
       <van-field v-model="item" label="复审时间及有效期:" disabled/>
-      <van-field v-model="item" label="合同金额:" />
-      <van-field v-model="item" label="分包范围:" />
-      <van-field v-model="item" label="施工承包方式:" />
+      <van-field v-model="item[11]" label="合同金额:" />
+      <van-field v-model="item[8]" label="分包范围:" />
+      <van-field v-model="item[57]" label="施工承包方式:" />
       <div class="con-price">
         <span class="con-label">分包开工日期</span>
         <span class="con-select" @click="showDateone=true">{{paytime}}</span>
@@ -23,13 +23,13 @@
         <span class="con-select" @click="showDatetwo=true">{{paytime}}</span>
       </div>
       <van-datetime-picker v-model="currentDate" v-show="showDatetwo" type="date" class="contract-date" @confirm="wangongDate" @cancel="showDatetwo=false" />
-      <van-field v-model="item" label="质量评定等级:" />
-      <van-field v-model="item" label="标准规范:" />
-      <van-field v-model="item" label="图纸提交期限:" />
-      <van-field v-model="item" label="图纸套数:" />
-      <van-field v-model="item" label="标准图纸套数:" />
-      <van-field v-model="item" label="工程商驻地代表:" />
-      <van-field v-model="item" label="劳务分包驻地代表:" />
+      <van-field v-model="item[17]" label="质量评定等级:" />
+      <van-field v-model="item[27]" label="标准规范:" />
+      <van-field v-model="item[13]" label="图纸提交期限:" />
+      <van-field v-model="item[15]" label="图纸套数:" />
+      <van-field v-model="item[20]" label="标准图纸套数:" />
+      <van-field v-model="item[58]" label="工程商驻地代表:" />
+      <van-field v-model="item[59]" label="劳务分包驻地代表:" />
       <van-field v-model="item" label="材料采购费用:" />
       <div class="con-price">
         <span class="con-label">计价方式</span>
@@ -73,7 +73,7 @@
         <van-field v-model="item" label="计件单价:" />
       </div>
       <van-field v-model="item" label="约定其他:" />
-      <van-field v-model="item" label="预付款:" />
+      <van-field v-model="item[62]" label="预付款:" />
       <div class="con-price">
         <span class="con-label">支付时间:</span>
         <span class="con-select" @click="showDatethree=true">{{paytime}}</span>
@@ -128,7 +128,7 @@ import { contractInfo } from "./../../../../assets/js/api.js";
 export default {
   data() {
     return {
-      item: "",
+      item: [],
       columns: ["第一种计价方式", "第二种计价方式", "第三种计价方式"],
       paymentShow: false,
       payment: "请选择计价方式",
@@ -176,7 +176,17 @@ export default {
       contractInfo
         .getLaborList(this.contractParams[0], "BC_Labor_Contract")
         .then(res => {
-          console.log(res);
+          try {
+            if (res.status === 1) {
+              const sp = res.text.split("[[");
+              const tsp = sp[1].split("]]");
+              // console.log(tsp);
+              this.item = eval("[[" + tsp[0] + "]]")[0];
+              console.log(this.item);
+            }
+          } catch (e) {
+            this.$toast(e);
+          }
         });
     }
   },

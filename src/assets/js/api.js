@@ -1083,7 +1083,7 @@ const contractInfo = {
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        bpoName: "BPO_Labor_Contract_EditService",
+        _bpoName: "BPO_Labor_Contract_EditService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": BCName, //BC_Labor_Contract 劳务合同   BC_SC_Contract_Valuation 合同计价方式   BC_SC_Contract_Pay 合同付款补充 	 BC_Labor_Contract_Detail 劳务合同附表
         "_parameters[nStartPos]": 0,
