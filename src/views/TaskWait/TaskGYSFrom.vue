@@ -18,50 +18,52 @@
       <van-field v-model="data[34]" label="邮箱:" disabled/>
       <van-cell title="附件" is-link value="详情" @click="jumpPage" />
     </van-cell-group>
-    <!-- <van-cell-group v-if="taskTabs.codeJson">
+    <van-cell-group v-if="taskTabs.codeJson">
       <taskTabs :data="taskTabs" />
-    </van-cell-group> -->
+    </van-cell-group>
   </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-// import taskTabs from "./../../components/TaskWait/Tabs";
+import taskTabs from "./../../components/TaskWait/Tabs";
 import { task } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      // item: ""
-      // taskTabs: {
-      //   codeJson: []
-      // }
+      taskTabs: {
+        codeJson: []
+      },
       data: []
     };
   },
   computed,
-  // components: {
-  //   taskTabs
-  // },
+  components: {
+    taskTabs
+  },
   methods: {
     jumpPage() {
       this.$router.push({
         name: "taskgysDetails"
       });
+    },
+    pageInit() {
+      this.$parent.title = this.taskParams.name;
+      task.getInquiry(this.taskParams.TaskGYSID).then(res => {
+        try {
+          if (res.status === 1) {
+            const sp = res.text.split("[[");
+            const tsp = sp[1].split("]]");
+            this.data = eval(eval("[[" + tsp[0] + "]]"))[0];
+            console.log(this.data);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      });
     }
   },
   mounted() {
-    this.$parent.title = this.taskParams.name;
-    task.getInquiry(this.taskParams.TaskGYSID).then(res => {
-      try {
-        if (res.status === 1) {
-          const sp = res.text.split("[[");
-          const tsp = sp[1].split("]]");
-          this.data = eval(eval("[[" + tsp[0] + "]]"))[0];
-          // console.log(this.data);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    });
+    this.pageInit();
   }
 };
 </script>

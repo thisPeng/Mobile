@@ -112,7 +112,7 @@ export default {
           InstanceID: this.tableData[i][4],
           name: this.tableData[i][2],
           bpoName: this.tableData[i][3],
-          TaskGYSID: "InstanceID='" + this.tableData[i][5] + "'"
+          TaskGYSID: "InstanceID='" + this.tableData[i][4] + "'"
         };
       } else {
         this.params = {

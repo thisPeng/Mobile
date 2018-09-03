@@ -46,7 +46,13 @@ export default {
           if (res.status === 1) {
             const sp = res.text.split(";");
             this.info = eval(sp[0].split("=")[1])[0];
-            // console.log(this.info);
+            const defaultDate = "1900-01-01 00:00:00";
+            if (this.info[4] === defaultDate) this.info[4] = "";
+            if (this.info[5] === defaultDate) this.info[5] = "";
+            if (this.info[45] === defaultDate) this.info[45] = "";
+            if (this.info[46] === defaultDate) this.info[46] = "";
+            if (this.info[47] === defaultDate) this.info[47] = "";
+            console.log(this.info);
           }
         } catch (e) {
           console.log(e);

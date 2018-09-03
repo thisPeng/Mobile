@@ -67,7 +67,7 @@ export default new Router({
           component: Index,
           meta: {
             title: "首页",
-            keepAlive: true
+            // keepAlive: true
           }
         },
         {
