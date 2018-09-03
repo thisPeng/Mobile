@@ -34,8 +34,8 @@
   </div>
 </template>
 <script>
-import computed from "./../../../assets/js/computed.js";
-import { contractInfo } from "./../../../assets/js/api.js";
+import computed from "./../../../../assets/js/computed.js";
+import { contractInfo } from "./../../../../assets/js/api.js";
 export default {
   data() {
     return {
