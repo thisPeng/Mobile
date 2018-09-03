@@ -2,60 +2,28 @@
   <!-- 确认价格-询价单 -->
   <div class="pricedetails">
     <div class="title-price">询价单</div>
-    <van-cell-group v-for="(item,index) in list" :key="index">
-      <van-field v-model="item[2]" label="单据编号:" disabled />
-      <van-field v-model="item[3]" label="供应商名称:" disabled />
-      <van-field v-model="item[5]" label="联系人:" disabled />
-      <van-field v-model="item[6]" label="联系电话:" disabled />
-      <van-field v-model="item[4]" label="供应商地址:" disabled />
-      <van-field v-model="item[9]" label="订单数量:" disabled />
-      <van-field v-model="item[10]" label="订单金额:" disabled />
-      <van-field v-model="item[39]" label="订单状态:" disabled />
+    <van-cell-group>
+      <van-field v-model="list[2]" label="单据编号:" disabled />
+      <van-field v-model="list[3]" label="供应商名称:" disabled />
+      <van-field v-model="list[5]" label="联系人:" disabled />
+      <van-field v-model="list[6]" label="联系电话:" disabled />
+      <van-field v-model="list[4]" label="供应商地址:" disabled />
+      <van-field v-model="list[9]" label="订单数量:" disabled />
+      <van-field v-model="list[10]" label="订单金额:" disabled />
+      <van-field v-model="list[39]" label="订单状态:" disabled />
       <van-cell-group class="con-price">
         <span class="con-label">订货有效期:</span>
-        <span class="con-select" @click="showData=true">{{item[17]}}</span>
+        <span class="con-select" v-if="list[39] === '初始状态'" @click="showData=true">{{list[17]}}</span>
+        <span class="con-select text-gray" v-else>{{list[17]}}</span>
       </van-cell-group>
       <van-datetime-picker v-model="currentDate" v-show="showData" type="date" class="contract-date" @confirm="dinghuoDate" @cancel="showData=false" />
-      <van-field v-model="item[18]" label="业务员:" placeholder="请输入业务员" required/>
-      <van-field v-model="item[26]" label="员工姓名:" disabled />
-      <van-field v-model="item[21]" label="备注:" type="textarea" placeholder="请输入备注" />
+      <van-field v-model="list[18]" label="业务员:" placeholder="请输入业务员" required :disabled="list[39] !== '初始状态'" :autofocus="true" />
+      <van-field v-model="list[26]" label="员工姓名:" disabled />
+      <van-field v-model="list[21]" label="备注:" type="textarea" placeholder="请输入备注" :disabled="list[39] !== '初始状态'" />
     </van-cell-group>
-    <!-- <van-tab title="询价单明细">
-        <div class="con-data">
-          <div class="con-card">
-            <div class="con-item" v-for="(item,index) in dspList" :key="index" >"
-              <div class="item-title">
-                <span class="title">品名:{{item[4]}}</span>
-              </div>
-              <div class="item-content">
-                <div class="content-row">
-                  <span>规格/型号:{{item[8]}}</span>
-                </div>
-                <div class="content-row">
-                  <span class="row-left">实际数量:<input v-model="item[10]" /></span>
-                  <span class="row-right">赠送数量:{{item[12]}}</span>
-                </div>
-                <div class="content-row">
-                  <span class="row-left">单位:{{item[28]}}</span>
-                  <span class="row-right">实价:{{item[13]}}</span>
-                </div>
-                <div class="content-row">
-                  <span class="row-left">小计:{{item[15]}}</span>
-                  <span class="row-right">税率:<input v-model="item[16]" /></span>
-                </div>
-                <div class="content-row">
-                  <span>备注:<input /></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </van-tab> -->
-    <!-- <van-tab title="询价单附件">
-        <div class="title-price">询价单附件</div>
-      </van-tab>-->
     <van-cell title="询价单明细" is-link value="详情" @click="jumpInfo(item)" />
-    <van-cell title="询价单附件" is-link value="详情" />
+    <van-cell title="询价单附件" is-link value="详情" @click="jumpPage('annexContent')" />
+    <!--功能操作-->
     <div class="con-button">
       <van-button type="default" @click="confrimPrice">确认</van-button>
       <van-button type="default" @click="conProposal">提议</van-button>
@@ -64,7 +32,7 @@
     <div class="con-button">
       <van-button type="default" @click="keepWork">保存</van-button>
       <van-button type="default" @click="confirmDelete">删除</van-button>
-      <van-button type="default" @click="jumpage('contractwork')">合同编辑</van-button>
+      <van-button type="default" @click="jumpPage('contractwork')">合同编辑</van-button>
     </div>
   </div>
 </template>
@@ -76,9 +44,7 @@ export default {
   data() {
     return {
       list: [],
-      // dspList: [],
-      item: [],
-      currentDate: new Date(),
+      currentDate: new Date().Format("yyyy-MM-dd"),
       showData: false
     };
   },
@@ -93,11 +59,10 @@ export default {
     getInfo() {
       conprice.getInfo(this.confirmParams[0]).then(res => {
         if (res && res.status === 1) {
-          // console.log(res.text)
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
-          this.list = eval("[[" + csp[0]);
-         // console.log(this.list);
+          this.list = eval("[[" + csp[0])[0];
+          console.log(this.list);
         }
       });
     },
@@ -114,10 +79,9 @@ export default {
     // },
     // 添加物资
     conAddGoods() {
-      console.log(this.list[0]);
       this.$store.commit("suppParams", {
-        id: this.list[0][11],
-        oid: this.list[0][0]
+        id: this.list[11],
+        oid: this.list[0]
       });
       this.$router.push({
         name: "supplierType"
@@ -195,7 +159,7 @@ export default {
           // on cancel
         });
     },
-    jumpage(name) {
+    jumpPage(name) {
       this.$router.push({
         name
       });
@@ -208,7 +172,7 @@ export default {
     },
     //保存
     keepWork() {
-      const list = this.list[0];
+      const list = this.list;
       const xml = require("xml");
       const xmlString = xml({
         root: [
@@ -256,7 +220,6 @@ export default {
           }
         ]
       });
-      console.log(xmlString);
       this.$dialog
         .confirm({
           title: "保存",
@@ -278,14 +241,9 @@ export default {
           });
         });
     }
-    // constxml() {
-    //   console.log(this.GetDeltaXml());
-    // }
   },
-
   mounted() {
     this.getInfo();
-    // this.getDetails();
   }
 };
 </script>

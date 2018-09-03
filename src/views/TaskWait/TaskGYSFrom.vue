@@ -60,7 +60,9 @@ export default {
         try {
           if (res.status === 1 && res.text === "True") {
             this.$toast.success("提交成功");
-            this.$router.go(-1);
+            setTimeout(() => {
+              this.$router.go(-1);
+            }, 1500);
           }
         } catch (e) {
           this.$toast.fail(e);

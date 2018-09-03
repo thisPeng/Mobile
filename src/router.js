@@ -16,6 +16,7 @@ import ArrivalInformation from "./views/Project/Option/Arrival/ArrivalInformatio
 import InfoItem from "./views/Project/Option/InfoItem/InfoItem";
 import PaymentLabel from "./views/Project/Option/Payment/PaymentLabel";
 import PriceDetails from "./views/Project/Option/ConPrice/PriceDetails";
+import AnnexContent from "./views/Project/Option/ConPrice/AnnexContent";
 import DeliveryDetails from "./views/Project/Option/Delivery/DeliveryDetails";
 import ContractDetails from "./views/Project/Option/ContractInfo/ContractDetails";
 import MsgList from "./views/Message/MsgList";
@@ -330,6 +331,14 @@ export default new Router({
           component: PriceDetails,
           meta: {
             title: "询价单编辑" //页面标题
+          }
+        },
+        {
+          path: "/project/option/details/annexContent",
+          name: "annexContent",
+          component: AnnexContent,
+          meta: {
+            title: "询价单附件" //页面标题
           }
         },
         {

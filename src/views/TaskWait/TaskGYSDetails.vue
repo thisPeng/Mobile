@@ -3,43 +3,43 @@
     <div class="title-contract">法人身份证</div>
     <div class="taskcontract">
       <div class="taskimage">
-        <img :src="(servePath+data[46]).replace('~','')" alt="法人身份证1" @click="preView" />
+        <img :src="(servePath+data[46]).replace('~','')" alt="法人身份证" @click="preView" />
       </div>
     </div>
     <div class="taskcontract">
       <div class="title-contract">营业许可证</div>
       <div class="taskimage">
-        <img :src="(servePath+data[39]).replace('~','')" alt="营业许可证1" @click="preViewtwo"/>
+        <img :src="(servePath+data[39]).replace('~','')" alt="营业许可证" @click="preViewtwo" />
       </div>
     </div>
     <div class="taskcontract">
       <div class="title-contract">开户许可证</div>
       <div class="taskimage">
-        <img :src="(servePath+data[45]).replace('~','')" alt="开户许可证1" @click="preViewthree"/>
+        <img :src="(servePath+data[45]).replace('~','')" alt="开户许可证" @click="preViewthree" />
       </div>
     </div>
     <div class="taskcontract">
       <div class="title-contract">税种核定通知书(国)</div>
       <div class="taskimage">
-        <img :src="(servePath+data[40]).replace('~','')" alt="税种核定通知书(国)1" @click="preViewfour"/>
+        <img :src="(servePath+data[40]).replace('~','')" alt="税种核定通知书(国)" @click="preViewfour" />
       </div>
     </div>
     <div class="taskcontract">
       <div class="title-contract">上月增值税完税证明</div>
       <div class="taskimage">
-        <img :src="(servePath+data[50]).replace('~','')" alt="上月增值税完税证明1" @click="preViewfive"/>
+        <img :src="(servePath+data[50]).replace('~','')" alt="上月增值税完税证明" @click="preViewfive" />
       </div>
     </div>
     <div class="taskcontract">
       <div class="title-contract">上季度企业所得税完税证明</div>
       <div class="taskimage">
-        <img :src="(servePath+data[51]).replace('~','')" alt="上季度企业所得税完税证明1" @click="preViewexit"/>
+        <img :src="(servePath+data[51]).replace('~','')" alt="上季度企业所得税完税证明" @click="preViewexit" />
       </div>
     </div>
     <div class="taskcontract">
       <div class="title-contract">税种核定通知书(地)</div>
       <div class="taskimage">
-        <img :src="(servePath+data[43]).replace('~','')" alt="税种核定通知书(地)1" @click="preViewend"/>
+        <img :src="(servePath+data[43]).replace('~','')" alt="税种核定通知书(地)" @click="preViewend" />
       </div>
     </div>
   </div>
@@ -82,13 +82,10 @@ export default {
   mounted() {
     this.$parent.title = this.taskParams.name;
     task.getInquiry(this.taskParams.TaskGYSID).then(result => {
-      console.log(result);
       if (result && result.status === 1) {
-        // console.log(result.status)
         const sp = result.text.split(";");
-        console.log(sp);
         this.data = eval(sp[0].split("=")[1])[0];
-        console.log(this.data);
+        // console.log(this.data);
       }
     });
   }
@@ -113,6 +110,3 @@ export default {
   }
 }
 </style>
-<style lang="less">
-</style>
-

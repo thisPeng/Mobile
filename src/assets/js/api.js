@@ -896,7 +896,7 @@ const cart = {
 };
 //获取确定价格信息
 const conprice = {
-  getList(ProjectID) {
+  getList(ProjectID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -910,7 +910,7 @@ const conprice = {
     });
   },
   //获取确认价格详情
-  getInfo(PurchaseOrderID, page = 0) {
+  getInfo(PurchaseOrderID = "", page = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -932,7 +932,7 @@ const conprice = {
     });
   },
   //获取询价单明细详情
-  getDetails(PurchaseOrderID, nStartPos = 0) {
+  getDetails(PurchaseOrderID = "", nStartPos = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -942,6 +942,28 @@ const conprice = {
         "_parameters[BCName]": "BC_SC_Order_Detail",
         "_parameters[nStartPos]": nStartPos,
         "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "PurchaseOrderID='" + PurchaseOrderID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    });
+  },
+  // 询价单附件
+  getAnnex(PurchaseOrderID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_XJ_EditService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Order_DOCData",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
