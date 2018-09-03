@@ -15,40 +15,9 @@
       <van-field value="" label="业务员:" disabled />
       <van-field value="" label="创建日期:" disabled />
       <van-field value="" label="备注:" disabled type="textarea" />
+      <van-cell title="报价单明细" is-link value="详情" />
+      <van-cell title="报价单附件" is-link value="详情" />
     </van-cell-group>
-    <div class="title-delivery">报价单明细</div>
-    <div class="delivery-data">
-      <div class="delivery-card">
-        <div class="delivery-item">
-          <div class="item-title">
-            <span class="title">合同编号:{{item}}</span>
-          </div>
-          <div class="item-content">
-            <div class="content-row">
-              <span>名称:{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">规格型号:{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">数量:{{item}}</span>
-              <span class="row-right">赠送数量:{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">售价:{{item}}</span>
-              <span class="row-right">金额:{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">产品编码:{{item}}</span>
-              <span class="row-right">税率:{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span>备注:{{item}}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <script>
@@ -67,48 +36,8 @@ export default {
 <style lang="less" scoped>
 .tranrial {
   width: 100%;
-  padding: 10px;
-  .delivery-data {
-    margin-bottom: 40px;
-    .delivery-card {
-      width: 100%;
-      .delivery-item {
-        background-color: #fff;
-        padding: 10px 15px;
-        border-bottom: 1px solid #eee;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        .item-title {
-          padding: 10px 0;
-          border-bottom: 1px solid #f6f6f6;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          .title {
-            font-weight: 600;
-            font-size: 16px;
-          }
-          .icon {
-            font-size: 14px;
-          }
-        }
-        .item-content {
-          padding: 5px 0;
-          font-size: 13px;
-          color: #666;
-          .content-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 5px 0;
-          }
-        }
-      }
-    }
-  }
   .van-cell {
     font-size: 15px;
-    color: rgb(153, 148, 148);
   }
   .title-delivery {
     font-size: 16px;

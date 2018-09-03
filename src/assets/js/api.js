@@ -1146,8 +1146,33 @@ const arrival = {
     });
   }
 };
-//供应商物质报价
+//供应商模块
 const offer = {
+  //客户信息
+  getClient(UCML_OrganizeOID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_WF_YC_InOutForm",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_Supplier_Organize",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": " UCML_OrganizeOID in (select PartnerID from sc_order_contract  where   SupplierID ='" + UCML_OrganizeOID + "'  group by PartnerID) ",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+
+      }
+    });
+  },
+
+  //供应商物质报价
   getList(parasm = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",

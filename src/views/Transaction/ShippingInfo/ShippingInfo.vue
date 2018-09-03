@@ -3,7 +3,7 @@
   <div class="shippinginfo">
     <div class="info-data">
       <div class="info-card">
-        <div class="info-item">
+        <div class="info-item" @click="jumpage('shippingDetails')">
           <!-- v-for="(item,index) in list" :key="index" @click="jumpage('pricedetails')" -->
           <div class="item-title">
             <span class="title">项目名称：{{item}}</span>
@@ -32,7 +32,13 @@ export default {
     };
   },
   computed,
-  methods: {},
+  methods: {
+    jumpage(name){
+      this.$router.push({
+        name
+      })
+    }
+  },
   mounted() {}
 };
 </script>
