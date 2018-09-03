@@ -1,34 +1,55 @@
 <template>
   <div class="customerlist">
-    <div class="customerlist-item">
-      <!--v-for="(item,index) in list" :key="index" @click="jumpPage(item)" -->
+    <div class="customerlist-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
       <div class="customerlist-title">
-        <span class="title">客户名称：{{item}}</span>
+        <span class="title">{{item[2]}}</span>
         <span class="icon">
-          <van-icon name="success" color="#00A0E9" />
+          <van-icon name="success" color="#00A0E9" v-if="item[0] === clientInfo[0]" />
         </span>
       </div>
       <div class="customerlist-content">
-        <span class="content-left">电话：{{item}}</span>
-        <span class="content-right">地址：{{item}}</span>
+        <span class="content-left">电话：{{item[6]}}{{item[5] ? '('+item[5]+')' : ''}}</span>
+        <span class="content-right">地址：{{item[7]}}</span>
       </div>
       <div class="customerlist-content">
-        <span class="content-left">描述：{{item}}</span>
+        <span class="content-left">描述：{{item[3]}}</span>
       </div>
     </div>
   </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
+import { offer } from "./../../assets/js/api.js";
+
 export default {
   data() {
     return {
-      item: ""
+      list: ""
     };
   },
   computed,
-  methods: {},
-  mounted() {}
+  methods: {
+    pageInit() {
+      offer.getClientList(this.userInfo.oid).then(res => {
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split(";");
+            this.list = eval(sp[0].split("=")[1]);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      });
+    },
+    jumpPage(item) {
+      this.$store.commit("clientInfo", item);
+      this.$store.commit("isReload", true);
+      this.$router.go(-1);
+    }
+  },
+  mounted() {
+    this.pageInit();
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -8,10 +8,14 @@
       <router-view class="content" v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
     <router-view class="content" v-if="!$route.meta.keepAlive"></router-view>
-    <van-tabbar v-model="active" v-show="isTabbar">
+    <van-tabbar v-model="active" v-show="isTabbar" v-if="userType === 1">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
-      <van-tabbar-item icon="tosend" @click="jumpTabs('classify')" v-show="userType === 1">物资</van-tabbar-item>
-      <van-tabbar-item icon="cart" @click="jumpTabs('cart')" v-show="userType === 1">购物车</van-tabbar-item>
+      <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item>
+      <van-tabbar-item icon="cart" @click="jumpTabs('cart')">购物车</van-tabbar-item>
+      <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
+    </van-tabbar>
+    <van-tabbar v-model="active" v-show="isTabbar" v-else>
+      <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -34,9 +38,12 @@ export default {
       try {
         if (this.projectInfo.SC_ProjectOID) {
           this.title = this.projectInfo.ProjectName;
+        } else if (this.clientInfo[0]) {
+          this.title = this.clientInfo[2];
         } else {
           this.title = to.meta.title;
         }
+
         if (
           to.name !== "index" &&
           to.name !== "classify" &&
@@ -59,7 +66,7 @@ export default {
               this.active = 2;
               break;
             case "users":
-              this.active = 3;
+              this.active = this.userType === 1 ? 3 : 1;
               break;
           }
         }
@@ -92,6 +99,8 @@ export default {
     const current = this.$router.history.current;
     if (this.projectInfo.SC_ProjectOID) {
       this.title = this.projectInfo.ProjectName;
+    } else if (this.clientInfo[0]) {
+      this.title = this.clientInfo[2];
     } else {
       this.title = current.meta.title;
     }
@@ -130,7 +139,7 @@ export default {
           this.active = 2;
           break;
         case "users":
-          this.active = 3;
+          this.active = this.userType === 1 ? 3 : 1;
           break;
       }
     }

@@ -6,9 +6,7 @@ import Index from "./views/Index/Index";
 import Classify from "./views/Classify/Classify";
 import GoodsList from "./views/Classify/GoodsList";
 import Cart from "./views/Cart/Cart";
-import Project from "./views/Project/Project";
 import ProjectList from "./views/Project/ProjectList";
-import Option from "./views/Project/Option";
 import Material from "./views/Project/Option/Material";
 import ConPrice from "./views/Project/Option/ConPrice/ConPrice";
 import ContractInfo from "./views/Project/Option/ContractInfo/ContractInfo";
@@ -121,22 +119,6 @@ export default new Router({
           component: ProjectList,
           meta: {
             title: "选择项目"
-          }
-        },
-        {
-          path: "/project",
-          name: "project",
-          component: Project,
-          meta: {
-            title: "合作项目"
-          }
-        },
-        {
-          path: "/project/option",
-          name: "option",
-          component: Option,
-          meta: {
-            title: "项目功能"
           }
         },
         {

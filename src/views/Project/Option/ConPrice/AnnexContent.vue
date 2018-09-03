@@ -1,10 +1,12 @@
 <template>
   <div class="annex">
-    <div class="annex-item" v-for="(item, index) in data" :key="index" @click="preView(item[4])">
-      <div class="item-img">
-        <img :src="(servePath+item[4]).replace('..','')" :alt="item[1]">
+    <div class="annex-content">
+      <div class="annex-item" v-for="(item, index) in data" :key="index" @click="preView(item[4])">
+        <div class="item-img">
+          <img :src="(servePath+item[4]).replace('..','')" :alt="item[1]">
+        </div>
+        <div class="item-text">{{item[1]}}</div>
       </div>
-      <div class="item-text">{{item[1]}}</div>
     </div>
   </div>
 </template>
@@ -50,27 +52,28 @@ export default {
 .annex {
   width: 100%;
   padding: 10px;
-  text-align: center;
-  .annex-item {
-    display: inline-block;
-    width: 32%;
-    height: 150px;
-    .item-img {
-      height: 120px;
-      img {
-        width: 90%;
+  .annex-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .annex-item {
+      width: 32%;
+      margin-bottom: 10px;
+      .item-img {
+        img {
+          width: 95%;
+        }
       }
-    }
-    .item-text {
-      height: 30px;
-      color: #999;
-      font-size: 12px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      white-space: normal;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      .item-text {
+        color: #999;
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        white-space: normal;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
     }
   }
 }

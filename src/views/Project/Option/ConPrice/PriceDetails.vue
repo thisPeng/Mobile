@@ -17,22 +17,21 @@
         <span class="con-select text-gray" v-else>{{list[17]}}</span>
       </van-cell-group>
       <van-datetime-picker v-model="currentDate" v-show="showData" type="date" class="contract-date" @confirm="dinghuoDate" @cancel="showData=false" />
-      <van-field v-model="list[18]" label="业务员:" placeholder="请输入业务员" required :disabled="list[39] !== '初始状态'" :autofocus="true" />
+      <van-field v-model="list[18]" label="业务员:" placeholder="请输入业务员" required :disabled="list[39] === '待报价'" :autofocus="true" />
       <van-field v-model="list[26]" label="员工姓名:" disabled />
-      <van-field v-model="list[21]" label="备注:" type="textarea" placeholder="请输入备注" :disabled="list[39] !== '初始状态'" />
+      <van-field v-model="list[21]" label="备注:" type="textarea" placeholder="请输入备注" :disabled="list[39] === '待报价'" />
     </van-cell-group>
     <van-cell title="询价单明细" is-link value="详情" @click="jumpInfo(item)" />
     <van-cell title="询价单附件" is-link value="详情" @click="jumpPage('annexContent')" />
     <!--功能操作-->
     <div class="con-button">
-      <van-button type="default" @click="confrimPrice">确认</van-button>
-      <van-button type="default" @click="conProposal">提议</van-button>
-      <van-button type="default" @click="conAddGoods">添加物资</van-button>
-    </div>
-    <div class="con-button">
-      <van-button type="default" @click="keepWork">保存</van-button>
-      <van-button type="default" @click="confirmDelete">删除</van-button>
-      <van-button type="default" @click="jumpPage('contractwork')">合同编辑</van-button>
+      <van-button type="primary" @click="confrimPrice" v-if="list[39] === '已报价'">确认</van-button>
+      <van-button type="primary" @click="sendOrder" v-if="list[39] === '初始状态'">发送</van-button>
+      <van-button type="primary" @click="saveOrder" v-if="list[39] !== '待报价'">保存</van-button>
+      <van-button type="warning" @click="conProposal" v-if="list[39] === '已报价'">提议</van-button>
+      <van-button type="default" @click="conAddGoods" v-if="list[39] !== '待报价'">添加物资</van-button>
+      <van-button type="default" @click="jumpPage('contractwork')" v-if="list[39] === '已报价'">合同编辑</van-button>
+      <van-button type="danger" @click="confirmDelete">删除</van-button>
     </div>
   </div>
 </template>
@@ -62,7 +61,7 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0])[0];
-          console.log(this.list);
+          // console.log(this.list);
         }
       });
     },
@@ -118,6 +117,35 @@ export default {
           // on cancel
         });
     },
+    // 发送询价单
+    sendOrder() {
+      this.$dialog
+        .confirm({
+          title: "发送订单",
+          message: "确认发送订单给供应商？"
+        })
+        .then(() => {
+          conprice.sendOrder(this.confirmParams[0]).then(res => {
+            try {
+              if (res && res.status === 1 && res.text === "True") {
+                this.$toast.success("发送成功");
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.$router.go(-1);
+                  }, 1500);
+                });
+                return;
+              }
+              throw "删除失败，请刷新页面重试";
+            } catch (e) {
+              this.$toast.fail(e);
+            }
+          });
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
     //提议
     conProposal() {
       this.$dialog
@@ -127,10 +155,19 @@ export default {
         })
         .then(() => {
           conprice.confrimPrice(this.confirmParams[0]).then(res => {
-            if (res && res.text === "1") {
-              this.$router.replace({
-                name: "conprice"
-              });
+            try {
+              if (res && res.status === 1 && res.text === "True") {
+                this.$toast.success("已提议，订单返回供应商");
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.$router.go(-1);
+                  }, 1500);
+                });
+                return;
+              }
+              throw "提议失败，请刷新页面重试";
+            } catch (e) {
+              this.$toast.fail(e);
             }
           });
         })
@@ -146,12 +183,24 @@ export default {
           message: "是否删除此单号记录？"
         })
         .then(() => {
-          conprice.confrimPrice(this.confirmParams[0]).then(res => {
-            console.log(res);
-            if (res && res.text === "1") {
-              this.$router.replace({
-                name: "conprice"
-              });
+          const params = {
+            BillOID: this.confirmParams[0],
+            ContractID: this.list[23]
+          };
+          conprice.confirmDelete(params).then(res => {
+            try {
+              if (res && res.status === 1 && res.text === "True") {
+                this.$toast.success("已删除");
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.$router.go(-1);
+                  }, 1500);
+                });
+                return;
+              }
+              throw "删除失败，请刷新页面重试";
+            } catch (e) {
+              this.$toast.fail(e);
             }
           });
         })
@@ -171,7 +220,7 @@ export default {
       });
     },
     //保存
-    keepWork() {
+    saveOrder() {
       const list = this.list;
       const xml = require("xml");
       const xmlString = xml({
@@ -185,15 +234,6 @@ export default {
               },
               {
                 SC_Order_MasterOID: list[0]
-              },
-              {
-                Valid_Date: "null"
-              },
-              {
-                Order_Man: "null"
-              },
-              {
-                Remark: "null"
               }
             ]
           },
@@ -227,16 +267,18 @@ export default {
         })
         .then(() => {
           contractInfo.keepContract(xmlString).then(res => {
-            if (res && res.status === 1) {
-              // console.log(res);
-              this.$nextTick().then(() => {
-                setTimeout(() => {
-                  this.$toast.success("保存成功");
-                }, 300);
-              });
-              this.$router.replace({
-                name: "conprice"
-              });
+            try {
+              if (res && res.status === 1 && res.text === "True") {
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.$toast.success("保存成功");
+                  }, 300);
+                });
+                return;
+              }
+              throw "保存失败，请刷新页面重试";
+            } catch (e) {
+              this.$toast.fail(e);
             }
           });
         });
@@ -311,7 +353,6 @@ export default {
       }
     }
   }
-
   .title-price {
     font-size: 16px;
     padding: 10px;
@@ -322,15 +363,15 @@ export default {
     padding: 0px 30px;
   }
   .con-button {
-    display: flex;
     width: 100%;
-    flex-direction: row;
-    justify-content: space-around;
-    margin: 5px 0;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     button {
       width: 32%;
       padding: 0;
-      // flex: 1;
+      margin-bottom: 10px;
     }
   }
   .con-data {

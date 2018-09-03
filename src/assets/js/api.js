@@ -976,7 +976,7 @@ const conprice = {
     });
   },
   //确认订单
-  confrimPrice(PurchaseOrderID) {
+  confrimPrice(PurchaseOrderID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -990,7 +990,7 @@ const conprice = {
     });
   },
   //提议
-  conProposal(BillOID) {
+  conProposal(BillOID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1003,7 +1003,21 @@ const conprice = {
       }
     });
   },
-  //删除
+  //发送订单
+  sendOrder(BillOID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bponame: "BPO_Order_XJService",
+        _methodName: "SendToSupplier",
+        "_parameters[BillOID]": BillOID,
+        _paraNames: "BillOID",
+        _pUrl: ""
+      }
+    });
+  },
+  //删除询价单
   confirmDelete(params) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1187,12 +1201,12 @@ const arrival = {
 //供应商模块
 const offer = {
   //客户信息
-  getClient(UCML_OrganizeOID = "") {
+  getClientList(UCML_OrganizeOID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_WF_YC_InOutForm",
+        _bpoName: "BPO_Supplier_TradeService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_Supplier_Organize",
         "_parameters[nStartPos]": 0,
@@ -1200,18 +1214,16 @@ const offer = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": " UCML_OrganizeOID in (select PartnerID from sc_order_contract  where   SupplierID ='" + UCML_OrganizeOID + "'  group by PartnerID) ",
+        "_parameters[SQLCondi]": "UCML_OrganizeOID in (select PartnerID from sc_order_contract  where SupplierID ='" + UCML_OrganizeOID + "' Group By PartnerID) ",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
-
       }
     });
   },
-
   //供应商物质报价
-  getList(parasm = {}) {
+  getPriceList(parasm = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
