@@ -39,8 +39,10 @@ import TaskDJFrom from "./views/TaskWait/TaskDJFrom";
 import TaskGYSFrom from "./views/TaskWait/TaskGYSFrom";
 import TaskGYSDetails from "./views/TaskWait/TaskGYSDetails";
 import Quotation from "./views/Transaction/MaterialQuotation/Quotation";
+import TranrialDetail from "./views/Transaction/MaterialQuotation/TranrialDetail"
 import TranContract from "./views/Transaction/TranContract/TranContract";
 import ShippingInfo from "./views/Transaction/ShippingInfo/ShippingInfo";
+import ShippingDetails from "./views/Transaction/ShippingInfo/ShippingDetails";
 import TranPayment from "./views/Transaction/TranPayment/TranPayment";
 import Tranrial from "./views/Transaction/MaterialQuotation/Tranrial";
 import Inventory from "./views/Transaction/TranContract/Inventory";
@@ -363,6 +365,14 @@ export default new Router({
           }
         },
         {
+          path: "/transaction/materialquotation/tranrialDetail",
+          name: "tranrialDetail",
+          component: TranrialDetail,
+          meta: {
+            title: "报价单明细" //页面标题
+          }
+        },
+        {
           path: "/customerlist/customerlist",
           name: "customerlist",
           component: Customerlist,
@@ -384,6 +394,14 @@ export default new Router({
           component: ShippingInfo,
           meta: {
             title: "发货信息" //页面标题
+          }
+        },
+        {
+          path: "/transaction/shippinginfo/shippingDetails",
+          name: "shippingDetails",
+          component: ShippingDetails,
+          meta: {
+            title: "发货单编辑" //页面标题
           }
         },
         {

@@ -29,7 +29,7 @@
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
-// import {offer} from "./../../assets/js/api.js"
+import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -39,13 +39,11 @@ export default {
   },
   computed,
   methods: {
-    // getList(a) {
-    //   offer.getList(a).then(res => {
-    //     if (res && res.status === 1) {
-    //       console.log(res)
-    //     }
-    //   });
-    // }
+    getClient() {
+      offer.getClient(this.loginUserInfo).then(res => {
+        console.log(res);
+      });
+    },
     jump(name) {
       this.$router.push({
         name
@@ -53,12 +51,7 @@ export default {
     }
   },
   mounted() {
-    //   const c = {
-    //     pid: "222",
-    //     sid: "333"
-    //   }
-    //   this.getList(c);
-    // }
+    this.getClient();
   }
 };
 </script>
