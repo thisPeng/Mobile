@@ -16,9 +16,9 @@
                 <div class="content-row">
                   <span class="row-left flex-3">联系人：{{item[10]}}</span>
                   <span class="row-right text-right">
-                    <van-tag type="danger" v-if="item[27] === '1'">待审批</van-tag>
-                    <van-tag type="primary" v-if="item[27] === '2'">审批中</van-tag>
-                    <van-tag type="success" v-if="item[27] === '3'">已审批</van-tag>
+                    <van-tag type="danger" v-if="item[26] === '1'">待审批</van-tag>
+                    <van-tag type="primary" v-else-if="item[26] === '2'">审批中</van-tag>
+                    <van-tag type="success" v-else-if="item[26] === '3'">已审批</van-tag>
                     <van-tag v-else>未审批</van-tag>
                   </span>
                 </div>
@@ -54,9 +54,9 @@
                 <div class="content-row">
                   <span class="row-left flex-3">联系人：{{item[13]}}</span>
                   <span class="row-right text-right">
-                    <van-tag type="danger" v-if="item[46] === '1'">待审批</van-tag>
-                    <van-tag type="primary" v-if="item[46] === '2'">审批中</van-tag>
-                    <van-tag type="success" v-if="item[46] === '3'">已审批</van-tag>
+                    <van-tag type="danger" v-if="item[44] === '1'">待审批</van-tag>
+                    <van-tag type="primary" v-else-if="item[44] === '2'">审批中</van-tag>
+                    <van-tag type="success" v-else-if="item[44] === '3'">已审批</van-tag>
                     <van-tag v-else>未审批</van-tag>
                   </span>
                 </div>
@@ -156,7 +156,7 @@ export default {
               this.allPages = eval(
                 "(" + sp[1].split("=")[1].replace(";", "") + ")"
               );
-              // console.log(this.allList);
+              console.log(this.allList);
             }
           } catch (e) {
             this.allList = [];

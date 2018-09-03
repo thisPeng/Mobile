@@ -7,7 +7,7 @@
           <van-switch-cell v-model="ite.checked" :title="ite.name" class="item-title " />
         </van-cell-group>
         <div class="con-card" v-show="ite.checked">
-          <van-cell is-link class="con-item" v-for="(item,index) in ite.list" :key="index" @click="jumpPage(item)">
+          <van-cell class="con-item" v-for="(item,index) in ite.list" :key="index">
             <div class="item-content">
               <div class="content-row">
                 <span class="row-left">{{item[14]}}</span>

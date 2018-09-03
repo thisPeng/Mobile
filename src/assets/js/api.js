@@ -563,6 +563,22 @@ const task = {
       }
     });
   },
+  // 提交供应商申请
+  submitInquiry(params = {}) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Company_SupplierService",
+        _methodName: "__StartFlow",
+        "_parameters[FlowID]": params.FlowID,
+        "_parameters[DeltaXml]": params.DeltaXml,
+        "_parameters[BusinessKey]": params.BusinessKey,
+        _paraNames: "FlowID,DeltaXml,BusinessKey",
+        _pUrl: ""
+      }
+    });
+  },
   // 获取我的待办
   getWaitData(page) {
     return axios({

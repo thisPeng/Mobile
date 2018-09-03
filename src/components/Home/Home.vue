@@ -10,7 +10,7 @@
     <router-view class="content" v-if="!$route.meta.keepAlive"></router-view>
     <van-tabbar v-model="active" v-show="isTabbar">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
-      <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item>
+      <van-tabbar-item icon="tosend" @click="jumpTabs('classify')" v-show="userType === 1">物资</van-tabbar-item>
       <van-tabbar-item icon="cart" @click="jumpTabs('cart')" v-show="userType === 1">购物车</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>

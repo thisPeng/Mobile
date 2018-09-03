@@ -245,6 +245,7 @@ export default {
       this.suppActive = index;
       this.$store.commit("suppParams", { id: item[2] });
       this.getSuppType();
+      this.getSuppInfo();
       this.screenShow = false;
     },
     // 过滤分类
@@ -401,7 +402,7 @@ export default {
             const sp = res.text.split("[[");
             const tsp = sp[1].split("]]");
             this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
-            console.log(this.suppInfo);
+            // console.log(this.suppInfo);
           }
         });
     }
