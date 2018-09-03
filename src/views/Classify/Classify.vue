@@ -58,7 +58,7 @@ export default {
           if (res && res.status === 1) {
             const sp = res.text.split("]]");
             this.list = eval(sp[0].split("=")[1] + "]]");
-            // console.log(this.list);
+            this.$store.commit("suppParams", { id: this.list[0][2] });
             // this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
           }
         } catch (e) {

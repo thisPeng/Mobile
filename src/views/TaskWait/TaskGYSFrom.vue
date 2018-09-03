@@ -18,9 +18,12 @@
       <van-field v-model="data[34]" label="邮箱:" disabled/>
       <van-cell title="附件" is-link value="详情" @click="jumpPage" />
     </van-cell-group>
-    <van-cell-group v-if="taskTabs.codeJson">
-      <taskTabs :data="taskTabs" />
+    <van-cell-group v-if="data[3] === '1'" class="margin-vertical-xl">
+      <van-button type="primary" size="large" @click="onSubmit">提交审核</van-button>
     </van-cell-group>
+    <!-- <van-cell-group v-else-if="taskTabs.codeJson">
+      <taskTabs :data="taskTabs" />
+    </van-cell-group> -->
   </div>
 </template>
 <script>
@@ -46,6 +49,25 @@ export default {
         name: "taskgysDetails"
       });
     },
+    // 提交审核供应商
+    onSubmit() {
+      const params = {
+        FlowID: "FLow_10604VER10",
+        DeltaXml: "<root></root>",
+        BusinessKey: this.data[0]
+      };
+      task.submitInquiry(params).then(res => {
+        try {
+          if (res.status === 1 && res.text === "True") {
+            this.$toast.success("提交成功");
+            this.$router.go(-1);
+          }
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+        console.log(res);
+      });
+    },
     pageInit() {
       this.$parent.title = this.taskParams.name;
       task.getInquiry(this.taskParams.TaskGYSID).then(res => {
@@ -54,7 +76,6 @@ export default {
             const sp = res.text.split("[[");
             const tsp = sp[1].split("]]");
             this.data = eval(eval("[[" + tsp[0] + "]]"))[0];
-            console.log(this.data);
           }
         } catch (e) {
           console.log(e);
