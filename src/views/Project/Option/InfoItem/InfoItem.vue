@@ -1,4 +1,5 @@
 <template>
+<!-- 项目信息 -->
   <div class="infoitem">
     <van-cell-group>
       <van-field v-model="info[2]" label="工程编号：" disabled />
@@ -29,8 +30,8 @@
   </div>
 </template>
 <script>
-import computed from "./../../../assets/js/computed.js";
-import { project } from "./../../../assets/js/api.js";
+import computed from "./../../../../assets/js/computed.js";
+import { project } from "./../../../../assets/js/api.js";
 
 export default {
   data() {

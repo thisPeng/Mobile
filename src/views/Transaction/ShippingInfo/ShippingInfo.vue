@@ -1,31 +1,21 @@
 <template>
-  <!-- 付款信息 -->
-  <div class="tranpayment">
-    <div class="pay-data">
-      <div class="pay-card">
-        <div class="pay-item">
+  <!-- 发货信息 -->
+  <div class="shippinginfo">
+    <div class="info-data">
+      <div class="info-card">
+        <div class="info-item">
           <!-- v-for="(item,index) in list" :key="index" @click="jumpage('pricedetails')" -->
           <div class="item-title">
-            <span class="title">工程编号：{{item}}</span>
+            <span class="title">项目名称：{{item}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">工程名称{{item}}</span>
+              <span class="row-left">发货日期{{item}}</span>
+              <span class="row-right">发货状态{{item}}</span>
             </div>
             <div class="content-row">
-              <span>收款账号{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">收款单位：{{item}}</span>
-              <span class="row-left">支付类型：{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">支付金额：{{item}}</span>
-              <span class="row-left">单据状态：{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">支付日期：{{item}}</span>
-              <span class="row-left">申请单号：{{item}}</span>
+              <span class="row-left">签收日期{{item}}</span>
+              <span class="row-left">签收状态{{item}}</span>
             </div>
           </div>
         </div>
@@ -34,7 +24,7 @@
   </div>
 </template>
 <script>
-import computed from "./../../assets/js/computed.js";
+import computed from "./../../../assets/js/computed.js";
 export default {
   data() {
     return {
@@ -47,14 +37,14 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.tranpayment {
+.shippinginfo {
   width: 100%;
   padding: 10px;
-  .pay-data {
+  .info-data {
     margin-bottom: 40px;
-    .pay-card {
+    .info-card {
       width: 100%;
-      .pay-item {
+      .info-item {
         background-color: #fff;
         padding: 10px 15px;
         border-bottom: 1px solid #eee;

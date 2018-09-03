@@ -1,30 +1,37 @@
 <template>
-  <!-- 合同信息 -->
-  <div class="contractInfo">
-    <div class="con-data">
+  <!-- 到货信息 -->
+  <div class="arrivalinformation">
+    <div class="arrival-data">
       <div class="data-item" v-for="(ite,idx) in listOrder" :key="idx">
         <van-cell-group>
           <van-switch-cell v-model="ite.checked" :title="ite.name" class="item-title " />
         </van-cell-group>
-        <div class="con-card" v-show="ite.checked">
-          <van-cell class="con-item" v-for="(item,index) in ite.list" :key="index">
+        <div class="arrival-card" v-show="ite.checked">
+          <van-cell is-link class="arrival-item" v-for="(item,index) in ite.list" :key="index" @click="jumpage('deliverydetails')">
             <div class="item-content">
               <div class="content-row">
-                <span class="row-left">{{item[14]}}</span>
+                <span class="row-left">{{item[9]}}</span>
               </div>
               <div class="content-row">
-                <span class="row-left">{{item[12]}}</span>
-                <span class="row-right">
-                  <van-tag type="danger" v-if="item[18] === '审核情况：未审核'">{{item[18]}}</van-tag>
-                  <van-tag type="success" v-else-if="item[18] === '审核情况：已审核'">{{item[18]}}</van-tag>
-                  <van-tag type="primary" v-else-if="item[18] === '发货情况：部分发货'">{{item[18]}}</van-tag>
-                  <van-tag type="success" v-else-if="item[18] === '发货情况：已发货'">{{item[18]}}</van-tag>
-                  <van-tag v-else>{{item[18]}}</van-tag>
-                </span>
+                <span class="row-right">{{item[10]}}</span>
               </div>
               <div class="content-row">
                 <span class="row-left">{{item[15]}}</span>
-                <span class="row-left">{{item[13]}}</span>
+                <span class="row-right">
+                  <van-tag type="success" v-if="item[13] === '发货状态：已发货'">{{item[13]}}</van-tag>
+                  <van-tag type="danger" v-else>{{item[13]}}</van-tag>
+                </span>
+              </div>
+              <div class="content-row">
+                <span class="row-left">{{item[18]}}</span>
+                <span class="row-right" v-if="item[13] === '发货状态：已发货'">
+                  <van-tag plain type="success" v-if="item[17] === '签收状态：已签收'">{{item[17]}}</van-tag>
+                  <van-tag plain type="danger" v-else>{{item[17]}}</van-tag>
+                </span>
+              </div>
+              <div class="content-row">
+                <span class="row-left">{{item[11]}}</span>
+                <span class="row-right">{{item[12]}}</span>
               </div>
             </div>
           </van-cell>
@@ -34,8 +41,8 @@
   </div>
 </template>
 <script>
-import computed from "./../../../assets/js/computed.js";
-import { contractInfo } from "./../../../assets/js/api.js";
+import computed from "./../../../../assets/js/computed.js";
+import { arrival } from "./../../../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -45,7 +52,7 @@ export default {
   computed,
   methods: {
     getList() {
-      contractInfo.getList(this.projectInfo.SC_ProjectOID).then(res => {
+      arrival.getList(this.projectInfo.SC_ProjectOID).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");
@@ -53,12 +60,11 @@ export default {
             const list = eval("[[" + tsp[0]);
             const listOrder = [];
             let tmp = "";
-            // console.log(list);
             // 数据分组
             list.forEach(val => {
               if (val[2] !== tmp) {
                 listOrder.push({
-                  name: val[10],
+                  name: val[7],
                   checked: true,
                   list: []
                 });
@@ -69,22 +75,21 @@ export default {
               }
             });
             this.listOrder = listOrder;
+            // console.log(this.listOrder);
           }
         } catch (e) {
           console.log(e);
         }
       });
     },
-    jumpPage(item) {
-      this.$store.commit("contractParams", item);
+    jumpage(name) {
       this.$router.push({
-        name: "contractlabor"
+        name
       });
     }
   },
   mounted() {
     if (this.projectInfo.SC_ProjectOID) {
-      this.$parent.title = this.projectInfo.ProjectName;
       this.getList();
     } else {
       this.$toast("请先点击屏幕右上角按钮，选择项目");
@@ -93,9 +98,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.contractInfo {
+.arrivalinformation {
   width: 100%;
-  .con-data {
+  .arrival-data {
     .data-item {
       background-color: #fff;
       margin-bottom: 10px;
@@ -103,25 +108,10 @@ export default {
         font-size: 14px;
         font-weight: 600;
       }
-      .con-card {
+      .arrival-card {
         width: 100%;
-        .con-item {
-          background-color: #fff;
+        .arrival-item {
           padding: 5px 15px;
-          .item-title {
-            padding: 10px 0;
-            border-bottom: 1px solid #f6f6f6;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            .title {
-              font-weight: 600;
-              font-size: 16px;
-            }
-            .icon {
-              font-size: 14px;
-            }
-          }
           .item-content {
             padding: 5px 0;
             font-size: 13px;
@@ -139,5 +129,4 @@ export default {
   }
 }
 </style>
-
 

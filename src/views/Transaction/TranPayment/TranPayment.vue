@@ -1,25 +1,25 @@
 <template>
-  <!-- 报价单 -->
-  <div class="quotation">
-    <div class="quo-data">
-      <div class="quo-card">
-        <div class="quo-item" @click="jump('tranrial')">
-          <!-- v-for="(item,index) in list" :key="index" -->
+  <!-- 付款信息 -->
+  <div class="tranpayment">
+    <div class="pay-data">
+      <div class="pay-card">
+        <div class="pay-item">
+          <!-- v-for="(item,index) in list" :key="index" @click="jumpage('pricedetails')" -->
           <div class="item-title">
-            <span class="title">项目名称{{item}}</span>
+            <span class="title">银行账号：{{item}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">订单编号{{item}}</span>
-              <span class="row-right">待报价{{item}}</span>
+              <span class="row-left">收款单位：{{item}}</span>
+              <span class="row-left">支付类型：{{item}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">数量{{item}}</span>
-              <span class="row-right">金额{{item}}</span>
+              <span class="row-left">支付金额：{{item}}</span>
+              <span class="row-left">单据状态：{{item}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">制定日期{{item}}</span>
-              <span class="row-left">订货有效日期{{item}}</span>
+              <span class="row-left">支付日期：{{item}}</span>
+              <span class="row-left">申请单号：{{item}}</span>
             </div>
           </div>
         </div>
@@ -28,49 +28,27 @@
   </div>
 </template>
 <script>
-import computed from "./../../assets/js/computed.js";
-// import {offer} from "./../../assets/js/api.js"
+import computed from "./../../../assets/js/computed.js";
 export default {
   data() {
     return {
-      list: [],
       item: ""
     };
   },
   computed,
-  methods: {
-    // getList(a) {
-    //   offer.getList(a).then(res => {
-    //     if (res && res.status === 1) {
-    //       console.log(res)
-    //     }
-    //   });
-    // }
-    jump(name) {
-      this.$router.push({
-        name
-      });
-    }
-  },
-  mounted() {
-    //   const c = {
-    //     pid: "222",
-    //     sid: "333"
-    //   }
-    //   this.getList(c);
-    // }
-  }
+  methods: {},
+  mounted() {}
 };
 </script>
 <style lang="less" scoped>
-.quotation {
+.tranpayment {
   width: 100%;
   padding: 10px;
-  .quo-data {
+  .pay-data {
     margin-bottom: 40px;
-    .quo-card {
+    .pay-card {
       width: 100%;
-      .quo-item {
+      .pay-item {
         background-color: #fff;
         padding: 10px 15px;
         border-bottom: 1px solid #eee;

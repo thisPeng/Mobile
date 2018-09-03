@@ -1,34 +1,41 @@
 <template>
-  <!-- 合同信息 -->
-  <div class="trancontract">
-    <div class="tran-data">
-      <div class="tran-card">
-        <div class="tran-item" @click="jumpage('inventory')">
+  <!-- 清单详情 -->
+  <div class="inventory">
+    <div class="inv-data">
+      <div class="inv-card">
+        <div class="inv-item">
           <!-- v-for="(item,index) in list" :key="index" @click="jumpage('pricedetails')" -->
           <div class="item-title">
-            <span class="title">项目名称：{{item}}</span>
+            <span class="title">品名：{{item}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">合同编号{{item}}</span>
-              <span class="row-right">发货情况{{item}}</span>
+              <span class="row-left">规格型号：{{item}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">合同名称{{item}}</span>
+              <span class="row-left">实际数量{{item}}</span>
+              <span class="row-left">赠送数量{{item}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">合同金额{{item}}</span>
-              <span class="row-left">签订日期{{item}}</span>
+              <span class="row-left">单位{{item}}</span>
+              <span class="row-left">小计{{item}}</span>
             </div>
-
+            <div class="content-row">
+              <span class="row-left">税率{{item}}</span>
+              <span class="row-left">产品编号{{item}}</span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">备注{{item}}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
 </template>
 <script>
-import computed from "./../../assets/js/computed.js";
+import computed from "./../../../assets/js/computed.js";
 export default {
   data() {
     return {
@@ -36,25 +43,19 @@ export default {
     };
   },
   computed,
-  methods: {
-    jumpage(name) {
-      this.$router.push({
-        name
-      });
-    }
-  },
+  methods: {},
   mounted() {}
 };
 </script>
 <style lang="less" scoped>
-.trancontract {
+.inventory {
   width: 100%;
   padding: 10px;
-  .tran-data {
+  .inv-data {
     margin-bottom: 40px;
-    .tran-card {
+    .inv-card {
       width: 100%;
-      .tran-item {
+      .inv-item {
         background-color: #fff;
         padding: 10px 15px;
         border-bottom: 1px solid #eee;

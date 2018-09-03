@@ -10,14 +10,14 @@ import Project from "./views/Project/Project";
 import ProjectList from "./views/Project/ProjectList";
 import Option from "./views/Project/Option";
 import Material from "./views/Project/Option/Material";
-import ConPrice from "./views/Project/Option/ConPrice";
-import ContractInfo from "./views/Project/Option/ContractInfo";
-import ArrivalInformation from "./views/Project/Option/ArrivalInformation";
-import InfoItem from "./views/Project/Option/InfoItem";
-import PaymentLabel from "./views/Project/Option/PaymentLabel";
-import PriceDetails from "./views/Project/Option/Details/PriceDetails";
-import DeliveryDetails from "./views/Project/Option/Details/DeliveryDetails";
-import ContractDetails from "./views/Project/Option/Details/ContractDetails";
+import ConPrice from "./views/Project/Option/ConPrice/ConPrice";
+import ContractInfo from "./views/Project/Option/ContractInfo/ContractInfo";
+import ArrivalInformation from "./views/Project/Option/Arrival/ArrivalInformation";
+import InfoItem from "./views/Project/Option/InfoItem/InfoItem";
+import PaymentLabel from "./views/Project/Option/Payment/PaymentLabel";
+import PriceDetails from "./views/Project/Option/ConPrice/PriceDetails";
+import DeliveryDetails from "./views/Project/Option/Delivery/DeliveryDetails";
+import ContractDetails from "./views/Project/Option/ContractInfo/ContractDetails";
 import MsgList from "./views/Message/MsgList";
 import Message from "./views/Message/Message";
 import Apply from "./views/Apply/Apply";
@@ -38,16 +38,16 @@ import TaskJDFrom from "./views/TaskWait/TaskJDFrom";
 import TaskDJFrom from "./views/TaskWait/TaskDJFrom";
 import TaskGYSFrom from "./views/TaskWait/TaskGYSFrom";
 import TaskGYSDetails from "./views/TaskWait/TaskGYSDetails";
-import Quotation from "./views/Transaction/Quotation";
-import TranContract from "./views/Transaction/TranContract";
-import ShippingInfo from "./views/Transaction/ShippingInfo";
-import TranPayment from "./views/Transaction/TranPayment";
-import Tranrial from "./views/Transaction/Tranrial";
-import Inventory from "./views/Transaction/Inventory";
+import Quotation from "./views/Transaction/MaterialQuotation/Quotation";
+import TranContract from "./views/Transaction/TranContract/TranContract";
+import ShippingInfo from "./views/Transaction/ShippingInfo/ShippingInfo";
+import TranPayment from "./views/Transaction/TranPayment/TranPayment";
+import Tranrial from "./views/Transaction/MaterialQuotation/Tranrial";
+import Inventory from "./views/Transaction/TranContract/Inventory";
 import Customerlist from "./views/CustomerList/CustomerList";
-import InquiryDetails from "./views/Project/Option/Details/InquiryDetails";
-import ContractWork from "./views/Project/Option/Details/ContractWork";
-import ContractLabor from "./views/Project/Option/Details/ContractLabor";
+import InquiryDetails from "./views/Project/Option/ConPrice/InquiryDetails";
+import ContractWork from "./views/Project/Option/ConPrice/ContractWork";
+import ContractLabor from "./views/Project/Option/ContractInfo/ContractLabor";
 Vue.use(Router);
 
 export default new Router({
@@ -291,7 +291,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/conprice",
+          path: "/project/option/conPrice/conprice",
           name: "conprice",
           component: ConPrice,
           meta: {
@@ -299,7 +299,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/contractInfo",
+          path: "/project/option/contractInfo/contractInfo",
           name: "contractInfo",
           component: ContractInfo,
           meta: {
@@ -307,7 +307,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/arrivalinformation",
+          path: "/project/option/arrival/arrivalinformation",
           name: "arrivalinformation",
           component: ArrivalInformation,
           meta: {
@@ -315,7 +315,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/infoitem",
+          path: "/project/option/infoItem/infoitem",
           name: "infoitem",
           component: InfoItem,
           meta: {
@@ -331,7 +331,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/details/deliverydetails",
+          path: "/project/option/delivery/deliverydetails",
           name: "deliverydetails",
           component: DeliveryDetails,
           meta: {
@@ -347,7 +347,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/paymentlabel",
+          path: "/project/option/payment/paymentlabel",
           name: "paymentlabel",
           component: PaymentLabel,
           meta: {
@@ -355,7 +355,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/quotation",
+          path: "/transaction/materialquotation/quotation",
           name: "quotation",
           component: Quotation,
           meta: {
@@ -371,7 +371,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/trancontract",
+          path: "/transaction/tranContract/trancontract",
           name: "trancontract",
           component: TranContract,
           meta: {
@@ -379,7 +379,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/shippinginfo",
+          path: "/transaction/shippinginfo/shippinginfo",
           name: "shippinginfo",
           component: ShippingInfo,
           meta: {
@@ -387,7 +387,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/tranpayment",
+          path: "/transaction/tranPayment/tranpayment",
           name: "tranpayment",
           component: TranPayment,
           meta: {
@@ -395,7 +395,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/tranrial",
+          path: "/transaction/materialquotation/tranrial",
           name: "tranrial",
           component: Tranrial,
           meta: {
@@ -403,7 +403,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/inventory",
+          path: "/transaction/tranContract/inventory",
           name: "inventory",
           component: Inventory,
           meta: {
@@ -411,7 +411,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/details/inquirydetails",
+          path: "/project/option/conPrice/inquirydetails",
           name: "inquirydetails",
           component: InquiryDetails,
           meta: {
@@ -419,7 +419,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/details/contractwork",
+          path: "/project/option/conprice/contractwork",
           name: "contractwork",
           component: ContractWork,
           meta: {
