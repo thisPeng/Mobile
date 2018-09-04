@@ -4,9 +4,9 @@
       <div class="inquiry-list">
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
           <van-card :title="item[9]" :desc="item[10]">
-            <div slot="footer">
+            <!-- <div slot="footer">
               <van-button size="mini" type="danger" @click.stop="conDetailsDelete(item)">删除</van-button>
-            </div>
+            </div> -->
           </van-card>
         </div>
       </div>
@@ -19,7 +19,7 @@
           <van-cell :title="'赠送数量： ' + goods.taxbrand" :label="'发货数量：' + goods.taxunit" />
           <van-cell :title="'实价 ' + goods.howMuch" :label="'金额：' + goods.howMoney" />
           <van-cell :title="'税率：' + goods.taxRadio + '%'" />
-          <van-field label="备注：" v-model="goods.reMarks" placeholder="请输入物资备注" />
+          <van-field label="备注：" v-model="goods.reMarks" disabled />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">
@@ -28,7 +28,7 @@
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
           <!--直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <van-button type="primary" bottom-action>保存修改</van-button>
+          <!-- <van-button type="primary" bottom-action>保存修改</van-button> -->
         </div>
       </template>
     </van-sku>
@@ -87,12 +87,12 @@ export default {
       });
     },
     showInfo(item) {
-      this.sku.price = item[15];
+      this.sku.price = item[18];
       this.goods = {
-        id: item[4],
-        sid: item[4],
-        title: item[4],
-        picture: item[4],
+        id: item[9],
+        sid: item[9],
+        title: item[9],
+        picture: item[9],
         brand: item[9],
         unit: item[10],
         taxRate: item[11],
