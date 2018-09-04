@@ -3,19 +3,27 @@
   <div class="shippinginfo">
     <div class="info-data">
       <div class="info-card">
-        <div class="info-item" @click="jumpage('shippingDetails')">
-          <!-- v-for="(item,index) in list" :key="index" @click="jumpage('pricedetails')" -->
+        <div class="info-item" v-for="(item,index) in list" :key="index" @click="jumpage(item)">
+          <!--  @click="jumpage('pricedetails')" -->
           <div class="item-title">
-            <span class="title">项目名称：{{item}}</span>
+            <span class="title">{{item[8]}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">发货日期{{item}}</span>
-              <span class="row-right">发货状态{{item}}</span>
+              <span class="row-left">{{item[10]}}</span>
+              <span class="row-right">{{item[11]}}</span>
+            </div>
+             <div class="content-row">
+              <span class="row-left">{{item[14]}}</span>
+              <span class="row-right">{{item[16]}}</span>
+            </div>
+             <div class="content-row">
+              <span class="row-left">{{item[12]}}</span>
+              <span class="row-right">{{item[13]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">签收日期{{item}}</span>
-              <span class="row-left">签收状态{{item}}</span>
+              <span class="row-left">{{item[19]}}</span>
+              <span class="row-left">{{item[18]}}</span>
             </div>
           </div>
         </div>
@@ -25,21 +33,46 @@
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
+import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-      item: ""
+      list:[]
     };
   },
   computed,
   methods: {
-    jumpage(name){
+    getData() {
+      const params = {
+        pid:this.clientInfo[0],
+        sid:this.userInfo.oid,
+      }
+      offer.getDelivery(params).then(res => {
+        if(res && res.status ===1){
+          const sp = res.text.split("[[");
+          const csp = sp[1].split(";");
+          this.list =eval("[[" +csp[0])
+          // console.log(this.list);
+        }
+      });
+    },
+    pageInit() {
+      this.getData();
+    },
+    jumpage(item) {
+      this.$store.commit("contractParams",item);
       this.$router.push({
-        name
-      })
+        name:"shippingDetails"
+      });
     }
   },
-  mounted() {}
+  mounted() {
+    if (this.clientInfo[0]) {
+      this.pageInit();
+    } else {
+      this.$toast("请先点击屏幕右上角按钮，选择项目");
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -26,7 +26,7 @@
 </template>
 <script>
 import computed from "./../../../../assets/js/computed.js";
-import { index, arrival } from "./../../../../assets/js/api.js";
+import {  arrival } from "./../../../../assets/js/api.js"; //index
 export default {
   data() {
     return {
@@ -49,10 +49,12 @@ export default {
       });
     },
     getConfig() {
-      const SQLCondi = "";
-      index.getConfig(SQLCondi).then(res => {
-        console.log(res);
-      });
+      // const params ={
+      //   uid:this.confirmParams[0]
+      // };
+      // index.getConfig(this.confirmParams[0]).then(res => {
+      //   console.log(JSON.parse(res.text));
+      // });
     },
     //签收
     DeliverySign() {
