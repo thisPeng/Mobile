@@ -62,7 +62,6 @@
         <span class="gaddress-label">公司地址</span>
         <span class="gaddress-select" @click="gaddressShow=true">{{userInfo.gaddress || '请选择公司地址'}}</span>
         <van-popup v-model="gaddressShow" position="bottom">
-          <!-- <van-picker show-toolbar title="请选择" :columns="gaddress" @cancel="gaddressShow=false" @confirm="gaConfirm" /> -->
           <van-area :area-list="areaList" @cancel="gaddressShow=false" @confirm="gaConfirm" />
         </van-popup>
       </van-cell-group>

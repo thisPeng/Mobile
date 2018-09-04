@@ -1,38 +1,41 @@
 <template>
   <div class="taskgysFrom">
-    <van-cell-group>
-      <van-field v-model="data[35]" label="供应商编号:" disabled/>
-      <van-field v-model="data[22]" label="单位名称:" disabled/>
-      <van-field v-model="data[24]" label="统一社会信用代码:" disabled/>
-      <van-field v-model="data[22]" label="单位类别:" disabled/>
-      <van-field v-model="data[22]" label="纳税人类别:" disabled/>
-      <van-field v-model="data[27]" label="税率:" disabled/>
-      <van-field v-model="data[28]" label="开户行:" disabled/>
-      <van-field v-model="data[29]" label="银行账号:" disabled/>
-      <van-field v-model="data[22]" label="公司地址:" disabled/>
-      <van-field v-model="data[22]" label="可开票税率:" disabled/>
-      <van-field v-model="data[30]" label="详细地址:" disabled/>
-      <van-field v-model="data[31]" label="联系人:" disabled/>
-      <van-field v-model="data[32]" label="固定电话:" disabled/>
-      <van-field v-model="data[33]" label="手机:" disabled/>
-      <van-field v-model="data[34]" label="邮箱:" disabled/>
+    <van-cell-group :style="tabsShow ? 'padding-bottom: 280px;' : 'padding-bottom: 30px;'">
+      <van-field v-model="data[35]" label="供应商编号：" :disabled="true" />
+      <van-field v-model="data[22]" label="单位名称：" :disabled="true" />
+      <van-field v-model="data[25]" label="统一社会信用码：" :disabled="edit" />
+      <van-field v-model="data[23]" label="单位类别：" :disabled="edit" />
+      <van-field v-model="data[26]" label="纳税人类别：" :disabled="edit" />
+      <van-field v-model="data[27]" label="税率：" :disabled="edit" />
+      <van-field v-model="data[28]" label="开户行：" :disabled="edit" />
+      <van-field v-model="data[29]" label="银行账号：" :disabled="edit" />
+      <!-- <van-field :value="data[62] + ' ' + data[63] + ' ' + data[64]" label="公司地址：" :disabled="edit" /> -->
+      <regionSelect />
+      <van-field v-model="data[49]" label="可开票税率：" :disabled="edit" />
+      <van-field v-model="data[30]" label="详细地址：" :disabled="edit" />
+      <van-field v-model="data[31]" label="联系人：" :disabled="edit" />
+      <van-field v-model="data[32]" label="固定电话：" :disabled="edit" />
+      <van-field v-model="data[33]" label="手机：" :disabled="edit" />
+      <van-field v-model="data[34]" label="邮箱：" :disabled="edit" />
       <van-cell title="附件" is-link value="详情" @click="jumpPage" />
     </van-cell-group>
-    <van-cell-group v-if="data[3] === '1'" class="margin-vertical-xl">
+    <van-cell-group v-if="data[3] === '1' && data[9] === 'false'" class="margin-vertical-xl">
       <van-button type="primary" size="large" @click="onSubmit">提交审核</van-button>
     </van-cell-group>
-    <!-- <van-cell-group v-else-if="taskTabs.codeJson">
+    <van-cell-group v-else-if="taskTabs.codeJson">
       <taskTabs :data="taskTabs" />
-    </van-cell-group> -->
+    </van-cell-group>
   </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
 import taskTabs from "./../../components/TaskWait/Tabs";
+import regionSelect from "./../../components/Select/Region";
 import { task } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
+      edit: true,
       taskTabs: {
         codeJson: []
       },
@@ -41,7 +44,8 @@ export default {
   },
   computed,
   components: {
-    taskTabs
+    taskTabs,
+    regionSelect
   },
   methods: {
     jumpPage() {
@@ -74,10 +78,33 @@ export default {
       this.$parent.title = this.taskParams.name;
       task.getInquiry(this.taskParams.TaskGYSID).then(res => {
         try {
-          if (res.status === 1) {
-            const sp = res.text.split("[[");
+          if (res && res.status === 1) {
+            let sp = res.text.split("[[");
             const tsp = sp[1].split("]]");
-            this.data = eval(eval("[[" + tsp[0] + "]]"))[0];
+            this.data = eval("[[" + tsp[0] + "]]")[0];
+            this.taskTabs.InstanceID = this.data[10];
+            this.taskTabs.FlowID = this.data[11];
+
+            this.taskTabs.params = {
+              SC_Money_InOutOID: this.data[0],
+
+              SYS_LAST_UPD_BY: this.data[20],
+              SYS_LAST_UPD: this.data[13]
+            };
+            this.taskTabs.arrays = [0, 20, 13];
+            task.getFlowAssignData(this.data[10]).then(res => {
+              if (res && res.status === 1) {
+                sp = res.text.split(";");
+                const tmp = eval(sp[1].split("=")[1])[0];
+                this.taskTabs.TaskOID = tmp[0];
+                this.taskTabs.ActivityID = tmp[5];
+                if (tmp[13]) {
+                  this.taskTabs.codeJson = JSON.parse(tmp[13]);
+                } else if (this.taskModel === "我的待办") {
+                  this.edit = false;
+                }
+              }
+            });
           }
         } catch (e) {
           console.log(e);
@@ -97,7 +124,7 @@ export default {
 </style>
 <style lang="less">
 .taskgysFrom {
-  .van-field .van-cell__title {
+  .van-cell .van-cell__title {
     max-width: 120px;
   }
 }

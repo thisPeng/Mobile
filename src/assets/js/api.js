@@ -46,7 +46,28 @@ const index = {
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
-
+      }
+    });
+  },
+  // 获取省市区数据
+  getRegional(BCName = "BC_SC_RegionalData_P", SQLCondi = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Company_SupplierService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": BCName, //省: BC_SC_RegionalData_P     市: BC_SC_RegionalData_C    区: BC_SC_RegionalData_X
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": SQLCondi,
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
       }
     });
   }

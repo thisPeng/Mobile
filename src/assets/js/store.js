@@ -38,7 +38,6 @@ export default new Vuex.Store({
         state.isReload = true;
         state.userId = {};
         state.userInfo = {};
-        state.loginInfo = {};
         state.taskModel = "";
         state.clientInfo = {};
         state.projectInfo = {};
