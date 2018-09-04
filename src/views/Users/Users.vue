@@ -76,16 +76,21 @@ export default {
     cleanStore() {
       localStorage.clear();
       sessionStorage.clear();
-      this.$store.commit("cleanStore", true);
       users.userInfo().then(result => {
-        if (result) {
-          this.$store.commit("userInfo", result);
-          users.userId(result.oid).then(res => {
-            if (res && res.status === 1) {
-              this.$store.commit("userId", JSON.parse(res.text)[0]);
-              this.$toast("缓存已清除");
-            }
-          });
+        try {
+          if (result) {
+            this.$parent.isMenu = true;
+            this.$store.commit("cleanStore", true);
+            this.$store.commit("userInfo", result);
+            users.userId(result.oid).then(res => {
+              if (res && res.status === 1) {
+                this.$store.commit("userId", JSON.parse(res.text)[0]);
+                this.$toast("缓存已清除");
+              }
+            });
+          }
+        } catch (e) {
+          console.log(e);
         }
       });
     },

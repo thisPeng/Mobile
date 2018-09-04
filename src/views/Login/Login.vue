@@ -76,6 +76,7 @@ export default {
                 users.userId(result.oid).then(res => {
                   if (res && res.status === 1) {
                     this.$store.commit("userId", JSON.parse(res.text)[0]);
+                    this.$parent.isMenu = true;
                     this.$router.replace({
                       name: "index"
                     });

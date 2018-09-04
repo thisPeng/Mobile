@@ -2,7 +2,7 @@
   <div class="home">
     <van-nav-bar :title="title" :left-arrow="isBack" @click-left="onBack" @click-right="onMenu">
       <!-- <van-icon name="pending-evaluate" slot="right" class="home-icon" /> -->
-      <i slot="right" class="iconfont icon-qiehuan home-icon" />
+      <i slot="right" class="iconfont icon-qiehuan home-icon" v-if="isMenu" />
     </van-nav-bar>
     <keep-alive>
       <router-view class="content" v-if="$route.meta.keepAlive"></router-view>
@@ -16,6 +16,7 @@
     </van-tabbar>
     <van-tabbar v-model="active" v-show="isTabbar" v-else>
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
+      <!-- <van-tabbar-item icon="records" @click="jumpTabs('conprice')">询价单</van-tabbar-item> -->
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -30,6 +31,7 @@ export default {
       title: "材博汇",
       isBack: false,
       isTabbar: true,
+      isMenu: true,
       active: 0
     };
   },
@@ -105,18 +107,6 @@ export default {
       this.title = current.meta.title;
     }
 
-    users.userInfo().then(result => {
-      if (result && this.userInfo.oid !== result.oid) {
-        this.$store.commit("cleanStore", true);
-        this.$store.commit("userInfo", result);
-        users.userId(result.oid).then(res => {
-          if (res && res.status === 1) {
-            this.$store.commit("userId", JSON.parse(res.text)[0]);
-          }
-        });
-      }
-    });
-
     if (
       current.name !== "index" &&
       current.name !== "classify" &&
@@ -142,6 +132,25 @@ export default {
           this.active = this.userType === 1 ? 3 : 1;
           break;
       }
+    }
+
+    if (current.name !== "goodsList") {
+      users.userInfo().then(result => {
+        if (result && this.userInfo.oid !== result.oid) {
+          this.$store.commit("cleanStore", true);
+          this.$store.commit("userInfo", result);
+          users.userId(result.oid).then(res => {
+            if (res && res.status === 1) {
+              this.$store.commit("userId", JSON.parse(res.text)[0]);
+            }
+          });
+        }
+      });
+    } else if (current.name === "goodsList" && this.userInfo.oid) {
+      this.title = "物资查询";
+      this.isBack = false;
+      this.isTabbar = false;
+      this.isMenu = false;
     }
   }
 };

@@ -90,6 +90,7 @@ axios.interceptors.response.use(
           // error.message = '服务器内部错误';
           window.localStorage.clear();
           window.sessionStorage.clear();
+          window.vm.$store.commit("cleanStore", true);
           error.message = "登录过期，请重新登录";
           window.vm.$router.replace({
             name: "login"
