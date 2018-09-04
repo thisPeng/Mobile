@@ -146,7 +146,7 @@ export default {
           });
         }
       });
-    } else if (current.name === "goodsList" && this.userInfo.oid) {
+    } else if (current.name === "goodsList" && !this.userInfo.oid) {
       this.title = "物资查询";
       this.isBack = false;
       this.isTabbar = false;
