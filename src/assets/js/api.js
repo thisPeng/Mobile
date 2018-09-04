@@ -26,6 +26,29 @@ const index = {
     return axios({
       url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=HOME_MSG"
     });
+  },
+  getConfig(SQLCondi) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_CodeValueService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_Cus_CodeValue",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": SQLCondi,
+        //"_parameters[SQLCondi]":"CodeClassifyOID='00002a4a-0000-0000-0000-000000000000'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+
+      }
+    });
   }
 };
 
@@ -1196,8 +1219,138 @@ const arrival = {
         _pUrl: ""
       }
     });
+  },
+  //发货单编辑
+  getInvoice(DeliverID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_ListService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Deliver_Master",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Deliver_MasterOID='" + DeliverID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  getItemInvoice(DeliverID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_List",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Deliver_Detail",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Deliver_MasterOID='" + DeliverID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //发货单明细
+  getInvoiceEdit(DeliverID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_List_EditService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Deliver_Master",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Deliver_MasterOID='" + DeliverID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  getInvoiceEdits(DeliverID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_List_EditService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Deliver_Detail",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Deliver_MasterOID='" + DeliverID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //签收
+  getSign(BillOID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_Deliver_ListService",
+        _methodName: "ReceiveBill",
+        "_parameters[BillOID]": BillOID,
+        _paraNames: "BillOID",
+        _pUrl: ""
+      }
+    })
+  },
+  //提议
+  getOffer(BillOID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_Deliver_ListService",
+        _methodName: "SaveToSupplier",
+        "_parameters[BillOID]": BillOID,
+        _paraNames: "BillOID",
+        _pUrl: ""
+      }
+    })
+  },
+  // 发货单明细删除
+  getDeleteOffer(params) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_List_EditService",
+        _methodName: "DeleteRec",
+        "_parameters[PurchaseOrderID]": params.PurchaseOrderID,
+        "_parameters[DetailOIDList]": params.DetailOIDList,
+        _paraNames: "PurchaseOrderID,DetailOIDList",
+        _pUrl: ""
+      }
+    })
   }
 };
+
 //供应商模块
 const offer = {
   //客户信息

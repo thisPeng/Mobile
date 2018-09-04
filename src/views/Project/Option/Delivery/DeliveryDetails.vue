@@ -2,68 +2,118 @@
   <!-- 到货信息-发货单 -->
   <div class="deliverydetails">
     <div class="title-delivery">发货单</div>
-    <van-cell-group>
-      <van-field value="" label="发货单号:" disabled />
-      <van-field value="" label="工程名称:" disabled />
-      <van-field value="" label="发货时间:" disabled />
-      <van-field value="" label="工程地址:" disabled />
-      <van-field value="" label="发货方式:" disabled />
-      <van-field value="" label="单据状态:" disabled />
-      <van-field value="" label="审核人:" disabled />
-      <van-field value="" label="发货数量:" disabled />
-      <van-field value="" label="签收状态:" disabled />
-      <van-field value="" label="签收时间:" disabled />
-      <van-field value="" label="签收人:" disabled />
-      <van-field value="" label="发货金额:" disabled />
-      <van-field value="" label="备注:" disabled type="textarea" />
+    <van-cell-group v-for="(item,index) in list" :key="index">
+      <van-field v-model="item[2]" label="发货单号:" disabled />
+      <van-field v-model="item[39]" label="工程名称:" disabled />
+      <van-field v-model="item[8]" label="发货时间:" disabled />
+      <van-field v-model="item[40]" label="工程地址:" disabled />
+      <van-field v-model="item[13]" label="发货方式:" disabled />
+      <van-field v-model="item[41]" label="单据状态:" disabled />
+      <van-field v-model="item[19]" label="审核人:" disabled />
+      <van-field v-model="item[10]" label="发货数量:" disabled />
+      <van-field v-model="item[42]" label="签收状态:" disabled />
+      <van-field v-model="item[27]" label="签收时间:" disabled />
+      <van-field v-model="item[28]" label="签收人:" disabled />
+      <van-field v-model="item[11]" label="发货金额:" disabled />
+      <van-field v-model="item[29]" label="备注:" disabled type="textarea" />
+      <van-cell title="发货单明细" is-link value="详情" @click="jumpPage(item)" />
     </van-cell-group>
-    <div class="title-delivery">发货单明细</div>
-    <div class="delivery-data">
-      <div class="delivery-card">
-        <div class="delivery-item">
-          <div class="item-title">
-            <span class="title">合同编号:{{item}}</span>
-          </div>
-          <div class="item-content">
-            <div class="content-row">
-              <span>产品名称:{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">规格型号:{{item}}</span>
-              <span class="row-right">单位:{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">订单数量:{{item}}</span>
-              <span class="row-right">赠送数量:{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">发货数量:{{item}}</span>
-              <span class="row-right">实价:{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">金额:{{item}}</span>
-              <span class="row-right">税率:{{item}}</span>
-            </div>
-            <div class="content-row">
-              <span>备注:{{item}}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="con-button">
+      <van-button type="default" @click="DeliverySign">签收</van-button>
+      <van-button type="default" @click="DeliveryOffer">提议</van-button>
     </div>
   </div>
 </template>
 <script>
 import computed from "./../../../../assets/js/computed.js";
+import { index, arrival } from "./../../../../assets/js/api.js";
 export default {
   data() {
     return {
-      item: ""
+      item: [],
+      list: []
     };
   },
   computed,
-  methods: {},
-  mounted() {}
+  methods: {
+    getData() {
+      arrival.getInvoice(this.confirmParams[0]).then(res => {
+        // console.log(res);
+        if (res && res.status === 1) {
+          const sp = res.text.split("[[");
+          const csp = sp[1].split(";");
+          //  console.log(csp);
+          this.list = eval("[[" + csp[0]);
+          // console.log(this.list);
+        }
+      });
+    },
+    getConfig() {
+      const SQLCondi = "";
+      index.getConfig(SQLCondi).then(res => {
+        console.log(res);
+      });
+    },
+    //签收
+    DeliverySign() {
+      this.$dialog
+        .confirm({
+          title: "签收",
+          message: "是否确认签收？"
+        })
+        .then(() => {
+          arrival.getSign(this.confirmParams[0]).then(res => {
+            if (res && res.status === 1) {
+              this.$nextTick().then(() => {
+                setTimeout(() => {
+                  this.$toast.success("签收成功");
+                }, 300);
+              });
+              this.$router.replace({
+                name: "arrivalinformation"
+              });
+            }
+          });
+        });
+    },
+    //提议
+    DeliveryOffer() {
+      this.$dialog
+        .confirm({
+          title: "提议",
+          message: "是否确认提议？"
+        })
+        .then(() => {
+          arrival.getOffer(this.confirmParams[0]).then(res => {
+            if (res && res.status === 1) {
+              this.$nextTick().then(() => {
+                setTimeout(() => {
+                  this.$toast.success("提议成功");
+                }, 300);
+              });
+            }
+          });
+        });
+    },
+    pageInit() {
+      this.getData();
+      this.getConfig();
+    },
+    jumpPage(item) {
+      this.$store.commit("confirmParams", item);
+      this.$router.push({
+        name: "arrivalDetails"
+      });
+    },
+    jumpInfo(name) {
+      this.$router.push({
+        name
+      });
+    }
+  },
+  mounted() {
+    this.pageInit();
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -108,13 +158,28 @@ export default {
   }
   .van-cell {
     font-size: 15px;
-    color: rgb(153, 148, 148);
+    // color: rgb(153, 148, 148);
   }
   .title-delivery {
     font-size: 16px;
     padding: 10px;
     color: #00a0e9;
     background-color: #f7f7f7;
+  }
+  .van-button--normal {
+    padding: 0px 30px;
+  }
+  .con-button {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 5px 0;
+    button {
+      width: 48%;
+      padding: 0;
+      // flex: 1;
+    }
   }
 }
 </style>

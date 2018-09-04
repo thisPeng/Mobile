@@ -10,12 +10,13 @@ import ProjectList from "./views/Project/ProjectList";
 import Material from "./views/Project/Option/Material";
 import ConPrice from "./views/Project/Option/ConPrice/ConPrice";
 import ContractInfo from "./views/Project/Option/ContractInfo/ContractInfo";
-import ArrivalInformation from "./views/Project/Option/Arrival/ArrivalInformation";
+import ArrivalInformation from "./views/Project/Option/Delivery/ArrivalInformation";
 import InfoItem from "./views/Project/Option/InfoItem/InfoItem";
 import PaymentLabel from "./views/Project/Option/Payment/PaymentLabel";
 import PriceDetails from "./views/Project/Option/ConPrice/PriceDetails";
 import AnnexContent from "./views/Project/Option/ConPrice/AnnexContent";
 import DeliveryDetails from "./views/Project/Option/Delivery/DeliveryDetails";
+import ArrivalDetails from "./views/Project/Option/Delivery/ArrivalDetails";
 import ContractDetails from "./views/Project/Option/ContractInfo/ContractDetails";
 import MsgList from "./views/Message/MsgList";
 import Message from "./views/Message/Message";
@@ -292,7 +293,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/arrival/arrivalinformation",
+          path: "/project/option/delivery/arrivalinformation",
           name: "arrivalinformation",
           component: ArrivalInformation,
           meta: {
@@ -329,6 +330,14 @@ export default new Router({
           component: DeliveryDetails,
           meta: {
             title: "发货单编辑" //页面标题
+          }
+        },
+        {
+          path: "/project/option/delivery/arrivalDetails",
+          name: "arrivalDetails",
+          component: ArrivalDetails,
+          meta: {
+            title: "发货单明细" //页面标题
           }
         },
         {
