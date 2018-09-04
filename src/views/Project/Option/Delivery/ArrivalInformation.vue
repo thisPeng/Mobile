@@ -7,7 +7,7 @@
           <van-switch-cell v-model="ite.checked" :title="ite.name" class="item-title " />
         </van-cell-group>
         <div class="arrival-card" v-show="ite.checked">
-          <van-cell is-link class="arrival-item" v-for="(item,index) in ite.list" :key="index" @click="jumpage('deliverydetails')">
+          <van-cell is-link class="arrival-item" v-for="(item,index) in ite.list" :key="index" @click="jumpPage(item)">
             <div class="item-content">
               <div class="content-row">
                 <span class="row-left">{{item[9]}}</span>
@@ -82,9 +82,10 @@ export default {
         }
       });
     },
-    jumpage(name) {
+    jumpPage(item) {
+      this.$store.commit("confirmParams", item);
       this.$router.push({
-        name
+        name: "deliverydetails"
       });
     }
   },
