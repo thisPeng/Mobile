@@ -27,24 +27,16 @@ const index = {
       url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=HOME_MSG"
     });
   },
-  getConfig(SQLCondi) {
+  getConfig(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
         _bpoName: "BPO_CodeValueService",
-        _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_Cus_CodeValue",
-        "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": -1,
-        "_parameters[fieldList]": "",
-        "_parameters[valueList]": "",
-        "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": SQLCondi,
-        //"_parameters[SQLCondi]":"CodeClassifyOID='00002a4a-0000-0000-0000-000000000000'",
-        "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": "",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _methodName: "GetCodeValue",
+        "_parameters[UserOrgOID]": params.uid,
+        "_parameters[CodeTableID]": params.cid,
+        _paraNames: "UserOrgOID,CodeTableID",
         _pUrl: ""
       }
     });
@@ -1410,7 +1402,123 @@ const offer = {
         _pUrl: ""
       }
     });
-  }
+
+  },
+  //报价单编辑
+  getTranrial(PurchaseOrderID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_SetPrice_EditService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Order_Master",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Order_MasterOID='" + PurchaseOrderID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  getTranDetails(PurchaseOrderID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_SetPrice_EditService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Order_Detail",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Order_MasterOID='" + PurchaseOrderID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //提交报价
+  getPriceButton(BillOID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_SetPriceService",
+        _methodName: "SendToPartner",
+        "_parameters[BillOID]": BillOID,
+        _paraNames: "BillOID",
+        _pUrl: ""
+      }
+    })
+  },
+  //发货信息
+  getDelivery(parasm = {}) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_ListService",
+        _methodName: "getBCColumnsForJS",
+        "_parameters[PartnerID]": parasm.pid,
+        "_parameters[SupplierID]": parasm.sid,
+        _paraNames: "PartnerID,SupplierID",
+        _pUrl: ""
+      }
+    })
+  },
+  //发货单编辑
+  getDeliveryDetail(DeliverID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_List_EditService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Deliver_Master",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Deliver_MasterOID='" + DeliverID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  getDeliveryDetails(DeliverID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_List_EditService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Deliver_Detail",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Deliver_MasterOID='" + DeliverID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
 };
 
 export {

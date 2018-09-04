@@ -3,23 +3,23 @@
   <div class="quotation">
     <div class="quo-data">
       <div class="quo-card">
-        <div class="quo-item" @click="jump('tranrial')">
-          <!-- v-for="(item,index) in list" :key="index" -->
+        <div class="quo-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
+          <!--  -->
           <div class="item-title">
-            <span class="title">项目名称{{item}}</span>
+            <span class="title">{{item[9]}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">订单编号{{item}}</span>
-              <span class="row-right">待报价{{item}}</span>
+              <span class="row-left">{{item[14]}}</span>
+              <span class="row-right">{{item[13]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">数量{{item}}</span>
-              <span class="row-right">金额{{item}}</span>
+              <span class="row-left">{{item[11]}}</span>
+              <span class="row-right">{{item[12]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">制定日期{{item}}</span>
-              <span class="row-left">订货有效日期{{item}}</span>
+              <span class="row-left">{{item[15]}}</span>
+              <span class="row-left">{{item[16]}}</span>
             </div>
           </div>
         </div>
@@ -33,20 +33,31 @@ import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-      list: [],
-      item: ""
+      list: []
     };
   },
   computed,
   methods: {
     getClient() {
-      offer.getClient(this.loginUserInfo).then(res => {
-        console.log(res);
+      const params = {
+        pid: this.clientInfo[0],
+        sid: this.userInfo.oid
+      };
+      offer.getPriceList(params).then(res => {
+        // console.log(res);
+        if (res && res.status === 1) {
+          const sp = res.text.split("[[");
+          // console.log(sp);
+          const csp = sp[1].split(";");
+          this.list = eval("[[" + csp[0]);
+          // console.log(this.list);
+        }
       });
     },
-    jump(name) {
+    jumpPage(item) {
+      this.$store.commit("confirmParams", item);
       this.$router.push({
-        name
+        name: "tranrial"
       });
     }
   },

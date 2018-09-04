@@ -1,10 +1,9 @@
 <template>
-  <!-- 报价单明细 -->
-  <div class="tranrialDetail">
+  <div class="deliveryDetail">
     <div class="inquiry-data">
       <div class="inquiry-list">
-         <div class="list-item" v-for="(item, index) in list" :key="index"  @click="showInfo(item)"> <!-- -->
-          <van-card :title="item[4]" :desc="item[8]">
+        <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
+          <van-card :title="item[9]" :desc="item[10]">
             <div slot="footer">
               <van-button size="mini" type="danger" @click.stop="conDetailsDelete(item)">删除</van-button>
             </div>
@@ -16,11 +15,10 @@
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
           <van-cell :title="'产品名称： ' + goods.brand" :label="'规格/型号：' + goods.unit" />
-          <van-field label="数量：" v-model="goods.taxRate" type="number" required placeholder="请输入数量" />
-          <van-field label="赠送数量：" v-model="goods.taxAll" type="number" required placeholder="请输入赠送数量" />
-          <van-field label="售价：" v-model="goods.howMuch" type="number" required placeholder="请输入售价" />
-          <van-field label="金额：" v-model="goods.howMoney" type="number" required placeholder="请输入金额" />
-          <van-field label="税率：" v-model="goods.taxRadio" type="number" required placeholder="请输入税率" />
+          <van-cell :title="'单位： ' + goods.taxRate" :label="'订单数量：' + goods.taxAll" />
+          <van-cell :title="'赠送数量： ' + goods.taxbrand" :label="'发货数量：' + goods.taxunit" />
+          <van-cell :title="'实价 ' + goods.howMuch" :label="'金额：' + goods.howMoney" />
+          <van-cell :title="'税率：' + goods.taxRadio + '%'" />
           <van-field label="备注：" v-model="goods.reMarks" placeholder="请输入物资备注" />
         </van-cell-group>
       </template>
@@ -29,7 +27,7 @@
       </template>
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
-           <!--直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
+          <!--直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
           <van-button type="primary" bottom-action>保存修改</van-button>
         </div>
       </template>
@@ -42,7 +40,7 @@ import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-      list:[],
+      list: [],
       item: [],
       search: "",
       dspList: [],
@@ -70,29 +68,24 @@ export default {
         howMuch: "",
         howMoney: "",
         taxRadio: "",
+        taxbrand: "",
+        taxunit: "",
         reMarks: ""
       }
     };
   },
   computed,
   methods: {
-   getData(){
-     offer.getTranrial(this.confirmParams[0]).then(res =>{
-       console.log(res);
-       if(res && res.status ===1){
+    getData() {
+      offer.getDeliveryDetail(this.contractParams[0]).then(res => {
+        if (res && res.status === 1) {
           const sp = res.text.split("[[");
-          // console.log(sp);
-         const csp = sp[2].split(";");
-         console.log(csp);
-         this.list = eval("[[" + csp[0]);
+          const csp = sp[2].split(";");
+          this.list = eval("[[" + csp[0]);
           console.log(this.list);
         }
-     })
-   },
-   pageInit(){
-     this.getData();
-   },
-
+      });
+    },
     showInfo(item) {
       this.sku.price = item[15];
       this.goods = {
@@ -100,56 +93,29 @@ export default {
         sid: item[4],
         title: item[4],
         picture: item[4],
-        brand: item[4],
-        unit: item[8],
+        brand: item[9],
+        unit: item[10],
         taxRate: item[11],
-        taxAll: item[12],
-        howMuch: item[14],
-        howMoney: item[15],
-        taxRadio: item[16],
-        reMarks: item[19]
+        taxAll: item[10],
+        howMuch: item[17],
+        howMoney: item[18],
+        taxRadio: item[19],
+        taxbrand: item[15],
+        taxunit: item[16],
+        reMarks: item[21]
       };
       this.showBase = true;
       // console.log(item);
     }
-  },
+  }, //methods
   mounted() {
-    this.pageInit();
+    this.getData();
   }
 };
 </script>
+
 <style lang="less" scoped>
-.tranrialDetail {
+.deliveryDetail {
   width: 100%;
-  .van-card {
-    background-color: white;
-  }
-  .inquiry-data {
-    position: absolute;
-    top: 10px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    .inquiry-list {
-      width: 100%;
-      padding: 0 10px;
-      .list-item {
-        .van-card {
-          background-color: #fff;
-          border: 1px solid #eee;
-          border-radius: 5px;
-          margin-bottom: 10px;
-          .item-brand {
-            padding: 5px 0;
-          }
-          .item-price {
-            color: #ff4257;
-          }
-        }
-      }
-    }
-  }
 }
 </style>
