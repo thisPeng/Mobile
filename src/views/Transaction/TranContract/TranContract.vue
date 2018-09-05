@@ -3,22 +3,22 @@
   <div class="trancontract">
     <div class="tran-data">
       <div class="tran-card">
-        <div class="tran-item" @click="jumpage('inventory')">
-          <!-- v-for="(item,index) in list" :key="index" @click="jumpage('pricedetails')" -->
+        <div class="tran-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
+          <!--  @click="jumpage('pricedetails')" -->
           <div class="item-title">
-            <span class="title">项目名称：{{item}}</span>
+            <span class="title">{{item[11]}}</span>
           </div>
           <div class="item-content">
-            <div class="content-row">
-              <span class="row-left">合同编号{{item}}</span>
-              <span class="row-right">发货情况{{item}}</span>
+             <div class="content-row">
+              <span class="row-left">{{item[15]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">合同名称{{item}}</span>
+              <span class="row-left">{{item[13]}}</span>
+              <span class="row-right">{{item[20]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">合同金额{{item}}</span>
-              <span class="row-left">签订日期{{item}}</span>
+              <span class="row-left">{{item[16]}}</span>
+              <span class="row-left">{{item[14]}}</span>
             </div>
 
           </div>
@@ -29,21 +29,43 @@
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
+import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-      item: ""
+     list:[]
     };
   },
   computed,
   methods: {
-    jumpage(name) {
+    getData() {
+      const params = {
+        pid: this.clientInfo[0],
+        sid: this.userInfo.oid
+      };
+      offer.getContract(params).then(res => {
+       if(res && res.status ===1){
+         const sp = res.text.split("[[");
+         const csp = sp[1].split(";");
+        //  console.log(csp);
+         this.list=eval("[["+csp[0]);
+         console.log(this.list);
+       }
+      });
+    },
+    pageInit(){
+      this.getData();
+    },
+    jumpPage(item) {
+      this.$store.commit("confirmParams",item);
       this.$router.push({
-        name
+        name:"inventory"
       });
     }
   },
-  mounted() {}
+  mounted() {
+    this.pageInit();
+  }
 };
 </script>
 <style lang="less" scoped>

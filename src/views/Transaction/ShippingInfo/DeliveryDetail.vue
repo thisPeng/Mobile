@@ -1,4 +1,5 @@
 <template>
+<!-- 发货单明细 -->
   <div class="deliveryDetail">
     <div class="inquiry-data">
       <div class="inquiry-list">
@@ -82,7 +83,7 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[2].split(";");
           this.list = eval("[[" + csp[0]);
-          console.log(this.list);
+          // console.log(this.list);
         }
       });
     },

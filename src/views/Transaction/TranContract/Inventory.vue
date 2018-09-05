@@ -36,6 +36,7 @@
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
+import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -43,8 +44,19 @@ export default {
     };
   },
   computed,
-  methods: {},
-  mounted() {}
+  methods: {
+    getData(){
+      offer.getContractDetail(this.confirmParams[0]).then(res =>{
+        console.log(res);
+      })
+    },
+    pageInit(){
+      this.getData();
+    }
+  },
+  mounted() {
+    this.pageInit();
+  }
 };
 </script>
 <style lang="less" scoped>

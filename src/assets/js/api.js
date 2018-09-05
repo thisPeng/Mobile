@@ -1519,6 +1519,65 @@ const offer = {
       }
     })
   },
+  //付款信息
+  getPayment(SupplierID = "", PartnerID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Finance_SuppPayService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_FK_Money_InOut",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SupplierID='" + SupplierID + "'" + " AND SC_Money_InOut.PartnerID='" + PartnerID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //合同信息
+  getContract(parasm = {}) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Supplier_Contract_ListService",
+        _methodName: "getBCColumnsForJS",
+        "_parameters[PartnerID]": parasm.pid,
+        "_parameters[SupplierID]": parasm.sid,
+        _paraNames: "PartnerID,SupplierID",
+        _pUrl: ""
+      }
+    })
+  },
+  //清单明细
+  getContractDetail(ContractID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SC_Order_DetailService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Order_Detail",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "ContractOID ='" + ContractID + "'" + " AND SheetType='PO'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  }
 };
 
 export {
