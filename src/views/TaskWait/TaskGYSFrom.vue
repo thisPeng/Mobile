@@ -25,8 +25,11 @@
     <van-cell-group v-if="data[3] === '1' && data[9] === 'false'" class="margin-vertical-xl">
       <van-button type="primary" size="large" @click="onSubmit">提交审核</van-button>
     </van-cell-group>
-    <van-cell-group v-else-if="taskTabs.codeJson">
+    <van-cell-group v-else-if="data[3] === '1' && taskTabs.codeJson">
       <taskTabs :data="taskTabs" />
+    </van-cell-group>
+    <van-cell-group v-else-if="data[3] === '1' && data[9] === 'true'" class="margin-vertical-xl">
+      <van-button size="large" disabled>审核中</van-button>
     </van-cell-group>
   </div>
 </template>

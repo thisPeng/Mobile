@@ -4,10 +4,16 @@
       <!-- <van-icon name="pending-evaluate" slot="right" class="home-icon" /> -->
       <i slot="right" class="iconfont icon-qiehuan home-icon" v-if="isMenu" />
     </van-nav-bar>
+
     <keep-alive>
-      <router-view class="content" v-if="$route.meta.keepAlive"></router-view>
+      <transition :name="transitionName">
+        <router-view class="content" v-if="$route.meta.keepAlive"></router-view>
+      </transition>
     </keep-alive>
-    <router-view class="content" v-if="!$route.meta.keepAlive"></router-view>
+    <transition :name="transitionName">
+      <router-view class="content" v-if="!$route.meta.keepAlive"></router-view>
+    </transition>
+
     <van-tabbar v-model="active" v-show="isTabbar" v-if="userType === 1">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
       <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item>
@@ -29,6 +35,7 @@ export default {
   data() {
     return {
       title: "材博汇",
+      transitionName: "slide-left",
       isBack: false,
       isTabbar: true,
       isMenu: true,
@@ -46,6 +53,13 @@ export default {
           this.title = to.meta.title;
         }
 
+        // 监听路由的路径，可以通过不同的路径去选择不同的切换效果
+        const toDepth = to.path.split("/").length;
+        const fromDepth = from.path.split("/").length;
+
+        this.transitionName =
+          toDepth < fromDepth ? "slide-right" : "slide-left";
+
         if (
           to.name !== "index" &&
           to.name !== "classify" &&
@@ -57,6 +71,7 @@ export default {
         } else {
           this.isBack = false;
           this.isTabbar = true;
+          this.transitionName = "";
           switch (to.name) {
             case "index":
               this.active = 0;
@@ -183,6 +198,7 @@ export default {
     bottom: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
   }
 }
 </style>

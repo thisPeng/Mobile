@@ -5,6 +5,7 @@ import Home from "./components/Home/Home";
 import Index from "./views/Index/Index";
 import Classify from "./views/Classify/Classify";
 import GoodsList from "./views/Classify/GoodsList";
+import GoodsSearch from "./views/Classify/GoodsSearch";
 import Cart from "./views/Cart/Cart";
 import ProjectList from "./views/Project/ProjectList";
 import Material from "./views/Project/Option/Material";
@@ -56,16 +57,16 @@ Vue.use(Router);
 export default new Router({
   // mode: "history",
   routes: [{
-      path: "/login",
+      path: "/mobile/login",
       name: "login",
       component: Login
     },
     {
       path: "/",
-      redirect: "/index",
+      redirect: "/mobile",
       component: Home,
       children: [{
-          path: "/index",
+          path: "/mobile",
           name: "index",
           component: Index,
           meta: {
@@ -74,7 +75,7 @@ export default new Router({
           }
         },
         {
-          path: "/classify",
+          path: "/mobile/classify",
           name: "classify",
           component: Classify,
           meta: {
@@ -83,7 +84,7 @@ export default new Router({
           }
         },
         {
-          path: "/goodsList",
+          path: "/mobile/goodsList",
           name: "goodsList",
           component: GoodsList,
           meta: {
@@ -91,7 +92,15 @@ export default new Router({
           }
         },
         {
-          path: "/cart",
+          path: "/mobile/goodsSearch",
+          name: "goodsSearch",
+          component: GoodsSearch,
+          meta: {
+            title: "物资搜索"
+          }
+        },
+        {
+          path: "/mobile/cart",
           name: "cart",
           component: Cart,
           meta: {
@@ -100,7 +109,7 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait",
+          path: "/mobile/taskWait",
           name: "taskWait",
           component: TaskWait,
           meta: {
@@ -108,7 +117,7 @@ export default new Router({
           }
         },
         {
-          path: "/taskList",
+          path: "/mobile/taskList",
           name: "taskList",
           component: TaskList,
           meta: {
@@ -116,7 +125,7 @@ export default new Router({
           }
         },
         {
-          path: "/projectList",
+          path: "/mobile/projectList",
           name: "projectList",
           component: ProjectList,
           meta: {
@@ -124,7 +133,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/material",
+          path: "/mobile/project/option/material",
           name: "material",
           component: Material,
           meta: {
@@ -132,7 +141,7 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait/taskYCFrom",
+          path: "/mobile/taskWait/taskYCFrom",
           name: "taskYCFrom",
           component: TaskYCFrom,
           meta: {
@@ -140,7 +149,7 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait/taskZFFrom",
+          path: "/mobile/taskWait/taskZFFrom",
           name: "taskZFFrom",
           component: TaskZFFrom,
           meta: {
@@ -148,7 +157,7 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait/taskKKFrom",
+          path: "/mobile/taskWait/taskKKFrom",
           name: "taskKKFrom",
           component: TaskKKFrom,
           meta: {
@@ -156,7 +165,7 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait/taskJDFrom",
+          path: "/mobile/taskWait/taskJDFrom",
           name: "taskJDFrom",
           component: TaskJDFrom,
           meta: {
@@ -164,7 +173,7 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait/taskPKFrom",
+          path: "/mobile/taskWait/taskPKFrom",
           name: "taskPKFrom",
           component: TaskPKFrom,
           meta: {
@@ -172,7 +181,7 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait/taskDJFrom",
+          path: "/mobile/taskWait/taskDJFrom",
           name: "taskDJFrom",
           component: TaskDJFrom,
           meta: {
@@ -180,7 +189,7 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait/taskGYSFrom",
+          path: "/mobile/taskWait/taskGYSFrom",
           name: "taskGYSFrom",
           component: TaskGYSFrom,
           meta: {
@@ -188,7 +197,7 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait/taskgysDetails",
+          path: "/mobile/taskWait/taskgysDetails",
           name: "taskgysDetails",
           component: TaskGYSDetails,
           meta: {
@@ -196,7 +205,7 @@ export default new Router({
           }
         },
         {
-          path: "/msgList",
+          path: "/mobile/msgList",
           name: "msgList",
           component: MsgList,
           meta: {
@@ -204,7 +213,7 @@ export default new Router({
           }
         },
         {
-          path: "/message",
+          path: "/mobile/message",
           name: "message",
           component: Message,
           meta: {
@@ -212,7 +221,7 @@ export default new Router({
           }
         },
         {
-          path: "/apply",
+          path: "/mobile/apply",
           name: "apply",
           component: Apply,
           meta: {
@@ -220,7 +229,7 @@ export default new Router({
           }
         },
         {
-          path: "/contact",
+          path: "/mobile/contact",
           name: "contact",
           component: Contact,
           meta: {
@@ -228,7 +237,7 @@ export default new Router({
           }
         },
         {
-          path: "/count",
+          path: "/mobile/count",
           name: "count",
           component: Count,
           meta: {
@@ -236,7 +245,7 @@ export default new Router({
           }
         },
         {
-          path: "/users",
+          path: "/mobile/users",
           name: "users",
           component: Users,
           meta: {
@@ -245,7 +254,7 @@ export default new Router({
           }
         },
         {
-          path: "/users/usersPwd",
+          path: "/mobile/users/usersPwd",
           name: "usersPwd",
           component: UsersPwd,
           meta: {
@@ -253,7 +262,7 @@ export default new Router({
           }
         },
         {
-          path: "/users/usersInfo",
+          path: "/mobile/users/usersInfo",
           name: "usersInfo",
           component: UsersInfo,
           meta: {
@@ -261,7 +270,7 @@ export default new Router({
           }
         },
         {
-          path: "/users/supplier",
+          path: "/mobile/users/supplier",
           name: "supplier",
           component: Supplier,
           meta: {
@@ -270,7 +279,7 @@ export default new Router({
           }
         },
         {
-          path: "/users/supplier/type",
+          path: "/mobile/users/supplier/type",
           name: "supplierType",
           component: SupplierType,
           meta: {
@@ -278,7 +287,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/conPrice/conprice",
+          path: "/mobile/project/option/conPrice/conprice",
           name: "conprice",
           component: ConPrice,
           meta: {
@@ -286,7 +295,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/contractInfo/contractInfo",
+          path: "/mobile/project/option/contractInfo/contractInfo",
           name: "contractInfo",
           component: ContractInfo,
           meta: {
@@ -294,7 +303,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/delivery/arrivalinformation",
+          path: "/mobile/project/option/delivery/arrivalinformation",
           name: "arrivalinformation",
           component: ArrivalInformation,
           meta: {
@@ -302,7 +311,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/infoItem/infoitem",
+          path: "/mobile/project/option/infoItem/infoitem",
           name: "infoitem",
           component: InfoItem,
           meta: {
@@ -310,7 +319,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/details/pricedetails",
+          path: "/mobile/project/option/details/pricedetails",
           name: "pricedetails",
           component: PriceDetails,
           meta: {
@@ -318,7 +327,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/details/annexContent",
+          path: "/mobile/project/option/details/annexContent",
           name: "annexContent",
           component: AnnexContent,
           meta: {
@@ -326,7 +335,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/delivery/deliverydetails",
+          path: "/mobile/project/option/delivery/deliverydetails",
           name: "deliverydetails",
           component: DeliveryDetails,
           meta: {
@@ -334,7 +343,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/delivery/arrivalDetails",
+          path: "/mobile/project/option/delivery/arrivalDetails",
           name: "arrivalDetails",
           component: ArrivalDetails,
           meta: {
@@ -342,7 +351,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/details/contractdetails",
+          path: "/mobile/project/option/details/contractdetails",
           name: "contractdetails",
           component: ContractDetails,
           meta: {
@@ -350,7 +359,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/payment/paymentlabel",
+          path: "/mobile/project/option/payment/paymentlabel",
           name: "paymentlabel",
           component: PaymentLabel,
           meta: {
@@ -358,7 +367,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/materialquotation/quotation",
+          path: "/mobile/transaction/materialquotation/quotation",
           name: "quotation",
           component: Quotation,
           meta: {
@@ -366,7 +375,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/materialquotation/tranrialDetail",
+          path: "/mobile/transaction/materialquotation/tranrialDetail",
           name: "tranrialDetail",
           component: TranrialDetail,
           meta: {
@@ -374,7 +383,7 @@ export default new Router({
           }
         },
         {
-          path: "/customerlist/customerlist",
+          path: "/mobile/customerlist/customerlist",
           name: "customerlist",
           component: Customerlist,
           meta: {
@@ -382,7 +391,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/tranContract/trancontract",
+          path: "/mobile/transaction/tranContract/trancontract",
           name: "trancontract",
           component: TranContract,
           meta: {
@@ -390,7 +399,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/shippinginfo/shippinginfo",
+          path: "/mobile/transaction/shippinginfo/shippinginfo",
           name: "shippinginfo",
           component: ShippingInfo,
           meta: {
@@ -398,7 +407,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/shippinginfo/shippingDetails",
+          path: "/mobile/transaction/shippinginfo/shippingDetails",
           name: "shippingDetails",
           component: ShippingDetails,
           meta: {
@@ -406,7 +415,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/shippinginfo/deliveryDetail",
+          path: "/mobile/transaction/shippinginfo/deliveryDetail",
           name: "deliveryDetail",
           component: DeliveryDetail,
           meta: {
@@ -414,7 +423,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/tranPayment/tranpayment",
+          path: "/mobile/transaction/tranPayment/tranpayment",
           name: "tranpayment",
           component: TranPayment,
           meta: {
@@ -422,7 +431,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/materialquotation/tranrial",
+          path: "/mobile/transaction/materialquotation/tranrial",
           name: "tranrial",
           component: Tranrial,
           meta: {
@@ -430,7 +439,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/tranContract/inventory",
+          path: "/mobile/transaction/tranContract/inventory",
           name: "inventory",
           component: Inventory,
           meta: {
@@ -438,7 +447,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/conPrice/inquirydetails",
+          path: "/mobile/project/option/conPrice/inquirydetails",
           name: "inquirydetails",
           component: InquiryDetails,
           meta: {
@@ -446,7 +455,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/conprice/contractwork",
+          path: "/mobile/project/option/conprice/contractwork",
           name: "contractwork",
           component: ContractWork,
           meta: {
@@ -454,7 +463,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/details/contractlabor",
+          path: "/mobile/project/option/details/contractlabor",
           name: "contractlabor",
           component: ContractLabor,
           meta: {

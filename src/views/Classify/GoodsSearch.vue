@@ -21,16 +21,13 @@
     <div class="classify-data">
       <div class="classify-list">
         <div class="list-item" v-for="(item, index) in goodsList" :key="index" @click="showInfo(item)">
-          <van-card :title="item[22]" :desc="item[28] + ' | 单位：' + item[23]" :price="item[5]" :thumb="item[41].replace('~',servePath)">
-            <!-- <div slot="desc">
+          <van-card :title="item[22]" :price="item[5]" :thumb="item[41].replace('~',servePath)">
+            <div slot="desc">
+              <div class="item-desc">{{item[28] + ' | 单位：' + item[23]}}</div>
               <div class="item-brand">
-                <van-tag plain type="success">品牌： {{item[24]}}</van-tag>
+                <van-tag plain type="success">品牌：{{item[24]}}</van-tag>
+                <!-- <van-tag plain type="danger" class="margin-left-xs">{{item[29]}}</van-tag> -->
               </div>
-              <div class="item-price">￥ {{item[5]}}</div>
-            </div> -->
-            <div slot="footer">
-              <!-- <i class="iconfont icon-xiangqing" @click="showInfo(item)"></i> -->
-              <i class="iconfont icon-add" @click.stop="addCart(item)"></i>
             </div>
           </van-card>
         </div>
@@ -53,11 +50,6 @@
         </div>
       </div>
     </van-popup>
-    <!--购物车-->
-    <div class="cart-icon" @click="jumpCart" v-if="projectInfo.ProjectNo">
-      <div class="icon-number">{{goodsPages.RecordCount}}</div>
-      <i class="iconfont icon-gouwuchekong"></i>
-    </div>
     <!--商品详情-->
     <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
       <template slot="sku-body-top" slot-scope="props">
@@ -71,10 +63,7 @@
         <div></div>
       </template>
       <template slot="sku-actions" slot-scope="props">
-        <div class="van-sku-actions">
-          <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">加入购物车</van-button>
-        </div>
+        <div></div>
       </template>
     </van-sku>
     <!--分页组件-->
@@ -188,6 +177,7 @@ export default {
     },
     // 显示物资详情
     showInfo(item) {
+      // console.log(item);
       this.goods = {
         id: item[0],
         sid: item[31],
@@ -393,6 +383,18 @@ export default {
           }
           .item-price {
             color: #ff4257;
+          }
+          .item-desc {
+            color: #666;
+            font-size: 12px;
+            overflow: hidden;
+            line-height: 20px;
+            max-height: 40px;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            white-space: normal;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
           }
           .iconfont {
             color: #00a0e9;
