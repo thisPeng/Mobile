@@ -149,7 +149,7 @@ export default {
       }
     }
 
-    if (current.name !== "goodsList") {
+    if (current.name !== "goodsSearch") {
       users.userInfo().then(result => {
         if (result && this.userInfo.oid !== result.oid) {
           this.$store.commit("cleanStore", true);
@@ -161,7 +161,7 @@ export default {
           });
         }
       });
-    } else if (current.name === "goodsList" && !this.userInfo.oid) {
+    } else if (current.name === "goodsSearch" && !this.userInfo.oid) {
       this.title = "物资查询";
       this.isBack = false;
       this.isTabbar = false;

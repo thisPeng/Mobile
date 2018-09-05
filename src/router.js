@@ -96,7 +96,7 @@ export default new Router({
           name: "goodsSearch",
           component: GoodsSearch,
           meta: {
-            title: "物资搜索"
+            title: "物资查询"
           }
         },
         {
