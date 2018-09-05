@@ -51,6 +51,7 @@ export default {
             const sp = res.text.split("[[");
             const csp = sp[1].split(";");
             const list = eval("[[" + csp[0]);
+            // console.log(list);
             const listOrder = [];
             let tmp = "";
             // 数据分组
