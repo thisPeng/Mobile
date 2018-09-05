@@ -34,8 +34,8 @@ const index = {
       data: {
         _bpoName: "BPO_CodeValueService",
         _methodName: "GetCodeValue",
-        "_parameters[UserOrgOID]": params.uid,
-        "_parameters[CodeTableID]": params.cid,
+        "_parameters[UserOrgOID]": params.id,
+        "_parameters[CodeTableID]": params.code,
         _paraNames: "UserOrgOID,CodeTableID",
         _pUrl: ""
       }

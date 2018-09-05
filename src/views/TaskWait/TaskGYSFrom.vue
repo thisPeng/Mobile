@@ -4,14 +4,17 @@
       <van-field v-model="data[35]" label="供应商编号：" :disabled="true" />
       <van-field v-model="data[22]" label="单位名称：" :disabled="true" />
       <van-field v-model="data[25]" label="统一社会信用码：" :disabled="edit" />
-      <van-field v-model="data[23]" label="单位类别：" :disabled="edit" />
-      <van-field v-model="data[26]" label="纳税人类别：" :disabled="edit" />
+      <van-field v-model="data[23]" label="单位类别：" :disabled="edit" v-if="edit" />
+      <cbhSelect v-model="data[23]" label="单位类别：" code="CodeTable_Unit" @change="onUnitChange" v-else />
+      <van-field v-model="data[26]" label="纳税人类别：" :disabled="edit" v-if="edit" />
+      <cbhSelect v-model="data[26]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onTaxChange" v-else />
       <van-field v-model="data[27]" label="税率：" :disabled="edit" />
       <van-field v-model="data[28]" label="开户行：" :disabled="edit" />
       <van-field v-model="data[29]" label="银行账号：" :disabled="edit" />
-      <!-- <van-field :value="data[62] + ' ' + data[63] + ' ' + data[64]" label="公司地址：" :disabled="edit" /> -->
-      <regionSelect />
       <van-field v-model="data[49]" label="可开票税率：" :disabled="edit" />
+      <!--省市区组件-->
+      <van-field :value="data[62]+data[63]+data[64]" label="公司地址：" :disabled="edit" v-if="edit" />
+      <regionSelect :prov="data[58]" :city="data[59]" :district="data[60]" @change="onRegionChange" v-else />
       <van-field v-model="data[30]" label="详细地址：" :disabled="edit" />
       <van-field v-model="data[31]" label="联系人：" :disabled="edit" />
       <van-field v-model="data[32]" label="固定电话：" :disabled="edit" />
@@ -31,6 +34,7 @@
 import computed from "./../../assets/js/computed.js";
 import taskTabs from "./../../components/TaskWait/Tabs";
 import regionSelect from "./../../components/Select/Region";
+import cbhSelect from "./../../components/Select/Select";
 import { task } from "./../../assets/js/api.js";
 export default {
   data() {
@@ -45,13 +49,27 @@ export default {
   computed,
   components: {
     taskTabs,
-    regionSelect
+    regionSelect,
+    cbhSelect
   },
   methods: {
     jumpPage() {
       this.$router.push({
         name: "taskgysDetails"
       });
+    },
+    onUnitChange(res) {
+      this.data[23] = res;
+    },
+    onTaxChange(res) {
+      // console.log(res);
+      this.data[26] = res;
+    },
+    onRegionChange(res) {
+      console.log(res);
+      this.data[58] = res.prov;
+      this.data[59] = res.city;
+      this.data[60] = res.district;
     },
     // 提交审核供应商
     onSubmit() {
@@ -84,14 +102,48 @@ export default {
             this.data = eval("[[" + tsp[0] + "]]")[0];
             this.taskTabs.InstanceID = this.data[10];
             this.taskTabs.FlowID = this.data[11];
+            this.taskTabs.BCName = "BC_SC_Supplier";
 
             this.taskTabs.params = {
-              SC_Money_InOutOID: this.data[0],
-
+              SC_SupplierOID: this.data[0],
+              TaxpayerNo: this.data[25],
+              SupplierType: this.data[23],
+              TaxpayerType: this.data[26],
+              Taxrate: this.data[27],
+              BankName: this.data[28],
+              BankNo: this.data[29],
+              prov_ID: this.data[58],
+              district_ID: this.data[59],
+              city_ID: this.data[60],
+              Taxrate_Can: this.data[49],
+              FactoryAddress: this.data[30],
+              Contacts: this.data[31],
+              Telephone: this.data[32],
+              Moblephone: this.data[33],
+              Mailbox: this.data[34],
               SYS_LAST_UPD_BY: this.data[20],
               SYS_LAST_UPD: this.data[13]
             };
-            this.taskTabs.arrays = [0, 20, 13];
+            this.taskTabs.arrays = [
+              0,
+              25,
+              23,
+              26,
+              27,
+              28,
+              29,
+              58,
+              59,
+              60,
+              49,
+              30,
+              31,
+              32,
+              33,
+              34,
+              20,
+              13
+            ];
             task.getFlowAssignData(this.data[10]).then(res => {
               if (res && res.status === 1) {
                 sp = res.text.split(";");

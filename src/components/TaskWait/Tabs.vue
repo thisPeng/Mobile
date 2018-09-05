@@ -136,7 +136,6 @@ export default {
             }
             index++;
           }
-
           if (that.data.payment) {
             index = 0;
             bcName = "BC_SC_Pay_Apply";
@@ -185,6 +184,10 @@ export default {
                 tmpsStr +
                 `</BC_SC_Pay_Detail>`;
             }
+          }
+
+          if (this.data.BCName) {
+            bcName = this.data.BCName;
           }
 
           that.data.DeltaXml =

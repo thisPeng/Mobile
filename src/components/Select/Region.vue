@@ -2,17 +2,20 @@
   <div class="region">
     <van-cell-group>
       <van-cell title="省份：">
-        <select class="taskSelect" v-model="pid" @change="onChangeP">
+        <select class="taskSelect" v-model="provRes" @change="districtRes=cityRes='';onChangeP()">
+          <option>请选择</option>
           <option v-for="(item,index) in regionP" :key="index" :value="item.id">{{item.name}}</option>
         </select>
       </van-cell>
       <van-cell title="城市：">
-        <select class="taskSelect" v-model="cid" @change="onChangeC">
+        <select class="taskSelect" v-model="cityRes" @change="districtRes='';onChangeC()">
+          <option>请选择</option>
           <option v-for="(item,index) in regionC" :key="index" :value="item.id">{{item.name}}</option>
         </select>
       </van-cell>
       <van-cell title="区域：">
-        <select class="taskSelect" v-model="xid">
+        <select class="taskSelect" v-model="districtRes">
+          <option>请选择</option>
           <option v-for="(item,index) in regionX" :key="index" :value="item.id">{{item.name}}</option>
         </select>
       </van-cell>
@@ -26,18 +29,32 @@ import { index } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      pid: "",
-      cid: "",
-      xid: "",
+      provRes: "",
+      cityRes: "",
+      districtRes: "",
       regionP: [],
       regionC: [],
       regionX: []
     };
   },
   computed,
+  props: {
+    prov: {
+      type: String,
+      default: ""
+    },
+    city: {
+      type: String,
+      default: ""
+    },
+    district: {
+      type: String,
+      default: ""
+    }
+  },
   methods: {
     getRegional(BCName, SQLCondi) {
-      index.getRegional(BCName, SQLCondi).then(res => {
+      return index.getRegional(BCName, SQLCondi).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split(";");
@@ -57,8 +74,7 @@ export default {
               this.regionX = arr;
             } else {
               this.regionP = arr;
-              this.regionC = [];
-              this.regionX = [];
+              this.regionC = this.regionX = [];
             }
           }
         } catch (e) {
@@ -66,15 +82,51 @@ export default {
         }
       });
     },
-    onChangeP() {
-      this.getRegional("BC_SC_RegionalData_C", "ParentOID='" + this.pid + "'");
+    // 获取城市数据
+    getCity(val) {
+      this.getRegional("BC_SC_RegionalData_C", "ParentOID='" + val + "'");
+      const params = {
+        prov: this.provRes,
+        city: this.cityRes,
+        district: this.districtRes
+      };
+      this.$emit("change", params);
     },
+    // 获取县/区域数据
+    getDistrict(val) {
+      this.getRegional("BC_SC_RegionalData_X", "ParentOID='" + val + "'");
+      const params = {
+        prov: this.provRes,
+        city: this.cityRes,
+        district: this.districtRes
+      };
+      this.$emit("change", params);
+    },
+    // 选择省份，重新获取城市数据
+    onChangeP() {
+      this.getCity(this.provRes);
+      const params = {
+        prov: this.provRes,
+        city: this.cityRes,
+        district: this.districtRes
+      };
+      this.$emit("change", params);
+    },
+    // 选择城市，重新获取县/区域数据
     onChangeC() {
-      this.getRegional("BC_SC_RegionalData_X", "ParentOID='" + this.cid + "'");
+      this.getDistrict(this.cityRes);
     }
   },
   mounted() {
-    this.getRegional();
+    this.getRegional().then(() => {
+      this.provRes = this.prov;
+      this.cityRes = this.city;
+      this.$nextTick(() => {
+        this.onChangeP();
+        this.districtRes = this.district;
+        this.$nextTick(this.onChangeC);
+      });
+    });
   }
 };
 </script>
