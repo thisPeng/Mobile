@@ -1595,7 +1595,7 @@ const offer = {
       }
     })
   },
-    //发货单选择
+  //发货单选择
   getShipped(PartnerID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1617,7 +1617,7 @@ const offer = {
       }
     })
   },
-  getShipping(PartnerID = "") {
+  getShipping(SC_Order_ContractOID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1630,7 +1630,7 @@ const offer = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "ProjectID ='" + PartnerID + "'" + " AND (Approve_Flag = '1'  or Approve_Flag='2' )",
+        "_parameters[SQLCondi]": "SheetType='PO' AND Deliver_Select<>2 and ContractID='" + SC_Order_ContractOID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",

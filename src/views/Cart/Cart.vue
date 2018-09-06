@@ -26,10 +26,6 @@
                     <div class="van-card__title">{{item[14]}}</div>
                     <div class="van-card__price">{{'￥ '+item[19]}}</div>
                   </div>
-                  <!-- <div slot="tags" @click.stop="onShowInfo(item)">
-                      <van-tag plain type="primary">供应商： {{item[18]}}</van-tag>
-                      <van-tag plain type="danger" class="margin-left-xs">历史均价：{{'￥ '+item[22]}}</van-tag>
-                    </div> -->
                   <div slot="footer">
                     <van-stepper v-model="item[3]" :integer="true" @change="onChangNumber(item)" />
                   </div>
