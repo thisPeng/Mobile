@@ -16,6 +16,7 @@ import cbhRegion from "./components/Select/Region";
 import cbhSelect from "./components/Select/Select";
 import axios from './assets/js/request';
 import echarts from 'echarts'
+import * as custom from './assets/js/filters'
 
 Vue.use(Vant);
 Vue.use(Lazyload);
@@ -27,6 +28,11 @@ Vue.prototype.$util = util;
 Vue.prototype.$axios = axios;
 Vue.prototype.$echarts = echarts;
 Vue.config.productionTip = false;
+
+// 过滤器
+Object.keys(custom).forEach(key => {
+  Vue.filter(key, custom[key])
+})
 
 // 图片地址
 if (process.env.NODE_ENV === "production") {

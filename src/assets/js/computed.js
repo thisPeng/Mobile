@@ -29,6 +29,9 @@ export default mapState({
   projectModel: state => {
     return state.projectModel;
   },
+  codeValue: state => {
+    return state.codeValue;
+  },
   clientInfo: state => {
     return state.clientInfo;
   },
