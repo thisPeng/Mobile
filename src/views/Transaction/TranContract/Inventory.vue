@@ -3,29 +3,29 @@
   <div class="inventory">
     <div class="inv-data">
       <div class="inv-card">
-        <div class="inv-item">
-          <!-- v-for="(item,index) in list" :key="index" @click="jumpage('pricedetails')" -->
+        <div class="inv-item" v-for="(item,index) in list" :key="index">
+          <!--  @click="jumpage('pricedetails')" -->
           <div class="item-title">
-            <span class="title">品名：{{item}}</span>
+            <span class="title">品名：{{item[4]}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">规格型号：{{item}}</span>
+              <span class="row-left">规格型号：{{item[8]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">实际数量{{item}}</span>
-              <span class="row-left">赠送数量{{item}}</span>
+              <span class="row-left">实际数量{{item[11]}}</span>
+              <span class="row-left">赠送数量{{item[12]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">单位{{item}}</span>
-              <span class="row-left">小计{{item}}</span>
+              <span class="row-left">单位{{item[28]}}</span>
+              <span class="row-left">实价{{item[14]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">税率{{item}}</span>
-              <span class="row-left">产品编号{{item}}</span>
+              <span class="row-left">小计{{item[15]}}</span>
+              <span class="row-left">税率{{item[16]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">备注{{item}}</span>
+              <span class="row-left">备注{{item[19]}}</span>
             </div>
           </div>
         </div>
@@ -40,17 +40,22 @@ import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-      item: ""
+      list:[]
     };
   },
   computed,
   methods: {
-    getData(){
-      offer.getContractDetail(this.confirmParams[0]).then(res =>{
-        console.log(res);
-      })
+    getData() {
+      offer.getContractDetail(this.confirmParams[0]).then(res => {
+        if(res && res.status ===1){
+          const sp = res.text.split("[[");
+          const csp = sp[1].split(";");
+          this.list = eval("[[" +csp[0])
+          // console.log(this.list);
+        }
+      });
     },
-    pageInit(){
+    pageInit() {
       this.getData();
     }
   },
