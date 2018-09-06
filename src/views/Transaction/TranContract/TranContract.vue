@@ -49,7 +49,7 @@ export default {
          const csp = sp[1].split(";");
         //  console.log(csp);
          this.list=eval("[["+csp[0]);
-         console.log(this.list);
+        //  console.log(this.list);
        }
       });
     },
