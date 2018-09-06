@@ -5,16 +5,16 @@
       <van-field v-model="data[22]" label="单位名称：" :disabled="true" />
       <van-field v-model="data[25]" label="统一社会信用码：" :disabled="edit" />
       <van-field v-model="data[23]" label="单位类别：" :disabled="edit" v-if="edit" />
-      <cbhSelect v-model="data[23]" label="单位类别：" code="CodeTable_Unit" @change="onUnitChange" v-else />
+      <cbh-select v-model="data[23]" label="单位类别：" code="CodeTable_Unit" @change="onUnitChange" v-else />
       <van-field v-model="data[26]" label="纳税人类别：" :disabled="edit" v-if="edit" />
-      <cbhSelect v-model="data[26]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onTaxChange" v-else />
+      <cbh-select v-model="data[26]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onTaxChange" v-else />
       <van-field v-model="data[27]" label="税率：" :disabled="edit" />
       <van-field v-model="data[28]" label="开户行：" :disabled="edit" />
       <van-field v-model="data[29]" label="银行账号：" :disabled="edit" />
       <van-field v-model="data[49]" label="可开票税率：" :disabled="edit" />
       <!--省市区组件-->
       <van-field :value="data[62]+data[63]+data[64]" label="公司地址：" :disabled="edit" v-if="edit" />
-      <regionSelect :prov="data[58]" :city="data[59]" :district="data[60]" @change="onRegionChange" v-else />
+      <cbh-region :prov="data[58]" :city="data[59]" :district="data[60]" @change="onRegionChange" v-else />
       <van-field v-model="data[30]" label="详细地址：" :disabled="edit" />
       <van-field v-model="data[31]" label="联系人：" :disabled="edit" />
       <van-field v-model="data[32]" label="固定电话：" :disabled="edit" />
@@ -25,7 +25,7 @@
     <van-cell-group v-if="data[3] === '1' && data[9] === 'false'" class="margin-vertical-xl">
       <van-button type="primary" size="large" @click="onSubmit">提交审核</van-button>
     </van-cell-group>
-    <van-cell-group v-else-if="data[3] === '1' && taskTabs.codeJson">
+    <van-cell-group v-else-if="data[3] === '2' && taskTabs.codeJson">
       <taskTabs :data="taskTabs" />
     </van-cell-group>
     <van-cell-group v-else-if="data[3] === '1' && data[9] === 'true'" class="margin-vertical-xl">
@@ -36,8 +36,6 @@
 <script>
 import computed from "./../../assets/js/computed.js";
 import taskTabs from "./../../components/TaskWait/Tabs";
-import regionSelect from "./../../components/Select/Region";
-import cbhSelect from "./../../components/Select/Select";
 import { task } from "./../../assets/js/api.js";
 export default {
   data() {
@@ -51,9 +49,7 @@ export default {
   },
   computed,
   components: {
-    taskTabs,
-    regionSelect,
-    cbhSelect
+    taskTabs
   },
   methods: {
     jumpPage() {
