@@ -4,7 +4,7 @@
     <div class="pay-data">
       <div class="pay-card">
         <div class="pay-item" v-for="(item,index) in list" :key="index">
-          <!--  @click="jumpage('pricedetails')" -->
+          <!--  @click="jumpPage('pricedetails')" -->
           <div class="item-title">
             <span class="title">收款单位：{{item[38]}}</span>
           </div>

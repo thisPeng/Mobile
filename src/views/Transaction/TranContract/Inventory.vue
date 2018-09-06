@@ -4,7 +4,7 @@
     <div class="inv-data">
       <div class="inv-card">
         <div class="inv-item" v-for="(item,index) in list" :key="index">
-          <!--  @click="jumpage('pricedetails')" -->
+          <!--  @click="jumpPage('pricedetails')" -->
           <div class="item-title">
             <span class="title">品名：{{item[4]}}</span>
           </div>

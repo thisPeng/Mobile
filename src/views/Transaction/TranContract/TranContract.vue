@@ -4,12 +4,12 @@
     <div class="tran-data">
       <div class="tran-card">
         <div class="tran-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
-          <!--  @click="jumpage('pricedetails')" -->
+          <!--  @click="jumpPage('pricedetails')" -->
           <div class="item-title">
             <span class="title">{{item[11]}}</span>
           </div>
           <div class="item-content">
-             <div class="content-row">
+            <div class="content-row">
               <span class="row-left">{{item[15]}}</span>
             </div>
             <div class="content-row">
@@ -33,7 +33,7 @@ import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-     list:[]
+      list: []
     };
   },
   computed,
@@ -44,22 +44,22 @@ export default {
         sid: this.userInfo.oid
       };
       offer.getContract(params).then(res => {
-       if(res && res.status ===1){
-         const sp = res.text.split("[[");
-         const csp = sp[1].split(";");
-        //  console.log(csp);
-         this.list=eval("[["+csp[0]);
-        //  console.log(this.list);
-       }
+        if (res && res.status === 1) {
+          const sp = res.text.split("[[");
+          const csp = sp[1].split(";");
+          //  console.log(csp);
+          this.list = eval("[[" + csp[0]);
+          //  console.log(this.list);
+        }
       });
     },
-    pageInit(){
+    pageInit() {
       this.getData();
     },
     jumpPage(item) {
-      this.$store.commit("confirmParams",item);
+      this.$store.commit("confirmParams", item);
       this.$router.push({
-        name:"inventory"
+        name: "inventory"
       });
     }
   },

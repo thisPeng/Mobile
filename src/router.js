@@ -7,6 +7,7 @@ import Classify from "./views/Classify/Classify";
 import GoodsList from "./views/Classify/GoodsList";
 import GoodsSearch from "./views/Classify/GoodsSearch";
 import Cart from "./views/Cart/Cart";
+import Inquiry from "./views/Inquiry/Inquiry";
 import ProjectList from "./views/Project/ProjectList";
 import Material from "./views/Project/Option/Material";
 import ConPrice from "./views/Project/Option/ConPrice/ConPrice";
@@ -106,6 +107,15 @@ export default new Router({
           component: Cart,
           meta: {
             title: "购物车",
+            // keepAlive: true
+          }
+        },
+        {
+          path: "/inquiry",
+          name: "inquiry",
+          component: Inquiry,
+          meta: {
+            title: "询价单",
             // keepAlive: true
           }
         },
@@ -251,7 +261,7 @@ export default new Router({
           component: Users,
           meta: {
             title: "用户中心",
-            keepAlive: true
+            // keepAlive: true
           }
         },
         {

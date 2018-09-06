@@ -22,7 +22,7 @@
     </van-tabbar>
     <van-tabbar v-model="active" v-show="isTabbar" v-else>
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
-      <!-- <van-tabbar-item icon="records" @click="jumpTabs('conprice')">询价单</van-tabbar-item> -->
+      <van-tabbar-item icon="records" @click="jumpTabs('inquiry')">询价单</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -64,7 +64,8 @@ export default {
           to.name !== "index" &&
           to.name !== "classify" &&
           to.name !== "cart" &&
-          to.name !== "users"
+          to.name !== "users" &&
+          to.name !== "inquiry"
         ) {
           this.isBack = true;
           this.isTabbar = false;
@@ -83,13 +84,18 @@ export default {
               this.active = 2;
               break;
             case "users":
-              this.active = this.userType === 1 ? 3 : 1;
+              this.active = this.userType === 1 ? 3 : 2;
+              break;
+            case "inquiry":
+              this.active = this.userType === 1 ? 0 : 1;
               break;
           }
         }
-        if (from.name === "projectList" && to.meta.keepAlive && this.isReload) {
-          this.$store.commit("isReload", false);
-          this.$router.go(0);
+        if (from.name === "projectList" || from.name === "customerlist") {
+          if (to.meta.keepAlive && this.isReload) {
+            this.$store.commit("isReload", false);
+            this.$router.go(0);
+          }
         }
       } catch (e) {
         console.log(e);
@@ -126,7 +132,8 @@ export default {
       current.name !== "index" &&
       current.name !== "classify" &&
       current.name !== "cart" &&
-      current.name !== "users"
+      current.name !== "users" &&
+      current.name !== "inquiry"
     ) {
       this.isBack = true;
       this.isTabbar = false;
@@ -144,7 +151,10 @@ export default {
           this.active = 2;
           break;
         case "users":
-          this.active = this.userType === 1 ? 3 : 1;
+          this.active = this.userType === 1 ? 3 : 2;
+          break;
+        case "inquiry":
+          this.active = this.userType === 1 ? 0 : 1;
           break;
       }
     }

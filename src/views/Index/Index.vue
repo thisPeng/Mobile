@@ -107,12 +107,12 @@
       <van-swipe class="apply-project" v-else>
         <van-swipe-item>
           <div class="project">
-            <div class="project-item" @click="jumpPage('quotation')">
+            <!-- <div class="project-item" @click="jumpPage('quotation')">
               <div class="item-icon bg-mint">
                 <i class="iconfont icon-icon-price" />
               </div>
               <div class="project-text">物质报价</div>
-            </div>
+            </div> -->
             <div class="project-item" @click="jumpPage('trancontract')">
               <div class="item-icon bg-red">
                 <i class="iconfont icon-hetong" />
