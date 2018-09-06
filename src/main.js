@@ -6,15 +6,23 @@ import util from '../src/assets/js/util'
 import './registerServiceWorker'
 import "normalize.css";
 import Vant from 'vant';
-import { Lazyload } from 'vant';
+import {
+  Lazyload
+} from 'vant';
 import 'vant/lib/vant-css/index.css';
 import './assets/css/iconfont.css';
 import "./assets/css/theme.less";
+import cbhRegion from "./components/Select/Region";
+import cbhSelect from "./components/Select/Select";
 import axios from './assets/js/request';
 import echarts from 'echarts'
 
 Vue.use(Vant);
 Vue.use(Lazyload);
+Vue.use(cbhRegion);
+Vue.use(cbhSelect);
+Vue.component('cbh-region', cbhRegion)
+Vue.component('cbh-select', cbhSelect)
 Vue.prototype.$util = util;
 Vue.prototype.$axios = axios;
 Vue.prototype.$echarts = echarts;
