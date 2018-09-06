@@ -65,6 +65,7 @@
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
+import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -72,8 +73,27 @@ export default {
     };
   },
   computed,
-  method: {},
-  mounted() {}
+  methods: {
+    getInfo(){
+      const params ={
+        suid:this.userInfo.oid,
+        paid:this.clientInfo[0],
+        prid:this.contractParams[3]
+      }
+      offer.getNotShippded(params).then(res =>{
+        console.log(res);
+      })
+    },
+    getData() {
+      offer.getShipped(this.contractParams[3]).then(res => {
+        console.log(res);
+      });
+    }
+  },
+  mounted() {
+    this.getData();
+    this.getInfo();
+  }
 };
 </script>
 <style lang="less" scoped>

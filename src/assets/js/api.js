@@ -1580,21 +1580,64 @@ const offer = {
   },
   // 新增发货单
   // 先通过后端计算出未发货的数据：
-  getNotShippded(params={}){
+  getNotShippded(params = {}) {
     return axios({
-      url:"/UCMLWebServiceEntryForJs.aspx",
-      method:"post",
-      data:{
-        _bpoName:"BPO_Deliver_ListService",
-        _methodName:"UpdateDeliverStatus",
-        "_parameters[SupplierID]":params.suid,
-        "_parameters[PartnerID]":params.paid,
-        "_parameters[ProjectID]":params.prid,
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_ListService",
+        _methodName: "UpdateDeliverStatus",
+        "_parameters[SupplierID]": params.suid,
+        "_parameters[PartnerID]": params.paid,
+        "_parameters[ProjectID]": params.prid,
         _paraNames: "PartnerID,ProjectID,SupplierID",
         _pUrl: ""
       }
     })
-  }
+  },
+    //发货单选择
+  getShipped(PartnerID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_Contract_DetailService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Order_Contract",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "ProjectID ='" + PartnerID + "'" + " AND (Approve_Flag = '1'  or Approve_Flag='2' )",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  getShipping(PartnerID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SC_Order_DetailService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Order_Detail ",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": 20,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "ProjectID ='" + PartnerID + "'" + " AND (Approve_Flag = '1'  or Approve_Flag='2' )",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
 };
 
 export {

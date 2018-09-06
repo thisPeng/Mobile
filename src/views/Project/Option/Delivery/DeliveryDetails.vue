@@ -7,8 +7,8 @@
       <van-field v-model="item[39]" label="工程名称:" disabled />
       <van-field v-model="item[8]" label="发货时间:" disabled />
       <van-field v-model="item[40]" label="工程地址:" disabled />
-      <van-field v-model="item[13]" label="发货方式:" disabled />
-      <van-field v-model="item[41]" label="单据状态:" disabled />
+      <van-field :value="item[13]|codeValue('CodeTable_Deliver_Type')" label="发货方式:" disabled />
+      <van-field :value="item[41]" label="单据状态:" disabled />
       <van-field v-model="item[19]" label="审核人:" disabled />
       <van-field v-model="item[10]" label="发货数量:" disabled />
       <van-field v-model="item[42]" label="签收状态:" disabled />
@@ -26,7 +26,7 @@
 </template>
 <script>
 import computed from "./../../../../assets/js/computed.js";
-import {  arrival } from "./../../../../assets/js/api.js"; //index
+import { arrival } from "./../../../../assets/js/api.js"; //index
 export default {
   data() {
     return {
