@@ -1570,7 +1570,7 @@ const offer = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "ContractOID ='" + ContractID + "'" + " AND SheetType='PO'",
+        "_parameters[SQLCondi]": "ContractID ='" + ContractID + "'" + " AND SheetType='PO'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
