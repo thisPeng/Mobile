@@ -9,7 +9,6 @@ import GoodsSearch from "./views/Classify/GoodsSearch";
 import Cart from "./views/Cart/Cart";
 import Inquiry from "./views/Inquiry/Inquiry";
 import ProjectList from "./views/Project/ProjectList";
-import Material from "./views/Project/Option/Material";
 import ConPrice from "./views/Project/Option/ConPrice/ConPrice";
 import ContractInfo from "./views/Project/Option/ContractInfo/ContractInfo";
 import ArrivalInformation from "./views/Project/Option/Delivery/ArrivalInformation";
@@ -49,6 +48,7 @@ import NewInvoice from "./views/Transaction/ShippingInfo/NewInvoice";
 import DeliveryDetail from "./views/Transaction/ShippingInfo/DeliveryDetail";
 import TranPayment from "./views/Transaction/TranPayment/TranPayment";
 import Tranrial from "./views/Transaction/MaterialQuotation/Tranrial";
+import TranrialAnnex from "./views/Transaction/MaterialQuotation/TranrialAnnex";
 import Inventory from "./views/Transaction/TranContract/Inventory";
 import Customerlist from "./views/CustomerList/CustomerList";
 import InquiryDetails from "./views/Project/Option/ConPrice/InquiryDetails";
@@ -141,14 +141,6 @@ export default new Router({
           component: ProjectList,
           meta: {
             title: "选择项目"
-          }
-        },
-        {
-          path: "/project/option/material",
-          name: "material",
-          component: Material,
-          meta: {
-            title: "项目详情"
           }
         },
         {
@@ -378,7 +370,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/materialquotation/quotation",
+          path: "/transaction/materialquotation",
           name: "quotation",
           component: Quotation,
           meta: {
@@ -394,6 +386,14 @@ export default new Router({
           }
         },
         {
+          path: "/transaction/materialquotation/tranrialannex",
+          name: "tranrialAnnex",
+          component: TranrialAnnex,
+          meta: {
+            title: "询价单附件" //页面标题
+          }
+        },
+        {
           path: "/customerlist/customerlist",
           name: "customerlist",
           component: Customerlist,
@@ -402,7 +402,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/tranContract/trancontract",
+          path: "/transaction/trancontract",
           name: "trancontract",
           component: TranContract,
           meta: {
@@ -458,7 +458,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/tranContract/inventory",
+          path: "/transaction/trancontract/inventory",
           name: "inventory",
           component: Inventory,
           meta: {
