@@ -1,5 +1,5 @@
 <template>
-<!-- 项目信息 -->
+  <!-- 项目信息 -->
   <div class="infoitem">
     <van-cell-group>
       <van-field v-model="info[2]" label="工程编号：" disabled />

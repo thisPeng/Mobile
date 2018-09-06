@@ -3,7 +3,7 @@
   <div class="shippinginfo">
     <div class="info-data">
       <div class="info-card">
-        <div class="info-item" v-for="(item,index) in list" :key="index" @click="jumpage(item)">
+        <div class="info-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
           <div class="item-title">
             <span class="title">{{item[8]}}</span>
           </div>
@@ -55,32 +55,20 @@ export default {
         }
       });
     },
-    //先通过后端计算出未发货的数据：
-    getInfo() {
-      const params = {
-        paid: this.clientInfo[0],
-        prid: this.contractParams[3],
-        suid: this.userInfo.oid
-        // projectInfo.SC_ProjectOID
-      };
-      offer.getNotShippded(params).then(res => {
-        console.log(res);
-        // if(res.status ===1 || res.text===true){
-        //     this.$router.push({
-        //name: "shippingDetails"
-        //});
-        // }
-      });
-    },
     pageInit() {
       this.getData();
-      this.getInfo();
     },
-    jumpage(item) {
+    jumpPage(item) {
       this.$store.commit("contractParams", item);
-      this.$router.push({
-        name: "shippingDetails"
-      });
+      if (item[1]) {
+        this.$router.push({
+          name: "shippingDetails"
+        });
+      } else {
+        this.$router.push({
+          name: "newInvoice"
+        });
+      }
     }
   },
   mounted() {
