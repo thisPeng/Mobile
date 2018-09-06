@@ -4,7 +4,6 @@
     <div class="info-data">
       <div class="info-card">
         <div class="info-item" v-for="(item,index) in list" :key="index" @click="jumpage(item)">
-          <!--  @click="jumpage('pricedetails')" -->
           <div class="item-title">
             <span class="title">{{item[8]}}</span>
           </div>
@@ -13,11 +12,11 @@
               <span class="row-left">{{item[10]}}</span>
               <span class="row-right">{{item[11]}}</span>
             </div>
-             <div class="content-row">
+            <div class="content-row">
               <span class="row-left">{{item[14]}}</span>
               <span class="row-right">{{item[16]}}</span>
             </div>
-             <div class="content-row">
+            <div class="content-row">
               <span class="row-left">{{item[12]}}</span>
               <span class="row-right">{{item[13]}}</span>
             </div>
@@ -37,32 +36,50 @@ import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-      list:[]
+      list: []
     };
   },
   computed,
   methods: {
     getData() {
       const params = {
-        pid:this.clientInfo[0],
-        sid:this.userInfo.oid,
-      }
+        pid: this.clientInfo[0],
+        sid: this.userInfo.oid
+      };
       offer.getDelivery(params).then(res => {
-        if(res && res.status ===1){
+        if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
-          this.list =eval("[[" +csp[0])
-          // console.log(this.list);
+          this.list = eval("[[" + csp[0]);
+          //  console.log(this.list);
         }
+      });
+    },
+    //先通过后端计算出未发货的数据：
+    getInfo() {
+      const params = {
+        paid: this.clientInfo[0],
+        prid: this.contractParams[3],
+        suid: this.userInfo.oid
+        // projectInfo.SC_ProjectOID
+      };
+      offer.getNotShippded(params).then(res => {
+        console.log(res);
+        // if(res.status ===1 || res.text===true){
+        //     this.$router.push({
+        //name: "shippingDetails"
+        //});
+        // }
       });
     },
     pageInit() {
       this.getData();
+      this.getInfo();
     },
     jumpage(item) {
-      this.$store.commit("contractParams",item);
+      this.$store.commit("contractParams", item);
       this.$router.push({
-        name:"shippingDetails"
+        name: "shippingDetails"
       });
     }
   },

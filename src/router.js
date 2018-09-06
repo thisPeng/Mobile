@@ -44,6 +44,7 @@ import TranrialDetail from "./views/Transaction/MaterialQuotation/TranrialDetail
 import TranContract from "./views/Transaction/TranContract/TranContract";
 import ShippingInfo from "./views/Transaction/ShippingInfo/ShippingInfo";
 import ShippingDetails from "./views/Transaction/ShippingInfo/ShippingDetails";
+import NewInvoice from "./views/Transaction/ShippingInfo/NewInvoice";
 import DeliveryDetail from "./views/Transaction/ShippingInfo/DeliveryDetail";
 import TranPayment from "./views/Transaction/TranPayment/TranPayment";
 import Tranrial from "./views/Transaction/MaterialQuotation/Tranrial";
@@ -410,6 +411,14 @@ export default new Router({
           path: "/transaction/shippinginfo/shippingDetails",
           name: "shippingDetails",
           component: ShippingDetails,
+          meta: {
+            title: "发货单编辑" //页面标题
+          }
+        },
+        {
+          path: "/transaction/shippinginfo/newInvoice",
+          name: "newInvoice",
+          component: NewInvoice,
           meta: {
             title: "发货单编辑" //页面标题
           }

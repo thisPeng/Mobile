@@ -1577,6 +1577,23 @@ const offer = {
         _pUrl: ""
       }
     })
+  },
+  // 新增发货单
+  // 先通过后端计算出未发货的数据：
+  getNotShippded(params={}){
+    return axios({
+      url:"/UCMLWebServiceEntryForJs.aspx",
+      method:"post",
+      data:{
+        _bpoName:"BPO_Deliver_ListService",
+        _methodName:"UpdateDeliverStatus",
+        "_parameters[SupplierID]":params.suid,
+        "_parameters[PartnerID]":params.paid,
+        "_parameters[ProjectID]":params.prid,
+        _paraNames: "PartnerID,ProjectID,SupplierID",
+        _pUrl: ""
+      }
+    })
   }
 };
 
