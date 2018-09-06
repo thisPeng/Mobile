@@ -11,14 +11,16 @@
           <div class="item-content">
             <div class="content-row">
               <span class="row-left">银行账号：{{item[12]}}</span>
-              <span class="row-right">支付类型：{{item[37]}}</span>
+              <span class="row-right">支付类型：{{item[37] | codeValue("CodeTable_Pay_Info")}}
+                <!-- <cbh-text :value="item[37]" code="CodeTable_Pay_Info|CodeTable_Approve" /> -->
+              </span>
             </div>
             <div class="content-row">
               <span class="row-left">支付金额：{{item[9]}}</span>
               <span class="row-right">支付日期：{{item[18]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-right">单据状态：{{item[6]}}</span>
+              <span class="row-right">单据状态：{{item[6] | codeValue("CodeTable_Approve")}}</span>
               <span class="row-left">申请单号：{{item[40]}}</span>
             </div>
           </div>

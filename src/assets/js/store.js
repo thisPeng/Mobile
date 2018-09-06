@@ -19,6 +19,7 @@ export default new Vuex.Store({
     userType: 0, // 用户身份: 1、工程、合作； 2、供应商
     loginInfo: {},
     taskModel: "",
+    codeValue: [],
     clientInfo: {},
     projectInfo: {},
     projectModel: "",
@@ -38,6 +39,7 @@ export default new Vuex.Store({
         state.isReload = true;
         state.userId = {};
         state.userInfo = {};
+        state.codeValue = [];
         state.taskModel = "";
         state.clientInfo = {};
         state.projectInfo = {};
@@ -67,6 +69,9 @@ export default new Vuex.Store({
     },
     taskModel: (state, val) => {
       state.taskModel = val;
+    },
+    codeValue: (state, val) => {
+      state.codeValue = val;
     },
     clientInfo: (state, val) => {
       state.clientInfo = val;

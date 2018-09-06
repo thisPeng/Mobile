@@ -23,7 +23,7 @@ export default {
   props: {
     label: {
       type: String,
-      default: "选项："
+      default: ""
     },
     code: {
       type: String,
