@@ -17,7 +17,7 @@
         <van-checkbox-group v-model="ite.checkArr">
           <van-swipe-cell v-for="(item,index) in ite.list" :key="index">
             <div class="cart-item">
-              <van-checkbox :name="item" class="item-check" ref="checked"></van-checkbox>
+              <van-checkbox :name="item[0]" class="item-check" ref="checked"></van-checkbox>
               <van-card :desc="item[8] + ' | 单位：' + item[5]">
                 <div slot="thumb">
                   <img :src="item[29].replace('~', servePath)" class="van-card__img">
@@ -35,42 +35,10 @@
         </van-checkbox-group>
       </div>
     </div>
-
-    <!-- <div class="title-delivery">合同信息</div>
-    <div class="info-data">
-      <div class="info-card">
-        <div class="info-item" v-for="(item,index) in list" :key="index">
-          <div class="item-title">
-            <span class="title">合同名称：{{item[2]}}</span>
-          </div>
-          <div class="item-content">
-            <div class="content-row">
-              <span class="row-left">合同编号：{{item[1]}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">甲方：{{item[3]}}</span>
-              <span class="row-right">乙方：{{item[4]}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">交货地点：{{item[8]}}</span>
-              <span class="row-right">交货时间：{{new Date(item[9]).Format('yyyy-MM-dd')}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">合同金额：{{item[11]}}</span>
-              <span class="row-left">合同状态：{{item[48]}}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!--操作-->
+    <div class="invoice-button">
+      <van-button type="primary" size="large" @click="onSave">生成发货单</van-button>
     </div>
-    <div class="title-delivery">订单明细</div>
-    <div class="inquiry-data">
-      <div class="inquiry-list">
-        <div class="list-item" v-for="(item, index) in tspList" :key="index" @click="showInfo(item)">
-          <van-card :title="item[4]" :desc="item[8]"></van-card>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 <script>
@@ -79,8 +47,6 @@ import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-      checkedArr: [],
-      checkedAll: false,
       list: [],
       listOrder: [],
       pages: {},
@@ -108,6 +74,39 @@ export default {
   },
   computed,
   methods: {
+    // 生成发货单
+    onSave() {
+      const listOrder = this.listOrder;
+      let ContractList = [];
+      let DetailIDList = [];
+      listOrder.forEach(val => {
+        if (val.checked) {
+          ContractList.push(val.id);
+          DetailIDList = DetailIDList.concat(val.checkArr);
+        }
+      });
+      if (ContractList.length === 0 || DetailIDList.length === 0) {
+        this.$toast.fail("请勾选发货物资");
+        return;
+      }
+      ContractList = ContractList.join(",");
+      DetailIDList = DetailIDList.join(",");
+      const params = {
+        SupplierID: this.userInfo.oid,
+        PartnerID: this.clientInfo[0],
+        ProjectID: this.contractParams[3],
+        ContractList,
+        DetailIDList
+      };
+      offer.saveDeliverBill(params).then(res => {
+        if (res.status === 1 && res.text === "1") {
+          this.$toast.success("生成发货单成功");
+        } else {
+          this.$toast.fail("生成发货单失败，请勾选发货物资");
+        }
+      });
+    },
+    // 显示合同详情
     onShowInfo(i) {
       this.$dialog
         .alert({
@@ -130,14 +129,16 @@ export default {
         .then(() => {
           // on close
         });
-      console.log(i);
     },
     // 显示合同
     onSwitechSupp(i) {
       if (this.listOrder[i].list.length === 0) {
         this.getDataItem(this.list[i][0]).then(res => {
           this.listOrder[i].list = res;
-          this.listOrder[i].checkArr = res;
+          this.listOrder[i].checkArr = [];
+          res.forEach(val => {
+            this.listOrder[i].checkArr.push(val[0]);
+          });
         });
       }
     },
@@ -204,6 +205,7 @@ export default {
 <style lang="less" scoped>
 .newinvoice {
   width: 100%;
+  margin-bottom: 60px;
   .list-item {
     border-bottom: 5px solid #f6f6f6;
   }
@@ -239,6 +241,15 @@ export default {
     align-items: center;
     justify-content: center;
     background-color: #f44;
+  }
+  .invoice-button {
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    bottom: 5px;
+    button {
+      width: 95%;
+    }
   }
 }
 </style>

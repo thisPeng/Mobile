@@ -3,8 +3,9 @@
   <div class="tranrialDetail">
     <div class="inquiry-data">
       <div class="inquiry-list">
-         <div class="list-item" v-for="(item, index) in list" :key="index"  @click="showInfo(item)"> <!-- -->
-          <van-card :title="item[4]" :desc="item[8]">
+        <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
+          <!-- -->
+          <van-card :title="item[4]" :price="item[15]" :desc="item[8]">
             <div slot="footer">
               <van-button size="mini" type="danger" @click.stop="conDetailsDelete(item)">删除</van-button>
             </div>
@@ -29,7 +30,7 @@
       </template>
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
-           <!--直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
+          <!--直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
           <van-button type="primary" bottom-action>保存修改</van-button>
         </div>
       </template>
@@ -42,7 +43,7 @@ import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-      list:[],
+      list: [],
       item: [],
       search: "",
       dspList: [],
@@ -76,27 +77,23 @@ export default {
   },
   computed,
   methods: {
-   getData(){
-     offer.getTranrial(this.confirmParams[0]).then(res =>{
-       console.log(res);
-       if(res && res.status ===1){
+    getData() {
+      offer.getTranrial(this.confirmParams[0]).then(res => {
+        if (res && res.status === 1) {
           const sp = res.text.split("[[");
-          // console.log(sp);
-         const csp = sp[2].split(";");
-         console.log(csp);
-         this.list = eval("[[" + csp[0]);
+          const csp = sp[2].split(";");
+          this.list = eval("[[" + csp[0]);
           // console.log(this.list);
         }
-     })
-   },
-   pageInit(){
-     this.getData();
-   },
-
+      });
+    },
+    pageInit() {
+      this.getData();
+    },
     showInfo(item) {
       this.sku.price = item[15];
       this.goods = {
-        id: item[4],
+        id: item[0],
         sid: item[4],
         title: item[4],
         picture: item[4],
@@ -121,9 +118,6 @@ export default {
 <style lang="less" scoped>
 .tranrialDetail {
   width: 100%;
-  .van-card {
-    background-color: white;
-  }
   .inquiry-data {
     position: absolute;
     top: 10px;
@@ -136,6 +130,7 @@ export default {
       width: 100%;
       padding: 0 10px;
       .list-item {
+        background-color: #fff;
         .van-card {
           background-color: #fff;
           border: 1px solid #eee;

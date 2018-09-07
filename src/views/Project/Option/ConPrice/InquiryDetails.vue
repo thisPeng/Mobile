@@ -228,9 +228,6 @@ export default {
 <style lang="less" scoped>
 .inquirydetails {
   width: 100%;
-  .van-card {
-    background-color: white;
-  }
   .inquiry-data {
     position: absolute;
     top: 10px;
@@ -243,6 +240,7 @@ export default {
       width: 100%;
       padding: 0 10px;
       .list-item {
+        background-color: #fff;
         .van-card {
           background-color: #fff;
           border: 1px solid #eee;

@@ -450,11 +450,11 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/materialquotation/tranrial",
+          path: "/transaction/materialquotation",
           name: "tranrial",
           component: Tranrial,
           meta: {
-            title: "付款信息" //页面标题
+            title: "报价单" //页面标题
           }
         },
         {

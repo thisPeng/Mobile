@@ -20,7 +20,6 @@
               <span class="row-left">{{item[16]}}</span>
               <span class="row-left">{{item[14]}}</span>
             </div>
-
           </div>
         </div>
       </div>

@@ -83,11 +83,12 @@ export default {
     },
     // 选中项
     selectItem(item) {
-      let str = "";
-      item.forEach(val => {
-        str += val + ",";
-      });
-      this.selItem = str.substr(0, str.length - 1);
+      // let str = "";
+      // item.forEach(val => {
+      //   str += val + ",";
+      // });
+      // this.selItem = str.substr(0, str.length - 1);
+      this.selItem = item.join(",");
     }
   },
   components: {

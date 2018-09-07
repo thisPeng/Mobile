@@ -28,7 +28,7 @@
       </template>
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
-           <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
+          <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
           <!-- <van-button type="primary" bottom-action>保存修改</van-button> -->
         </div>
       </template>
@@ -87,13 +87,13 @@ export default {
         }
       });
     },
-    arrivalDelete(item){
-       this.$dialog
+    arrivalDelete(item) {
+      this.$dialog
         .confirm({
           title: "删除",
           message: "确认删除此产品记录？"
         })
-         .then(() => {
+        .then(() => {
           const params = {
             PurchaseOrderID: this.confirmParams[0],
             DetailOIDList: item
@@ -154,9 +154,6 @@ export default {
 <style lang="less" scoped>
 .arrivalDetails {
   width: 100%;
-  .van-card {
-    background-color: white;
-  }
   .inquiry-data {
     position: absolute;
     top: 10px;
@@ -169,6 +166,7 @@ export default {
       width: 100%;
       padding: 0 10px;
       .list-item {
+        background-color: #fff;
         .van-card {
           background-color: #fff;
           border: 1px solid #eee;

@@ -1,14 +1,10 @@
 <template>
-<!-- 发货单明细 -->
+  <!-- 发货单明细 -->
   <div class="deliveryDetail">
     <div class="inquiry-data">
       <div class="inquiry-list">
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
-          <van-card :title="item[9]" :desc="item[10]">
-            <!-- <div slot="footer">
-              <van-button size="mini" type="danger" @click.stop="conDetailsDelete(item)">删除</van-button>
-            </div> -->
-          </van-card>
+          <van-card :title="item[9]" :desc="item[10]" :price="item[18]"></van-card>
         </div>
       </div>
     </div>
@@ -27,10 +23,7 @@
         <div></div>
       </template>
       <template slot="sku-actions" slot-scope="props">
-        <div class="van-sku-actions">
-          <!--直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <!-- <van-button type="primary" bottom-action>保存修改</van-button> -->
-        </div>
+        <div class="van-sku-actions"></div>
       </template>
     </van-sku>
   </div>
@@ -118,5 +111,34 @@ export default {
 <style lang="less" scoped>
 .deliveryDetail {
   width: 100%;
+  width: 100%;
+  .inquiry-data {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    .inquiry-list {
+      width: 100%;
+      padding: 0 10px;
+      .list-item {
+        background-color: white;
+        .van-card {
+          background-color: #fff;
+          border: 1px solid #eee;
+          border-radius: 5px;
+          margin-bottom: 10px;
+          .item-brand {
+            padding: 5px 0;
+          }
+          .item-price {
+            color: #ff4257;
+          }
+        }
+      }
+    }
+  }
 }
 </style>

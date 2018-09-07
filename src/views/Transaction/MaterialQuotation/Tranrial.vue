@@ -18,6 +18,12 @@
       <van-cell title="报价单明细" is-link value="详情" @click="jumpPage(info)" />
       <van-cell title="报价单附件" is-link value="详情" @click="jumpPage('tranrialAnnex')" />
     </van-cell-group>
+    <van-steps :active="active">
+      <van-step>查看报价单</van-step>
+      <van-step>编辑合同</van-step>
+      <van-step>提交报价</van-step>
+      <van-step>交易完成</van-step>
+    </van-steps>
     <div class="con-button">
       <van-button type="default">合同编辑</van-button>
       <van-button type="default" @click="getPrice">提交报价</van-button>
@@ -32,6 +38,7 @@ import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
+      active: 0,
       info: []
     };
   },

@@ -1638,6 +1638,24 @@ const offer = {
       }
     })
   },
+  // 发货单物资明细
+  saveDeliverBill(parasm = {}) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_Contract_DetailService",
+        _methodName: "SaveDeliverBill",
+        "_parameters[SupplierID]": parasm.SupplierID,
+        "_parameters[PartnerID]": parasm.PartnerID,
+        "_parameters[ProjectID]": parasm.ProjectID,
+        "_parameters[ContractList]": parasm.ContractList,
+        "_parameters[DetailIDList]": parasm.DetailIDList,
+        _paraNames: "SupplierID,PartnerID,ProjectID,ContractList,DetailIDList",
+        _pUrl: ""
+      }
+    })
+  },
 };
 
 export {
