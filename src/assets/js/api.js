@@ -1363,7 +1363,7 @@ const arrival = {
     })
   },
   //支付申请列表
-  getPaymentList(ProjectID = "",page="") {
+  getPaymentList(ProjectID = "", page = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1385,9 +1385,9 @@ const arrival = {
     })
   },
   //预存列表
-  getPremomey(ProjectID="",page=""){
+  getPremomey(ProjectID = "", page = "") {
     return axios({
-      url:"/UCMLWebServiceEntryForJs.aspx",
+      url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
         _bpoName: "BPO_Money_YC_InfoService",
@@ -1407,12 +1407,12 @@ const arrival = {
     })
   },
   //支付信息
-  getPaymentInfo(ProjectID="",page=""){
+  getPaymentInfo(ProjectID = "", page = "") {
     return axios({
-      url:"/UCMLWebServiceEntryForJs.aspx",
-      method:"post",
-      data:{
-        _bpoName:"BPO_Pay_InfoService",
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Pay_InfoService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_FK_Money_InOut",
         "_parameters[nStartPos]": page * 10,
