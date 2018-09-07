@@ -98,6 +98,7 @@ export default {
 .inquiry {
   width: 100%;
   .con-data {
+    margin-bottom: 50px;
     .data-item {
       background-color: #fff;
       margin-bottom: 10px;

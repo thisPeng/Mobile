@@ -20,7 +20,7 @@
         <span class="con-label">交货时间</span>
         <span class="con-select" @click="showDateone=true">{{cspList[9]}}</span>
       </van-cell-group>
-       <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" class="contract-date" @confirm="jiaohuoDate" @cancel="showDateone=false" />
+      <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" class="contract-date" @confirm="jiaohuoDate" @cancel="showDateone=false" />
       <van-field v-model="cspList[8]" label="交货地点" placeholder="请输入交货地点" required/>
       <van-cell-group class="con-price">
         <span class="con-label">付款方式</span>
@@ -82,8 +82,13 @@
       <van-field v-model="cspList[43]" label="乙方地址" disabled/>
     </van-cell-group>
     <!-- <div class="title-delivery">合同附件表</div>  -->
+    <van-steps :active="1">
+      <van-step>编辑报价单</van-step>
+      <van-step>编辑合同</van-step>
+      <van-step>提交报价</van-step>
+    </van-steps>
     <div class="button">
-      <van-button size="large" type="primary" @click="submitWork">提交</van-button>
+      <van-button size="large" type="primary" @click="submitWork">提交合同</van-button>
     </div>
   </div>
 </template>
@@ -140,15 +145,12 @@ export default {
     conContract() {
       // console.log(this.confirmParams)
       conprice.conContract(this.confirmParams[23]).then(res => {
-         console.log(res);
+        console.log(res);
         if (res && res.status === 1) {
-          //  console.log(res.text);
           const sp = res.text.split("[[");
-        //  console.log(sp);
           const csp = sp[1].split(";");
-          //  console.log(csp);
           this.cspList = eval("[[" + csp[0])[0];
-          console.log(this.cspList);
+          // console.log(this.cspList);
           if (this.cspList[9]) {
             this.cspList[9] = new Date(this.cspList[9]).Format("yyyy-MM-dd");
           } else {
@@ -208,102 +210,6 @@ export default {
               },
               {
                 SC_Order_ContractOID: cspList[0]
-              },
-              {
-                Contract_Name: "null"
-              },
-              {
-                Partner_Name: "null"
-              },
-              {
-                Supplier_Name: "null"
-              },
-              // {
-              //   PartnerID: "null"
-              // },
-              // {
-              //   SupplierID: "null"
-              // },
-              // {
-              //   BusinessID: "null"
-              // },
-              {
-                Deliver_Addr: "null"
-              },
-              {
-                Deliver_Time: "null"
-              },
-              {
-                Accept_Valid_Day: "null"
-              },
-              {
-                Contract_Amt: "null"
-              },
-              {
-                Pay_Mode: "null"
-              },
-              {
-                Signt_Valid_Day: "null"
-              },
-              {
-                Signt_Percent: "null"
-              },
-              {
-                In_Valid_Day: "null"
-              },
-              {
-                In_Pay_Percent: "null"
-              },
-              // {
-              //   Contract_Tax_Amt: "null"
-              // },
-              // {
-              //   TaxRate: "null"
-              // },
-              {
-                Ensure_Valid_Day: "null"
-              },
-              {
-                Ensure_Pay_Percent: "null"
-              },
-              {
-                Ensure_Day: "null"
-              },
-              {
-                Ensure_Begin_Date: "null"
-              },
-              {
-                Ensure_End_Date: "null"
-              },
-              {
-                Ensure_Amt_Percent: "null"
-              },
-              {
-                Ensure_Deal_Day: "null"
-              },
-              {
-                Ensure_Deal_Remark: "null"
-              },
-              {
-                Supplier_Breach: "null"
-              },
-              {
-                Partner_Breach: "null"
-              },
-              {
-                Partner_Behalf: "null"
-              },
-              {
-                Partner_Sign_Date: "null"
-              },
-              {
-                Supplier_Sign_Date: "null"
-              },
-              {
-                Supplier_Sign: "null"
-              },
-              {
-                Edit_Flag:""
               }
             ]
           },
@@ -326,15 +232,6 @@ export default {
               {
                 Supplier_Name: cspList[39]
               },
-              // {
-              //   PartnerID: "null"
-              // },
-              // {
-              //   SupplierID: "null"
-              // },
-              // {
-              //   BusinessID: "null"
-              // },
               {
                 Deliver_Addr: cspList[8]
               },
@@ -362,12 +259,6 @@ export default {
               {
                 In_Pay_Percent: cspList[16]
               },
-              // {
-              //   Contract_Tax_Amt: "null"
-              // },
-              // {
-              //   TaxRate: "null"
-              // },
               {
                 Ensure_Valid_Day: cspList[20]
               },
@@ -410,7 +301,7 @@ export default {
               {
                 Supplier_Sign: cspList[45]
               },
-               {
+              {
                 Edit_Flag: cspList[16]
               }
             ]
@@ -425,13 +316,19 @@ export default {
         })
         .then(() => {
           contractInfo.saveContract(xmlString).then(res => {
-            // console.log(res);
-            if (res && res.status === 1) {
-              this.$nextTick().then(() => {
-                setTimeout(() => {
-                  this.$toast.success("提交成功");
-                }, 300);
-              });
+            try {
+              if (res.status === 1) {
+                this.$toast.success("提交成功");
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.$router.go(-1);
+                  }, 1500);
+                });
+                return;
+              }
+              throw res.text;
+            } catch (e) {
+              this.$toast.fail(e);
             }
           });
         });
@@ -469,12 +366,12 @@ export default {
     }
   }
   .contract-date {
-      width: 100%;
-      position: fixed;
-      z-index: 9999;
-      bottom: 0;
-      padding-right: 30px;
-    }
+    width: 100%;
+    position: fixed;
+    z-index: 9999;
+    bottom: 0;
+    padding-right: 30px;
+  }
   .tact-price {
     display: flex;
     padding: 4px 15px;

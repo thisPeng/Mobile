@@ -39,7 +39,6 @@ import TaskJDFrom from "./views/TaskWait/TaskJDFrom";
 import TaskDJFrom from "./views/TaskWait/TaskDJFrom";
 import TaskGYSFrom from "./views/TaskWait/TaskGYSFrom";
 import TaskGYSDetails from "./views/TaskWait/TaskGYSDetails";
-import Quotation from "./views/Transaction/MaterialQuotation/Quotation";
 import TranrialDetail from "./views/Transaction/MaterialQuotation/TranrialDetail"
 import TranContract from "./views/Transaction/TranContract/TranContract";
 import ShippingInfo from "./views/Transaction/ShippingInfo/ShippingInfo";
@@ -371,14 +370,6 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/materialquotation",
-          name: "quotation",
-          component: Quotation,
-          meta: {
-            title: "报价单" //页面标题
-          }
-        },
-        {
           path: "/transaction/materialquotation/tranrialDetail",
           name: "tranrialDetail",
           component: TranrialDetail,
@@ -463,7 +454,7 @@ export default new Router({
           name: "tranrial",
           component: Tranrial,
           meta: {
-            title: "报价单" //页面标题
+            title: "报价单详情" //页面标题
           }
         },
         {

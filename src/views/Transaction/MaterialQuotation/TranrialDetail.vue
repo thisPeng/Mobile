@@ -4,10 +4,9 @@
     <div class="inquiry-data">
       <div class="inquiry-list">
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
-          <!-- -->
-          <van-card :title="item[4]" :price="item[15]" :desc="item[8]">
+          <van-card :title="item[4]" :price="item[15]" :desc="item[8]" :thumb="item[29].replace('~',servePath)">
             <div slot="footer">
-              <van-button size="mini" type="danger" @click.stop="conDetailsDelete(item)">删除</van-button>
+              <van-button size="mini" type="danger" @click.stop="onDelete(item)">删除</van-button>
             </div>
           </van-card>
         </div>
@@ -108,7 +107,8 @@ export default {
       };
       this.showBase = true;
       // console.log(item);
-    }
+    },
+    onDelete() {}
   },
   mounted() {
     this.pageInit();
