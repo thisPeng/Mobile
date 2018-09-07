@@ -15,11 +15,11 @@
     <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock">
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
-          <van-cell :title="'产品名称： ' + goods.brand" :label="'规格/型号：' + goods.unit" />
-          <van-field label="数量：" v-model="goods.taxRate" type="number" required placeholder="请输入数量" />
-          <van-field label="赠送数量：" v-model="goods.taxAll" type="number" required placeholder="请输入赠送数量" />
-          <van-field label="售价：" v-model="goods.howMuch" type="number" required placeholder="请输入售价" />
-          <van-field label="金额：" v-model="goods.howMoney" type="number" required placeholder="请输入金额" />
+          <van-cell :title="'产品名称： ' + goods.title" :label="'规格/型号：' + goods.info" />
+          <van-field label="数量：" v-model="goods.num" type="number" required placeholder="请输入数量" @change="onSalcSum" />
+          <van-field label="赠送数量：" v-model="goods.sendNum" type="number" required placeholder="请输入赠送数量" />
+          <van-field label="单价：" v-model="goods.howMuch" type="number" required placeholder="请输入售价" @change="onSalcSum" />
+          <van-field label="金额：" v-model="goods.howMoney" type="number" disabled />
           <van-field label="税率：" v-model="goods.taxRadio" type="number" required placeholder="请输入税率" />
           <van-field label="备注：" v-model="goods.reMarks" placeholder="请输入物资备注" />
         </van-cell-group>
@@ -30,7 +30,7 @@
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
           <!--直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <van-button type="primary" bottom-action>保存修改</van-button>
+          <van-button type="primary" bottom-action @click="onSaveGoods">保存修改</van-button>
         </div>
       </template>
     </van-sku>
@@ -63,10 +63,10 @@ export default {
         title: "", // 页面标题
         picture: "", // 默认商品 sku 缩略图
         brand: "",
-        // info: "",
+        info: "",
         unit: "",
-        taxRate: "",
-        taxAll: "",
+        num: "",
+        sendNum: "",
         howMuch: "",
         howMoney: "",
         taxRadio: "",
@@ -76,6 +76,11 @@ export default {
   },
   computed,
   methods: {
+    // 计算物资总价
+    onSalcSum() {
+      this.goods.howMoney = this.goods.howMuch * this.goods.num;
+    },
+    // 获取列表数据
     getData() {
       offer.getTranrial(this.confirmParams[0]).then(res => {
         if (res && res.status === 1) {
@@ -93,13 +98,14 @@ export default {
       this.sku.price = item[15];
       this.goods = {
         id: item[0],
-        sid: item[4],
+        sid: item[6],
         title: item[4],
-        picture: item[4],
-        brand: item[4],
-        unit: item[8],
-        taxRate: item[11],
-        taxAll: item[12],
+        picture: item[29],
+        brand: item[27],
+        info: item[8],
+        unit: item[5],
+        num: item[11],
+        sendNum: item[12],
         howMuch: item[14],
         howMoney: item[15],
         taxRadio: item[16],
@@ -108,7 +114,97 @@ export default {
       this.showBase = true;
       // console.log(item);
     },
-    onDelete() {}
+    // 保存物资修改
+    onSaveGoods() {
+      const xml = require("xml");
+      const xmlString = xml({
+        root: [
+          {
+            BC_SC_Order_Detail: [
+              {
+                _attr: {
+                  UpdateKind: "ukModify"
+                }
+              },
+              {
+                SC_Order_DetailOID: this.goods.id
+              }
+            ]
+          },
+          {
+            BC_SC_Order_Detail: [
+              {
+                _attr: {
+                  UpdateKind: ""
+                }
+              },
+              {
+                SC_Order_DetailOID: "null"
+              },
+              {
+                Real_Qty: this.goods.num
+              },
+              {
+                send_qty: this.goods.sendNum
+              },
+              {
+                Real_Price: this.goods.howMuch
+              },
+              {
+                Sub_Amt: this.goods.num * this.goods.howMuch
+              },
+              {
+                Sheet_Tax: this.goods.taxRadio
+              },
+              {
+                Remark: this.goods.reMarks
+              }
+            ]
+          }
+        ]
+      });
+      // console.log(xmlString);
+      offer.saveTranDetails(xmlString).then(res => {
+        if (res.status === 1) {
+          this.showBase = false;
+          this.$toast.success(res.text);
+          this.$nextTick().then(() => {
+            setTimeout(() => {
+              this.getData();
+            }, 1500);
+          });
+        } else {
+          this.$toast.fail(res.text);
+        }
+      });
+    },
+    // 删除物资
+    onDelete(item) {
+      offer.deleteTranDetails(this.confirmParams[0], item[0]).then(res => {
+        try {
+          if (res.status === 1) {
+            if (res.text === "1") {
+              this.$toast.success("删除成功");
+              this.$nextTick().then(() => {
+                setTimeout(() => {
+                  this.getData();
+                }, 1500);
+              });
+              return;
+            } else if (res.text === "-1") {
+              this.$toast.success("物资明细至少保留一条数据");
+              return;
+            } else if (res.text === "-2") {
+              this.$toast.success("删除数量不能大于等于现有记录数量");
+              return;
+            }
+          }
+          throw res.text;
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
+    }
   },
   mounted() {
     this.pageInit();

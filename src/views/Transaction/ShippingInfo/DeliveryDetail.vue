@@ -83,14 +83,15 @@ export default {
     showInfo(item) {
       this.sku.price = item[18];
       this.goods = {
-        id: item[9],
-        sid: item[9],
-        title: item[9],
-        picture: item[9],
-        brand: item[9],
-        unit: item[10],
+        id: item[0],
+        sid: item[5],
+        title: item[4],
+        picture: item[26],
+        brand: item[24],
+        info: item[10],
+        unit: item[11],
         taxRate: item[11],
-        taxAll: item[10],
+        taxAll: item[13],
         howMuch: item[17],
         howMoney: item[18],
         taxRadio: item[19],

@@ -277,11 +277,7 @@ export default {
             message: "确认删除购物车已选物资？"
           })
           .then(() => {
-            let str = "";
-            this.checkedArr.forEach(val => {
-              str += val[0] + "|";
-            });
-            str = str.substr(0, str.length - 1);
+            let str = this.checkedArr.join("|");
             // 多个删除
             cart.delCartMaterials(str).then(res => {
               try {
@@ -428,10 +424,7 @@ export default {
       if (this.checkedArr.length === this.list.length) {
         str = "-1";
       } else {
-        this.checkedArr.forEach(val => {
-          str += val[0] + "|";
-        });
-        str = str.substr(0, str.length - 1);
+        str = this.checkedArr.join("|");
       }
       cart.cartSelect(this.projectInfo.SC_ProjectOID, str);
     }
