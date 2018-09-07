@@ -18,17 +18,9 @@
       <van-cell title="报价单明细" is-link value="详情" @click="jumpPage('tranrialDetail')" />
       <van-cell title="报价单附件" is-link value="详情" @click="jumpPage('tranrialAnnex')" />
     </van-cell-group>
-    <van-steps :active="active">
-      <van-step>查看报价单</van-step>
-      <van-step>编辑合同</van-step>
-      <van-step>提交报价</van-step>
-      <van-step>交易完成</van-step>
-    </van-steps>
     <div class="con-button">
-      <van-button type="default" @click="jumpInfo">合同编辑</van-button>
-      <van-button type="default" @click="getPrice">提交报价</van-button>
-      <van-button type="default">添加物质</van-button>
-      <van-button type="default">保存</van-button>
+      <van-button @click="jumpInfo">编辑合同</van-button>
+      <van-button type="primary" @click="onSubmit">提交报价</van-button>
     </div>
   </div>
 </template>
@@ -38,12 +30,12 @@ import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-      active: 0,
       info: []
     };
   },
   computed,
   methods: {
+    onAddItem() {},
     getOffer() {
       offer.getTranrial(this.confirmParams[0]).then(res => {
         if (res && res.status === 1) {
@@ -55,7 +47,7 @@ export default {
       });
     },
     //提交报价
-    getPrice() {
+    onSubmit() {
       this.$dialog
         .confirm({
           title: "提交报价",
@@ -63,16 +55,25 @@ export default {
         })
         .then(() => {
           offer.getPriceButton(this.confirmParams[0]).then(res => {
-            // console.log(res);
             try {
-              if (res && res.status === 1 && res.text === "True") {
-                this.$toast.success("提交报价成功");
-                this.$nextTick().then(() => {
-                  setTimeout(() => {
-                    this.$router.go(-1);
-                  }, 1500);
-                });
-                return;
+              if (res && res.status === 1) {
+                if (res.text === "1") {
+                  this.$toast.success("提交报价成功");
+                  this.$nextTick().then(() => {
+                    setTimeout(() => {
+                      this.$router.go(-1);
+                    }, 1500);
+                  });
+                  return;
+                } else if (res.text === "0") {
+                  this.$toast.fail("合同未编辑，请先编辑合同");
+                  this.$nextTick().then(() => {
+                    setTimeout(() => {
+                      this.jumpInfo();
+                    }, 1500);
+                  });
+                  return;
+                }
               }
               throw "提交报价失败，请刷新页面重试";
             } catch (e) {

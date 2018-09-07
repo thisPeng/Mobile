@@ -1541,7 +1541,7 @@ const arrival = {
 };
 //供应商模块
 const offer = {
-  //客户信息
+  // 客户信息
   getClientList(UCML_OrganizeOID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1563,7 +1563,7 @@ const offer = {
       }
     });
   },
-  //供应商物质报价
+  // 供应商物质报价
   getPriceList(parasm = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1578,7 +1578,7 @@ const offer = {
       }
     });
   },
-  //报价单编辑
+  // 报价单编辑
   getTranrial(PurchaseOrderID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1600,6 +1600,7 @@ const offer = {
       }
     })
   },
+  // 报价单明细
   getTranDetails(PurchaseOrderID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1621,7 +1622,36 @@ const offer = {
       }
     })
   },
-  //提交报价
+  // 报价单明细删除
+  deleteTranDetails(PurchaseOrderID = "", DetailOIDList = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_SetPrice_EditService",
+        _methodName: "DeleteRec",
+        "_parameters[PurchaseOrderID]": PurchaseOrderID,
+        "_parameters[DetailOIDList]": DetailOIDList,
+        _paraNames: "PurchaseOrderID,DetailOIDList",
+        _pUrl: ""
+      }
+    })
+  },
+  // 保存物资明细
+  saveTranDetails(xmlData) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_SetPrice_EditService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xmlData,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
+  // 提交报价
   getPriceButton(BillOID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1650,7 +1680,7 @@ const offer = {
       }
     })
   },
-  //发货单编辑
+  //发货单详情
   getDeliveryDetail(DeliverID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1672,6 +1702,7 @@ const offer = {
       }
     })
   },
+  // 发货单明细
   getDeliveryDetails(DeliverID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1689,6 +1720,21 @@ const offer = {
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  // 发货单明细删除
+  deleteDeliveryDetails(DeliverID = "", DetailOIDList = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_List_EditService",
+        _methodName: "DeleteRec",
+        "_parameters[DeliverID]": DeliverID,
+        "_parameters[DetailOIDList]": DetailOIDList,
+        _paraNames: "DeliverID,DetailOIDList",
         _pUrl: ""
       }
     })
