@@ -1578,8 +1578,7 @@ const offer = {
       }
     })
   },
-  // 新增发货单
-  // 先通过后端计算出未发货的数据：
+  // 新增发货单 - 刷新未发货的数据
   getNotShippded(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1595,7 +1594,7 @@ const offer = {
       }
     })
   },
-  //发货单选择
+  // 发货单合同详情
   getShipped(PartnerID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1605,7 +1604,7 @@ const offer = {
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Order_Contract",
         "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 20,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
@@ -1617,6 +1616,7 @@ const offer = {
       }
     })
   },
+  // 发货单物资明细
   getShipping(SC_Order_ContractOID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1624,9 +1624,9 @@ const offer = {
       data: {
         _bpoName: "BPO_SC_Order_DetailService",
         _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_SC_Order_Detail ",
+        "_parameters[BCName]": "BC_SC_Order_Detail",
         "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 20,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",

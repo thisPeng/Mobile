@@ -22,7 +22,7 @@
     </van-tabbar>
     <van-tabbar v-model="active" v-show="isTabbar" v-else>
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
-      <van-tabbar-item icon="records" @click="jumpTabs('inquiry')">询价单</van-tabbar-item>
+      <van-tabbar-item icon="records" @click="jumpTabs('inquiry')">报价单</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>

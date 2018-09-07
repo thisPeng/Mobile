@@ -38,11 +38,42 @@ const formatMoney = function formatMoney(str) {
   );
 };
 
+// 字符转换
+const codeValue = (val, code) => {
+  const store = require("./store.js");
+  const arr = store.state.codeValue;
+  let result = "";
+
+  for (const i in arr) {
+    if (arr[i].CodeTableID === code && arr[i].CodeID === val) {
+      result = arr[i].CodeName;
+      break;
+    }
+  }
+  return result;
+}
+
+// 发货状态
+const deliverState = (val) => {
+  switch (val) {
+    case "1":
+      return "未发货"
+    case "2":
+      return "部分发货"
+    case "3":
+      return "已发货"
+    default:
+      return "未审核";
+  }
+}
+
 const xmlData = function xmlData(xml, val) {
   return "<" + xml + ">" + val + "</" + xml + ">"
 };
 
 export default {
   formatMoney,
+  codeValue,
+  deliverState,
   xmlData
 };

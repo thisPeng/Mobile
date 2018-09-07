@@ -5,12 +5,12 @@
       <van-checkbox-group v-model="checkedArr">
         <div class="list-item" v-for="(ite, idx) in listOrder" :key="idx">
           <van-cell-group>
-            <van-cell class="text-bold" :title="ite.name" @change="onSwitechSupp(idx)">
+            <van-cell class="text-bold" :title="ite.name">
               <template slot="title">
                 <div @click="jumpSupp(ite)">{{ite.name}}</div>
               </template>
               <template slot="right-icon">
-                <van-switch v-model="ite.checked" size="26px" />
+                <van-switch v-model="ite.checked" size="26px" @change="onSwitechSupp(idx)" />
               </template>
             </van-cell>
           </van-cell-group>
