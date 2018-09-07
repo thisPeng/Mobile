@@ -10,11 +10,11 @@
           <div class="item-content">
             <div class="content-row">
               <span>申请单号:{{item[40]}}</span>
-              <span class="row-right">单据状态:{{item[6]}}</span>
+              <span class="row-right">单据状态:{{$util.payState(item[6])}}</span>
             </div>
             <div class="content-row">
               <span class="row-left">收款单位:{{item[38]}}</span>
-              <span class="row-right">支付类型:{{item[37]}}</span>
+              <span class="row-right">支付类型:{{$util.paytypeState(item[37])}}</span>
             </div>
             <div class="content-row">
               <span class="row-left">支付金额:{{item[9]}}</span>
@@ -24,6 +24,8 @@
         </div>
       </div>
     </div>
+    <!--分页组件-->
+    <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getData" />
   </div>
 </template>
 <script>
@@ -32,19 +34,23 @@ import { arrival } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      curPage: 1,
+      pages: {}
     };
   },
   computed,
   methods: {
     getData() {
-      arrival.getPaymentInfo(this.projectInfo.SC_ProjectOID).then(res => {
+      const page = this.curPage > 0 ? this.curPage - 1 : 0;
+      arrival.getPaymentInfo(this.projectInfo.SC_ProjectOID, page).then(res => {
         // console.log(res);
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0]);
-          console.log(this.list);
+          this.pages = eval("(" + csp[1].split("=")[1] + ")");
+          // console.log(this.list);
         }
       });
     },
@@ -61,6 +67,13 @@ export default {
 .payinfomation {
   width: 100%;
   padding: 10px;
+  .classify-pages {
+    width: 100%;
+    background-color: #f6f6f6;
+    position: fixed;
+    bottom: 0;
+    z-index: 99;
+  }
   .pre-data {
     margin-bottom: 40px;
     .pre-card {

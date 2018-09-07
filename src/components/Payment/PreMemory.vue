@@ -13,7 +13,10 @@
               <span class="row-right">预存金额:{{item[9]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">单据状态:{{item[6]}}</span>
+              <span class="row-right" v-if="item[6] == '0'">单据状态 :未审核</span>
+              <span class="row-right" v-else-if="item[30] == '1'">单据状态 :已审批</span>
+              <span class="row-right" v-else-if="item[31] == 'true'">单据状态 :审批中</span>
+              <span class="row-right" v-else-if="item[6] == '1'">单据状态 :待审批</span>
               <span class="row-right">审核日期:{{new Date(item[8]).Format("yyyy-MM-dd")}}</span>
             </div>
             <div class="content-row">
@@ -26,8 +29,8 @@
         </div>
       </div>
     </div>
-      <!--分页组件-->
-    <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="pageInit" />
+    <!--分页组件-->
+    <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getData" />
   </div>
 </template>
 <script>
@@ -37,24 +40,26 @@ export default {
   data() {
     return {
       list: [],
-      curPage:1,
-      pages:{}
+      curPage: 1,
+      pages: {}
     };
   },
   computed,
   methods: {
-    getData(){
-      arrival.getPremomey(this.projectInfo.SC_ProjectOID).then(res =>{
+    getData() {
+      const page = this.curPage > 0 ? this.curPage - 1 : 0;
+      arrival.getPremomey(this.projectInfo.SC_ProjectOID, page).then(res => {
         // console.log(res);
-        if(res &&res.status ===1){
+        if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
-          this.list = eval("[["+csp[0]);
+          this.list = eval("[[" + csp[0]);
+          this.pages = eval("(" + csp[1].split("=")[1] + ")");
           // console.log(this.list);
         }
-      })
+      });
     },
-    pageInit(){
+    pageInit() {
       this.getData();
     }
   },
@@ -67,6 +72,13 @@ export default {
 .prememory {
   width: 100%;
   padding: 10px;
+  .classify-pages {
+    width: 100%;
+    background-color: #f6f6f6;
+    position: fixed;
+    bottom: 0;
+    z-index: 99;
+  }
   .pre-data {
     margin-bottom: 40px;
     .pre-card {

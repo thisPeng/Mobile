@@ -15,17 +15,20 @@
             </div>
             <div class="content-row">
               <span class="row-left">申请日期:{{new Date(item[8]).Format('yyyy-MM-dd')}}</span>
-              <span class="row-right">状态 :{{item[6] | codeValue("CodeTable_Approve")}}</span>
+              <span class="row-right" v-if="item[6] == '0'">状态 :未审核</span>
+              <span class="row-right" v-else-if="item[32] == '1'">状态 :已审批</span>
+              <span class="row-right" v-else-if="item[33] == 'true'">状态 :审批中</span>
+               <span class="row-right" v-else-if="item[6] == '1'">状态 :待审批</span>
             </div>
             <div class="content-row">
-              <span class="row-left">申请类型:{{item[9]}}</span>
+              <span class="row-left">申请类型:{{$util.orderState(item[9])}}</span>
               <span class="row-right">申请金额:{{item[12]}}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-     <!--分页组件-->
+    <!--分页组件-->
     <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getData" />
   </div>
 </template>
@@ -36,18 +39,19 @@ export default {
   data() {
     return {
       list: [],
-       curPage: 1,
-      pages: {},
+      curPage: 1,
+      pages: {}
     };
   },
   computed,
   methods: {
     getData() {
-      arrival.getPaymentList(this.projectInfo.SC_ProjectOID).then(res => {
+      const page = this.curPage > 0 ? this.curPage - 1 : 0;
+      arrival.getPaymentList(this.projectInfo.SC_ProjectOID, page).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
-          // console.log(sp);
           const csp = sp[1].split(";");
+          this.pages = eval("(" + csp[1].split("=")[1] + ")");
           this.list = eval("[[" + csp[0]);
           // console.log(this.list);
         }
