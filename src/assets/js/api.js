@@ -1363,7 +1363,7 @@ const arrival = {
     })
   },
   //支付申请列表
-  getPaymentList(ProjectID = "", page = "") {
+  getPaymentList(ProjectID = "", page = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1385,7 +1385,7 @@ const arrival = {
     })
   },
   //预存列表
-  getPremomey(ProjectID = "", page = "") {
+  getPremomey(ProjectID = "", page = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1407,7 +1407,7 @@ const arrival = {
     })
   },
   //支付信息
-  getPaymentInfo(ProjectID = "", page = "") {
+  getPaymentInfo(ProjectID = "", page = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1421,6 +1421,116 @@ const arrival = {
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
         "_parameters[SQLCondi]": "SC_Money_InOut.ProjectID ='" + ProjectID + "'" + " AND SC_Money_InOut.Sheet_Type='FK'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //批款信息
+  getApproInfo(ProjectID = "", page = 0) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Money_PK_InOutListService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Money_InOut",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Money_InOut.ProjectID ='" + ProjectID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //冻结列表
+  getFrozen(ProjectID = "", page = 0) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Money_DJ_InOutListService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_DJ_Money_InOut",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Money_InOut.ProjectID ='" + ProjectID + "'" + " AND SC_Money_InOut.Sheet_Type='DJ'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //扣款信息
+  getWithInfo(ProjectID = "", page = 0) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Money_KK_InOutListService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Money_InOut",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Money_InOut.ProjectID ='" + ProjectID + "'" + " AND SC_Money_InOut.Sheet_Type='KK'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //资金流水
+  getClahFlow(ProjectID = "", page = 0) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Money_FlowService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Proj_Balance",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "ProjectID ='" + ProjectID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //资金流水子表
+  getClahFlowDetails(ProjectID = "", page = 0) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Money_FlowService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Money_Flow",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "ProjectID ='" + ProjectID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
