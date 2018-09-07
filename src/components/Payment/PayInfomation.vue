@@ -9,18 +9,16 @@
           </div>
           <div class="item-content">
             <div class="content-row">
+              <span>申请单号:{{item[40]}}</span>
+              <span class="row-right">单据状态:{{item[6]}}</span>
+            </div>
+            <div class="content-row">
               <span class="row-left">收款单位:{{item[38]}}</span>
               <span class="row-right">支付类型:{{item[37]}}</span>
             </div>
             <div class="content-row">
               <span class="row-left">支付金额:{{item[9]}}</span>
-              <span class="row-right">单据状态:{{item[6]}}</span>
-            </div>
-            <div class="content-row">
-              <span>支付日期:{{item[10]}}</span>
-            </div>
-            <div class="content-row">
-              <span>申请单号:{{item[40]}}</span>
+              <span class="row-right">支付日期:{{item[10]}}</span>
             </div>
           </div>
         </div>
@@ -34,23 +32,23 @@ import { arrival } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      list: [],
+      list: []
     };
   },
   computed,
   methods: {
-    getData(){
-      arrival.getPaymentInfo(this.projectInfo.SC_ProjectOID).then(res =>{
+    getData() {
+      arrival.getPaymentInfo(this.projectInfo.SC_ProjectOID).then(res => {
         // console.log(res);
-        if(res && res.status===1){
-          const sp= res.text.split("[[");
+        if (res && res.status === 1) {
+          const sp = res.text.split("[[");
           const csp = sp[1].split(";");
-          this.list = eval("[["+csp[0]);
+          this.list = eval("[[" + csp[0]);
           console.log(this.list);
         }
-      })
+      });
     },
-    pageInit(){
+    pageInit() {
       this.getData();
     }
   },
