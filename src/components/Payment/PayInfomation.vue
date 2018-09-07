@@ -3,25 +3,24 @@
   <div class="payinfomation">
     <div class="pre-data">
       <div class="pre-card">
-        <div class="pre-item">
-          <!-- v-for="(item,index) in list" :key="index" -->
+        <div class="pre-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
-            <span class="title">收款账号:{{item}}</span>
+            <span class="title">银行账号:{{item[12]}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">收款单位:{{item}}</span>
-              <span class="row-right">支付类型:{{item}}</span>
+              <span class="row-left">收款单位:{{item[38]}}</span>
+              <span class="row-right">支付类型:{{item[37]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">支付金额:{{item}}</span>
-              <span class="row-right">单据状态:{{item}}</span>
+              <span class="row-left">支付金额:{{item[9]}}</span>
+              <span class="row-right">单据状态:{{item[6]}}</span>
             </div>
             <div class="content-row">
-              <span>支付日期:{{item}}</span>
+              <span>支付日期:{{item[10]}}</span>
             </div>
             <div class="content-row">
-              <span>申请单号:{{item}}</span>
+              <span>申请单号:{{item[40]}}</span>
             </div>
           </div>
         </div>
@@ -31,16 +30,33 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
+import { arrival } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
       list: [],
-      item: "1"
     };
   },
   computed,
-  methods: {},
-  mounted() {}
+  methods: {
+    getData(){
+      arrival.getPaymentInfo(this.projectInfo.SC_ProjectOID).then(res =>{
+        // console.log(res);
+        if(res && res.status===1){
+          const sp= res.text.split("[[");
+          const csp = sp[1].split(";");
+          this.list = eval("[["+csp[0]);
+          console.log(this.list);
+        }
+      })
+    },
+    pageInit(){
+      this.getData();
+    }
+  },
+  mounted() {
+    this.pageInit();
+  }
 };
 </script>
 <style lang="less" scoped>

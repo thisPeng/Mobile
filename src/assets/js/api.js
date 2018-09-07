@@ -1361,9 +1361,74 @@ const arrival = {
         _pUrl: ""
       }
     })
+  },
+  //支付申请列表
+  getPaymentList(ProjectID = "",page="") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Apply_InfoService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Pay_Apply",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Pay_Apply.ProjectID ='" + ProjectID + "'" + " AND Sheet_Type='SQ'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //预存列表
+  getPremomey(ProjectID="",page=""){
+    return axios({
+      url:"/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Money_YC_InfoService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Money_InOut",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Money_InOut.ProjectID ='" + ProjectID + "'" + " AND Sheet_Type='YC'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //支付信息
+  getPaymentInfo(ProjectID="",page=""){
+    return axios({
+      url:"/UCMLWebServiceEntryForJs.aspx",
+      method:"post",
+      data:{
+        _bpoName:"BPO_Pay_InfoService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_FK_Money_InOut",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Money_InOut.ProjectID ='" + ProjectID + "'" + " AND SC_Money_InOut.Sheet_Type='FK'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
   }
 };
-
 //供应商模块
 const offer = {
   //客户信息
