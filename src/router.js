@@ -49,6 +49,7 @@ import DeliveryDetail from "./views/Transaction/ShippingInfo/DeliveryDetail";
 import TranPayment from "./views/Transaction/TranPayment/TranPayment";
 import Tranrial from "./views/Transaction/MaterialQuotation/Tranrial";
 import TranrialAnnex from "./views/Transaction/MaterialQuotation/TranrialAnnex";
+import TranContractDetail from "./views/Transaction/MaterialQuotation/TranContractDetail";
 import Inventory from "./views/Transaction/TranContract/Inventory";
 import Customerlist from "./views/CustomerList/CustomerList";
 import InquiryDetails from "./views/Project/Option/ConPrice/InquiryDetails";
@@ -383,6 +384,14 @@ export default new Router({
           component: TranrialDetail,
           meta: {
             title: "报价单明细" //页面标题
+          }
+        },
+        {
+          path: "/transaction/materialquotation/tranContractDetail",
+          name: "tranContractDetail",
+          component: TranContractDetail,
+          meta: {
+            title: "合同编辑" //页面标题
           }
         },
         {

@@ -27,14 +27,16 @@ export default {
       ImagePreview([(this.servePath + img).replace("..", "")]);
     },
     pageInit() {
-      offer.getAnnex(this.confirmParams[0]).then(res => {
+      console.log(this.confirmParams);
+      offer.getTranAnnex(this.confirmParams[2]).then(res => {
         try {
+          console.log(res);
           if (res.status === 1) {
             const sp = res.text.split("[[");
             const dsp = sp[1].split(";");
             const arr = eval("[[" + dsp[0]);
             this.data = arr;
-            // console.log(arr);
+            console.log(arr);
           }
         } catch (e) {
           console.log(e);
