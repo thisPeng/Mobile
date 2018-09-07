@@ -15,7 +15,7 @@
       <van-field v-model="info[18]" label="业务员:" disabled />
       <van-field v-model="info[25]" label="创建日期:" disabled />
       <van-field v-model="info[21]" label="备注:" disabled type="textarea" />
-      <van-cell title="报价单明细" is-link value="详情" @click="jumpPage(info)" />
+      <van-cell title="报价单明细" is-link value="详情" @click="jumpPage('tranrialDetail')" />
       <van-cell title="报价单附件" is-link value="详情" @click="jumpPage('tranrialAnnex')" />
     </van-cell-group>
     <van-steps :active="active">
@@ -25,7 +25,7 @@
       <van-step>交易完成</van-step>
     </van-steps>
     <div class="con-button">
-      <van-button type="default">合同编辑</van-button>
+      <van-button type="default" @click="jumpInfo">合同编辑</van-button>
       <van-button type="default" @click="getPrice">提交报价</van-button>
       <van-button type="default">添加物质</van-button>
       <van-button type="default">保存</van-button>
@@ -63,7 +63,7 @@ export default {
         })
         .then(() => {
           offer.getPriceButton(this.confirmParams[0]).then(res => {
-            console.log(res);
+            // console.log(res);
             try {
               if (res && res.status === 1 && res.text === "True") {
                 this.$toast.success("提交报价成功");
@@ -84,10 +84,15 @@ export default {
     pageInit() {
       this.getOffer();
     },
-    jumpPage(info) {
-      this.$store.commit("confirmParams", info);
+    jumpPage(name) {
       this.$router.push({
-        name: "tranrialDetail"
+        name
+      });
+    },
+    jumpInfo() {
+      this.$store.commit("confirmParams", this.info);
+      this.$router.push({
+        name: "tranContractDetail"
       });
     }
   },

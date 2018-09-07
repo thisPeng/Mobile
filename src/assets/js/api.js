@@ -1402,7 +1402,6 @@ const offer = {
         _pUrl: ""
       }
     });
-
   },
   //报价单编辑
   getTranrial(PurchaseOrderID = "") {
@@ -1638,7 +1637,7 @@ const offer = {
       }
     })
   },
-  // 发货单物资明细
+  // 保存发货单
   saveDeliverBill(parasm = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1656,6 +1655,28 @@ const offer = {
       }
     })
   },
+  // 供应商附件
+  getTranAnnex(SupplierID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Company_SupplierService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Supplier_DOCData",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SupplierID='" + SupplierID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  }
 };
 
 export {
