@@ -16,9 +16,11 @@
             <div class="content-row">
               <span class="row-left">审核日期:{{item[10]}}</span>
               <span class="row-right" v-if="item[6] == '0'">单据状态 :未审核</span>
+              <span class="row-right" v-else-if="item[37] == '1'">单据状态 :已解冻</span>
+              <span class="row-right" v-else-if="item[38] == 'true'">单据状态 :解冻审批中</span>
               <span class="row-right" v-else-if="item[30] == '1'">单据状态 :已审批</span>
-              <span class="row-right" v-else-if="item[31] == 'true'">单据状态 :审批中</span>
               <span class="row-right" v-else-if="item[6] == '1'">单据状态 :待审批</span>
+              <span class="row-right" v-else-if="item[31] == 'true'">单据状态 :审批中</span>
             </div>
             <div class="content-row">
               <span>经手人:{{item[13]}}</span>
