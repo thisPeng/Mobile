@@ -21,11 +21,11 @@
       <van-field v-model="list[28]" label="签收人:" disabled/>
       <van-field v-model="list[11]" label="发货金额:" disabled/>
       <van-field v-model="list[29]" label="备注:" type="textarea" />
-      <van-cell title="发货单明细" is-link value="详情" @click="jumpPage(item)" />
+      <van-cell title="发货单明细" is-link value="详情" @click="jumpPage(list)" />
     </van-cell-group>
     <div class="con-button">
-      <van-button type="default" plain @click="getButton">发货</van-button>
-      <van-button type="default" plain @click="getDeButton">保存</van-button>
+      <van-button type="default" plain @click="getButton" v-if="list[41] === '未发货'">发货</van-button>
+      <van-button type="default" plain @click="getDeButton" v-if="list[41] === '未发货'">保存</van-button>
     </div>
   </div>
 </template>
@@ -158,8 +158,8 @@ export default {
     pageInit() {
       this.getDetails();
     },
-    jumpPage(item) {
-      this.$store.commit("confirmParams", item);
+    jumpPage(list) {
+      this.$store.commit("confirmParams", list);
       this.$router.push({
         name: "deliveryDetail"
       });

@@ -13,7 +13,9 @@
             </div>
             <div class="content-row">
               <span class="row-left">{{item[13]}}</span>
-              <span class="row-right">{{item[20]}}</span>
+              <span class="row-right">
+                <van-tag :type="item[20] === '初始状态' ? '' : 'danger'">{{item[20]}}</van-tag>
+              </span>
             </div>
             <div class="content-row">
               <span class="row-left">{{item[16]}}</span>

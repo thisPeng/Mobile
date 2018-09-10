@@ -30,7 +30,7 @@
       <van-field v-model="item[20]" label="标准图纸套数:" />
       <van-field v-model="item[58]" label="工程商驻地代表:" />
       <van-field v-model="item[59]" label="劳务分包驻地代表:" />
-      <van-field v-model="item" label="材料采购费用:" />
+      <van-field v-model="item[0]" label="材料采购费用:" />
       <div class="con-price">
         <span class="con-label">计价方式</span>
         <span class="con-select" @click="paymentShow=true">{{payment}}</span>
@@ -40,37 +40,37 @@
       </div>
       <div v-if="payment =='第一种计价方式'">
         <span class="explain">说明:固定合同价款</span>
-        <van-field v-model="item" label="合同价款共计:" />
+        <van-field v-model="item[0]" label="合同价款共计:" />
       </div>
       <div v-else-if="payment =='第二种计价方式'">
         <span class="explain">说明:约定不同工种施工的计时单价，按确认的工时计算</span>
-        <van-field v-model="item" label="工种类型:" />
-        <van-field v-model="item" label="计时单价:" />
-        <van-field v-model="item" label="工种类型:" />
-        <van-field v-model="item" label="计时单价:" />
-        <van-field v-model="item" label="工种类型:" />
-        <van-field v-model="item" label="计时单价:" />
-        <van-field v-model="item" label="工种类型:" />
-        <van-field v-model="item" label="计时单价:" />
-        <van-field v-model="item" label="工种类型:" />
-        <van-field v-model="item" label="计时单价:" />
-        <van-field v-model="item" label="工种类型:" />
-        <van-field v-model="item" label="计时单价:" />
+        <van-field v-model="item[0]" label="工种类型:" />
+        <van-field v-model="item[0]" label="计时单价:" />
+        <van-field v-model="item[0]" label="工种类型:" />
+        <van-field v-model="item[0]" label="计时单价:" />
+        <van-field v-model="item[0]" label="工种类型:" />
+        <van-field v-model="item[0]" label="计时单价:" />
+        <van-field v-model="item[0]" label="工种类型:" />
+        <van-field v-model="item[0]" label="计时单价:" />
+        <van-field v-model="item[0]" label="工种类型:" />
+        <van-field v-model="item[0]" label="计时单价:" />
+        <van-field v-model="item[0]" label="工种类型:" />
+        <van-field v-model="item[0]" label="计时单价:" />
       </div>
       <div v-else-if="payment =='第三种计价方式'">
         <span class="explain">说明:约定不同工作成果的计件单价，按确认的工程量计算</span>
-        <van-field v-model="item" label="工作成果:" />
-        <van-field v-model="item" label="计件单价:" />
-        <van-field v-model="item" label="工作成果:" />
-        <van-field v-model="item" label="计件单价:" />
-        <van-field v-model="item" label="工作成果:" />
-        <van-field v-model="item" label="计件单价:" />
-        <van-field v-model="item" label="工作成果:" />
-        <van-field v-model="item" label="计件单价:" />
-        <van-field v-model="item" label="工作成果:" />
-        <van-field v-model="item" label="计件单价:" />
-        <van-field v-model="item" label="工作成果:" />
-        <van-field v-model="item" label="计件单价:" />
+        <van-field v-model="item[0]" label="工作成果:" />
+        <van-field v-model="item[0]" label="计件单价:" />
+        <van-field v-model="item[0]" label="工作成果:" />
+        <van-field v-model="item[0]" label="计件单价:" />
+        <van-field v-model="item[0]" label="工作成果:" />
+        <van-field v-model="item[0]" label="计件单价:" />
+        <van-field v-model="item[0]" label="工作成果:" />
+        <van-field v-model="item[0]" label="计件单价:" />
+        <van-field v-model="item[0]" label="工作成果:" />
+        <van-field v-model="item[0]" label="计件单价:" />
+        <van-field v-model="item[0]" label="工作成果:" />
+        <van-field v-model="item[0]" label="计件单价:" />
       </div>
       <van-field v-model="item[61]" label="约定其他:" />
       <van-field v-model="item[62]" label="预付款:" />
@@ -79,11 +79,11 @@
         <span class="con-select" @click="showDatethree=true">{{paytime}}</span>
       </div>
       <van-datetime-picker v-model="currentDate" v-show="showDatethree" type="date" class="contract-date" @confirm="zhifuDate" @cancel="showDatethree=false" />
-      <van-field v-model="item" label="支付金额:" />
+      <van-field v-model="item[64]" label="支付金额:" />
       <van-field v-model="item[63]" label="计时支付方法:" />
       <van-field v-model="item[28]" label="分包人违约千分比:" />
       <van-field v-model="item[25]" label="分包人违约金:" />
-      <van-field v-model="item" label="索赔天数期限:" />
+      <van-field v-model="item[26]" label="索赔天数期限:" />
       <van-field v-model="item[30]" label="诉讼法院:" disabled/>
       <van-field v-model="item[22]" label="停止工作期限:" />
       <van-field v-model="item[64]" label="合同订立时间:" />
@@ -173,9 +173,11 @@ export default {
       this.showDatefive = false;
     },
     getData() {
+      console.log(this.contractParams);
       contractInfo
         .getLaborList(this.contractParams[0], "BC_Labor_Contract")
         .then(res => {
+          console.log(res);
           try {
             if (res.status === 1) {
               const sp = res.text.split("[[");
