@@ -4,7 +4,7 @@
     <div class="inquiry-data">
       <div class="inquiry-list">
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
-          <van-card :title="item[9]" :desc="item[10]" :price="item[18]">
+          <van-card :title="item[9]" :desc="item[10]" :price="item[18]" :thumb="item[26]">
             <div slot="footer">
               <van-button size="mini" type="danger" @click.stop="getDelete(item[0])">删除</van-button>
               <!-- @click.stop="arrivalDelete(item[0])" -->
@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       list: [],
-      item: [],
+      // item: [],
       search: "",
       dspList: [],
       showBase: false,
@@ -93,7 +93,7 @@ export default {
         })
         .then(() => {
           const params = {
-            DeliverID: this.confirmParams[0],
+            DeliverID: this.contractParams[0],
             DetailOIDList: item
           };
           offer.deleteDeliveryDetails(params).then(res => {
