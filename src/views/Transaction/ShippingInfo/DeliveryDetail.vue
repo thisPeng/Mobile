@@ -4,7 +4,12 @@
     <div class="inquiry-data">
       <div class="inquiry-list">
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
-          <van-card :title="item[9]" :desc="item[10]" :price="item[18]"></van-card>
+          <van-card :title="item[9]" :desc="item[10]" :price="item[18]">
+            <div slot="footer">
+              <van-button size="mini" type="danger" @click.stop="getDelete(item[0])">删除</van-button>
+              <!-- @click.stop="arrivalDelete(item[0])" -->
+            </div>
+          </van-card>
         </div>
       </div>
     </div>
@@ -80,14 +85,47 @@ export default {
         }
       });
     },
+    getDelete(item) {
+      this.$dialog
+        .confirm({
+          title: "删除",
+          message: "确认删除此产品记录？"
+        })
+        .then(() => {
+          const params = {
+            DeliverID: this.confirmParams[0],
+            DetailOIDList: item
+          };
+          offer.deleteDeliveryDetails(params).then(res => {
+            console.log(res);
+            if (res.status === 1) {
+              if (res.text === "-1") {
+                this.$toast.fail("明细至少有一条记录");
+              } else if (res.text === "-2") {
+                this.$toast.fail("删除数量不能大于等于现有记录数量");
+              } else {
+                this.getData();
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.$toast.success("删除成功");
+                  }, 300);
+                });
+              }
+            }
+          });
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
     showInfo(item) {
       this.sku.price = item[18];
       this.goods = {
         id: item[0],
         sid: item[5],
-        title: item[4],
+        title: item[9],
         picture: item[26],
-        brand: item[24],
+        brand: item[9],
         info: item[10],
         unit: item[11],
         taxRate: item[11],

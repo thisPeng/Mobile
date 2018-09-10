@@ -17,6 +17,10 @@
       <van-field v-model="item[29]" label="备注:" disabled type="textarea" />
       <van-cell title="发货单明细" is-link value="详情" @click="jumpPage(item)" />
     </van-cell-group>
+    <div class="con-button">
+      <van-button type="default" plain>发货</van-button>
+      <van-button type="default" plain>保存</van-button>
+    </div>
   </div>
 </template>
 <script>
@@ -57,5 +61,20 @@ export default {
 <style lang="less" scoped>
 .shippinginfo {
   width: 100%;
+  .van-button--normal {
+    padding: 0px 50px;
+  }
+  .con-button {
+    width: 100%;
+    padding: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    button {
+      width: 52%;
+      padding: 0;
+      margin-bottom: 10px;
+    }
+  }
 }
 </style>

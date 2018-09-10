@@ -1725,15 +1725,15 @@ const offer = {
     })
   },
   // 发货单明细删除
-  deleteDeliveryDetails(DeliverID = "", DetailOIDList = "") {
+  deleteDeliveryDetails(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
         _bpoName: "BPO_Deliver_List_EditService",
         _methodName: "DeleteRec",
-        "_parameters[DeliverID]": DeliverID,
-        "_parameters[DetailOIDList]": DetailOIDList,
+        "_parameters[DeliverID]": params.DeliverID,
+        "_parameters[DetailOIDList]": params.DetailOIDList,
         _paraNames: "DeliverID,DetailOIDList",
         _pUrl: ""
       }
