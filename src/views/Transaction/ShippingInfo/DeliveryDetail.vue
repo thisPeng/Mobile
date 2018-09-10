@@ -18,9 +18,9 @@
         <van-cell-group>
           <van-cell :title="'产品名称： ' + goods.brand" :label="'规格/型号：' + goods.unit" />
           <van-cell :title="'单位： ' + goods.taxRate" :label="'订单数量：' + goods.taxAll" />
-          <van-cell :title="'赠送数量： ' + goods.taxbrand" :label="'发货数量：' + goods.taxunit" />
+          <van-cell :title="'赠送数量： ' + goods.taxbrand" :label="'税率：' + goods.taxRadio + '%'" />
           <van-cell :title="'实价 ' + goods.howMuch" :label="'金额：' + goods.howMoney" />
-          <van-cell :title="'税率：' + goods.taxRadio + '%'" />
+          <van-cell :title="'发货数量：' + goods.taxunit" />
           <van-field label="备注：" v-model="goods.reMarks" disabled />
         </van-cell-group>
       </template>
@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       list: [],
-      // item: [],
+      item: [],
       search: "",
       dspList: [],
       showBase: false,
@@ -85,7 +85,7 @@ export default {
         }
       });
     },
-    getDelete(item) {
+    getDelete(list) {
       this.$dialog
         .confirm({
           title: "删除",
@@ -94,7 +94,7 @@ export default {
         .then(() => {
           const params = {
             DeliverID: this.contractParams[0],
-            DetailOIDList: item
+            DetailOIDList: list
           };
           offer.deleteDeliveryDetails(params).then(res => {
             console.log(res);
