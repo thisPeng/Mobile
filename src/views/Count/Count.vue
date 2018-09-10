@@ -41,7 +41,8 @@
           <div class="row-title">
             <i class="iconfont icon-qizi text-orange" /> {{model ? '项目数' : '待收款(￥)'}}
           </div>
-          <div class="row-content">{{model ? data[6] : (data[6] | formatMoney)}}</div>
+          <div class="row-content" v-if="model">{{data[6]}}</div>
+          <div class="row-content" v-else>{{data[6] | formatMoney}}</div>
         </van-col>
       </van-row>
       <van-row class="count-row" v-if="model">

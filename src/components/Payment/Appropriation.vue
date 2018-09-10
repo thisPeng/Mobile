@@ -11,17 +11,11 @@
 
             <div class="content-row">
               <span class="row-left">批款日期：{{item[10] | formatDate}}</span>
-              <span class="row-right" v-if="item[6] == '0'">
-                <van-tag type="danger">单据状态：未审核</van-tag>
-              </span>
-              <span class="row-right" v-else-if="item[30] == '1'">
-                <van-tag type="success">单据状态：已审批</van-tag>
-              </span>
-              <span class="row-right" v-else-if="item[31] == 'true'">
-                <van-tag type="primary">单据状态：审批中</van-tag>
-              </span>
-              <span class="row-right" v-else-if="item[6] == '1'">
-                <van-tag>单据状态：待审批</van-tag>
+              <span class="row-right">
+                <van-tag type="danger" v-if="item[6] == '0'">单据状态：未审核</van-tag>
+                <van-tag type="success" v-else-if="item[30] == '1'">单据状态：已审批</van-tag>
+                <van-tag type="primary" v-else-if="item[31] == 'true'">单据状态：审批中</van-tag>
+                <van-tag v-else-if="item[6] == '1'">单据状态：待审批</van-tag>
               </span>
             </div>
             <div class="content-row">
