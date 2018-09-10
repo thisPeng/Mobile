@@ -18,10 +18,10 @@
               <span class="row-right" v-if="item[6] == '0'">状态 :未审核</span>
               <span class="row-right" v-else-if="item[32] == '1'">状态 :已审批</span>
               <span class="row-right" v-else-if="item[33] == 'true'">状态 :审批中</span>
-               <span class="row-right" v-else-if="item[6] == '1'">状态 :待审批</span>
+              <span class="row-right" v-else-if="item[6] == '1'">状态 :待审批</span>
             </div>
             <div class="content-row">
-              <span class="row-left">申请类型:{{$util.orderState(item[9])}}</span>
+              <span class="row-left">申请类型:{{item[9] | orderState}}</span>
               <span class="row-right">申请金额:{{item[12]}}</span>
             </div>
           </div>
@@ -48,12 +48,16 @@ export default {
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
       arrival.getPaymentList(this.projectInfo.SC_ProjectOID, page).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split("[[");
-          const csp = sp[1].split(";");
-          this.pages = eval("(" + csp[1].split("=")[1] + ")");
-          this.list = eval("[[" + csp[0]);
-          // console.log(this.list);
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split("[[");
+            const csp = sp[1].split(";");
+            this.pages = eval("(" + csp[1].split("=")[1] + ")");
+            this.list = eval("[[" + csp[0]);
+            // console.log(this.list);
+          }
+        } catch (e) {
+          console.log(e);
         }
       });
     },

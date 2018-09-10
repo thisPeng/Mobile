@@ -4,7 +4,6 @@
     <div class="pay-data">
       <div class="pay-card">
         <div class="pay-item" v-for="(item,index) in list" :key="index">
-          <!--  @click="jumpPage('pricedetails')" -->
           <div class="item-title">
             <span class="title">收款单位：{{item[38]}}</span>
           </div>
@@ -12,7 +11,6 @@
             <div class="content-row">
               <span class="row-left">银行账号：{{item[12]}}</span>
               <span class="row-right">支付类型：{{item[37] | codeValue("CodeTable_Pay_Info")}}
-                <!-- <cbh-text :value="item[37]" code="CodeTable_Pay_Info|CodeTable_Approve" /> -->
               </span>
             </div>
             <div class="content-row">

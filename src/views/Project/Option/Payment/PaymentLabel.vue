@@ -23,9 +23,9 @@
       <van-tab title='资金流水'>
         <capitalFlow />
       </van-tab>
-      <van-tab title='OA批款信息'>
+      <!-- <van-tab title='OA批款信息'>
         <oainformation />
-      </van-tab>
+      </van-tab> -->
     </van-tabs>
   </div>
 </template>
@@ -42,11 +42,7 @@ import oainformation from "./../../../../components/Payment/OAinformation"; //OA
 
 export default {
   data() {
-    return {
-      index: "1",
-      insex: "2",
-      inyex: "3"
-    };
+    return {};
   },
   components: {
     application,

@@ -4,7 +4,6 @@
     <div class="tran-data">
       <div class="tran-card">
         <div class="tran-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
-          <!--  @click="jumpPage('pricedetails')" -->
           <div class="item-title">
             <span class="title">{{item[11]}}</span>
           </div>
@@ -46,7 +45,6 @@ export default {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
-          //  console.log(csp);
           this.list = eval("[[" + csp[0]);
           //  console.log(this.list);
         }

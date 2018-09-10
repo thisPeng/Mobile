@@ -10,11 +10,11 @@
           <div class="item-content">
             <div class="content-row">
               <span>申请单号:{{item[40]}}</span>
-              <span class="row-right">单据状态:{{$util.payState(item[6])}}</span>
+              <span class="row-right">单据状态:{{item[6] | payState}}</span>
             </div>
             <div class="content-row">
               <span class="row-left">收款单位:{{item[38]}}</span>
-              <span class="row-right">支付类型:{{$util.paytypeState(item[37])}}</span>
+              <span class="row-right">支付类型:{{item[37] | paytypeState}}</span>
             </div>
             <div class="content-row">
               <span class="row-left">支付金额:{{item[9]}}</span>
@@ -44,13 +44,16 @@ export default {
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
       arrival.getPaymentInfo(this.projectInfo.SC_ProjectOID, page).then(res => {
-        // console.log(res);
-        if (res && res.status === 1) {
-          const sp = res.text.split("[[");
-          const csp = sp[1].split(";");
-          this.list = eval("[[" + csp[0]);
-          this.pages = eval("(" + csp[1].split("=")[1] + ")");
-          // console.log(this.list);
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split("[[");
+            const csp = sp[1].split(";");
+            this.list = eval("[[" + csp[0]);
+            this.pages = eval("(" + csp[1].split("=")[1] + ")");
+            // console.log(this.list);
+          }
+        } catch (e) {
+          console.log(e);
         }
       });
     },

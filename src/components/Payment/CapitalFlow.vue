@@ -40,12 +40,12 @@
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">资金标识:{{$util.transState(item[5])}}</span>
+              <span class="row-left">资金标识:{{item[5] | transState}}</span>
               <span class="row-right">交易金额:{{item[4]}}</span>
             </div>
             <div class="content-row">
               <span class="row-left">日期时间:{{new Date(item[8]).Format("yyyy-MM-dd")}}</span>
-              <span class="row-right">交易类型:{{$util.tradeState(item[6])}}</span>
+              <span class="row-right">交易类型:{{item[6] | tradeState}}</span>
             </div>
             <div class="content-row">
               <span class="row-left">余额:{{item[9]}}</span>
@@ -71,24 +71,29 @@ export default {
   methods: {
     getData() {
       arrival.getClahFlow(this.projectInfo.SC_ProjectOID).then(res => {
-        // console.log(res);
-        if (res && res.status === 1) {
-          const sp = res.text.split("=");
-          const csp = sp[1].split(";");
-          this.data = eval(csp[0])[0];
-          // console.log(this.data);
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split("=");
+            const csp = sp[1].split(";");
+            this.data = eval(csp[0])[0];
+            // console.log(this.data);
+          }
+        } catch (e) {
+          console.log(e);
         }
       });
     },
     getInfo() {
       arrival.getClahFlowDetails(this.projectInfo.SC_ProjectOID).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split(";");
-          // console.log(sp);
-          const csp = sp[0].split("=");
-          // console.log(csp);
-          this.list = eval(csp[1]);
-          console.log(this.list);
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split(";");
+            const csp = sp[0].split("=");
+            this.list = eval(csp[1]);
+            console.log(this.list);
+          }
+        } catch (e) {
+          console.log(e);
         }
       });
     },

@@ -4,7 +4,6 @@
     <div class="inv-data">
       <div class="inv-card">
         <div class="inv-item" v-for="(item,index) in list" :key="index">
-          <!--  @click="jumpPage('pricedetails')" -->
           <div class="item-title">
             <span class="title">品名：{{item[4]}}</span>
           </div>
@@ -40,17 +39,17 @@ import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-      list:[]
+      list: []
     };
   },
   computed,
   methods: {
     getData() {
       offer.getContractDetail(this.confirmParams[0]).then(res => {
-        if(res && res.status ===1){
+        if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
-          this.list = eval("[[" +csp[0])
+          this.list = eval("[[" + csp[0]);
           // console.log(this.list);
         }
       });

@@ -45,13 +45,16 @@ export default {
   methods: {
     getData() {
       arrival.getWithInfo(this.projectInfo.SC_ProjectOID).then(res => {
-        //  console.log(res);
-        if (res && res.status === 1) {
-          const sp = res.text.split("[[");
-          const csp = sp[1].split(";");
-          this.pages = eval("(" + csp[1].split("=")[1] + ")");
-          this.list = eval("[[" + csp[0]);
-          // console.log(this.list);
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split("[[");
+            const csp = sp[1].split(";");
+            this.pages = eval("(" + csp[1].split("=")[1] + ")");
+            this.list = eval("[[" + csp[0]);
+            // console.log(this.list);
+          }
+        } catch (e) {
+          console.log(e);
         }
       });
     },
