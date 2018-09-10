@@ -10,10 +10,6 @@
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">申请说明：{{item[10]}}</span>
-
-            </div>
-            <div class="content-row">
               <span class="row-left">申请日期：{{item[8] | formatDate}}</span>
               <span class="row-right" v-if="item[6] == '0'">
                 <van-tag>单据状态：未审核</van-tag>
@@ -31,6 +27,9 @@
             <div class="content-row">
               <span class="row-left">申请类型：{{item[9] | orderState}}</span>
               <span class="row-right">申请金额：{{item[12] | formatMoney}}</span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">申请说明：{{item[10]}}</span>
             </div>
           </div>
         </div>

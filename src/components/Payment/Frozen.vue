@@ -9,10 +9,6 @@
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">冻结说明：{{item[16]}}</span>
-              <span class="row-right">交易金额：{{item[9] | formatMoney}}</span>
-            </div>
-            <div class="content-row">
               <span class="row-left">审核日期：{{item[10] | formatDate}}</span>
               <span class="row-right" v-if="item[6] == '0'">
                 <van-tag>单据状态：未审核</van-tag>
@@ -34,7 +30,11 @@
               </span>
             </div>
             <div class="content-row">
-              <span>经手人：{{item[13]}}</span>
+              <span class="row-left">经手人：{{item[13]}}</span>
+              <span class="row-right">交易金额：{{item[9] | formatMoney}}</span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">冻结说明：{{item[16]}}</span>
             </div>
           </div>
         </div>

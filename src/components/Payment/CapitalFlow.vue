@@ -11,7 +11,7 @@
         </van-col>
         <van-col span="12">
           <div class="row-title">
-            <i class="iconfont icon-qizi text-blue" /> 占用金额
+            <i class="iconfont icon-qizi text-blue" /> 占用金额(￥)
           </div>
           <div class="row-content">{{data[5] | formatMoney}}</div>
         </van-col>
@@ -25,7 +25,7 @@
         </van-col>
         <van-col span="12">
           <div class="row-title">
-            <i class="iconfont icon-qizi text-green" />冻结资金
+            <i class="iconfont icon-qizi text-green" />冻结资金(￥)
           </div>
           <div class="row-content">{{data[6] | formatMoney}}</div>
         </van-col>
@@ -40,21 +40,29 @@
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">资金标识：{{item[5] | transState}}</span>
-              <span class="row-right">交易金额：{{item[4] | formatMoney}}</span>
+              <span class="row-left">交易时间：{{item[8] | formatDate}}</span>
+              <span class="row-right">
+                <van-tag type="success" v-if="item[5] === '+'">资金标识：{{item[5] | transState}}</van-tag>
+                <van-tag type="danger" v-else-if="item[5] === '-'">资金标识：{{item[5] | transState}}</van-tag>
+                <van-tag type="primary" v-else>资金标识：{{item[5] | transState}}</van-tag>
+              </span>
             </div>
             <div class="content-row">
-              <span class="row-left">日期时间：{{item[8] | formatDate}}</span>
-              <span class="row-right">交易类型：{{item[6] | tradeState}}</span>
+              <span class="row-left">交易金额：{{item[4] | formatMoney}}</span>
+              <span class="row-right">余额：{{item[9] | formatMoney}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">余额：{{item[9] | formatMoney}}</span>
-              <span class="row-right">备注：{{item[23]}}</span>
+              <span class="row-left">交易类型：{{item[6] | tradeState}}</span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">备注：{{item[23]}}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!--分页组件-->
+    <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getList" />
   </div>
 </template>
 <script>
@@ -64,7 +72,9 @@ export default {
   data() {
     return {
       data: [],
-      list: []
+      list: [],
+      curPage: 1,
+      pages: {}
     };
   },
   computed,
@@ -83,23 +93,27 @@ export default {
         }
       });
     },
-    getInfo() {
-      arrival.getClahFlowDetails(this.projectInfo.SC_ProjectOID).then(res => {
-        try {
-          if (res && res.status === 1) {
-            const sp = res.text.split(";");
-            const csp = sp[0].split("=");
-            this.list = eval(csp[1]);
-            // console.log(this.list);
+    getList() {
+      const page = this.curPage > 0 ? this.curPage - 1 : 0;
+      arrival
+        .getClahFlowDetails(this.projectInfo.SC_ProjectOID, page)
+        .then(res => {
+          try {
+            if (res && res.status === 1) {
+              const sp = res.text.split(";");
+              const csp = sp[0].split("=");
+              this.pages = eval("(" + sp[1].split("=")[1] + ")");
+              this.list = eval(csp[1]);
+              // console.log(this.list);
+            }
+          } catch (e) {
+            console.log(e);
           }
-        } catch (e) {
-          console.log(e);
-        }
-      });
+        });
     },
     pageInit() {
       this.getData();
-      this.getInfo();
+      this.getList();
     }
   },
   mounted() {
@@ -110,7 +124,14 @@ export default {
 <style lang="less" scoped>
 .capitalflow {
   width: 100%;
-  padding-bottom: 50px;
+  padding-bottom: 10px;
+  .classify-pages {
+    width: 100%;
+    background-color: #f6f6f6;
+    position: fixed;
+    bottom: 0;
+    z-index: 99;
+  }
   .count-number {
     background-color: #fff;
     margin-bottom: 10px;
@@ -130,6 +151,7 @@ export default {
           padding-top: 10px;
           font-weight: 800;
           font-size: 16px;
+          word-break: break-all;
         }
       }
     }

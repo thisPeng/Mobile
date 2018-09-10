@@ -7,7 +7,7 @@
           <div class="row-title">
             <i class="iconfont icon-baoyi- text-blue" /> 今年交易(￥)
           </div>
-          <div class="row-content">{{data[0]}}</div>
+          <div class="row-content">{{data[0] | formatMoney}}</div>
         </van-col>
         <van-col span="12">
           <div class="row-title">
@@ -21,7 +21,7 @@
           <div class="row-title">
             <i class="iconfont icon-icon3 text-green" /> 总交易(￥)
           </div>
-          <div class="row-content">{{data[1]}}</div>
+          <div class="row-content">{{data[1] | formatMoney}}</div>
         </van-col>
         <van-col span="12">
           <div class="row-title">
@@ -35,13 +35,13 @@
           <div class="row-title">
             <i class="iconfont icon-duizhangdan text-orange" /> {{model ? '总应付(￥)' : '总应收(￥)'}}
           </div>
-          <div class="row-content">{{data[2]}}</div>
+          <div class="row-content">{{data[2] | formatMoney}}</div>
         </van-col>
         <van-col span="12">
           <div class="row-title">
             <i class="iconfont icon-qizi text-orange" /> {{model ? '项目数' : '待收款(￥)'}}
           </div>
-          <div class="row-content">{{data[6]}}</div>
+          <div class="row-content">{{model ? data[6] : (data[6] | formatMoney)}}</div>
         </van-col>
       </van-row>
       <van-row class="count-row" v-if="model">
@@ -49,7 +49,7 @@
           <div class="row-title">
             <i class="iconfont icon-daifukuan text-red" /> {{model ? '待付款(￥)' : '待收款(￥)'}}
           </div>
-          <div class="row-content">{{data[3]}}</div>
+          <div class="row-content">{{data[3] | formatMoney}}</div>
         </van-col>
         <van-col span="12">
           <div class="row-title">
@@ -352,6 +352,7 @@ export default {
           padding-top: 10px;
           font-weight: 800;
           font-size: 16px;
+          word-break: break-all;
         }
       }
     }
