@@ -6,19 +6,19 @@
         <div class="oa-item">
           <!-- v-for="(item,index) in list" :key="index" -->
           <div class="item-title">
-            <span class="title">批款单号:{{item}}</span>
+            <span class="title">批款单号：{{item}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">工程名称:{{item}}</span>
-              <span class="row-right">合作商名称:{{item}}</span>
+              <span class="row-left">工程名称：{{item}}</span>
+              <span class="row-right">合作商名称：{{item}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">批款金额:{{item}}</span>
-              <span class="row-right">批款日期:{{item}}</span>
+              <span class="row-left">批款金额：{{item}}</span>
+              <span class="row-right">批款日期：{{item}}</span>
             </div>
             <div class="content-row">
-              <span>批款ID:{{item}}</span>
+              <span>批款ID：{{item}}</span>
             </div>
           </div>
         </div>

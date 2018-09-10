@@ -4,11 +4,11 @@
       <van-field v-model="data[35]" label="供应商编号：" :disabled="true" />
       <van-field v-model="data[22]" label="单位名称：" :disabled="true" />
       <van-field v-model="data[25]" label="统一社会信用码：" :disabled="edit" />
-      <van-field v-model="data[23]" label="单位类别：" :disabled="edit" v-if="edit" />
+      <van-field :value="data[23] | codeValue('CodeTable_Unit')" label="单位类别：" :disabled="edit" v-if="edit" />
       <cbh-select v-model="data[23]" label="单位类别：" code="CodeTable_Unit" @change="onUnitChange" v-else />
-      <van-field v-model="data[26]" label="纳税人类别：" :disabled="edit" v-if="edit" />
+      <van-field :value="data[26] | codeValue('CodeTable_TaxClass')" label="纳税人类别：" :disabled="edit" v-if="edit" />
       <cbh-select v-model="data[26]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onTaxChange" v-else />
-      <van-field v-model="data[27]" label="税率：" :disabled="edit" />
+      <van-field v-model="data[27]" label="税率（%）：" :disabled="edit" />
       <van-field v-model="data[28]" label="开户行：" :disabled="edit" />
       <van-field v-model="data[29]" label="银行账号：" :disabled="edit" />
       <van-field v-model="data[49]" label="可开票税率：" :disabled="edit" />

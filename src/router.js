@@ -290,7 +290,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/conPrice/conprice",
+          path: "/option/conPrice",
           name: "conprice",
           component: ConPrice,
           meta: {
@@ -298,7 +298,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/contractInfo/contractInfo",
+          path: "/option/contractInfo/contractInfo",
           name: "contractInfo",
           component: ContractInfo,
           meta: {
@@ -306,7 +306,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/delivery/arrivalinformation",
+          path: "/option/arrivalinformation",
           name: "arrivalinformation",
           component: ArrivalInformation,
           meta: {
@@ -314,7 +314,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/infoItem/infoitem",
+          path: "/option/infoItem/infoitem",
           name: "infoitem",
           component: InfoItem,
           meta: {
@@ -322,7 +322,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/details/pricedetails",
+          path: "/option/details/pricedetails",
           name: "pricedetails",
           component: PriceDetails,
           meta: {
@@ -330,7 +330,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/details/annexContent/annex",
+          path: "/option/details/annexContent/annex",
           name: "annexContent",
           component: AnnexContent,
           meta: {
@@ -338,7 +338,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/delivery/deliverydetails",
+          path: "/option/delivery/deliverydetails",
           name: "deliverydetails",
           component: DeliveryDetails,
           meta: {
@@ -346,7 +346,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/delivery/arrivalDetails/detail",
+          path: "/option/delivery/arrivalDetails/detail",
           name: "arrivalDetails",
           component: ArrivalDetails,
           meta: {
@@ -354,7 +354,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/details/contractdetails",
+          path: "/option/details/contractdetails",
           name: "contractdetails",
           component: ContractDetails,
           meta: {
@@ -362,7 +362,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/payment/paymentlabel",
+          path: "/option/payment/paymentlabel",
           name: "paymentlabel",
           component: PaymentLabel,
           meta: {
@@ -466,7 +466,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/conPrice/inquirydetails/detail",
+          path: "/option/conPrice/inquirydetails/detail",
           name: "inquirydetails",
           component: InquiryDetails,
           meta: {
@@ -474,7 +474,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/conprice/contractwork",
+          path: "/option/conprice/contractwork",
           name: "contractwork",
           component: ContractWork,
           meta: {
@@ -482,7 +482,7 @@ export default new Router({
           }
         },
         {
-          path: "/project/option/details/contractlabor",
+          path: "/option/details/contractlabor",
           name: "contractlabor",
           component: ContractLabor,
           meta: {

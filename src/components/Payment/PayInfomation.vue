@@ -5,20 +5,23 @@
       <div class="pre-card">
         <div class="pre-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
-            <span class="title">银行账号:{{item[12]}}</span>
+            <span class="title">银行账号：{{item[12]}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span>申请单号:{{item[40]}}</span>
-              <span class="row-right">单据状态:{{item[6] | payState}}</span>
+              <span>申请单号：{{item[40]}}</span>
+              <span class="row-right">支付类型：{{item[37] | paytypeState}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">收款单位:{{item[38]}}</span>
-              <span class="row-right">支付类型:{{item[37] | paytypeState}}</span>
+              <span class="row-left">收款单位：{{item[38]}}</span>
+              <span class="row-right">
+                <van-tag type="success" v-if="item[6] === '1'">单据状态：{{item[6] | payState}}</van-tag>
+                <van-tag type="danger" v-else>单据状态：{{item[6] | payState}}</van-tag>
+              </span>
             </div>
             <div class="content-row">
-              <span class="row-left">支付金额:{{item[9]}}</span>
-              <span class="row-right">支付日期:{{item[10]}}</span>
+              <span class="row-left">支付金额：{{item[9] | formatMoney}}</span>
+              <span class="row-right">支付日期：{{item[10] | formatDate}}</span>
             </div>
           </div>
         </div>

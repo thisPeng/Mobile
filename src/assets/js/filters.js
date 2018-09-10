@@ -1,7 +1,8 @@
 import store from "./store.js";
 
-const formatDate = (date, fmt) => {
+const formatDate = (date = '', fmt = 'yyyy-MM-dd') => {
   //yyyy-MM-dd hh:mm
+  date = new Date(date);
   if (/(y+)/.test(fmt)) {
     fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
   }
@@ -15,22 +16,31 @@ const formatDate = (date, fmt) => {
   for (let k in o) {
     if (new RegExp(`(${k})`).test(fmt)) {
       let str = o[k] + ''
-      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : padLeftZero(str))
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : ('00' + str).substr(str.length))
     }
   }
   return fmt
 }
 
-function padLeftZero(str) {
-  return ('00' + str).substr(str.length)
-}
+// 格式金额，保留两位小数
+const formatMoney = str => {
+  var num = parseFloat(str).toFixed(3); //这里因为我需要两位小数所以做一个限制，你们看情况做小数位的限制
+  var s = num.substring(0, num.length - 1); //只取小数位2位
+
+  return '￥' + (
+    s &&
+    s.toString().replace(/(\d)(?=(\d{3})+\.)/g, function ($0, $1) {
+      return $1 + ",";
+    })
+  );
+};
 
 const codeValue = (val, code) => {
   const arr = store.state.codeValue;
   let result = "";
 
   for (const i in arr) {
-    if (arr[i].CodeTableID === code && arr[i].CodeID === val) {
+    if (arr[i].CodeTableID == code && arr[i].CodeID == val) {
       result = arr[i].CodeName;
       break;
     }
@@ -40,7 +50,7 @@ const codeValue = (val, code) => {
 
 
 // 发货状态
-const deliverState = (val) => {
+const deliverState = val => {
   switch (val) {
     case "1":
       return "未发货"
@@ -54,7 +64,7 @@ const deliverState = (val) => {
 }
 
 //申请类型
-const orderState = (val) => {
+const orderState = val => {
   switch (val) {
     case "1":
       return "支付材料与劳务费用"
@@ -67,7 +77,7 @@ const orderState = (val) => {
   }
 }
 // 单据状态
-const payState = (val) => {
+const payState = val => {
   switch (val) {
     case "1":
       return "已付"
@@ -77,7 +87,7 @@ const payState = (val) => {
 }
 
 //状态
-const typeState = (val) => {
+const typeState = val => {
   switch (val) {
     case "0":
       return "未审核"
@@ -91,7 +101,7 @@ const typeState = (val) => {
 }
 
 //交易类型
-const tradeState = (val) => {
+const tradeState = val => {
   switch (val) {
     case "PK":
       return "批款"
@@ -113,7 +123,7 @@ const tradeState = (val) => {
 }
 
 //资金标识
-const transState = (val) => {
+const transState = val => {
   switch (val) {
     case "+":
       return "收入"
@@ -125,7 +135,7 @@ const transState = (val) => {
 }
 
 //支付类型
-const paytypeState = (val) => {
+const paytypeState = val => {
   switch (val) {
     case "1":
       return "支付供应商"
@@ -136,7 +146,7 @@ const paytypeState = (val) => {
   }
 }
 
-const openState = (val) => {
+const openState = val => {
   if (val === '1') {
     return '是'
   }
@@ -146,6 +156,7 @@ const openState = (val) => {
 export {
   formatDate,
   codeValue,
+  formatMoney,
   deliverState,
   orderState,
   typeState,
