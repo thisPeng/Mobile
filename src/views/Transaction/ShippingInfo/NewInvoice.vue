@@ -108,6 +108,7 @@ export default {
     },
     // 显示合同详情
     onShowInfo(i) {
+      const te = this.$options.filters["deliverState"];
       this.$dialog
         .alert({
           message:
@@ -124,7 +125,7 @@ export default {
             "<br>合同金额：" +
             this.list[i][11] +
             "<br>合同状态：" +
-            this.$util.deliverState(this.list[i][48])
+            te(this.list[i][48])
         })
         .then(() => {
           // on close

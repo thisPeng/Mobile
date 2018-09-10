@@ -86,7 +86,7 @@ export default new Router({
           }
         },
         {
-          path: "/index/goodsList",
+          path: "/goodsList",
           name: "goodsList",
           component: GoodsList,
           meta: {
@@ -120,7 +120,7 @@ export default new Router({
           }
         },
         {
-          path: "/index/taskWait",
+          path: "/taskWait",
           name: "taskWait",
           component: TaskWait,
           meta: {
@@ -128,7 +128,7 @@ export default new Router({
           }
         },
         {
-          path: "/index/taskList",
+          path: "/taskList",
           name: "taskList",
           component: TaskList,
           meta: {
@@ -136,7 +136,7 @@ export default new Router({
           }
         },
         {
-          path: "/index/projectList",
+          path: "/projectList",
           name: "projectList",
           component: ProjectList,
           meta: {
@@ -200,7 +200,7 @@ export default new Router({
           }
         },
         {
-          path: "/taskWait/taskgysDetails",
+          path: "/taskWait/taskGYSFrom/taskgysDetails",
           name: "taskgysDetails",
           component: TaskGYSDetails,
           meta: {
@@ -208,7 +208,7 @@ export default new Router({
           }
         },
         {
-          path: "/index/msgList",
+          path: "/msgList",
           name: "msgList",
           component: MsgList,
           meta: {
@@ -216,7 +216,7 @@ export default new Router({
           }
         },
         {
-          path: "/index/message",
+          path: "/message",
           name: "message",
           component: Message,
           meta: {
@@ -370,7 +370,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/materialquotation/tranrialDetail/detail",
+          path: "/materialquotation/tranrialDetail/detail",
           name: "tranrialDetail",
           component: TranrialDetail,
           meta: {
@@ -378,7 +378,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/materialquotation/tranContractDetail",
+          path: "/materialquotation/tranContractDetail",
           name: "tranContractDetail",
           component: TranContractDetail,
           meta: {
@@ -386,7 +386,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/materialquotation/tranrialannex/annex",
+          path: "/materialquotation/tranrialannex/annex",
           name: "tranrialAnnex",
           component: TranrialAnnex,
           meta: {
@@ -394,7 +394,7 @@ export default new Router({
           }
         },
         {
-          path: "/customerlist/customerlist",
+          path: "/customerlist",
           name: "customerlist",
           component: Customerlist,
           meta: {
@@ -402,7 +402,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/trancontract",
+          path: "/trancontract",
           name: "trancontract",
           component: TranContract,
           meta: {
@@ -410,7 +410,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/shippinginfo",
+          path: "/shippinginfo",
           name: "shippinginfo",
           component: ShippingInfo,
           meta: {
@@ -418,7 +418,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/shippinginfo/shippingDetails",
+          path: "/shippinginfo/shippingDetails",
           name: "shippingDetails",
           component: ShippingDetails,
           meta: {
@@ -426,7 +426,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/shippinginfo/newInvoice",
+          path: "/shippinginfo/newInvoice",
           name: "newInvoice",
           component: NewInvoice,
           meta: {
@@ -434,7 +434,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/shippinginfo/deliveryDetail/detail",
+          path: "/shippinginfo/deliveryDetail/detail",
           name: "deliveryDetail",
           component: DeliveryDetail,
           meta: {
@@ -442,7 +442,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/tranpayment",
+          path: "/tranpayment",
           name: "tranpayment",
           component: TranPayment,
           meta: {
@@ -450,7 +450,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/materialquotation",
+          path: "/trancontract/materialquotation",
           name: "tranrial",
           component: Tranrial,
           meta: {
@@ -458,7 +458,7 @@ export default new Router({
           }
         },
         {
-          path: "/transaction/trancontract/inventory",
+          path: "/trancontract/inventory",
           name: "inventory",
           component: Inventory,
           meta: {

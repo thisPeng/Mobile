@@ -14,7 +14,7 @@
             </div>
             <div class="content-row">
               <span class="row-left">批款日期:{{item[10]}}</span>
-              <span class="row-right">单据状态:{{$util.orderState(item[6])}}</span>
+              <span class="row-right">单据状态:{{item[6] | orderState}}</span>
             </div>
             <div class="content-row">
               <span class="row-left">收款账号:{{item[12]}}</span>
@@ -47,13 +47,16 @@ export default {
     getData() {
       const page = this.currentPage > 0 ? this.currentPage - 1 : 0;
       arrival.getApproInfo(this.projectInfo.SC_ProjectOID, page).then(res => {
-        // console.log(res);
-        if (res && res.status === 1) {
-          const sp = res.text.split("[[");
-          const csp = sp[1].split(";");
-          this.pages = eval("(" + csp[1].split("=")[1] + ")");
-          this.list = eval("[[" + csp[0]);
-          // console.log(this.list);
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split("[[");
+            const csp = sp[1].split(";");
+            this.pages = eval("(" + csp[1].split("=")[1] + ")");
+            this.list = eval("[[" + csp[0]);
+            // console.log(this.list);
+          }
+        } catch (e) {
+          console.log(e);
         }
       });
     },
