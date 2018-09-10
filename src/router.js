@@ -14,6 +14,8 @@ import ContractInfo from "./views/Project/Option/ContractInfo/ContractInfo";
 import ArrivalInformation from "./views/Project/Option/Delivery/ArrivalInformation";
 import InfoItem from "./views/Project/Option/InfoItem/InfoItem";
 import PaymentLabel from "./views/Project/Option/Payment/PaymentLabel";
+import PaymentAddZF from "./views/Project/Option/Payment/PaymentAddZF";
+import PaymentAddYC from "./views/Project/Option/Payment/PaymentAddYC";
 import PriceDetails from "./views/Project/Option/ConPrice/PriceDetails";
 import AnnexContent from "./views/Project/Option/ConPrice/AnnexContent";
 import DeliveryDetails from "./views/Project/Option/Delivery/DeliveryDetails";
@@ -367,6 +369,22 @@ export default new Router({
           component: PaymentLabel,
           meta: {
             title: "付款信息列表" //页面标题
+          }
+        },
+        {
+          path: "/option/payment/paymentlabel/PaymentAddZF",
+          name: "paymentAddZF",
+          component: PaymentAddZF,
+          meta: {
+            title: "新增支付申请单" //页面标题
+          }
+        },
+        {
+          path: "/option/payment/paymentlabel/PaymentAddYC",
+          name: "paymentAddYC",
+          component: PaymentAddYC,
+          meta: {
+            title: "新增预存登记" //页面标题
           }
         },
         {

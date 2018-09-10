@@ -13,9 +13,6 @@
                 <span class="row-left">{{item[9]}}</span>
               </div>
               <div class="content-row">
-                <span class="row-right">{{item[10]}}</span>
-              </div>
-              <div class="content-row">
                 <span class="row-left">{{item[15]}}</span>
                 <span class="row-right">
                   <van-tag type="success" v-if="item[13] === '发货状态：已发货'">{{item[13]}}</van-tag>
@@ -24,7 +21,7 @@
               </div>
               <div class="content-row">
                 <span class="row-left">{{item[18]}}</span>
-                <span class="row-right" v-if="item[13] === '发货状态：已发货'">
+                <span class="row-right">
                   <van-tag plain type="success" v-if="item[17] === '签收状态：已签收'">{{item[17]}}</van-tag>
                   <van-tag plain type="danger" v-else>{{item[17]}}</van-tag>
                 </span>
@@ -32,6 +29,9 @@
               <div class="content-row">
                 <span class="row-left">{{item[11]}}</span>
                 <span class="row-right">{{item[12]}}</span>
+              </div>
+              <div class="content-row">
+                <span class="row-right">{{item[10]}}</span>
               </div>
             </div>
           </van-cell>

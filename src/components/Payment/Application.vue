@@ -4,9 +4,11 @@
     <div class="app-data">
       <div class="app-card">
         <div class="app-item" v-for="(item,index) in list" :key="index">
-          <!-- v-for="(item,index) in list" :key="index" -->
           <div class="item-title">
             <span class="title">单号：{{item[1]}}</span>
+            <span>
+              <!-- <van-button type="danger" size="mini" plain @click="onDelete">删除</van-button> -->
+            </span>
           </div>
           <div class="item-content">
             <div class="content-row">
@@ -27,6 +29,9 @@
             </div>
           </div>
         </div>
+        <!-- <div class="margin-top-sm">
+          <van-button type="primary" size="large" @click="onAdd">新增支付申请</van-button>
+        </div> -->
       </div>
     </div>
     <!--分页组件-->
@@ -46,6 +51,12 @@ export default {
   },
   computed,
   methods: {
+    onAdd() {
+      this.$router.push({
+        name: "paymentAddZF"
+      });
+    },
+    onDelete() {},
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
       arrival.getPaymentList(this.projectInfo.SC_ProjectOID, page).then(res => {

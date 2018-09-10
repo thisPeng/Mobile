@@ -6,6 +6,9 @@
         <div class="pre-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">收款账号：{{item[12]}}</span>
+            <span>
+              <!-- <van-button type="danger" size="mini" plain @click="onDelete">删除</van-button> -->
+            </span>
           </div>
           <div class="item-content">
             <div class="content-row">
@@ -31,8 +34,10 @@
           </div>
         </div>
       </div>
+      <!-- <div class="margin-top-sm">
+        <van-button type="primary" size="large" @click="onAdd">新增预存登记</van-button>
+      </div> -->
     </div>
-
     <!--分页组件-->
     <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getData" />
   </div>
@@ -50,6 +55,8 @@ export default {
   },
   computed,
   methods: {
+    onAdd() {},
+    onDelete() {},
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
       arrival.getPremomey(this.projectInfo.SC_ProjectOID, page).then(res => {

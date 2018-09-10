@@ -7,14 +7,6 @@
       <van-field v-model="data[10]" label="申请方说明" :disabled="edit" />
       <van-field v-model="dataMoney[3]" label="可用资金(￥)" :disabled="true" />
       <van-field v-model="payment" label="支付类型" :disabled="true" />
-      <!-- <van-cell-group class="from-payment">
-        <span class="from-label">支付类型</span>
-        <span class="from-select" v-if="true">{{payment}}</span>
-        <span class="from-select" v-else @click="paymentShow=true">{{payment}}</span>
-        <van-popup v-model="paymentShow" v-if="!true" position="bottom">
-          <van-picker show-toolbar :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
-        </van-popup>
-      </van-cell-group> -->
       <!--退结余额-->
       <van-field v-model="dataTable[0][2]" label="支出名称" :required="!edit" :disabled="edit" v-if="payment === '其它支出申请'" />
       <van-field v-model="dataTable[0][4]" label="申请金额(￥)" :required="!edit" :disabled="edit" v-if="payment === '退结余额' || payment === '其它支出申请'" />
@@ -75,16 +67,102 @@ export default {
       dataMoney: [],
       taskTabs: {
         codeJson: []
-      },
-      columns: ["支付供应商", "退结余额", "余额转预存", "其它支出申请"],
-      paymentShow: false,
-      payment: "请选择支付类型"
+      }
     };
   },
   methods: {
-    onConfirm(res) {
-      this.payment = res;
-      this.columns[res] = this.paymentShow = false;
+    pageInit() {
+      // 获取数据
+      this.$parent.title = this.taskParams.name;
+      task.getTaskZFInfo(this.taskParams).then(result => {
+        try {
+          if (result && result.status === 1) {
+            let sp = result.text.split(";");
+            this.data = eval(sp[0].split("=")[1])[0];
+            this.dataTable = eval(sp[2].split("=")[1]);
+            this.payment = this.columns[this.data[9] - 1];
+            this.taskTabs.InstanceID = this.data[34];
+            this.taskTabs.FlowID = this.data[35];
+            this.taskTabs.payment = this.payment;
+            // console.log(this.dataTable);
+
+            this.taskTabs.params = {
+              SC_Pay_ApplyOID: this.data[0],
+              Partner_memo: this.data[10],
+              Pay_Type: this.data[9],
+              SYS_LAST_UPD: this.data[16],
+              SYS_LAST_UPD_BY: this.data[23]
+            };
+            this.taskTabs.arrays = [0, 10, 9, 16, 23];
+
+            if (this.payment === "支付供应商") {
+              const tmp = [];
+              this.dataTable.forEach(val => {
+                tmp.push({
+                  SC_Pay_DetailOID: val[0],
+                  SupplierID: val[1],
+                  Supplier_Amt: val[4],
+                  Remark: val[5],
+                  Bank_Account: val[7],
+                  Bank_Name: val[6]
+                });
+              });
+              this.taskTabs.paramsChild = tmp;
+              this.taskTabs.arrs = [0, 1, 4, 5, 7, 6];
+            } else if (this.payment === "退结余额") {
+              this.taskTabs.paramsChild = {
+                SC_Pay_DetailOID: this.dataTable[0][0],
+                Remark: this.dataTable[0][5],
+                Supplier_Amt: this.dataTable[0][4],
+                Bank_Account: this.dataTable[0][7],
+                Bank_Name: this.dataTable[0][6]
+              };
+              this.taskTabs.arrs = [0, 5, 4, 7, 6];
+            } else if (this.payment === "余额转预存") {
+              this.taskTabs.paramsChild = {
+                SC_Pay_DetailOID: this.dataTable[0][0],
+                Supplier_Amt: this.dataTable[0][4],
+                Remark: this.dataTable[0][5]
+              };
+              this.taskTabs.arrs = [0, 4, 5];
+            } else if (this.payment === "其它支出申请") {
+              this.taskTabs.paramsChild = {
+                SC_Pay_DetailOID: this.dataTable[0][0],
+                Apply_SheetNO: this.dataTable[0][2],
+                Remark: this.dataTable[0][5],
+                Supplier_Amt: this.dataTable[0][4],
+                Bank_Account: this.dataTable[0][7],
+                Bank_Name: this.dataTable[0][6]
+              };
+              this.taskTabs.arrs = [0, 2, 5, 4, 7, 6];
+            }
+
+            task.getTaskZFMoney(this.data[2]).then(res => {
+              if (res && res.status === 1) {
+                this.dataMoney = res.text.split(",");
+                // console.log(this.dataMoney);
+              }
+            });
+
+            task.getFlowAssignData(this.data[34]).then(res => {
+              if (res && res.status === 1) {
+                sp = res.text.split(";");
+                const tmp = eval(sp[1].split("=")[1])[0];
+                this.taskTabs.TaskOID = tmp[0];
+                this.taskTabs.ActivityID = tmp[5];
+                if (tmp[13]) {
+                  this.taskTabs.codeJson = JSON.parse(tmp[13]);
+                } else if (this.taskModel === "我的待办") {
+                  this.edit = false;
+                }
+              }
+            });
+          }
+        } catch (e) {
+          console.log(e);
+          this.$router.go(-1);
+        }
+      });
     }
   },
   computed,
@@ -92,97 +170,7 @@ export default {
     taskTabs
   },
   mounted() {
-    // 获取数据
-    this.$parent.title = this.taskParams.name;
-    task.getTaskZFInfo(this.taskParams).then(result => {
-      try {
-        if (result && result.status === 1) {
-          let sp = result.text.split(";");
-          this.data = eval(sp[0].split("=")[1])[0];
-          this.dataTable = eval(sp[2].split("=")[1]);
-          this.payment = this.columns[this.data[9] - 1];
-          this.taskTabs.InstanceID = this.data[34];
-          this.taskTabs.FlowID = this.data[35];
-          this.taskTabs.payment = this.payment;
-          // console.log(this.dataTable);
-
-          this.taskTabs.params = {
-            SC_Pay_ApplyOID: this.data[0],
-            Partner_memo: this.data[10],
-            Pay_Type: this.data[9],
-            SYS_LAST_UPD: this.data[16],
-            SYS_LAST_UPD_BY: this.data[23]
-          };
-          this.taskTabs.arrays = [0, 10, 9, 16, 23];
-
-          if (this.payment === "支付供应商") {
-            const tmp = [];
-            this.dataTable.forEach(val => {
-              tmp.push({
-                SC_Pay_DetailOID: val[0],
-                SupplierID: val[1],
-                Supplier_Amt: val[4],
-                Remark: val[5],
-                Bank_Account: val[7],
-                Bank_Name: val[6]
-              });
-            });
-            this.taskTabs.paramsChild = tmp;
-            this.taskTabs.arrs = [0, 1, 4, 5, 7, 6];
-          } else if (this.payment === "退结余额") {
-            this.taskTabs.paramsChild = {
-              SC_Pay_DetailOID: this.dataTable[0][0],
-              Remark: this.dataTable[0][5],
-              Supplier_Amt: this.dataTable[0][4],
-              Bank_Account: this.dataTable[0][7],
-              Bank_Name: this.dataTable[0][6]
-            };
-            this.taskTabs.arrs = [0, 5, 4, 7, 6];
-          } else if (this.payment === "余额转预存") {
-            this.taskTabs.paramsChild = {
-              SC_Pay_DetailOID: this.dataTable[0][0],
-              Supplier_Amt: this.dataTable[0][4],
-              Remark: this.dataTable[0][5]
-            };
-            this.taskTabs.arrs = [0, 4, 5];
-          } else if (this.payment === "其它支出申请") {
-            this.taskTabs.paramsChild = {
-              SC_Pay_DetailOID: this.dataTable[0][0],
-              Apply_SheetNO: this.dataTable[0][2],
-              Remark: this.dataTable[0][5],
-              Supplier_Amt: this.dataTable[0][4],
-              Bank_Account: this.dataTable[0][7],
-              Bank_Name: this.dataTable[0][6]
-            };
-            this.taskTabs.arrs = [0, 2, 5, 4, 7, 6];
-          }
-
-          task.getTaskZFMoney(this.data[2]).then(res => {
-            if (res && res.status === 1) {
-              this.dataMoney = res.text.split(",");
-              // console.log(this.dataMoney);
-            }
-          });
-
-          task.getFlowAssignData(this.data[34]).then(res => {
-            if (res && res.status === 1) {
-              sp = res.text.split(";");
-              const tmp = eval(sp[1].split("=")[1])[0];
-              this.taskTabs.TaskOID = tmp[0];
-              this.taskTabs.ActivityID = tmp[5];
-              if (tmp[13]) {
-                this.taskTabs.codeJson = JSON.parse(tmp[13]);
-              } else if (this.taskModel === "我的待办") {
-                this.edit = false;
-              }
-            }
-          });
-        }
-      } catch (e) {
-        this.$router.go(-1);
-        console.log(e);
-      }
-    });
+    this.pageInit();
   }
 };
 </script>
@@ -201,24 +189,6 @@ export default {
     overflow: hidden;
     .center {
       margin: 0 auto;
-    }
-  }
-  .from-payment {
-    display: flex;
-    padding: 10px 15px;
-    box-sizing: border-box;
-    line-height: 24px;
-    position: relative;
-    background-color: #fff;
-    color: #333;
-    font-size: 14px;
-    overflow: hidden;
-    .from-label {
-      min-width: 90px;
-      flex: 1;
-    }
-    .from-select {
-      flex: 5;
     }
   }
   .task-button {
