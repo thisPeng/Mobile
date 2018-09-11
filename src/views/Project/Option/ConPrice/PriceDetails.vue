@@ -98,12 +98,15 @@ export default {
             if (res && res.status === 1) {
               if (res.text === "0") {
                 this.$toast.fail("合同并未编辑，请先确定合同内容！");
+                setTimeout(() => {
+                  this.jumpInfo();
+                }, 1500);
               } else if (res.text === "1") {
-                this.getInfo();
+                this.$toast.success("生成订单成功");
                 this.$nextTick().then(() => {
                   setTimeout(() => {
-                    this.$toast.success("生成订单成功");
-                  }, 300);
+                    this.$router.go(-1);
+                  }, 1500);
                 });
               } else {
                 this.$toast.fail("生成订单失败");
@@ -208,11 +211,13 @@ export default {
           // on cancel
         });
     },
+    // 跳转页面
     jumpPage(name) {
       this.$router.push({
         name
       });
     },
+    // 跳转合同信息
     jumpInfo(info) {
       this.$store.commit("infoDetails", info);
       this.$router.push({

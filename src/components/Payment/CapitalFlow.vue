@@ -48,14 +48,16 @@
               </span>
             </div>
             <div class="content-row">
-              <span class="row-left">交易金额：{{item[4] | formatMoney}}</span>
-              <span class="row-right">余额：{{item[9] | formatMoney}}</span>
+              <span>交易金额：{{item[4] | formatMoney}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">交易类型：{{item[6] | tradeState}}</span>
+              <span>剩余金额：{{item[9] | formatMoney}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">备注：{{item[23]}}</span>
+              <span>交易类型：{{item[6] | tradeState}}</span>
+            </div>
+            <div class="content-row">
+              <span>备注：{{item[23]}}</span>
             </div>
           </div>
         </div>

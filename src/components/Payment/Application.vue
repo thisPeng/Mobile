@@ -22,10 +22,12 @@
             </div>
             <div class="content-row">
               <span class="row-left">申请类型：{{item[9] | orderState}}</span>
+            </div>
+            <div class="content-row">
               <span class="row-right">申请金额：{{item[12] | formatMoney}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">申请说明：{{item[10]}}</span>
+              <span class="row-left">备注：{{item[10]}}</span>
             </div>
           </div>
         </div>

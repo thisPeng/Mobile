@@ -18,11 +18,13 @@
               </span>
             </div>
             <div class="content-row">
-              <span class="row-left">经手人：{{item[13]}}</span>
-              <span class="row-right">扣款金额：{{item[9] | formatMoney}}</span>
+              <span>扣款金额：{{item[9] | formatMoney}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">扣款说明：{{item[16]}}</span>
+              <span>经手人：{{item[13]}}</span>
+            </div>
+            <div class="content-row">
+              <span>备注：{{item[16]}}</span>
             </div>
           </div>
         </div>

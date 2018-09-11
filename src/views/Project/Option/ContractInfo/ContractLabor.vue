@@ -173,18 +173,15 @@ export default {
       this.showDatefive = false;
     },
     getData() {
-      console.log(this.contractParams);
       contractInfo
         .getLaborList(this.contractParams[0], "BC_Labor_Contract")
         .then(res => {
-          console.log(res);
           try {
             if (res.status === 1) {
               const sp = res.text.split("[[");
               const tsp = sp[1].split("]]");
-              // console.log(tsp);
               this.item = eval("[[" + tsp[0] + "]]")[0];
-              console.log(this.item);
+              // console.log(this.item);
             }
           } catch (e) {
             this.$toast(e);

@@ -297,7 +297,7 @@ export default {
                 Supplier_Sign: cspList[45]
               },
               {
-                Edit_Flag: cspList[16]
+                Edit_Flag: this.$util.replacePos(cspList[50], 2, 1)
               }
             ]
           }

@@ -1633,7 +1633,7 @@ const offer = {
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Order_Detail",
         "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 20,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
@@ -1726,7 +1726,7 @@ const offer = {
     })
   },
   //发货保存按钮
-  getDeliveryButtons(xmlData) {
+  saveDeliveryButton(xmlData) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1740,7 +1740,7 @@ const offer = {
     })
   },
   //发货单明细保存按钮
-  getDebutton(xmlData) {
+  saveSendDetail(xmlData) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1754,7 +1754,7 @@ const offer = {
     })
   },
   //发货按钮
-  getDeliveryButton(BillOID = "") {
+  sendDeliveryButton(BillOID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1799,7 +1799,7 @@ const offer = {
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Deliver_Detail",
         "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 20,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
@@ -1873,7 +1873,7 @@ const offer = {
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Order_Detail",
         "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 20,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",

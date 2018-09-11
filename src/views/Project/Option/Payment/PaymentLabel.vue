@@ -3,28 +3,28 @@
   <div class="paymentlabel">
     <van-tabs>
       <van-tab title='支付申请信息'>
-        <application />
+        <application v-if="isLoad" />
       </van-tab>
       <van-tab title='预存列表'>
-        <preMemory />
+        <preMemory v-if="isLoad" />
       </van-tab>
       <van-tab title='支付信息'>
-        <payInfomation />
+        <payInfomation v-if="isLoad" />
       </van-tab>
       <van-tab title='批款信息'>
-        <appropriation />
+        <appropriation v-if="isLoad" />
       </van-tab>
       <van-tab title='冻结信息'>
-        <frozen />
+        <frozen v-if="isLoad" />
       </van-tab>
       <van-tab title='扣款信息'>
-        <withholding />
+        <withholding v-if="isLoad" />
       </van-tab>
       <van-tab title='资金流水'>
-        <capitalFlow />
+        <capitalFlow v-if="isLoad" />
       </van-tab>
       <!-- <van-tab title='OA批款信息'>
-        <oainformation />
+        <oainformation v-if="isLoad" />
       </van-tab> -->
     </van-tabs>
   </div>
@@ -42,7 +42,9 @@ import oainformation from "./../../../../components/Payment/OAinformation"; //OA
 
 export default {
   data() {
-    return {};
+    return {
+      isLoad: false
+    };
   },
   components: {
     application,
@@ -56,7 +58,13 @@ export default {
   },
   computed,
   methods: {},
-  mounted() {}
+  mounted() {
+    if (this.projectInfo.SC_ProjectOID) {
+      this.isLoad = true;
+    } else {
+      this.$toast("请先点击屏幕右上角按钮，选择项目");
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

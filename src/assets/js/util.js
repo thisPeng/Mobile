@@ -30,13 +30,19 @@ Date.prototype.Format = function (fmt) {
 const formatMoney = (str) => {
   let num = parseFloat(str).toFixed(2);
 
-  return '￥' + (
-    num &&
-    num.replace(/(\d)(?=(\d{3})+\.)/g, res => {
-      return res + ",";
-    })
-  );
+  return '￥' + (num && num.toString().replace(/(\d)(?=(\d{3})+\.)/g, res => {
+    return res + ",";
+  }));
 };
+
+// 替换合同编辑标识
+const replacePos = (strObj, pos, replacetext) => {
+  if (strObj.length < 5) {
+    strObj = strObj + Array(6 - (strObj + "").length).join("0");
+  }
+  const str = strObj.substr(0, pos - 1) + replacetext + strObj.substr(pos, strObj.length);
+  return str;
+}
 
 // 字符转换
 const codeValue = (val, code) => {
@@ -59,6 +65,7 @@ const xmlData = function xmlData(xml, val) {
 
 export default {
   formatMoney,
+  replacePos,
   codeValue,
   xmlData
 };
