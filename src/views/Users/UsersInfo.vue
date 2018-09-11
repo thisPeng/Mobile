@@ -73,6 +73,9 @@
       <van-cell-group>
         <van-field v-model="userInfo.remarks" label="备注" placeholder="请输入备注" />
       </van-cell-group>
+        <van-cell-group>
+        <van-cell title="供应商" is-link value="附件" @click="jumpPage('supplierAnnex')" v-if="userType === 1"/>
+      </van-cell-group>
       <!-- <van-cell-group>
         <div class="task-title">
           <span>资金凭证</span>
@@ -153,6 +156,11 @@ export default {
         (this.servePath + this.data).replace("~", ""),
         (this.servePath + this.data).replace("~", "")
       ]);
+    },
+    jumpPage(name){
+      this.$router.push({
+        name
+      })
     }
   },
   computed

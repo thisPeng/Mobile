@@ -1218,8 +1218,9 @@ const contractInfo = {
     })
   }
 };
-//获取到货信息
+//获取合作商信息
 const arrival = {
+  // 到货信息
   getList(ProjectID) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1381,6 +1382,48 @@ const arrival = {
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //删除支付申请，
+  deletePayDelete(sc_id = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Apply_InfoService",
+        _methodName: "DeleteBill",
+        "_parameters[sc_id]": sc_id,
+        _paraNames: "sc_id",
+        _pUrl: ""
+      }
+    })
+  },
+  //删除预存列表
+  preDelete(sc_id = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Money_YC_InfoService",
+        _methodName: "DeleteBill",
+        "_parameters[sc_id]": sc_id,
+        _paraNames: "sc_id",
+        _pUrl: ""
+      }
+    })
+  },
+  //新增支付单保存
+  payKeep(SheetType = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Apply_InfoService",
+        _methodName: "GetSheetNo",
+        "_parameters[SheetType]": SheetType,
+        _paraNames: "SheetType",
         _pUrl: ""
       }
     })

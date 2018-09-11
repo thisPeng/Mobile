@@ -7,7 +7,7 @@
           <div class="item-title">
             <span class="title">收款账号：{{item[12]}}</span>
             <span>
-              <!-- <van-button type="danger" size="mini" plain @click="onDelete">删除</van-button> -->
+              <van-button type="danger" size="mini" plain @click="onDelete(item[0])">删除</van-button>
             </span>
           </div>
           <div class="item-content">
@@ -58,7 +58,37 @@ export default {
   computed,
   methods: {
     onAdd() {},
-    onDelete() {},
+    onDelete(id) {
+      this.$dialog
+        .confirm({
+          title: "删除",
+          message: "是否删除订单？"
+        })
+        .then(() => {
+          arrival.preDelete(id).then(res => {
+            //  console.log(res);
+            if (res && res.status === 1) {
+              if (res.text === "0") {
+                this.$toast.fail("单据已审核，不能删除！");
+              } else if (res.text === "1") {
+                this.getData();
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.$toast.success("删除数据成功");
+                  }, 300);
+                });
+              } else {
+                this.$toast.fail("删除数据失败");
+              }
+            } else if (res && res.text) {
+              this.$toast(res.text);
+            }
+          });
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
       arrival.getPremomey(this.projectInfo.SC_ProjectOID, page).then(res => {

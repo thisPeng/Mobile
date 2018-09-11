@@ -52,11 +52,16 @@
       <b class="padding-left-sm" v-if="payment === '余额转预存'">
         说明：转预存是由一个项目的余额转给另一个项目的资金池中,供另一个项目使用, 不用通过银行,直接项目间产生资金的转移流水。</b>
     </van-cell-group>
+    <div class="con-button">
+      <van-button @click="preKeep">保存</van-button>
+      <van-button>提交</van-button>
+    </div>
   </div>
 </template>
 <script>
 import computed from "../../../../assets/js/computed.js";
 import { task } from "../../../../assets/js/api.js";
+import { arrival } from "../../../../assets/js/api.js";
 
 export default {
   data() {
@@ -76,6 +81,12 @@ export default {
     };
   },
   methods: {
+    //保存
+    preKeep(){
+      arrival.payKeep(this.contractParams[0]).then(res =>{
+        console.log(res);
+      })
+    },
     onConfirm(res) {
       this.payment = res;
       this.paymentShow = false;
@@ -245,6 +256,18 @@ export default {
           background-color: #b3e7ff !important;
         }
       }
+    }
+  }
+  .con-button {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    button {
+      width: 48%;
+      padding: 0;
+      margin-bottom: 10px;
     }
   }
 }
