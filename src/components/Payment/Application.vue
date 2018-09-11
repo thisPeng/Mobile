@@ -7,7 +7,7 @@
           <div class="item-title">
             <span class="title">单号：{{item[1]}}</span>
             <span>
-              <!-- <van-button type="danger" size="mini" plain @click="onDelete">删除</van-button> -->
+              <van-button type="danger" size="mini" plain @click="onDelete">删除</van-button>
             </span>
           </div>
           <div class="item-content">
@@ -29,9 +29,9 @@
             </div>
           </div>
         </div>
-        <!-- <div class="margin-top-sm">
+        <div class="margin-top-sm">
           <van-button type="primary" size="large" @click="onAdd">新增支付申请</van-button>
-        </div> -->
+        </div>
       </div>
     </div>
     <!--分页组件-->

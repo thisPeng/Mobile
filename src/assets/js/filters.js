@@ -24,8 +24,8 @@ const formatDate = (date = '', fmt = 'yyyy-MM-dd') => {
 
 // 格式金额，保留两位小数
 const formatMoney = str => {
-  var num = parseFloat(str).toFixed(3); //这里因为我需要两位小数所以做一个限制，你们看情况做小数位的限制
-  var s = num.substring(0, num.length - 1); //只取小数位2位
+  var num = parseFloat(str).toFixed(3);
+  var s = num.substring(0, num.length - 1);
 
   return '￥' + (
     s &&

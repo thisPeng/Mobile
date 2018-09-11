@@ -27,9 +27,8 @@ export default {
       ImagePreview([(this.servePath + img).replace("..", "")]);
     },
     pageInit() {
-      offer.getTranAnnex(this.confirmParams[11]).then(res => {
+      offer.getTranAnnex(this.confirmParams[0]).then(res => {
         try {
-          console.log(res);
           if (res.status === 1) {
             const sp = res.text.split("[[");
             const dsp = sp[1].split(";");

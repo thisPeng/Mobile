@@ -13,7 +13,7 @@
           <div class="item-content">
             <div class="content-row">
               <span class="row-left">单号：{{item[1]}}</span>
-              <span class="row-right" v-if="item[6] == '0'">
+              <span class="row-right">
                 <van-tag type="danger" v-if="item[6] == '0'">单据状态：未审核</van-tag>
                 <van-tag type="success" v-else-if="item[30] == '1'">单据状态：已审批</van-tag>
                 <van-tag type="primary" v-else-if="item[31] == 'true'">单据状态：审批中</van-tag>

@@ -1564,6 +1564,28 @@ const offer = {
       }
     });
   },
+  // 供应商附件
+  getSupplierAnnex(SupplierID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Company_SupplierService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Supplier_DOCData",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SupplierID='" + SupplierID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
   // 供应商物质报价
   getPriceList(parasm = {}) {
     return axios({
@@ -1616,6 +1638,28 @@ const offer = {
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
         "_parameters[SQLCondi]": "SC_Order_MasterOID='" + PurchaseOrderID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  // 供应商-报价单附件
+  getTranAnnex(PurchaseOrderID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_SetPrice_EditService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Order_DOCData",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "PurchaseOrderID='" + PurchaseOrderID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -1915,28 +1959,6 @@ const offer = {
         "_parameters[ContractList]": parasm.ContractList,
         "_parameters[DetailIDList]": parasm.DetailIDList,
         _paraNames: "SupplierID,PartnerID,ProjectID,ContractList,DetailIDList",
-        _pUrl: ""
-      }
-    })
-  },
-  // 供应商附件
-  getTranAnnex(SupplierID = "") {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_Start_Company_SupplierService",
-        _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_SC_Supplier_DOCData",
-        "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": -1,
-        "_parameters[fieldList]": "",
-        "_parameters[valueList]": "",
-        "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SupplierID='" + SupplierID + "'",
-        "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": "",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     })

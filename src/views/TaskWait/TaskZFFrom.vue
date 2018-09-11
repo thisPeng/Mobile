@@ -67,10 +67,16 @@ export default {
       dataMoney: [],
       taskTabs: {
         codeJson: []
-      }
+      },
+      columns: ["支付供应商", "退结余额", "余额转预存", "其它支出申请"],
+      payment: ""
     };
   },
   methods: {
+    onConfirm(res) {
+      this.payment = res;
+      this.paymentShow = false;
+    },
     pageInit() {
       // 获取数据
       this.$parent.title = this.taskParams.name;
@@ -198,6 +204,24 @@ export default {
       color: #fff;
       border-radius: 5px;
       background-color: #3d95d5;
+    }
+  }
+  .from-payment {
+    display: flex;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    line-height: 24px;
+    position: relative;
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    overflow: hidden;
+    .from-label {
+      min-width: 90px;
+      flex: 1;
+    }
+    .from-select {
+      flex: 5;
     }
   }
   .task-table {
