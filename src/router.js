@@ -57,6 +57,7 @@ import Customerlist from "./views/CustomerList/CustomerList";
 import InquiryDetails from "./views/Project/Option/ConPrice/InquiryDetails";
 import ContractWork from "./views/Project/Option/ConPrice/ContractWork";
 import ContractLabor from "./views/Project/Option/ContractInfo/ContractLabor";
+import SupplierAnnex from  "./views/Users/SupplierAnnex";
 Vue.use(Router);
 
 export default new Router({
@@ -273,6 +274,14 @@ export default new Router({
           component: UsersInfo,
           meta: {
             title: "个人信息"
+          }
+        },
+        {
+          path: "/users/supplierAnnex",
+          name: "supplierAnnex",
+          component: SupplierAnnex,
+          meta: {
+            title: "供应商附件"
           }
         },
         {
