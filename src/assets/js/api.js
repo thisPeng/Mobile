@@ -1414,7 +1414,7 @@ const arrival = {
       }
     })
   },
-  //新增支付单保存
+  //新增支付单保存单号
   payKeep(SheetType = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1424,6 +1424,20 @@ const arrival = {
         _methodName: "GetSheetNo",
         "_parameters[SheetType]": SheetType,
         _paraNames: "SheetType",
+        _pUrl: ""
+      }
+    })
+  },
+  //新增支付单保存
+  payConservation(xmlData){
+    return axios({
+      url:"/UCMLWebServiceEntryForJs.aspx",
+      method:"post",
+      data:{
+        _bpoName:"BPO_Start_Apply_InfoService",
+        _methodName:"BusinessSubmit",
+        "_parameters[xmlData]": xmlData,
+        _paraNames: "xmlData",
         _pUrl: ""
       }
     })

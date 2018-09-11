@@ -81,12 +81,19 @@ export default {
     };
   },
   methods: {
-    //保存
-    preKeep(){
-      arrival.payKeep(this.contractParams[0]).then(res =>{
+    //保存前先获取单号
+    preKeep() {
+      arrival.payKeep(this.contractParams[0]).then(res => {
         console.log(res);
-      })
+      });
     },
+    //保存
+    PayKeep() {
+      // const list = this.list;
+      // const xml = require("xml");
+      // const xmlString = xml({});
+    },
+    //支付类型
     onConfirm(res) {
       this.payment = res;
       this.paymentShow = false;
