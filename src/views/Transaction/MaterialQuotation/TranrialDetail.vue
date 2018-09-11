@@ -6,7 +6,7 @@
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
           <van-card :title="item[4]" :price="item[15]" :desc="item[8]" :thumb="item[29].replace('~',servePath)">
             <div slot="footer">
-              <van-button size="mini" type="danger" @click.stop="onDelete(item)">删除</van-button>
+              <van-button size="mini" type="danger" @click.stop="onDelete(item)" v-if="confirmParams[39] !== '待报价'">删除</van-button>
             </div>
           </van-card>
         </div>
@@ -16,10 +16,11 @@
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
           <van-cell :title="'产品名称： ' + goods.title" :label="'规格/型号：' + goods.info" />
-          <van-field label="数量：" v-model="goods.num" type="number" required placeholder="请输入数量" @change="onSalcSum" />
+          <van-field label="数量：" v-model="goods.num" type="number" required placeholder="请输入数量" @change="onSalcSum"/>
+           <!-- <van-field label="数量：" v-model="goods.num" type="number" disabled @change="onSalcSum" v-else/> -->
           <van-field label="赠送数量：" v-model="goods.sendNum" type="number" required placeholder="请输入赠送数量" />
           <van-field label="单价：" v-model="goods.howMuch" type="number" required placeholder="请输入售价" @change="onSalcSum" />
-          <van-field label="金额：" v-model="goods.howMoney" type="number" disabled />
+          <van-field label="金额：" v-model="goods.howMoney" type="number" placeholder="请输入金额" />
           <van-field label="税率：" v-model="goods.taxRadio" type="number" required placeholder="请输入税率" />
           <van-field label="备注：" v-model="goods.reMarks" placeholder="请输入物资备注" />
         </van-cell-group>

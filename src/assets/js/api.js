@@ -1637,6 +1637,20 @@ const offer = {
       }
     })
   },
+  //获取报价单编辑保存按钮
+  // savaTran(){
+  //    return axios({
+  //      url:"/UCMLWebServiceEntryForJs.aspx",
+  //      method:"post",
+  //      data:{
+  //       _bpoName: "BPO_Order_SetPrice_EditService",
+  //       _methodName: "BusinessSubmit",
+  //       "_parameters[xmlData]": xmlData,
+  //       _paraNames: "xmlData",
+  //       _pUrl: ""
+  //      }
+  //    })
+  // },
   // 保存物资明细
   saveTranDetails(xmlData) {
     return axios({
@@ -1682,6 +1696,20 @@ const offer = {
   },
   //发货保存按钮
   getDeliveryButtons(xmlData) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_List_EditService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xmlData,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
+  //发货单明细保存按钮
+  getDebutton(xmlData) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",

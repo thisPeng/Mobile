@@ -4,15 +4,16 @@
     <van-cell-group>
       <van-field v-model="list[2]" label="发货单号:" disabled/>
       <van-field v-model="list[39]" label="工程名称:" disabled/>
-      <!-- <van-field v-model="list[8]" label="发货时间:" /> -->
+      <!-- <van-field v-model="list[8]" label="发货时间:"/> -->
       <van-cell-group class="con-price">
         <span class="con-label">发货时间</span>
         <span class="con-select" @click="showDate=true">{{new Date(list[8]).Format("yyyy-MM-dd")}}</span>
       </van-cell-group>
       <van-datetime-picker v-model="currentDate" v-show="showDate" type="date" class="contract-date" @confirm="fahuoDate" @cancel="showDate=false" />
       <van-field v-model="list[7]" label="工程地址:" disabled/>
-      <!-- <van-field :value="list[13]|codeValue('CodeTable_Deliver_Type')" label="发货方式:" disabled/> -->
-      <cbh-select v-model="list[13]" label="发货方式" code="CodeTable_Deliver_Type" @change="onDeliverChange" />
+      <cbh-select v-model="list[13]" label="发货方式" code="CodeTable_Deliver_Type" @change="onDeliverChange" v-if="list[41] ==='未发货'" />
+      <van-field :value="list[13]|codeValue('CodeTable_Deliver_Type')" label="发货方式:" disabled v-else />
+
       <van-field v-model="list[41]" label="单据状态:" disabled/>
       <van-field v-model="list[22]" label="审核人:" disabled/>
       <van-field v-model="list[10]" label="发货数量:" disabled/>
@@ -20,7 +21,7 @@
       <van-field v-model="list[27]" label="签收时间:" disabled/>
       <van-field v-model="list[28]" label="签收人:" disabled/>
       <van-field v-model="list[11]" label="发货金额:" disabled/>
-      <van-field v-model="list[29]" label="备注:" type="textarea" />
+      <van-field v-model="list[29]" label="备注:" type="textarea" :disabled="list[41] !== '未发货'"/>
       <van-cell title="发货单明细" is-link value="详情" @click="jumpPage(list)" />
     </van-cell-group>
     <div class="con-button">
@@ -45,7 +46,7 @@ export default {
     onDeliverChange(res) {
       this.list[13] = res;
     },
-    //交货时间
+    //发货时间
     fahuoDate(val) {
       this.list[8] = new Date(val).Format("yyyy-MM-dd");
       this.showDate = false;

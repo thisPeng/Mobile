@@ -10,10 +10,12 @@
           <div class="item-content">
             <div class="content-row">
               <span class="row-left">{{item[10]}}</span>
-              <span class="row-right">{{item[11]}}</span>
+              <span class="row-right">
+                <van-tag :type="item[14] === '已发货' ? '' : 'danger'">{{item[14]}}</van-tag>
+              </span>
             </div>
             <div class="content-row">
-              <span class="row-left">{{item[14]}}</span>
+              <span class="row-left">{{item[11]}}</span>
               <span class="row-right">{{item[16]}}</span>
             </div>
             <div class="content-row">
