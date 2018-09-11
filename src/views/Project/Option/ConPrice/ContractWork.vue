@@ -229,15 +229,6 @@ export default {
               {
                 Supplier_Name: cspList[39]
               },
-              // {
-              //   PartnerID: "null"
-              // },
-              // {
-              //   SupplierID: "null"
-              // },
-              // {
-              //   BusinessID: "null"
-              // },
               {
                 Deliver_Addr: cspList[8]
               },
@@ -265,12 +256,6 @@ export default {
               {
                 In_Pay_Percent: cspList[16]
               },
-              // {
-              //   Contract_Tax_Amt: "null"
-              // },
-              // {
-              //   TaxRate: "null"
-              // },
               {
                 Ensure_Valid_Day: cspList[20]
               },
@@ -314,7 +299,7 @@ export default {
                 Supplier_Sign: cspList[45]
               },
               {
-                Edit_Flag: cspList[16]
+                Edit_Flag: this.$util.replacePos(cspList[50], 1, 1)
               }
             ]
           }
@@ -328,12 +313,12 @@ export default {
         })
         .then(() => {
           contractInfo.saveContract(xmlString).then(res => {
-            // console.log(res);
             if (res && res.status === 1) {
+              this.$toast.success("提交成功");
               this.$nextTick().then(() => {
                 setTimeout(() => {
-                  this.$toast.success("提交成功");
-                }, 300);
+                  this.$router.go(-1);
+                }, 1500);
               });
             }
           });

@@ -19,8 +19,8 @@
       <van-cell title="发货单明细" is-link value="详情" @click="jumpPage" />
     </van-cell-group>
     <div class="con-button" v-if="info[25] !== '1' && info[20] !== '1'">
-      <van-button type="default" @click="DeliverySign">签收</van-button>
-      <van-button type="default" @click="DeliveryOffer">提议</van-button>
+      <van-button type="primary" @click="DeliverySign">签收</van-button>
+      <van-button type="danger" @click="DeliveryOffer">提议</van-button>
     </div>
   </div>
 </template>
@@ -55,9 +55,10 @@ export default {
         .then(() => {
           arrival.getSign(this.confirmParams[0]).then(res => {
             if (res && res.status === 1) {
+              this.$toast.success("签收成功");
               this.$nextTick().then(() => {
                 setTimeout(() => {
-                  this.$toast.success("签收成功");
+                  this.$router.go(-1);
                 }, 300);
               });
               this.$router.replace({
@@ -77,10 +78,11 @@ export default {
         .then(() => {
           arrival.getOffer(this.confirmParams[0]).then(res => {
             if (res && res.status === 1) {
+              this.$toast.success("提议成功");
               this.$nextTick().then(() => {
                 setTimeout(() => {
-                  this.$toast.success("提议成功");
-                }, 300);
+                  this.$router.go(-1);
+                }, 1500);
               });
             }
           });

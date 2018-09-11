@@ -8,7 +8,6 @@
             <span class="title">单号：{{item[1]}}</span>
           </div>
           <div class="item-content">
-
             <div class="content-row">
               <span class="row-left">批款日期：{{item[10] | formatDate}}</span>
               <span class="row-right">
@@ -19,12 +18,16 @@
               </span>
             </div>
             <div class="content-row">
-              <span class="row-left">到款金额：{{item[34] | formatMoney}}</span>
-              <span class="row-right">批款金额：{{item[9] | formatMoney}}</span>
+              <span>收款账号：{{item[12]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">收款账号：{{item[12]}}</span>
-              <span class="row-right">经手人：{{item[13]}}</span>
+              <span>到款金额：{{item[34] | formatMoney}}</span>
+            </div>
+            <div class="content-row">
+              <span>批款金额：{{item[9] | formatMoney}}</span>
+            </div>
+            <div class="content-row">
+              <span>经手人：{{item[13]}}</span>
             </div>
             <div class="content-row">
               <span>备注：{{item[16]}}</span>

@@ -9,19 +9,23 @@
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">申请单号：{{item[40]}}</span>
+              <span class="row-left">支付日期：{{item[10] | formatDate}}</span>
               <span class="row-right">
                 <van-tag type="success" v-if="item[6] === '1'">单据状态：{{item[6] | payState}}</van-tag>
                 <van-tag type="danger" v-else>单据状态：{{item[6] | payState}}</van-tag>
               </span>
             </div>
             <div class="content-row">
-              <span class="row-right">支付日期：{{item[10] | formatDate}}</span>
-              <span class="row-left">支付金额：{{item[9] | formatMoney}}</span>
+              <span>申请单号：{{item[40]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">支付类型：{{item[37] | paytypeState}}</span>
-              <span class="row-right">收款单位：{{item[38]}}</span>
+              <span>支付金额：{{item[9] | formatMoney}}</span>
+            </div>
+            <div class="content-row">
+              <span>支付类型：{{item[37] | paytypeState}}</span>
+            </div>
+            <div class="content-row">
+              <span>收款单位：{{item[38]}}</span>
             </div>
           </div>
         </div>
@@ -53,7 +57,7 @@ export default {
             const csp = sp[1].split(";");
             this.list = eval("[[" + csp[0]);
             this.pages = eval("(" + csp[1].split("=")[1] + ")");
-            // console.log(this.list);
+            console.log(this.list);
           }
         } catch (e) {
           console.log(e);

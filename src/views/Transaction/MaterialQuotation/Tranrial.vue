@@ -24,9 +24,10 @@
       <van-cell title="报价单附件" is-link value="详情" @click="jumpPage('tranrialAnnex')" />
     </van-cell-group>
     <div class="con-button">
-      <van-button type="warning" @click="jumpInfo">编辑合同</van-button>
-      <van-button type="primary" @click="onSubmit">提交报价</van-button>
-      <van-button @click="saveTranDetails">保存</van-button>
+      <van-button type="default" @click="jumpInfo" v-if="info[15] != '3'">编辑合同</van-button>
+      <van-button type="primary" @click="onSubmit" v-if="info[15] != '2'">提交报价</van-button>
+      <van-button type="primary" @click="saveTranDetails" v-if="info[15] != '2'">保存</van-button>
+      <van-button type="default" @click="onAddItem" v-if="info[15] != '2'">添加物资</van-button>
     </div>
   </div>
 </template>
@@ -43,7 +44,16 @@ export default {
   },
   computed,
   methods: {
-    onAddItem() {},
+    // 添加物资
+    onAddItem() {
+      this.$store.commit("suppParams", {
+        id: this.userInfo.oid,
+        oid: this.confirmParams[0]
+      });
+      this.$router.push({
+        name: "tranrialAdd"
+      });
+    },
     getOffer() {
       offer.getTranrial(this.confirmParams[0]).then(res => {
         if (res && res.status === 1) {

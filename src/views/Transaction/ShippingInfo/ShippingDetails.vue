@@ -2,31 +2,30 @@
   <!-- 发货单编辑 -->
   <div class="shippingDetails">
     <van-cell-group>
-      <van-field v-model="list[2]" label="发货单号:" disabled/>
-      <van-field v-model="list[39]" label="工程名称:" disabled/>
-      <!-- <van-field v-model="list[8]" label="发货时间:"/> -->
-      <van-cell-group class="con-price">
-        <span class="con-label">发货时间</span>
+      <van-field :value="list[2]" label="发货单号：" disabled/>
+      <van-field :value="list[39]" label="工程名称：" disabled/>
+      <van-field :value="list[8]" label="发货时间：" disabled v-if="list[41] == '已发货'" />
+      <van-cell-group class="con-price" v-else>
+        <span class="con-label">发货时间：</span>
         <span class="con-select" @click="showDate=true">{{new Date(list[8]).Format("yyyy-MM-dd")}}</span>
       </van-cell-group>
       <van-datetime-picker v-model="currentDate" v-show="showDate" type="date" class="contract-date" @confirm="fahuoDate" @cancel="showDate=false" />
-      <van-field v-model="list[7]" label="工程地址:" disabled/>
-      <cbh-select v-model="list[13]" label="发货方式" code="CodeTable_Deliver_Type" @change="onDeliverChange" v-if="list[41] ==='未发货'" />
-      <van-field :value="list[13]|codeValue('CodeTable_Deliver_Type')" label="发货方式:" disabled v-else />
-
-      <van-field v-model="list[41]" label="单据状态:" disabled/>
-      <van-field v-model="list[22]" label="审核人:" disabled/>
-      <van-field v-model="list[10]" label="发货数量:" disabled/>
-      <van-field v-model="list[42]" label="签收状态:" disabled/>
-      <van-field v-model="list[27]" label="签收时间:" disabled/>
-      <van-field v-model="list[28]" label="签收人:" disabled/>
-      <van-field v-model="list[11]" label="发货金额:" disabled/>
-      <van-field v-model="list[29]" label="备注:" type="textarea" :disabled="list[41] !== '未发货'"/>
+      <van-field :value="list[7]" label="工程地址：" disabled/>
+      <cbh-select v-model="list[13]" label="发货方式：" code="CodeTable_Deliver_Type" @change="onDeliverChange" v-if="list[41] != '已发货'" />
+      <van-field :value="list[13] | codeValue('CodeTable_Deliver_Type')" label="发货方式：" disabled v-else />
+      <van-field :value="list[41]" label="单据状态：" disabled/>
+      <van-field :value="list[22]" label="审核人：" disabled/>
+      <van-field :value="list[10]" label="发货数量：" disabled/>
+      <van-field :value="list[42]" label="签收状态：" disabled/>
+      <van-field :value="list[27]" label="签收时间：" disabled/>
+      <van-field :value="list[28]" label="签收人：" disabled/>
+      <van-field :value="list[11]" label="发货金额：" disabled/>
+      <van-field v-model="list[29]" label="备注：" type="textarea" :disabled="list[41] != '已发货'" />
       <van-cell title="发货单明细" is-link value="详情" @click="jumpPage(list)" />
     </van-cell-group>
-    <div class="con-button">
-      <van-button type="default" plain @click="getButton" v-if="list[41] === '未发货'">发货</van-button>
-      <van-button type="default" plain @click="getDeButton" v-if="list[41] === '未发货'">保存</van-button>
+    <div class="con-button" v-if="list[41] != '已发货'">
+      <van-button type="default" @click="saveOrder">保存</van-button>
+      <van-button type="primary" @click="sendShipping">发货</van-button>
     </div>
   </div>
 </template>
@@ -53,7 +52,7 @@ export default {
     },
     //编辑
     getDetails() {
-      offer.getDeliveryDetail(this.contractParams[0]).then(res => {
+      return offer.getDeliveryDetail(this.contractParams[0]).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
@@ -64,25 +63,26 @@ export default {
           } else {
             this.list[27] = ""; // 确认时间
           }
+          return true;
         }
+        return false;
       });
     },
     //发货按钮
-    getButton() {
+    sendShipping() {
       this.$dialog
         .confirm({
-          title: "删除",
-          message: "确认删除此产品记录？"
+          title: "发货",
+          message: "确认单据发货？"
         })
         .then(() => {
-          offer.getDeliveryButton(this.contractParams[0]).then(res => {
-            // console.log(res);
-            if (res.status === 1 || res.text === true) {
-              this.getDetails();
+          offer.sendDeliveryButton(this.contractParams[0]).then(res => {
+            if (res.status === 1 && res.text == "True") {
+              this.$toast.success("发货成功");
               this.$nextTick().then(() => {
                 setTimeout(() => {
-                  this.$toast.success("发货成功");
-                }, 300);
+                  this.$router.go(-1);
+                }, 1500);
               });
             } else {
               this.$toast.fail("发货失败");
@@ -91,7 +91,7 @@ export default {
         });
     },
     //发货保存按钮
-    getDeButton() {
+    saveOrder() {
       const list = this.list;
       const xml = require("xml");
       const xmlString = xml({
@@ -137,17 +137,15 @@ export default {
           message: "确认保存该询价单？"
         })
         .then(() => {
-          offer.getDeliveryButtons(xmlString).then(res => {
-            console.log(res);
+          offer.saveDeliveryButton(xmlString).then(res => {
             try {
               if (res.status === 1) {
-                this.getDetails();
-                this.$nextTick().then(() => {
-                  setTimeout(() => {
+                this.getDetails().then(result => {
+                  if (result) {
                     this.$toast.success("保存成功");
-                  }, 300);
+                    return;
+                  }
                 });
-                return;
               }
               throw "保存失败，请刷新页面重试";
             } catch (e) {
@@ -181,7 +179,7 @@ export default {
     flex-wrap: wrap;
     justify-content: space-between;
     button {
-      width: 42%;
+      width: 49%;
       padding: 0;
       margin-bottom: 10px;
     }
@@ -202,7 +200,7 @@ export default {
     }
     .con-select {
       flex: 5;
-      color: #888;
+      color: #333;
     }
   }
   .contract-date {
@@ -211,6 +209,13 @@ export default {
     z-index: 9999;
     bottom: 0;
     padding-right: 30px;
+  }
+}
+</style>
+<style lang="less">
+.shippingDetails {
+  .van-cell .van-cell__title {
+    max-width: 90px;
   }
 }
 </style>

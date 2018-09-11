@@ -6,7 +6,7 @@
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
           <van-card :title="item[9]" :desc="item[10]" :price="item[18]" :thumb="item[26]">
             <div slot="footer">
-              <van-button size="mini" type="danger" @click.stop="getDelete(item[0])" v-if="confirmParams[41] === '未发货'">删除</van-button>
+              <van-button size="mini" type="danger" @click.stop="deleteItem(item[0])" v-if="confirmParams[41] != '已发货'">删除</van-button>
               <!-- @click.stop="arrivalDelete(item[0])" -->
             </div>
           </van-card>
@@ -20,8 +20,8 @@
           <van-cell :title="'单位： ' + goods.taxRate" :label="'订单数量：' + goods.taxAll" />
           <van-cell :title="'赠送数量： ' + goods.taxbrand" :label="'税率：' + goods.taxRadio + '%'" />
           <van-cell :title="'实价 ' + goods.howMuch" :label="'金额：' + goods.howMoney" />
-          <van-field label="发货数量：" v-model="goods.taxunit" :disabled="confirmParams[41] !== '未发货'" />
-          <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[41] !== '未发货'" />
+          <van-field label="发货数量：" v-model="goods.taxunit" :disabled="confirmParams[41] == '已发货'" :required="confirmParams[41] != '已发货'" :placeholder="confirmParams[41] != '已发货' ? '请输入发货数量' : ''" />
+          <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[41] == '已发货'" :placeholder="confirmParams[41] != '已发货' ? '请输入备注' : ''" />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">
@@ -30,7 +30,7 @@
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
           <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <van-button type="primary" bottom-action @click="getDeButton" v-if="confirmParams[41] === '未发货'">保存修改</van-button>
+          <van-button type="primary" bottom-action @click="saveDetail" v-if="confirmParams[41] != '已发货'">保存修改</van-button>
         </div>
       </template>
     </van-sku>
@@ -92,7 +92,7 @@ export default {
       });
     },
     //删除按钮
-    getDelete(list) {
+    deleteItem(list) {
       this.$dialog
         .confirm({
           title: "删除",
@@ -104,18 +104,15 @@ export default {
             DetailOIDList: list
           };
           offer.deleteDeliveryDetails(params).then(res => {
-            console.log(res);
             if (res.status === 1) {
               if (res.text === "-1") {
                 this.$toast.fail("明细至少有一条记录");
               } else if (res.text === "-2") {
                 this.$toast.fail("删除数量不能大于等于现有记录数量");
               } else {
-                this.getData();
-                this.$nextTick().then(() => {
-                  setTimeout(() => {
-                    this.$toast.success("删除成功");
-                  }, 300);
+                this.getData().then(result => {
+                  if (result) this.$toast.success("删除成功");
+                  else this.$router.go(0);
                 });
               }
             }
@@ -126,7 +123,7 @@ export default {
         });
     },
     //保存修改按钮
-    getDeButton() {
+    saveDetail() {
       const xml = require("xml");
       const xmlString = xml({
         root: [
@@ -163,7 +160,7 @@ export default {
         ]
       });
       // console.log(xmlString);
-      offer.getDebutton(xmlString).then(res => {
+      offer.saveSendDetail(xmlString).then(res => {
         try {
           if (res.status === 1) {
             this.showBase = false;

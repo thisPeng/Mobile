@@ -24,15 +24,11 @@ const formatDate = (date = '', fmt = 'yyyy-MM-dd') => {
 
 // 格式金额，保留两位小数
 const formatMoney = str => {
-  var num = parseFloat(str).toFixed(3);
-  var s = num.substring(0, num.length - 1);
+  let num = parseFloat(str).toFixed(2);
 
-  return '￥' + (
-    s &&
-    s.toString().replace(/(\d)(?=(\d{3})+\.)/g, function ($0, $1) {
-      return $1 + ",";
-    })
-  );
+  return '￥' + (num && num.toString().replace(/(\d)(?=(\d{3})+\.)/g, res => {
+    return res + ",";
+  }));
 };
 
 const codeValue = (val, code) => {

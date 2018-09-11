@@ -12,7 +12,7 @@
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">单号：{{item[1]}}</span>
+              <span class="row-left">审核日期：{{item[8] | formatDate}}</span>
               <span class="row-right">
                 <van-tag type="danger" v-if="item[6] == '0'">单据状态：未审核</van-tag>
                 <van-tag type="success" v-else-if="item[30] == '1'">单据状态：已审批</van-tag>
@@ -21,12 +21,14 @@
               </span>
             </div>
             <div class="content-row">
-              <span class="row-left">经手人：{{item[13]}}</span>
-              <span class="row-right">预存金额：{{item[9] | formatMoney}}</span>
+              <span>预存单号：{{item[1]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">交易日期：{{item[10] | formatDate}}</span>
-              <span class="row-right">审核日期：{{item[8] | formatDate}}</span>
+              <span>预存金额：{{item[9] | formatMoney}}</span>
+            </div>
+
+            <div class="content-row">
+              <span>经手人：{{item[13]}}</span>
             </div>
             <div class="content-row">
               <span>备注：{{item[16]}}</span>
