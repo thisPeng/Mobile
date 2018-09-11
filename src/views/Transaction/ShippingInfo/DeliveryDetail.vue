@@ -6,7 +6,7 @@
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
           <van-card :title="item[9]" :desc="item[10]" :price="item[18]" :thumb="item[26]">
             <div slot="footer">
-              <van-button size="mini" type="danger" @click.stop="getDelete(item[0])">删除</van-button>
+              <van-button size="mini" type="danger" @click.stop="getDelete(item[0])" v-if="confirmParams[41] === '未发货'">删除</van-button>
               <!-- @click.stop="arrivalDelete(item[0])" -->
             </div>
           </van-card>
@@ -20,15 +20,18 @@
           <van-cell :title="'单位： ' + goods.taxRate" :label="'订单数量：' + goods.taxAll" />
           <van-cell :title="'赠送数量： ' + goods.taxbrand" :label="'税率：' + goods.taxRadio + '%'" />
           <van-cell :title="'实价 ' + goods.howMuch" :label="'金额：' + goods.howMoney" />
-          <van-cell :title="'发货数量：' + goods.taxunit" />
-          <van-field label="备注：" v-model="goods.reMarks" disabled />
+          <van-field label="发货数量：" v-model="goods.taxunit" :disabled="confirmParams[41] !== '未发货'" />
+          <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[41] !== '未发货'" />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">
         <div></div>
       </template>
       <template slot="sku-actions" slot-scope="props">
-        <div class="van-sku-actions"></div>
+        <div class="van-sku-actions">
+          <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
+          <van-button type="primary" bottom-action @click="getDeButton" v-if="confirmParams[41] === '未发货'">保存修改</van-button>
+        </div>
       </template>
     </van-sku>
   </div>
@@ -75,16 +78,20 @@ export default {
   },
   computed,
   methods: {
+    //发货单明细
     getData() {
-      offer.getDeliveryDetail(this.contractParams[0]).then(res => {
+      return offer.getDeliveryDetail(this.contractParams[0]).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[2].split(";");
           this.list = eval("[[" + csp[0]);
+          return true;
           // console.log(this.list);
         }
+        return false;
       });
     },
+    //删除按钮
     getDelete(list) {
       this.$dialog
         .confirm({
@@ -118,6 +125,60 @@ export default {
           // on cancel
         });
     },
+    //保存修改按钮
+    getDeButton() {
+      const xml = require("xml");
+      const xmlString = xml({
+        root: [
+          {
+            BC_SC_Deliver_Detail: [
+              {
+                _attr: {
+                  UpdateKind: "ukModify"
+                }
+              },
+              {
+                SC_Deliver_DetailOID: this.goods.id
+              }
+            ]
+          },
+          {
+            BC_SC_Deliver_Detail: [
+              {
+                _attr: {
+                  UpdateKind: ""
+                }
+              },
+              {
+                SC_Deliver_DetailOID: "null"
+              },
+              {
+                Real_Qty: this.goods.taxunit
+              },
+              {
+                Remark: this.goods.reMarks
+              }
+            ]
+          }
+        ]
+      });
+      // console.log(xmlString);
+      offer.getDebutton(xmlString).then(res => {
+        try {
+          if (res.status === 1) {
+            this.showBase = false;
+            this.getData().then(result => {
+              if (result) this.$toast.success(res.text);
+              else this.$router.go(0);
+            });
+          } else {
+            this.$toast.fail(res.text);
+          }
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
+    },
     showInfo(item) {
       this.sku.price = item[18];
       this.goods = {
@@ -134,7 +195,7 @@ export default {
         howMoney: item[18],
         taxRadio: item[19],
         taxbrand: item[15],
-        taxunit: item[16],
+        taxunit: item[14],
         reMarks: item[21]
       };
       this.showBase = true;

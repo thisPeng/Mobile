@@ -82,11 +82,6 @@
       <van-field v-model="cspList[43]" label="乙方地址" disabled/>
     </van-cell-group>
     <!-- <div class="title-delivery">合同附件表</div>  -->
-    <van-steps :active="1">
-      <van-step>编辑报价单</van-step>
-      <van-step>编辑合同</van-step>
-      <van-step>提交报价</van-step>
-    </van-steps>
     <div class="button">
       <van-button size="large" type="primary" @click="submitWork">提交合同</van-button>
     </div>

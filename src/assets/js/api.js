@@ -1695,6 +1695,20 @@ const offer = {
       }
     })
   },
+  //发货单明细保存按钮
+  getDebutton(xmlData) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_List_EditService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xmlData,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
   //发货按钮
   getDeliveryButton(BillOID = "") {
     return axios({
