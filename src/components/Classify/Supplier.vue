@@ -154,7 +154,10 @@ export default {
   methods: {
     jumpInfo() {
       supplier
-        .getSuppTaskId(this.projectInfo.DemandID, this.suppParams.id)
+        .getSuppTaskId(
+          this.projectInfo.DemandID || this.confirmParams[24],
+          this.suppParams.id
+        )
         .then(res => {
           try {
             if (res.status === 1) {
@@ -311,15 +314,16 @@ export default {
     },
     // 添加购物车
     onBuyClicked() {
-      if (this.projectInfo.SC_ProjectOID) {
+      if (this.projectInfo.SC_ProjectOID || this.clientInfo[0]) {
         if (this.suppParams.oid) {
           const params = {
-            OIDCheckList: this.goods.id + "|" + this.goods.sid,
+            OIDCheckList: this.goods.id,
             PartnerID: this.userId.UCML_OrganizeOID,
-            ProjectID: this.projectInfo.SC_ProjectOID,
-            DemandID: this.projectInfo.DemandID,
+            ProjectID: this.projectInfo.SC_ProjectOID || "",
+            DemandID: this.projectInfo.DemandID || this.confirmParams[24],
             SupplierID: this.suppParams.id,
-            PurchaseOrderID: this.suppParams.oid
+            PurchaseOrderID: this.suppParams.oid,
+            IsDel: false
           };
           classify.addCartForOrder(params).then(res => {
             try {
@@ -396,13 +400,16 @@ export default {
     // 获取供应商详情
     getSuppInfo() {
       supplier
-        .getSuppInfo(this.projectInfo.DemandID, this.suppParams.id)
+        .getSuppInfo(
+          this.projectInfo.DemandID || this.confirmParams[24],
+          this.suppParams.id
+        )
         .then(res => {
           if (res.status === 1) {
             const sp = res.text.split("[[");
             const tsp = sp[1].split("]]");
             this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
-            // console.log(this.suppInfo);
+            console.log(this.suppInfo);
           }
         });
     }

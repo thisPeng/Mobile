@@ -27,7 +27,7 @@ export default {
       ImagePreview([(this.servePath + img).replace("..", "")]);
     },
     pageInit() {
-      offer.getTranAnnex(this.confirmParams[2]).then(res => {
+      offer.getTranAnnex(this.confirmParams[11]).then(res => {
         try {
           console.log(res);
           if (res.status === 1) {

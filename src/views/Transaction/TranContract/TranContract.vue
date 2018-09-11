@@ -12,14 +12,17 @@
               <span class="row-left">{{item[15]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">{{item[13]}}</span>
+              <span class="row-left">{{item[14]}}</span>
               <span class="row-right">
-                <van-tag :type="item[20] === '初始状态' ? '' : 'danger'">{{item[20]}}</van-tag>
+                <van-tag v-if="item[20] === '初始状态'">{{item[20]}}</van-tag>
+                <van-tag type="danger" v-else-if="item[20] === '发货情况：未发货'">{{item[20]}}</van-tag>
+                <van-tag type="success" v-else-if="item[20] === '发货情况：全部发货'">{{item[20]}}</van-tag>
+                <van-tag type="primary" v-else>{{item[20]}}</van-tag>
               </span>
             </div>
             <div class="content-row">
-              <span class="row-left">{{item[16]}}</span>
-              <span class="row-left">{{item[14]}}</span>
+              <span class="row-left">{{item[13]}}</span>
+              <span class="row-right">{{item[16]}}</span>
             </div>
           </div>
         </div>

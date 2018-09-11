@@ -1,7 +1,7 @@
 <template>
   <!-- 清单详情 -->
   <div class="inventory">
-        <div class="inquiry-data">
+    <div class="inquiry-data">
       <div class="inquiry-list">
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
           <van-card :title="item[4]" :desc="item[8]">
@@ -75,7 +75,7 @@ export default {
   },
   computed,
   methods: {
-     showInfo(item) {
+    showInfo(item) {
       this.sku.price = item[15];
       this.goods = {
         id: item[23],
@@ -98,10 +98,10 @@ export default {
     },
     getData() {
       offer.getContractDetail(this.confirmParams[0]).then(res => {
-        if(res && res.status ===1){
+        if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
-          this.list = eval("[[" +csp[0])
+          this.list = eval("[[" + csp[0]);
           console.log(this.list);
         }
       });

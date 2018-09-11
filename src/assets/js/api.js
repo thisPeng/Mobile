@@ -334,7 +334,8 @@ const classify = {
         "_parameters[ProjectID]": params.ProjectID,
         "_parameters[DemandID]": params.DemandID,
         "_parameters[PurchaseOrderID]": params.PurchaseOrderID,
-        _paraNames: "OIDCheckList,PartnerID,SupplierID,ProjectID,DemandID,PurchaseOrderID",
+        "_parameters[IsDel]": params.IsDel,
+        _paraNames: "OIDCheckList,PartnerID,SupplierID,ProjectID,DemandID,PurchaseOrderID,IsDel",
         _pUrl: ""
       }
     });

@@ -1,11 +1,11 @@
 <template>
   <!-- 报价单明细 -->
   <div class="tranrialDetail">
-    <div class="inquiry-data">
-      <div class="inquiry-list">
+    <div class="tranrial-data">
+      <div class="tranrial-list">
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
           <van-card :title="item[4]" :price="item[15]" :desc="item[8]" :thumb="item[29].replace('~',servePath)">
-            <div slot="footer">
+            <div slot="footer" v-if="confirmParams[15] != '2'">
               <van-button size="mini" type="danger" @click.stop="onDelete(item)">删除</van-button>
             </div>
           </van-card>
@@ -16,12 +16,12 @@
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
           <van-cell :title="'产品名称： ' + goods.title" :label="'规格/型号：' + goods.info" />
-          <van-field label="数量：" v-model="goods.num" type="number" required placeholder="请输入数量" @change="onSalcSum" />
-          <van-field label="赠送数量：" v-model="goods.sendNum" type="number" required placeholder="请输入赠送数量" />
-          <van-field label="单价：" v-model="goods.howMuch" type="number" required placeholder="请输入售价" @change="onSalcSum" />
+          <van-field label="数量：" v-model="goods.num" type="number" :required="confirmParams[15] != '2'" :disabled="confirmParams[15] == '2'" placeholder="请输入数量" @change="onSalcSum" />
+          <van-field label="赠送数量：" v-model="goods.sendNum" type="number" :required="confirmParams[15] != '2'" :disabled="confirmParams[15] == '2'" placeholder="请输入赠送数量" />
+          <van-field label="单价：" v-model="goods.howMuch" type="number" :required="confirmParams[15] != '2'" :disabled="confirmParams[15] == '2'" placeholder="请输入售价" @change="onSalcSum" />
           <van-field label="金额：" v-model="goods.howMoney" type="number" disabled />
-          <van-field label="税率：" v-model="goods.taxRadio" type="number" required placeholder="请输入税率" />
-          <van-field label="备注：" v-model="goods.reMarks" placeholder="请输入物资备注" />
+          <van-field label="税率：" v-model="goods.taxRadio" type="number" :required="confirmParams[15] != '2'" :disabled="confirmParams[15] == '2'" placeholder="请输入税率" />
+          <van-field label="备注：" v-model="goods.reMarks" placeholder="请输入物资备注" :disabled="confirmParams[15] == '2'" />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">
@@ -30,10 +30,13 @@
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
           <!--直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <van-button type="primary" bottom-action @click="onSaveGoods">保存修改</van-button>
+          <van-button type="primary" bottom-action @click="onSaveGoods" v-if="confirmParams[15] != '2'">保存修改</van-button>
         </div>
       </template>
     </van-sku>
+    <div class="tranrial-button" v-if="confirmParams[15] != '2'">
+      <van-button type="primary" size="large" @click="onAdd">添加物资</van-button>
+    </div>
   </div>
 </template>
 <script>
@@ -76,6 +79,16 @@ export default {
   },
   computed,
   methods: {
+    // 添加物资
+    onAdd() {
+      this.$store.commit("suppParams", {
+        id: this.userInfo.oid,
+        oid: this.confirmParams[0]
+      });
+      this.$router.push({
+        name: "tranrialAdd"
+      });
+    },
     // 计算物资总价
     onSalcSum() {
       this.goods.howMoney = this.goods.howMuch * this.goods.num;
@@ -214,7 +227,7 @@ export default {
 <style lang="less" scoped>
 .tranrialDetail {
   width: 100%;
-  .inquiry-data {
+  .tranrial-data {
     position: absolute;
     top: 10px;
     left: 0;
@@ -222,7 +235,8 @@ export default {
     bottom: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    .inquiry-list {
+    padding-bottom: 70px;
+    .tranrial-list {
       width: 100%;
       padding: 0 10px;
       .list-item {
@@ -241,6 +255,13 @@ export default {
         }
       }
     }
+  }
+  .tranrial-button {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+    background-color: #fff;
   }
 }
 </style>

@@ -42,6 +42,7 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.info = eval("[[" + csp[0])[0];
+          this.$store.commit("confirmParams", this.info);
           //  console.log(this.info);
         }
       });
@@ -82,16 +83,18 @@ export default {
           });
         });
     },
+    // 页面初始化
     pageInit() {
       this.getOffer();
     },
+    // 跳转页面
     jumpPage(name) {
       this.$router.push({
         name
       });
     },
+    // 编辑合同
     jumpInfo() {
-      this.$store.commit("confirmParams", this.info);
       this.$router.push({
         name: "tranContractDetail"
       });
