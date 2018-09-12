@@ -42,7 +42,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { arrival } from "./../../assets/js/api.js";
+import { paylist } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -65,7 +65,7 @@ export default {
           message: "是否删除订单？"
         })
         .then(() => {
-          arrival.deletePayDelete(id).then(res => {
+          paylist.deletePayDelete(id).then(res => {
             // console.log(res);
             if (res && res.status === 1) {
               if (res.text === "0") {
@@ -91,7 +91,7 @@ export default {
     },
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      arrival.getPaymentList(this.projectInfo.SC_ProjectOID, page).then(res => {
+      paylist.getPaymentList(this.projectInfo.SC_ProjectOID, page).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");

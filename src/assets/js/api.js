@@ -1344,8 +1344,11 @@ const arrival = {
       }
     })
   },
-  //删除支付申请，
-  deletePayDelete(sc_id = "") {
+};
+//付款信息模块
+const paylist = {
+   //删除支付申请，
+   deletePayDelete(sc_id = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1576,7 +1579,7 @@ const arrival = {
       }
     })
   }
-};
+}
 //供应商模块
 const offer = {
   // 客户信息
@@ -2017,5 +2020,6 @@ export {
   conprice,
   contractInfo,
   arrival,
-  offer
+  offer,
+  paylist
 };

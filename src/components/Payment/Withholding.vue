@@ -37,7 +37,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { arrival } from "./../../assets/js/api.js";
+import { paylist } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -49,7 +49,7 @@ export default {
   computed,
   methods: {
     getData() {
-      arrival.getWithInfo(this.projectInfo.SC_ProjectOID).then(res => {
+      paylist.getWithInfo(this.projectInfo.SC_ProjectOID).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");

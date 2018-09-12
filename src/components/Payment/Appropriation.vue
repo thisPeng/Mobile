@@ -42,7 +42,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { arrival } from "./../../assets/js/api.js";
+import { paylist } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -55,7 +55,7 @@ export default {
   methods: {
     getData() {
       const page = this.currentPage > 0 ? this.currentPage - 1 : 0;
-      arrival.getApproInfo(this.projectInfo.SC_ProjectOID, page).then(res => {
+      paylist.getApproInfo(this.projectInfo.SC_ProjectOID, page).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");

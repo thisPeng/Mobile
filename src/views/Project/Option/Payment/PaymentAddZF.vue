@@ -61,7 +61,7 @@
 <script>
 import computed from "../../../../assets/js/computed.js";
 import { task } from "../../../../assets/js/api.js";
-import { arrival } from "../../../../assets/js/api.js";
+import { paylist } from "../../../../assets/js/api.js";
 
 export default {
   data() {
@@ -83,7 +83,7 @@ export default {
   methods: {
     //保存前先获取单号
     preKeep() {
-      arrival.payKeep(this.contractParams[0]).then(res => {
+      paylist.payKeep(this.contractParams[0]).then(res => {
         console.log(res);
       });
     },
