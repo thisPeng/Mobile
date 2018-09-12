@@ -68,7 +68,7 @@ export default {
     return {
       edit: true,
       data: {
-        Supplier_Amt: "",
+        Supplier_Amt: ""
       },
       dataTable: {},
       dataMoney: [],

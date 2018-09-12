@@ -4,7 +4,7 @@
       <div class="inquiry-list">
         <div class="list-item" v-for="(item, index) in dspList" :key="index" @click="showInfo(item)">
           <!--  -->
-          <van-card :title="item[9]" :num="item[14]" :desc="item[10]">
+          <van-card :title="item[9]" :num="item[14]+' '+item[11]" :desc="item[10]">
             <div slot="footer">
               <van-button size="mini" type="danger" @click.stop="arrivalDelete(item[0])">删除</van-button>
             </div>

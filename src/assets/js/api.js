@@ -1235,7 +1235,7 @@ const arrival = {
       }
     });
   },
-  //发货单编辑
+  // 发货单编辑
   getInvoice(DeliverID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1257,12 +1257,13 @@ const arrival = {
       }
     })
   },
+  // 发货单明细
   getItemInvoice(DeliverID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_Deliver_List",
+        _bpoName: "BPO_Deliver_ListService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Deliver_Detail",
         "_parameters[nStartPos]": 0,
@@ -1278,7 +1279,7 @@ const arrival = {
       }
     })
   },
-  //发货单明细
+  // 发货单明细
   getInvoiceEdit(DeliverID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1287,27 +1288,6 @@ const arrival = {
         _bpoName: "BPO_Deliver_List_EditService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Deliver_Master",
-        "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 20,
-        "_parameters[fieldList]": "",
-        "_parameters[valueList]": "",
-        "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Deliver_MasterOID='" + DeliverID + "'",
-        "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": "",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
-        _pUrl: ""
-      }
-    })
-  },
-  getInvoiceEdits(DeliverID = "") {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_Deliver_List_EditService",
-        _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_SC_Deliver_Detail",
         "_parameters[nStartPos]": 0,
         "_parameters[nRecords]": 20,
         "_parameters[fieldList]": "",
@@ -1364,28 +1344,6 @@ const arrival = {
       }
     })
   },
-  //支付申请列表
-  getPaymentList(ProjectID = "", page = 0) {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_Apply_InfoService",
-        _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_SC_Pay_Apply",
-        "_parameters[nStartPos]": page * 10,
-        "_parameters[nRecords]": 10,
-        "_parameters[fieldList]": "",
-        "_parameters[valueList]": "",
-        "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Pay_Apply.ProjectID ='" + ProjectID + "'" + " AND Sheet_Type='SQ'",
-        "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": "",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
-        _pUrl: ""
-      }
-    })
-  },
   //删除支付申请，
   deletePayDelete(sc_id = "") {
     return axios({
@@ -1429,15 +1387,37 @@ const arrival = {
     })
   },
   //新增支付单保存
-  payConservation(xmlData){
+  payConservation(xmlData) {
     return axios({
-      url:"/UCMLWebServiceEntryForJs.aspx",
-      method:"post",
-      data:{
-        _bpoName:"BPO_Start_Apply_InfoService",
-        _methodName:"BusinessSubmit",
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Apply_InfoService",
+        _methodName: "BusinessSubmit",
         "_parameters[xmlData]": xmlData,
         _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
+  //支付申请列表
+  getPaymentList(ProjectID = "", page = 0) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Apply_InfoService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Pay_Apply",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Pay_Apply.ProjectID ='" + ProjectID + "'" + " AND Sheet_Type='SQ'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     })

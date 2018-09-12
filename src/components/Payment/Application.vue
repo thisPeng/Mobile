@@ -6,7 +6,7 @@
         <div class="app-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">单号：{{item[1]}}</span>
-            <span>
+            <span v-if="item[32] != '1'">
               <van-button type="danger" size="mini" plain @click="onDelete(item[0])">删除</van-button>
             </span>
           </div>
