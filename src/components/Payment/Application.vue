@@ -21,7 +21,7 @@
               </span>
             </div>
             <div class="content-row">
-              <span class="row-left">申请类型：{{item[9] | orderState}}</span>
+              <span class="row-left">申请类型：{{item[9] | orderStatus}}</span>
             </div>
             <div class="content-row">
               <span class="row-right">申请金额：{{item[12] | formatMoney}}</span>
@@ -42,7 +42,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { paylist } from "./../../assets/js/api.js";
+import { financial } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -65,8 +65,7 @@ export default {
           message: "是否删除订单？"
         })
         .then(() => {
-          paylist.deletePayDelete(id).then(res => {
-            // console.log(res);
+          financial.deletePayBill(id).then(res => {
             if (res && res.status === 1) {
               if (res.text === "0") {
                 this.$toast.fail("单据已审核，不能删除！");
@@ -91,7 +90,7 @@ export default {
     },
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      paylist.getPaymentList(this.projectInfo.SC_ProjectOID, page).then(res => {
+      financial.getPaymentList(this.projectInfo.SC_ProjectOID, page).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");

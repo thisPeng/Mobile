@@ -21,7 +21,7 @@
       <van-field v-model="list[26]" label="员工姓名:" disabled />
       <van-field v-model="list[21]" label="备注:" type="textarea" placeholder="请输入备注" :disabled="list[39] === '待报价'" />
     </van-cell-group>
-    <van-cell title="询价单明细" is-link value="详情" @click="jumpInfo(item)" />
+    <van-cell title="询价单明细" is-link value="详情" @click="jumpInfo" />
     <van-cell title="询价单附件" is-link value="详情" @click="jumpPage('annexContent')" />
     <!--功能操作-->
     <div class="con-button">
@@ -218,8 +218,8 @@ export default {
       });
     },
     // 跳转合同信息
-    jumpInfo(info) {
-      this.$store.commit("infoDetails", info);
+    jumpInfo() {
+      this.$store.commit("infoDetails", this.info);
       this.$router.push({
         name: "inquirydetails"
       });

@@ -31,16 +31,16 @@
 
       </div>
       <!-- 单据状态 -->
-      <div class="task-state">
-        <van-field v-model="tdState" label="单据状态" disabled/>
+      <div class="task-Status">
+        <van-field v-model="tdStatus" label="单据状态" disabled/>
       </div>
       <!-- 备注 -->
       <div class="task-remark">
         <van-field v-model="tdRemark" label="备注" disabled/>
       </div>
       <!-- 业务状态 -->
-      <div class="task-ywstate">
-        <van-field v-model="tdyeState" label="业务状态" disabled/>
+      <div class="task-ywStatus">
+        <van-field v-model="tdyeStatus" label="业务状态" disabled/>
       </div>
       <!-- 制单人 -->
       <van-field v-model="tdZiDan" label="制单人" disabled/>
@@ -95,9 +95,9 @@ export default {
       tdAddress: "",
       tdType: "",
       tdMoney: "",
-      tdState: "",
+      tdStatus: "",
       tdRemark: "",
-      tdyeState: "",
+      tdyeStatus: "",
       tdZiDan: "",
       tdzdDate: "",
       tdBianMa: "",

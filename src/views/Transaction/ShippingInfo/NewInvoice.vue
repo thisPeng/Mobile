@@ -108,7 +108,7 @@ export default {
     },
     // 显示合同详情
     onShowInfo(i) {
-      const te = this.$options.filters["deliverState"];
+      const te = this.$options.filters["deliverStatus"];
       this.$dialog
         .alert({
           message:

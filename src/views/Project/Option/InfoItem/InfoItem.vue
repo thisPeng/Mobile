@@ -21,7 +21,7 @@
       <van-field :value="info[30]" label="税务组织：" disabled />
       <van-field :value="info[6] | codeValue('CodeTable_opening')" label="项目状态：" disabled />
       <van-field :value="info[4]" label="工期：" disabled />
-      <van-field :value="info[17] | openState" label="公开状态：" disabled />
+      <van-field :value="info[17] | openStatus" label="公开状态：" disabled />
       <van-field :value="info[4]" label="开通时间：" disabled />
       <van-field :value="info[5]" label="到期时间：" disabled />
       <van-field :value="info[22]" label="建设单位：" disabled />

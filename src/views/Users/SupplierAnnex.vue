@@ -18,7 +18,6 @@ import { ImagePreview } from "vant";
 export default {
   data() {
     return {
-      // data: []
       data: []
     };
   },
@@ -30,7 +29,6 @@ export default {
     },
     pageInit() {
       offer.getSupplierAnnex(this.userInfo.oid).then(res => {
-        // console.log(res);
         try {
           if (res.status === 1) {
             const sp = res.text.split("[[");
@@ -41,7 +39,6 @@ export default {
           }
         } catch (e) {
           console.log(e);
-          // this.$toast.fail(e);
         }
       });
     }

@@ -11,8 +11,8 @@
             <div class="content-row">
               <span class="row-left">支付日期：{{item[10] | formatDate}}</span>
               <span class="row-right">
-                <van-tag type="success" v-if="item[6] === '1'">单据状态：{{item[6] | payState}}</van-tag>
-                <van-tag type="danger" v-else>单据状态：{{item[6] | payState}}</van-tag>
+                <van-tag type="success" v-if="item[6] === '1'">单据状态：{{item[6] | payStatus}}</van-tag>
+                <van-tag type="danger" v-else>单据状态：{{item[6] | payStatus}}</van-tag>
               </span>
             </div>
             <div class="content-row">
@@ -22,7 +22,7 @@
               <span>支付金额：{{item[9] | formatMoney}}</span>
             </div>
             <div class="content-row">
-              <span>支付类型：{{item[37] | paytypeState}}</span>
+              <span>支付类型：{{item[37] | paytypeStatus}}</span>
             </div>
             <div class="content-row">
               <span>收款单位：{{item[38]}}</span>
@@ -37,7 +37,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { paylist } from "./../../assets/js/api.js";
+import { financial } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -50,7 +50,7 @@ export default {
   methods: {
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      paylist.getPaymentInfo(this.projectInfo.SC_ProjectOID, page).then(res => {
+      financial.getPaymentInfo(this.projectInfo.SC_ProjectOID, page).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");

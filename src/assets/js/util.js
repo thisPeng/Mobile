@@ -59,6 +59,7 @@ const codeValue = (val, code) => {
   return result;
 }
 
+// XML转换
 const xmlData = function xmlData(xml, val) {
   return "<" + xml + ">" + val + "</" + xml + ">"
 };

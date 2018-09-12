@@ -1346,9 +1346,9 @@ const arrival = {
   },
 };
 //付款信息模块
-const paylist = {
-   //删除支付申请，
-   deletePayDelete(sc_id = "") {
+const financial = {
+  //删除支付申请，
+  deletePayBill(sc_id = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1362,7 +1362,7 @@ const paylist = {
     })
   },
   //删除预存列表
-  preDelete(sc_id = "") {
+  deleteStored(sc_id = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1375,8 +1375,8 @@ const paylist = {
       }
     })
   },
-  //新增支付单保存单号
-  payKeep(SheetType = "") {
+  //新增支付单-获取单号
+  getSheetNo(SheetType = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1399,6 +1399,42 @@ const paylist = {
         _methodName: "BusinessSubmit",
         "_parameters[xmlData]": xmlData,
         _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
+  //新增支付单保存
+  savePayment(sc_oid = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Apply_InfoService",
+        _methodName: "AuditSheet",
+        "_parameters[sc_oid]": sc_oid,
+        _paraNames: "sc_oid",
+        _pUrl: ""
+      }
+    })
+  },
+  //新增支付单-获取供应商列表
+  getSupplierList(ProjectID = "", page = 0) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_OAPay_SelSuppService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_PaySupplier",
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_SupplierOID IN (SELECT SupplierID FROM SC_Order_Contract WHERE Approve_Flag<>'0' AND ProjectID = '" + ProjectID + "' GROUP BY SupplierID)",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
     })
@@ -2021,5 +2057,5 @@ export {
   contractInfo,
   arrival,
   offer,
-  paylist
+  financial
 };

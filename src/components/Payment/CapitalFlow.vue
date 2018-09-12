@@ -42,9 +42,9 @@
             <div class="content-row">
               <span class="row-left">交易时间：{{item[8] | formatDate}}</span>
               <span class="row-right">
-                <van-tag type="success" v-if="item[5] === '+'">资金标识：{{item[5] | transState}}</van-tag>
-                <van-tag type="danger" v-else-if="item[5] === '-'">资金标识：{{item[5] | transState}}</van-tag>
-                <van-tag type="primary" v-else>资金标识：{{item[5] | transState}}</van-tag>
+                <van-tag type="success" v-if="item[5] === '+'">资金标识：{{item[5] | transStatus}}</van-tag>
+                <van-tag type="danger" v-else-if="item[5] === '-'">资金标识：{{item[5] | transStatus}}</van-tag>
+                <van-tag type="primary" v-else>资金标识：{{item[5] | transStatus}}</van-tag>
               </span>
             </div>
             <div class="content-row">
@@ -54,7 +54,7 @@
               <span>剩余金额：{{item[9] | formatMoney}}</span>
             </div>
             <div class="content-row">
-              <span>交易类型：{{item[6] | tradeState}}</span>
+              <span>交易类型：{{item[6] | tradeStatus}}</span>
             </div>
             <div class="content-row">
               <span>备注：{{item[23]}}</span>
@@ -69,7 +69,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { paylist } from "./../../assets/js/api.js";
+import { financial } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -82,7 +82,7 @@ export default {
   computed,
   methods: {
     getData() {
-      paylist.getClahFlow(this.projectInfo.SC_ProjectOID).then(res => {
+      financial.getClahFlow(this.projectInfo.SC_ProjectOID).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("=");
@@ -97,7 +97,7 @@ export default {
     },
     getList() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      paylist
+      financial
         .getClahFlowDetails(this.projectInfo.SC_ProjectOID, page)
         .then(res => {
           try {

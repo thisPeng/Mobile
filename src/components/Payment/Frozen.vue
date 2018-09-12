@@ -38,7 +38,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { paylist } from "./../../assets/js/api.js";
+import { financial } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -51,7 +51,7 @@ export default {
   methods: {
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      paylist.getFrozen(this.projectInfo.SC_ProjectOID, page).then(res => {
+      financial.getFrozen(this.projectInfo.SC_ProjectOID, page).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");

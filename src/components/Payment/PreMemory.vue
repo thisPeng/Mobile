@@ -6,7 +6,7 @@
         <div class="pre-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">收款账号：{{item[12]}}</span>
-            <span>
+            <span v-if="item[30] != '1'">
               <van-button type="danger" size="mini" plain @click="onDelete(item[0])">删除</van-button>
             </span>
           </div>
@@ -45,7 +45,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { paylist } from "./../../assets/js/api.js";
+import { financial } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -64,7 +64,7 @@ export default {
           message: "是否删除订单？"
         })
         .then(() => {
-          paylist.preDelete(id).then(res => {
+          financial.deleteStored(id).then(res => {
             //  console.log(res);
             if (res && res.status === 1) {
               if (res.text === "0") {
@@ -90,7 +90,7 @@ export default {
     },
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      paylist.getPremomey(this.projectInfo.SC_ProjectOID, page).then(res => {
+      financial.getPremomey(this.projectInfo.SC_ProjectOID, page).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");

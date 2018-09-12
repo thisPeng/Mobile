@@ -31,6 +31,7 @@ const formatMoney = str => {
   }));
 };
 
+// 字符转换
 const codeValue = (val, code) => {
   const arr = store.state.codeValue;
   let result = "";
@@ -44,9 +45,8 @@ const codeValue = (val, code) => {
   return result;
 }
 
-
 // 发货状态
-const deliverState = val => {
+const deliverStatus = val => {
   switch (val) {
     case "1":
       return "未发货"
@@ -60,7 +60,7 @@ const deliverState = val => {
 }
 
 //申请类型
-const orderState = val => {
+const orderStatus = val => {
   switch (val) {
     case "1":
       return "支付材料与劳务费用"
@@ -73,7 +73,7 @@ const orderState = val => {
   }
 }
 // 单据状态
-const payState = val => {
+const payStatus = val => {
   switch (val) {
     case "1":
       return "已付"
@@ -82,8 +82,8 @@ const payState = val => {
   }
 }
 
-//状态
-const typeState = val => {
+// 订单状态
+const typeStatus = val => {
   switch (val) {
     case "0":
       return "未审核"
@@ -96,8 +96,8 @@ const typeState = val => {
   }
 }
 
-//交易类型
-const tradeState = val => {
+// 交易类型
+const tradeStatus = val => {
   switch (val) {
     case "PK":
       return "批款"
@@ -118,8 +118,8 @@ const tradeState = val => {
   }
 }
 
-//资金标识
-const transState = val => {
+// 资金标识
+const transStatus = val => {
   switch (val) {
     case "+":
       return "收入"
@@ -130,8 +130,8 @@ const transState = val => {
   }
 }
 
-//支付类型
-const paytypeState = val => {
+// 支付类型
+const paytypeStatus = val => {
   switch (val) {
     case "1":
       return "支付供应商"
@@ -142,23 +142,41 @@ const paytypeState = val => {
   }
 }
 
-const openState = val => {
+// 开通状态
+const openStatus = val => {
   if (val === '1') {
     return '是'
   }
   return '否'
 }
 
+// 供应商状态
+const supplierStatus = val => {
+  switch (val) {
+    case "1":
+      return "终审通过"
+    case "-1":
+      return "不通过"
+    case "-2":
+      return "已补充资料"
+    case "2":
+      return "初审通过"
+    default:
+      return "未审核"
+  }
+}
+
 export {
   formatDate,
   codeValue,
   formatMoney,
-  deliverState,
-  orderState,
-  typeState,
-  payState,
-  tradeState,
-  transState,
-  paytypeState,
-  openState
+  deliverStatus,
+  orderStatus,
+  typeStatus,
+  payStatus,
+  tradeStatus,
+  transStatus,
+  paytypeStatus,
+  openStatus,
+  supplierStatus
 }

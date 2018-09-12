@@ -86,6 +86,9 @@ export default {
               if (res && res.status === 1) {
                 this.$store.commit("userId", JSON.parse(res.text)[0]);
                 this.$toast("缓存已清除");
+                // setTimeout(() => {
+                //   location.reload();
+                // }, 1500);
               }
             });
           }
