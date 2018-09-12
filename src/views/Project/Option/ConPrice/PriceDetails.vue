@@ -20,9 +20,9 @@
       <van-field v-model="list[18]" label="业务员:" placeholder="请输入业务员" required :disabled="list[39] === '待报价'" :autofocus="true" />
       <van-field v-model="list[26]" label="员工姓名:" disabled />
       <van-field v-model="list[21]" label="备注:" type="textarea" placeholder="请输入备注" :disabled="list[39] === '待报价'" />
-    </van-cell-group>
     <van-cell title="询价单明细" is-link value="详情" @click="jumpInfo(item)" />
     <van-cell title="询价单附件" is-link value="详情" @click="jumpPage('annexContent')" />
+    </van-cell-group>
     <!--功能操作-->
     <div class="con-button">
       <van-button type="primary" @click="confrimPrice" v-if="list[39] === '已报价'">确认</van-button>
@@ -62,6 +62,11 @@ export default {
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0])[0];
           // console.log(this.list);
+          if(this.list[17]){
+            this.list[17] = new Date(this.list[17]).Format("yyyy-MM-dd");
+          }else{
+            this.list[17] = "请选择时间";
+          }
         }
       });
     },
@@ -158,8 +163,9 @@ export default {
         })
         .then(() => {
           conprice.confrimPrice(this.confirmParams[0]).then(res => {
+            console.log(res);
             try {
-              if (res && res.status === 1 && res.text === "True") {
+              if (res && res.status === 1) {
                 this.$toast.success("已提议，订单返回供应商");
                 this.$nextTick().then(() => {
                   setTimeout(() => {
@@ -168,7 +174,7 @@ export default {
                 });
                 return;
               }
-              throw "提议失败，请刷新页面重试";
+              throw "单据已经审核，不能重复审核!";
             } catch (e) {
               this.$toast.fail(e);
             }
@@ -272,8 +278,9 @@ export default {
         })
         .then(() => {
           contractInfo.keepContract(xmlString).then(res => {
+            console.log(res);
             try {
-              if (res && res.status === 1 && res.text === "True") {
+              if (res && res.status === 1) {
                 this.$nextTick().then(() => {
                   setTimeout(() => {
                     this.$toast.success("保存成功");
