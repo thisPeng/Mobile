@@ -32,7 +32,7 @@
           </div>
         </div>
         <div class="margin-top-sm">
-          <van-button type="primary" size="large" @click="onAdd(item)">新增支付申请</van-button>
+          <van-button type="primary" size="large" @click="onAdd">新增支付申请</van-button>
         </div>
       </div>
     </div>
@@ -53,8 +53,7 @@ export default {
   },
   computed,
   methods: {
-    onAdd(item) {
-      this.$store.commit("contractParams",item)
+    onAdd() {
       this.$router.push({
         name: "paymentAddZF"
       });
