@@ -6,9 +6,6 @@
       <div id="nName" class="mui-name">{{userInfo.name}}</div>
     </div>
     <div class="info-users">
-      <van-cell-group>
-        <van-field value="" label="" disabled />
-      </van-cell-group>
       <!-- 合作商编号 -->
       <van-cell-group>
         <van-field :value="userInfo.parterid" label="合作商编号" disabled />
@@ -25,30 +22,35 @@
           <van-picker show-toolbar title="请选择" :columns="columns" @cancel="sexShow=false" @confirm="onConfirm" />
         </van-popup>
       </van-cell-group>
-      <!-- 联系电话 -->
+      <!-- 签约单位名称 -->
       <van-cell-group>
-        <van-field v-model="userInfo.telno" label="联系电话" placeholder="请输入联系电话" />
-      </van-cell-group>
-      <!-- 现合作商名称 -->
-      <van-cell-group>
-        <van-field v-model="userInfo.nowparner" label="现合作商名称" placeholder="请输入现合作商名称" />
+        <van-field v-model="userInfo.nowparner" label="签约单位名称" required placeholder="请输入签约单位名称" />
       </van-cell-group>
       <!-- 法定代表人 -->
       <van-cell-group>
-        <van-field v-model="userInfo.represent" label="法定代表人" placeholder="请输入法定代表人" />
+        <van-field v-model="userInfo.represent" label="法定代表人" required placeholder="请输入法定代表人" />
       </van-cell-group>
       <!-- 法人身份证号 -->
       <van-cell-group>
-        <van-field v-model="userInfo.facard" label="法人身份证号" placeholder="请输入法人身份证号" />
+        <van-field v-model="userInfo.facard" label="法人身份证号" required placeholder="请输入法人身份证号" />
       </van-cell-group>
-      <!-- 邮箱 -->
+      <!-- 法人电话 -->
       <van-cell-group>
-        <van-field v-model="userInfo.email" label="E-mail" placeholder="请输入邮箱" />
+        <van-field v-model="userInfo.worktelno" label="法人电话" required placeholder="请输入法人电话" />
       </van-cell-group>
-      <!-- 手机号码 -->
+      <!-- 联系人姓名 -->
       <van-cell-group>
-        <van-field v-model="userInfo.worktelno" label="手机号码" placeholder="请输入手机号码" />
+        <van-field v-model="userInfo.lxname" label="联系人姓名" placeholder="请输入联系人姓名" required />
       </van-cell-group>
+      <!-- 联系人电话 -->
+      <van-cell-group>
+        <van-field v-model="userInfo.telno" label="联系人电话" placeholder="请输入联系人电话" required />
+      </van-cell-group>
+      <!-- 联系人邮箱 -->
+      <van-cell-group>
+        <van-field v-model="userInfo.email" label="联系人邮箱" required placeholder="请输入联系人邮箱" />
+      </van-cell-group>
+
       <!-- 状态 -->
       <van-cell-group class="info-type">
         <span class="type-label">状态</span>
@@ -67,29 +69,16 @@
       </van-cell-group>
       <!-- 地址 -->
       <van-cell-group>
-        <van-field v-model="userInfo.address" label="地址" placeholder="请输入地址" />
+        <van-field v-model="userInfo.address" label="地址" required placeholder="请输入地址" />
       </van-cell-group>
       <!-- 备注 -->
       <van-cell-group>
-        <van-field v-model="userInfo.remarks" label="备注" placeholder="请输入备注" />
+        <van-field v-model="userInfo.remarks" label="备注" required placeholder="请输入备注" />
       </van-cell-group>
-        <van-cell-group>
-        <van-cell title="供应商" is-link value="附件" @click="jumpPage('supplierAnnex')" v-if="userType === 1"/>
+      <van-cell-group>
+        <van-cell title="供应商" is-link value="附件" @click="jumpPage('supplierAnnex')" v-if="userType === 2" />
       </van-cell-group>
-      <!-- <van-cell-group>
-        <div class="task-title">
-          <span>资金凭证</span>
-        </div>
-        <van-swipe class="task-img" :loop="true">
-          <van-swipe-item>
-            <img class="img" :src="(servePath+data).replace('~','')" alt="资金凭证1" @click="preView">
-          </van-swipe-item>
-          <van-swipe-item>
-            <img class="img" :src="(servePath+data).replace('~','')" alt="资金凭证2" @click="preView">
-          </van-swipe-item>
-        </van-swipe>
-      </van-cell-group> -->
-      <div class="pwd-button" @click="saveInfo">
+      <div class="pwd-button" @click="saveMessage">
         <van-button size="normal">
           <span class="pwd-icon">
             <van-icon name="success" />
@@ -145,11 +134,107 @@ export default {
         worktelno: this.userInfo.worktelno
       };
       users.saveInfo(params).then(res => {
+        console.log(res);
         if (res) {
           this.$store.commit("userInfo", this.userInfo);
           this.$toast.success("保存成功");
         }
       });
+    },
+    //保存
+    saveMessage() {
+      const xml = require("xml");
+      const xmlString = xml({
+        root: [
+          {
+            BC_SC_Partner: [
+              {
+                _attr: {
+                  UpdateKind: "ukModify"
+                }
+              },
+              {
+                SC_PartnerOID: this.userId.UCML_OrganizeOID
+              }
+            ]
+          },
+          {
+            BC_SC_Partner: [
+              {
+                _attr: {
+                  UpdateKind: ""
+                }
+              },
+              {
+                SC_PartnerOID: "null"
+              },
+              {
+                Second_Name: this.userInfo.nowparner //签约单位名称
+              },
+              {
+                Representative: this.userInfo.represent //法定代表人
+              },
+              {
+                IdCard_NO: this.userInfo.facard //法人身份证
+              },
+              {
+                Telephone: this.userInfo.worktelno //法人电话
+              },
+              {
+                Contacts:this.userInfo.lxname//联系人姓名
+              },
+              {
+                Mobilehone:this.userInfo.telno//联系人电话
+              },
+              {
+                Mailbox:this.userInfo.email//联系人邮箱
+              },
+              // {
+              //   WorkStatus:this.userInfo.type//状态
+              // },
+              // {
+              //   //公司地址
+              // },
+               {
+                Address:this.userInfo.address//公司地址
+              },
+               {
+                Remark:this.userInfo.remarks//备注
+              }
+            ]
+          }
+        ]
+      });
+      console.log(xmlString);
+       this.$dialog
+        .confirm({
+          title: "保存",
+          message: "确认保存该询价单？"
+        })
+        .then(() => {
+          users.saveMessage(xmlString).then(res => {
+            console.log(res);
+            try {
+              if (res.status === 1) {
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.$toast.success("保存成功");
+                  }, 300);
+                });
+                return;
+              }
+              throw "保存失败，请刷新页面重试";
+            } catch (e) {
+              this.$toast.fail(e);
+            }
+          });
+        });
+    },
+    //获取用户信息
+    getData(){
+      users.getUserInfo(this.userId.UCML_OrganizeOID).then(res =>{
+        console.log(res);
+      })
     },
     preView() {
       ImagePreview([
@@ -157,13 +242,16 @@ export default {
         (this.servePath + this.data).replace("~", "")
       ]);
     },
-    jumpPage(name){
+    jumpPage(name) {
       this.$router.push({
         name
-      })
+      });
     }
   },
-  computed
+  computed,
+  mounted(){
+    this.getData();
+  }
 };
 </script>
 <style lang="less" scoped>
