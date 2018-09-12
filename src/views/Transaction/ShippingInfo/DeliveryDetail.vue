@@ -4,10 +4,9 @@
     <div class="inquiry-data">
       <div class="inquiry-list">
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
-          <van-card :title="item[9]" :desc="item[10]" :price="item[18]" :thumb="item[26]">
+          <van-card :title="item[9]" :price="item[18]" :num="item[14]" :desc="item[10]" :thumb="item[26].replace('~',servePath)">
             <div slot="footer">
               <van-button size="mini" type="danger" @click.stop="deleteItem(item[0])" v-if="confirmParams[41] != '已发货'">删除</van-button>
-              <!-- @click.stop="arrivalDelete(item[0])" -->
             </div>
           </van-card>
         </div>

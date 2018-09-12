@@ -26,7 +26,6 @@
             <div class="content-row">
               <span>预存金额：{{item[9] | formatMoney}}</span>
             </div>
-
             <div class="content-row">
               <span>经手人：{{item[13]}}</span>
             </div>

@@ -4,7 +4,7 @@
     <div class="tranrial-data">
       <div class="tranrial-list">
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
-          <van-card :title="item[4]" :price="item[15]" :desc="item[8]" :thumb="item[29].replace('~',servePath)">
+          <van-card :title="item[4]" :price="item[15]" :num="item[11]" :desc="item[8]" :thumb="item[29].replace('~',servePath)">
             <div slot="footer" v-if="confirmParams[15] != '2'">
               <van-button size="mini" type="danger" @click.stop="onDelete(item)">删除</van-button>
             </div>
