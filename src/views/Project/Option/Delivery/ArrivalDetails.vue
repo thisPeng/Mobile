@@ -6,7 +6,7 @@
           <!--  -->
           <van-card :title="item[9]" :num="item[14]+' '+item[11]" :desc="item[10]">
             <div slot="footer">
-              <van-button size="mini" type="danger" @click.stop="arrivalDelete(item[0])">删除</van-button>
+              <van-button size="mini" type="danger" @click.stop="arrivalDelete(item[0])" v-if="confirmParams[25] !== '1' && confirmParams[20] !== '1'">删除</van-button>
             </div>
           </van-card>
         </div>
@@ -19,8 +19,8 @@
           <van-cell :title="'订单数量：' + goods.taxAll" :label="'单位：' + goods.shop" />
           <van-cell :title="'税率：' + goods.taxRadio + '%'" :label="'实价：' + goods.howMuch" />
           <!-- <van-cell :title="'实价： ' + goods.howMuch" :label="'小计：' + goods.howMoney" /> -->
-          <van-field label="发货数量：" v-model="goods.taxRate" type="number" required placeholder="请输入订购数量" />
-          <van-field label="备注：" v-model="goods.reMarks" placeholder="请输入物资备注" />
+          <van-field label="发货数量：" v-model="goods.taxRate" type="number" disabled required />
+          <van-field label="备注：" v-model="goods.reMarks" diabled />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">

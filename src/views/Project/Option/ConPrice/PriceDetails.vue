@@ -51,7 +51,7 @@ export default {
   methods: {
     //订货有效期
     dinghuoDate(val) {
-      this.item[17] = new Date(val).Format("yyyy-MM-dd");
+      this.list[17] = new Date(val).Format("yyyy-MM-dd");
       this.showData = false;
     },
     // 询价单主表

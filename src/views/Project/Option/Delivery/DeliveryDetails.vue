@@ -5,7 +5,7 @@
     <van-cell-group>
       <van-field v-model="info[2]" label="发货单号:" disabled />
       <van-field v-model="info[39]" label="工程名称:" disabled />
-      <van-field v-model="info[8]" label="发货时间:" disabled />
+      <van-field :value="new Date(info[8]).Format('yyyy-MM-dd')" label="发货时间:" disabled />
       <van-field v-model="info[40]" label="工程地址:" disabled />
       <van-field :value="info[13]|codeValue('CodeTable_Deliver_Type')" label="发货方式:" disabled />
       <van-field :value="info[41]" label="单据状态:" disabled />
@@ -42,6 +42,11 @@ export default {
           const csp = sp[1].split(";");
           this.info = eval("[[" + csp[0])[0];
           // console.log(this.info);
+          if (this.info[27] === "1900-01-01 00:00:00") {
+            this.info[27] = "";
+          } else {
+            this.info[27] = new Date(this.info[27]).Format("yyyy-MM-dd"); // 签收时间
+          }
         }
       });
     },

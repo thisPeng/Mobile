@@ -46,9 +46,9 @@
       <van-datetime-picker v-model="currentDate" v-show="showDate" type="date" class="contract-date" @confirm="saveDate" @cancel="showDate=false" />
       <van-cell-group class="con-price">
         <span class="con-label">保质结束时间</span>
-        <span class="con-select" @click="showDatatwo=true">{{cspList[24]}}</span>
+        <span class="con-select" @click="showDatetwo=true">{{cspList[24]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDatatwo" type="date" class="contract-date" @confirm="jieshuDate" @cancel="showDatetwo=false" />
+      <van-datetime-picker v-model="currentDate" v-show="showDatetwo" type="date" class="contract-date" @confirm="jieshuDate" @cancel="showDatetwo=false" />
       <van-field v-model="cspList[25]" label="保证金比例(%)" placeholder="请输入保证金比例" required/>
       <van-field v-model="cspList[26]" label="保质期处理期限(天)" placeholder="请输入保质期处理期限" required/>
       <van-field v-model="cspList[27]" label="保质期处理备注" placeholder="请输入保质期处理备注" required/>
@@ -100,7 +100,7 @@ export default {
       paymentShow: false,
       showDate: false, // 确认时间
       showDateone: false, //交货时间
-      showDatatwo: false, //保质结束时间
+      showDatetwo: false, //保质结束时间
       showDatathree: false, //甲方
       showDatafour: false //乙方
     };
@@ -125,7 +125,7 @@ export default {
     //保质结束时间
     jieshuDate(val) {
       this.cspList[24] = new Date(val).Format("yyyy-MM-dd");
-      this.showDatatwo = false;
+      this.showDatetwo = false;
     },
     //甲方
     jiafangDate(val) {
@@ -147,44 +147,33 @@ export default {
           const csp = sp[1].split(";");
           // console.log(csp);
           this.cspList = eval("[[" + csp[0])[0];
+          // console.log(this.cspList);
 
-          if (this.cspList[9]) {
-            this.cspList[9] = new Date(this.cspList[9]).Format("yyyy-MM-dd");
+          if (this.cspList[9] === "1900-01-01 00:00:00") {
+            this.cspList[9] = "";
           } else {
-            this.cspList[9] = "请选择时间"; // 确认时间
+            this.cspList[9] = new Date(this.cspList[9]).Format("yyyy-MM-dd"); // 交货时间
           }
-          if (this.cspList[23]) {
-            this.cspList[23] = new Date(this.cspList[23]).Format("yyyy-MM-dd");
+          if (this.cspList[23] === "1900-01-01 00:00:00") {
+            this.cspList[23] = "";
           } else {
-            this.cspList[23] = "请选择时间"; // 交货时间
+            this.cspList[23] = new Date(this.cspList[23]).Format("yyyy-MM-dd"); // 保质开始时间
           }
-          if (this.cspList[24]) {
-            this.cspList[24] = new Date(this.cspList[24]).Format("yyyy-MM-dd");
+          if (this.cspList[24] === "1900-01-01 00:00:00") {
+            this.cspList[24] = "";
           } else {
-            this.cspList[24] = "请选择时间"; // 保质结束时间
+            this.cspList[24] = new Date(this.cspList[24]).Format("yyyy-MM-dd"); // 保质结束时间
           }
-          if (this.cspList[38]) {
-            this.cspList[38] = new Date(this.cspList[38]).Format("yyyy-MM-dd");
+          if (this.cspList[38] === "1900-01-01 00:00:00") {
+            this.cspList[38] = "";
           } else {
-            this.cspList[38] = "请选择时间"; // 甲方
+            this.cspList[38] = new Date(this.cspList[38]).Format("yyyy-MM-dd"); // 甲方
           }
-          if (this.cspList[46]) {
-            this.cspList[46] = new Date(this.cspList[46]).Format("yyyy-MM-dd");
+          if (this.cspList[46] === "1900-01-01 00:00:00") {
+            this.cspList[46] = "";
           } else {
-            this.cspList[46] = "请选择时间"; // 乙方
+            this.cspList[46] = new Date(this.cspList[46]).Format("yyyy-MM-dd"); // 乙方
           }
-          // if (this.cspList[9]) {
-          //   this.cspList[] = "请选择时间"; //交货时间
-          // }
-          // if (this.cspList[14]) {
-          //   this.cspList[14] = "请选择时间"; //保质结束时间
-          // }
-          // if (this.cspList[38]) {
-          //   this.cspList[38] = "请选择时间"; //甲方
-          // }
-          // if (this.cspList[46]) {
-          //   this.cspList[46] = "请选择时间"; //乙方
-          // }
           const i = this.cspList[12];
           this.payment = this.columns[i - 1];
           // console.log(this.payment);
@@ -312,16 +301,28 @@ export default {
           message: "确认提交该合同？"
         })
         .then(() => {
-          contractInfo.saveContract(xmlString).then(res => {
-            if (res && res.status === 1) {
-              this.$toast.success("提交成功");
-              this.$nextTick().then(() => {
-                setTimeout(() => {
-                  this.$router.go(-1);
-                }, 1500);
-              });
-            }
-          });
+          if (
+            this.cspList[9] == "" ||
+            this.cspList[23] == "" ||
+            this.cspList[24] == "" ||
+            this.cspList[38] == "" ||
+            this.cspList[46] == ""
+          ) {
+            this.$toast.fail("请选择时间");
+            return;
+          } else {
+            contractInfo.saveContract(xmlString).then(res => {
+              console.log(res);
+              if (res && res.status === 1) {
+                this.$toast.success("提交成功");
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.$router.go(-1);
+                  }, 1500);
+                });
+              }
+            });
+          }
         });
     }
   },

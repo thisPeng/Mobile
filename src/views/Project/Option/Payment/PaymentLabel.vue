@@ -23,9 +23,9 @@
       <van-tab title='资金流水'>
         <capitalFlow v-if="isLoad" />
       </van-tab>
-      <!-- <van-tab title='OA批款信息'>
+      <van-tab title='OA批款信息'>
         <oainformation v-if="isLoad" />
-      </van-tab> -->
+      </van-tab>
     </van-tabs>
   </div>
 </template>
