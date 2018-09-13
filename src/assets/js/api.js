@@ -244,7 +244,7 @@ const classify = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": params.SQLCondi + " AND smt.SPUName LIKE '%" + params.keyword + "%' ",
+        "_parameters[SQLCondi]": params.SQLCondi + " AND smt.SPUName LIKE '%" + params.keyword + "%' AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') ",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": params.SQLFix,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -636,6 +636,22 @@ const task = {
       }
     });
   },
+  // 提交支付申请流程
+  submitPayment(BusinessKey = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Apply_InfoService",
+        _methodName: "__StartFlow",
+        "_parameters[FlowID]": "FLow_10501VER10",
+        "_parameters[DeltaXml]": "<root></root>",
+        "_parameters[BusinessKey]": BusinessKey,
+        _paraNames: "FlowID,DeltaXml,BusinessKey",
+        _pUrl: ""
+      }
+    });
+  },
   // 提交供应商申请
   submitInquiry(params = {}) {
     return axios({
@@ -728,7 +744,7 @@ const task = {
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Pay_Apply",
         "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 10,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
@@ -1383,6 +1399,28 @@ const arrival = {
 };
 //付款信息模块
 const financial = {
+  // 获取支付详情
+  getPayInfo(params = {}) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Apply_InfoService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Pay_Apply",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Pay_ApplyOID='" + params.InstanceID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    });
+  },
   //删除支付申请，
   deletePayBill(sc_id = "") {
     return axios({

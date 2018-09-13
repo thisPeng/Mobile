@@ -65,7 +65,7 @@ export default {
       this.data[26] = res;
     },
     onRegionChange(res) {
-      console.log(res);
+      // console.log(res);
       this.data[58] = res.prov;
       this.data[59] = res.city;
       this.data[60] = res.district;
