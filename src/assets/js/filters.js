@@ -2,6 +2,7 @@ import store from "./store.js";
 
 const formatDate = (date = '', fmt = 'yyyy-MM-dd') => {
   //yyyy-MM-dd hh:mm
+  if (date == '1900-01-01 00:00:00') return ''
   date = new Date(date);
   if (/(y+)/.test(fmt)) {
     fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))

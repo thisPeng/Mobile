@@ -150,19 +150,21 @@ export default {
               }
             });
 
-            task.getFlowAssignData(this.data[34]).then(res => {
-              if (res && res.status === 1) {
-                sp = res.text.split(";");
-                const tmp = eval(sp[1].split("=")[1])[0];
-                this.taskTabs.TaskOID = tmp[0];
-                this.taskTabs.ActivityID = tmp[5];
-                if (tmp[13]) {
-                  this.taskTabs.codeJson = JSON.parse(tmp[13]);
-                } else if (this.taskModel === "我的待办") {
-                  this.edit = false;
+            if (this.data[32] == 0) {
+              task.getFlowAssignData(this.data[34]).then(res => {
+                if (res && res.status === 1) {
+                  sp = res.text.split(";");
+                  const tmp = eval(sp[1].split("=")[1])[0];
+                  this.taskTabs.TaskOID = tmp[0];
+                  this.taskTabs.ActivityID = tmp[5];
+                  if (tmp[13]) {
+                    this.taskTabs.codeJson = JSON.parse(tmp[13]);
+                  } else if (this.taskModel === "我的待办") {
+                    this.edit = false;
+                  }
                 }
-              }
-            });
+              });
+            }
           }
         } catch (e) {
           console.log(e);

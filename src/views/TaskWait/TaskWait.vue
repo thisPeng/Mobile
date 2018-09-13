@@ -82,7 +82,6 @@ export default {
               this.tableData = eval("[[" + sp[0].split("[[")[1]);
               const pages = "(" + sp[1].split("=")[1] + ")";
               this.tablePages = eval(pages);
-              // console.log(this.tableData)
             } catch (e) {
               console.log(e);
             }
@@ -94,7 +93,6 @@ export default {
             try {
               const sp = res.text.split(";");
               this.tableData = eval("[[" + sp[0].split("[[")[1]);
-              console.log(this.tableData);
               const pages = "(" + sp[1].split("=")[1] + ")";
               this.tablePages = eval(pages);
             } catch (e) {
@@ -124,28 +122,6 @@ export default {
         };
       }
       this.exeTask();
-      /*
-      if (this.active === i) {
-        this.exeTask();
-      } else {
-        this.active = i;
-        if (this.taskModel === "我的已办") {
-          this.params = {
-            TaskID: this.tableData[i][8],
-            InstanceID: this.tableData[i][4],
-            name: this.tableData[i][2],
-            bpoName: this.tableData[i][3]
-          };
-        } else {
-          this.params = {
-            TaskID: this.tableData[i][9],
-            InstanceID: this.tableData[i][5],
-            name: this.tableData[i][2],
-            bpoName: this.tableData[i][3]
-          };
-        }
-      }
-      */
     },
     // 执行任务
     exeTask() {

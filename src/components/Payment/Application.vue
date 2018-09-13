@@ -10,7 +10,7 @@
               <van-button type="danger" size="mini" plain @click="onDelete(item[0])">删除</van-button>
             </span>
           </div>
-          <div class="item-content">
+          <van-cell is-link class="item-content" @click="jumpInfo(item)">
             <div class="content-row">
               <span class="row-left">申请日期：{{item[8] | formatDate}}</span>
               <span class="row-right">
@@ -29,7 +29,7 @@
             <div class="content-row">
               <span class="row-left">备注：{{item[10]}}</span>
             </div>
-          </div>
+          </van-cell>
         </div>
         <div class="margin-top-sm">
           <van-button type="primary" size="large" @click="onAdd">新增支付申请</van-button>
@@ -54,6 +54,7 @@ export default {
   computed,
   methods: {
     onAdd() {
+      this.$store.commit("taskParams", "");
       this.$router.push({
         name: "paymentAddZF"
       });
@@ -70,11 +71,8 @@ export default {
               if (res.text === "0") {
                 this.$toast.fail("单据已审核，不能删除！");
               } else if (res.text === "1") {
-                this.getData();
-                this.$nextTick().then(() => {
-                  setTimeout(() => {
-                    this.$toast.success("删除数据成功");
-                  }, 300);
+                this.getData().then(() => {
+                  this.$toast.success("删除数据成功");
                 });
               } else {
                 this.$toast.fail("删除数据失败");
@@ -88,21 +86,49 @@ export default {
           // on cancel
         });
     },
+    jumpInfo(item) {
+      if (item[35]) {
+        const params = {
+          InstanceID: item[34],
+          name: "支付申请详情",
+          bpoName: "SupplyChain/BizFinance/BPO_WF_Apply_Info"
+        };
+        this.$store.commit("taskParams", params);
+        this.$router.push({
+          name: "taskZFFrom"
+        });
+      } else {
+        const params = {
+          InstanceID: item[0],
+          name: "编辑支付申请",
+          bpoName: "SupplyChain/BizFinance/BPO_WF_Apply_Info"
+        };
+        this.$store.commit("taskParams", params);
+        this.$router.push({
+          name: "paymentAddZF"
+        });
+      }
+    },
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      financial.getPaymentList(this.projectInfo.SC_ProjectOID, page).then(res => {
-        try {
-          if (res && res.status === 1) {
-            const sp = res.text.split("[[");
-            const csp = sp[1].split(";");
-            this.pages = eval("(" + csp[1].split("=")[1] + ")");
-            this.list = eval("[[" + csp[0]);
-            // console.log(this.list);
+      return financial
+        .getPaymentList(this.projectInfo.SC_ProjectOID, page)
+        .then(res => {
+          try {
+            if (res && res.status === 1) {
+              const sp = res.text.split("[[");
+              const csp = sp[1].split(";");
+              this.pages = eval("(" + csp[1].split("=")[1] + ")");
+              this.list = eval("[[" + csp[0]);
+              return true;
+              // console.log(this.list);
+            }
+            return false;
+          } catch (e) {
+            console.log(e);
+            return false;
           }
-        } catch (e) {
-          console.log(e);
-        }
-      });
+        });
     },
     pageInit() {
       this.getData();

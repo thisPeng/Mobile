@@ -3,8 +3,9 @@
     <van-cell-group>
       <van-field :value="projectInfo.ProjectNo" label="工程编号" disabled />
       <van-field :value="projectInfo.ProjectName" label="工程名称" disabled />
-      <van-field v-model="data.Supplier_Amt" label="申请方说明" />
+      <van-field v-model="data.Partner_memo" label="申请说明" />
       <van-field v-model="dataMoney[3]" label="可用资金(￥)" disabled />
+      <van-field v-model="data.Sheet_Amt" label="单据金额(￥)" disabled v-if="payment === '支付供应商'" />
       <van-cell-group class="from-payment">
         <span class="from-label">支付类型</span>
         <span class="from-select" @click="paymentShow=true">{{payment}}</span>
@@ -13,15 +14,15 @@
         </van-popup>
       </van-cell-group>
       <!--退结余额-->
-      <van-field v-model="data.Apply_SheetNO" label="支出名称" required v-if="payment === '其它支出申请'" />
-      <van-field v-model="data.Supplier_Amt" label="申请金额(￥)" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
-      <van-field v-model="data.Bank_Account" label="收款账号" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
-      <van-field v-model="data.Bank_Name" label="开户行" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
-      <van-field v-model="data.Remark" label="收款人" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
+      <van-field v-model="dataChildApply_SheetNO" label="支出名称" required v-if="payment === '其它支出申请'" />
+      <van-field v-model="dataChildSupplier_Amt" label="申请金额(￥)" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
+      <van-field v-model="dataChildBank_Account" label="收款账号" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
+      <van-field v-model="dataChildBank_Name" label="开户行" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
+      <van-field v-model="dataChildRemark" label="收款人" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
       <!--余额转预存-->
-      <van-field v-model="data.SupplierID" label="目标项目" disabled v-if="payment === '余额转预存'" />
-      <van-field v-model="data.Supplier_Amt" label="转存金额(￥)" v-if="payment === '余额转预存'" />
-      <van-field v-model="data.Remark" label="转预存说明" v-if="payment === '余额转预存'" />
+      <van-field v-model="dataChildSupplierID" label="目标项目" disabled v-if="payment === '余额转预存'" />
+      <van-field v-model="dataChildSupplier_Amt" label="转存金额(￥)" v-if="payment === '余额转预存'" />
+      <van-field v-model="dataChildRemark" label="转预存说明" v-if="payment === '余额转预存'" />
       <!--员工姓名、创建时间-->
       <van-field :value="userInfo.name" label="制单人" disabled />
       <van-field :value="new Date().Format('yyyy-MM-dd')" label="制单日期" disabled />
@@ -38,16 +39,16 @@
           <tbody>
             <tr v-for="(item,index) in dataTable" :key="index">
               <td>
-                <van-field :value="item.info[2]" :disabled="true" />
+                <van-field :value="item.name" :disabled="true" />
               </td>
               <td>
-                <van-field v-model="item.money" placeholder="请输入金额" />
+                <van-field v-model="item.money" placeholder="请输入金额" @change="onChangeMoney" />
               </td>
               <td>
-                <van-field v-model="item.remake" placeholder="请输入说明" />
+                <van-field v-model="item.remark" placeholder="请输入说明" />
               </td>
               <td>
-                <van-button size="mini" type="danger" plain @click="supplierList.push(item.info);dataTable.splice(index,1)">删除</van-button>
+                <van-button size="mini" type="danger" plain @click="dataTable.splice(index,1)">删除</van-button>
               </td>
             </tr>
             <tr>
@@ -120,6 +121,10 @@ export default {
   data() {
     return {
       data: {
+        Sheet_Amt: 0,
+        Partner_memo: ""
+      },
+      dataChild: {
         Supplier_Amt: "",
         Apply_SheetNO: "",
         Bank_Account: "",
@@ -139,72 +144,201 @@ export default {
       columns: ["支付供应商", "退结余额", "余额转预存", "其它支出申请"],
       paymentShow: false,
       payment: "请选择支付类型",
-      paymentIndex: 0
+      paymentIndex: "",
+      businessKey: "",
+      edit: false
     };
   },
   methods: {
     //保存前先获取单号
     onSave() {
-      financial.getSheetNo("SQ").then(res => {
-        const xml = require("xml");
-        const uuidv1 = require("uuid/v1");
-        const uuid = uuidv1();
-        let xmlString = xml({
-          BC_SC_Pay_Apply: [
-            { _attr: { UpdateKind: "ukInsert" } },
-            { SC_Pay_ApplyOID: uuid },
-            { Sheet_NO: res },
-            { Pay_Type: this.paymentIndex },
-            { Sheet_Amt: this.data.Supplier_Amt },
-            { SYS_Created: new Date() },
-            { SYS_LAST_UPD_BY: this.userInfo.oid }
-          ]
-        });
-        if (this.paymentIndex == 1) {
-          this.dataTable.forEach(val => {
-            xmlString += xml([
-              {
-                BC_SC_Pay_Detail: [
-                  { _attr: { UpdateKind: "ukInsert" } },
-                  { SC_Pay_DetailOID: uuidv1() },
-                  { ApplyOID: uuid },
-                  { SupplierID: val[3] },
-                  { Supplier_Amt: val[4] },
-                  { Remark: val[5] },
-                  { Bank_Name: val[6] },
-                  { Bank_Account: val[7] },
-                  { SupplierName: val[8] },
-                  { SYS_Created: new Date() },
-                  { SYS_LAST_UPD_BY: this.userInfo.oid }
+      financial.getSheetNo("SQ").then(result => {
+        try {
+          if (result && result.status === 1) {
+            const xml = require("xml");
+            if (this.businessKey == "") {
+              const uuidv1 = require("uuid/v1");
+              this.businessKey = uuidv1();
+            }
+
+            if (this.data.Partner_memo.trim() == "") {
+              this.$toast.fail("请输入申请说明");
+              return;
+            } else if (this.paymentIndex === "") {
+              this.$toast.fail("请选择支付类型");
+              return;
+            }
+            let xmlString = "";
+            if (this.edit) {
+              xmlString = xml({
+                BC_SC_Pay_Apply: [
+                  {
+                    _attr: { UpdateKind: "ukModify" }
+                  },
+                  { SC_Pay_ApplyOID: this.businessKey }
                 ]
+              });
+            }
+            xmlString += xml({
+              BC_SC_Pay_Apply: [
+                { _attr: { UpdateKind: this.edit ? "" : "ukInsert" } },
+                { SC_Pay_ApplyOID: this.edit ? "null" : this.businessKey },
+                { Sheet_NO: result.text },
+                { ProjectID: this.projectInfo.SC_ProjectOID },
+                { PartnerID: this.projectInfo.PartnerID },
+                { DemandID: this.projectInfo.DemandID },
+                { Sheet_Type: "SQ" },
+                { Approve_Flag: 0 },
+                { Pay_Type: this.paymentIndex },
+                { Sheet_Amt: this.data.Sheet_Amt },
+                { Partner_memo: this.data.Partner_memo },
+                { SYS_CreatedBy: this.userId.UCML_UserOID },
+                { SYS_POSTN: this.userId.UCML_PostOID },
+                { SYS_DIVISION: this.userId.UCML_DivisionOID },
+                { SYS_ORG: this.userId.UCML_OrganizeOID },
+                { EmployeeName: this.userId.PersonName },
+                { Print_Flag: "0000000000" },
+                { SYS_Created: new Date().Format("yyyy-MM-dd hh:mm:ss") },
+                { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") },
+                { SYS_LAST_UPD_BY: this.userInfo.oid }
+              ]
+            });
+            if (this.paymentIndex == 1) {
+              if (this.dataTable.length == 0) {
+                this.$toast.fail("请选择需分配资金的供应商");
+                return;
               }
-            ]);
-          });
+              this.dataTable.forEach(val => {
+                if (isNaN(parseInt(val.money))) {
+                  this.$toast.fail("请输入正确的分配金额");
+                  throw "请输入正确的分配金额";
+                } else if (val.remark.trim() == "") {
+                  this.$toast.fail("请输入款项说明");
+                  throw "请输入款项说明";
+                }
+                if (val.isEdit) {
+                  xmlString += xml([
+                    {
+                      BC_SC_Pay_Detail: [
+                        {
+                          _attr: {
+                            UpdateKind: "ukModify"
+                          }
+                        },
+                        { SC_Pay_DetailOID: val.id }
+                      ]
+                    }
+                  ]);
+                }
+                // console.log(val);
+                xmlString += xml([
+                  {
+                    BC_SC_Pay_Detail: [
+                      {
+                        _attr: {
+                          UpdateKind: val.isEdit ? "" : "ukInsert"
+                        }
+                      },
+                      { SC_Pay_DetailOID: val.isEdit ? "null" : val.id },
+                      { ApplyOID: this.businessKey || "null" },
+                      { SupplierID: val.sid },
+                      { Supplier_Amt: val.money },
+                      { Remark: val.remark },
+                      { Bank_Name: val.bName },
+                      { Bank_Account: val.bAcount },
+                      { SupplierName: val.name },
+                      { SYS_POSTN: this.userId.UCML_PostOID },
+                      { SYS_DIVISION: this.userId.UCML_DivisionOID },
+                      { SYS_ORG: this.userId.UCML_OrganizeOID },
+                      { SYS_Created: val.time },
+                      {
+                        SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss")
+                      },
+                      { SYS_LAST_UPD_BY: this.userInfo.oid }
+                    ]
+                  }
+                ]);
+              });
+            }
+            xmlString = "<root>" + xmlString + "</root>";
+            console.log(xmlString);
+
+            financial.payConservation(xmlString).then(res => {
+              if (res.status === 1) {
+                this.$toast.success("保存成功");
+                return;
+              }
+              this.$toast.fail(res.text);
+            });
+          } else {
+            this.$toast.fail(result.text);
+          }
+        } catch (e) {
+          console.log(e);
         }
-        xmlString = "<root>" + xmlString + "</root>";
-        console.log(xmlString);
       });
+    },
+    // 计算单据金额
+    onChangeMoney() {
+      let sum = 0;
+      this.dataTable.forEach(val => {
+        sum += parseFloat(val.money);
+      });
+      this.data.Sheet_Amt = sum;
     },
     // 提交流程
-    onSubmit() {},
-    onConfrimItem() {
-      this.dataTable.push({
-        info: this.currSupp.value,
-        money: "",
-        remake: ""
+    onSubmit() {
+      task.submitPayment(this.businessKey).then(res => {
+        if (res.status === 1) {
+          this.$toast.success("提交成功");
+          setTimeout(() => {
+            this.$router.go(-1);
+          }, 1500);
+        }
       });
-      this.supplierList.splice(this.currSupp.key, 1);
-      this.currSupp = {
-        key: 0,
-        value: ""
-      };
-      this.supplierShow = false;
     },
+    // 确认供应商选择
+    onConfrimItem() {
+      try {
+        if (this.edit) {
+          this.dataTable.forEach(val => {
+            if (val.sid == this.currSupp.value[0]) {
+              // this.supplierList.splice(this.currSupp.key, 1);
+              this.$toast.fail("列表已存在供应商");
+              throw "列表已存在供应商";
+            }
+          });
+        }
+        const uuidv4 = require("uuid/v4");
+        this.dataTable.push({
+          id: uuidv4(),
+          sid: this.currSupp.value[0],
+          name: this.currSupp.value[2],
+          bName: this.currSupp.value[4],
+          bAcount: this.currSupp.value[3],
+          time: new Date().Format("yyyy-MM-dd hh:mm:ss"),
+          money: "",
+          remark: "",
+          isEdit: false,
+          info: this.currSupp
+        });
+        // this.supplierList.splice(this.currSupp.key, 1);
+        this.currSupp = {
+          key: 0,
+          value: ""
+        };
+        this.supplierShow = false;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    // 获取供应商列表
     getSupplierList() {
       financial.getSupplierList(this.projectInfo.SC_ProjectOID).then(res => {
         try {
           const sp = res.text.split(";");
-          this.supplierList = eval(sp[0].split("=")[1]);
+          let supplierList = eval(sp[0].split("=")[1]);
+          this.supplierList = supplierList;
           // console.log(this.supplierList);
         } catch (e) {
           console.log(e);
@@ -220,6 +354,42 @@ export default {
   },
   computed,
   mounted() {
+    if (this.taskParams.InstanceID) {
+      this.edit = true;
+      this.$parent.title = this.taskParams.name;
+      this.businessKey = this.taskParams.InstanceID;
+      financial.getPayInfo(this.taskParams).then(result => {
+        try {
+          if (result && result.status === 1) {
+            let sp = result.text.split(";");
+            const data = eval(sp[0].split("=")[1])[0];
+            const dataTable = eval(sp[2].split("=")[1]);
+            this.payment = this.columns[data[9] - 1];
+            this.paymentIndex = parseInt(data[9]);
+            this.data = {
+              Sheet_Amt: data[12],
+              Partner_memo: data[10]
+            };
+            dataTable.forEach(val => {
+              this.dataTable.push({
+                id: val[0],
+                sid: val[3],
+                name: val[8],
+                bName: val[6],
+                bAcount: val[4],
+                time: val[9],
+                money: val[4],
+                remark: val[5],
+                isEdit: true
+              });
+            });
+            // console.log(this.dataTable);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      });
+    }
     // 获取数据
     task.getTaskZFMoney(this.projectInfo.SC_ProjectOID).then(res => {
       try {

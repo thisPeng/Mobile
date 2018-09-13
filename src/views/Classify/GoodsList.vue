@@ -78,7 +78,7 @@
       </template>
     </van-sku>
     <!--分页组件-->
-    <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getGoodsList" />
+    <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" force-ellipses class="classify-pages" @change="getGoodsList" />
   </div>
 </template>
 <script>
