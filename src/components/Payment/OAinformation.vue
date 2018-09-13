@@ -3,22 +3,22 @@
   <div class="oainformation">
     <div class="oa-data">
       <div class="oa-card">
-        <div class="oa-item">
-          <!-- v-for="(item,index) in list" :key="index" -->
+        <div class="oa-item" v-for="(item,index) in list" :key="index">
+          <!-- v-for="(item,index) in data" :key="index" -->
           <div class="item-title">
-            <span class="title">批款单号：{{item}}</span>
+            <span class="title">批款单号：{{item[8]}}</span>
           </div>
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left">工程名称：{{item}}</span>
-              <span class="row-right">合作商名称：{{item}}</span>
+              <span class="row-left">工程名称：{{item[2]}}</span>
+              <span class="row-right">合作商名称：{{item[4]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">批款金额：{{item}}</span>
-              <span class="row-right">批款日期：{{item}}</span>
+              <span class="row-left">批款金额：{{item[5]}}</span>
+              <span class="row-right">批款ID：{{item[7]}}</span>
             </div>
             <div class="content-row">
-              <span>批款ID：{{item}}</span>
+              <span>批款日期：{{new Date(item[10]).Format("yyyy-MM-dd")}}</span>
             </div>
           </div>
         </div>
@@ -28,16 +28,36 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
+import { financial } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      list: [],
-      item: ""
+      list: []
     };
   },
   computed,
-  methods: {},
-  mounted() {}
+  methods: {
+    getData() {
+      financial.getAppropriation(this.projectInfo.SC_ProjectOID).then(res => {
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split("=");
+            const csp = sp[1].split(";");
+            this.list = eval(csp[0]);
+            // console.log(this.list);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      });
+    },
+    pageInit() {
+      this.getData();
+    }
+  },
+  mounted() {
+    this.pageInit();
+  }
 };
 </script>
 <style lang="less" scoped>

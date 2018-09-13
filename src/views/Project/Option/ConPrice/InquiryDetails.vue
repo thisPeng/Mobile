@@ -9,7 +9,7 @@
         <div class="list-item" v-for="(item, index) in dspList" :key="index" @click="showInfo(item)">
           <van-card :title="item[4]" :num="item[11]+' '+item[28]" :desc="item[8]">
             <div slot="footer">
-              <van-button size="mini" type="danger" @click.stop="conDetailsDelete(item[0])">删除</van-button>
+              <van-button size="mini" type="danger" @click.stop="conDetailsDelete(item[0])" v-if="confirmParams[13] != '待报价'">删除</van-button>
             </div>
           </van-card>
         </div>
@@ -22,8 +22,8 @@
           <van-cell :title="'赠送数量：' + goods.taxAll" :label="'单位：' + goods.shop" />
           <van-cell :title="'税率：' + goods.taxRadio + '%'" />
           <!-- <van-cell :title="'实价： ' + goods.howMuch" :label="'小计：' + goods.howMoney" /> -->
-          <van-field label="订购数量：" v-model="goods.taxRate" type="number" required placeholder="请输入订购数量" />
-          <van-field label="备注：" v-model="goods.reMarks" placeholder="请输入物资备注" />
+          <van-field label="订购数量：" v-model="goods.taxRate" type="number" required :disabled="confirmParams[13] == '待报价'" :placeholder="confirmParams[13] != '待报价' ? '请输入备注' : ''" />
+          <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[13] == '待报价'" :placeholder="confirmParams[13] != '待报价' ? '请输入备注' : ''" />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">

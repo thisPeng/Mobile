@@ -30,7 +30,7 @@
       <van-button type="primary" @click="saveOrder" v-if="list[39] !== '待报价'">保存</van-button>
       <van-button type="warning" @click="conProposal" v-if="list[39] === '已报价'">提议</van-button>
       <van-button type="default" @click="conAddGoods" v-if="list[39] !== '待报价'">添加物资</van-button>
-      <van-button type="default" @click="jumpPage('contractwork')" v-if="list[39] === '已报价'">合同编辑</van-button>
+      <van-button type="default" @click="jumpPage('contractwork')" v-if="list[39] !== '待报价'">合同编辑</van-button>
       <van-button type="danger" @click="confirmDelete">删除</van-button>
     </div>
   </div>
@@ -51,7 +51,7 @@ export default {
   methods: {
     //订货有效期
     dinghuoDate(val) {
-      this.item[17] = new Date(val).Format("yyyy-MM-dd");
+      this.list[17] = new Date(val).Format("yyyy-MM-dd");
       this.showData = false;
     },
     // 询价单主表

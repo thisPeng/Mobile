@@ -1650,6 +1650,28 @@ const financial = {
         _pUrl: ""
       }
     })
+  },
+  //OA批款信息
+  getAppropriation(ProjectID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Finance_OAPayService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_OAPay_Info",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_OAPay_Info.ProjectID ='" + ProjectID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
   }
 }
 //供应商模块
