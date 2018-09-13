@@ -1497,6 +1497,34 @@ const financial = {
       }
     })
   },
+  //新增预存单-获取单号
+  getmemorySheetNo(SheetType = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_YC_InOutFormService",
+        _methodName: "GetSheetNo",
+        "_parameters[SheetType]": SheetType,
+        _paraNames: "SheetType",
+        _pUrl: ""
+      }
+    })
+  },
+  //新增预存单保存
+  prememoryConservation(xmlData) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_YC_InOutFormService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xmlData,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
   //预存列表
   getPremomey(ProjectID = "", page = 0) {
     return axios({
@@ -1652,7 +1680,7 @@ const financial = {
     })
   },
   //OA批款信息
-  getAppropriation(ProjectID = "") {
+  getAppropriation(ProjectID = "", page = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1660,8 +1688,8 @@ const financial = {
         _bpoName: "BPO_Finance_OAPayService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_OAPay_Info",
-        "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": -1,
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",

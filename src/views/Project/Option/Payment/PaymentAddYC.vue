@@ -1,4 +1,5 @@
 <template>
+  <!-- 新增预存列表 -->
   <div class="task">
     <van-cell-group :style="tabsShow ? 'padding-bottom: 280px;' : 'padding-bottom: 30px;'">
       <!-- <van-field v-model="data[1]" label="单号" :disabled="true" /> -->
@@ -26,12 +27,16 @@
         </van-swipe-item>
       </van-swipe>
     </van-cell-group>
+    <div class="payment-button">
+      <van-button @click="onSave">保存</van-button>
+      <van-button type="primary">提交</van-button>
+    </div>
   </div>
 </template>
 <script>
 import computed from "../../../../assets/js/computed.js";
 import { ImagePreview } from "vant";
-import { task } from "../../../../assets/js/api.js";
+import { task, financial } from "../../../../assets/js/api.js";
 
 export default {
   data() {
@@ -62,6 +67,15 @@ export default {
     saveDate(val) {
       this.data[10] = new Date(val).Format("yyyy-MM-dd hh:mm:ss");
       this.dateShow = false;
+    },
+    //保存先获取单号
+    onSave() {
+      financial.getmemorySheetNo("SQ").then(res => {
+        console.log(res);
+        // const xml = require("xml");
+        // const uuidv1 = require("uuid/v1");
+        // const uuid = uuidv1();
+      });
     }
   },
   computed,
@@ -114,6 +128,19 @@ export default {
 <style lang="less" scoped>
 .task {
   width: 100%;
+  .payment-button {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    background-color: #fff;
+    button {
+      width: 49%;
+    }
+  }
   .task-title {
     display: flex;
     padding: 10px 15px;
