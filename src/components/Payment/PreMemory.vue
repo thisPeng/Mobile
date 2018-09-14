@@ -35,9 +35,9 @@
           </div>
         </div>
       </div>
-      <!-- <div class="margin-top-sm">
+      <div class="margin-top-sm">
         <van-button type="primary" size="large" @click="onAdd">新增预存登记</van-button>
-      </div> -->
+      </div>
     </div>
     <!--分页组件-->
     <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getData" />
@@ -56,7 +56,11 @@ export default {
   },
   computed,
   methods: {
-    onAdd() {},
+    onAdd() {
+      this.$router.push({
+        name:"paymentAddYC"
+      })
+    },
     onDelete(id) {
       this.$dialog
         .confirm({

@@ -197,6 +197,7 @@ export default {
     //保存前先获取单号
     onSave() {
       financial.getSheetNo("SQ").then(result => {
+        console.log(result);
         try {
           if (result && result.status === 1) {
             const xml = require("xml");
@@ -377,6 +378,7 @@ export default {
             // console.log(xmlString);
 
             financial.payConservation(xmlString).then(res => {
+              console.log(res);
               if (res.status === 1) {
                 this.delTable = [];
                 this.edit = true;

@@ -11,10 +11,14 @@
           <div class="item-content">
             <div class="content-row">
               <span class="row-left">工程名称：{{item[2]}}</span>
+            </div>
+            <div class="content-row">
               <span class="row-right">合作商名称：{{item[4]}}</span>
             </div>
             <div class="content-row">
               <span class="row-left">批款金额：{{item[5]}}</span>
+            </div>
+            <div class="content-row">
               <span class="row-right">批款ID：{{item[7]}}</span>
             </div>
             <div class="content-row">
@@ -24,6 +28,8 @@
         </div>
       </div>
     </div>
+    <!--分页组件-->
+    <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getData" />
   </div>
 </template>
 <script>
@@ -32,7 +38,9 @@ import { financial } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      curPage: 1,
+      pages: {}
     };
   },
   computed,
@@ -64,6 +72,14 @@ export default {
 .oainformation {
   width: 100%;
   padding: 10px;
+  /* 分页 */
+  .classify-pages {
+    width: 100%;
+    background-color: #f6f6f6;
+    position: fixed;
+    bottom: 0;
+    z-index: 99;
+  }
   .oa-data {
     margin-bottom: 40px;
     .oa-card {
