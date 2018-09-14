@@ -1572,7 +1572,7 @@ const financial = {
     })
   },
   //新增预存单-获取单号
-  getmemorySheetNo(SheetType = "") {
+  getMemorySheetNo(SheetType = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1586,7 +1586,7 @@ const financial = {
     })
   },
   //新增预存单保存
-  prememoryConservation(xmlData) {
+  preMemoryConservation(xmlData) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1600,7 +1600,7 @@ const financial = {
     })
   },
   //提交提交前先调用
-  SubmitPremomery(sc_oid = "") {
+  submitPremomery(sc_oid = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1614,15 +1614,15 @@ const financial = {
     })
   },
   //提交
-  ConservationSubmit(FlowID="",DeltaXml="",BusinessKey="") {
+  conservationSubmit(BusinessKey = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
         _bpoName: "BPO_Start_YC_InOutForm",
         _methodName: "__StartFlow",
-        "_parameters[FlowID]": FlowID,
-        "_parameters[DeltaXml]": DeltaXml,
+        "_parameters[FlowID]": "FLow_10501VER10",
+        "_parameters[DeltaXml]": "<root></root>",
         "_parameters[BusinessKey]": BusinessKey,
         _paraNames: "FlowID,DeltaXml,BusinessKey",
         _pUrl: ""
