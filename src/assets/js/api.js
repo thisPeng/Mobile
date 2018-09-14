@@ -1563,6 +1563,36 @@ const financial = {
       }
     })
   },
+  //提交提交前先调用
+  SubmitPremomery(sc_oid = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_YC_InOutFormService",
+        _methodName: "AuditSheet",
+        "_parameters[sc_oid]": sc_oid,
+        _paraNames: "sc_oid",
+        _pUrl: ""
+      }
+    })
+  },
+  //提交
+  ConservationSubmit(FlowID="",DeltaXml="",BusinessKey="") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_YC_InOutForm",
+        _methodName: "__StartFlow",
+        "_parameters[FlowID]": FlowID,
+        "_parameters[DeltaXml]": DeltaXml,
+        "_parameters[BusinessKey]": BusinessKey,
+        _paraNames: "FlowID,DeltaXml,BusinessKey",
+        _pUrl: ""
+      }
+    })
+  },
   //预存列表
   getPremomey(ProjectID = "", page = 0) {
     return axios({
