@@ -12,9 +12,10 @@
           </div>
           <van-cell is-link class="item-content" @click="jumpInfo(item)">
             <div class="content-row">
-              <span class="row-left">申请日期：{{item[8] | formatDate}}</span>
+              <span class="row-left">申请日期：{{item[15] | formatDate}}</span>
               <span class="row-right">
-                <van-tag type="danger" v-if="item[6] == '0'">单据状态：未审核</van-tag>
+                <van-tag v-if="item[33] == 'false'">单据状态：未提交</van-tag>
+                <van-tag type="danger" v-else-if="item[6] == '0'">单据状态：未审核</van-tag>
                 <van-tag type="success" v-else-if="item[32] == '1'">单据状态：已审批</van-tag>
                 <van-tag type="primary" v-else-if="item[33] == 'true'">单据状态：审批中</van-tag>
                 <van-tag v-else-if="item[6] == '1'">单据状态：待审批</van-tag>

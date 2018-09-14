@@ -637,6 +637,20 @@ const task = {
     });
   },
   // 提交支付申请流程
+  submitAuditSheet(sc_oid = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Apply_InfoService",
+        _methodName: "AuditSheet",
+        "_parameters[sc_oid]": sc_oid,
+        _paraNames: "sc_oid",
+        _pUrl: ""
+      }
+    });
+  },
+  // 提交支付申请流程
   submitPayment(BusinessKey = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1492,7 +1506,7 @@ const financial = {
     })
   },
   //新增支付单-获取供应商列表
-  getSupplierList(ProjectID = "", page = 0) {
+  getSupplierList(ProjectID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1500,12 +1514,34 @@ const financial = {
         _bpoName: "BPO_OAPay_SelSuppService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_PaySupplier",
-        "_parameters[nStartPos]": page * 10,
-        "_parameters[nRecords]": 10,
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
         "_parameters[SQLCondi]": "SC_SupplierOID IN (SELECT SupplierID FROM SC_Order_Contract WHERE Approve_Flag<>'0' AND ProjectID = '" + ProjectID + "' GROUP BY SupplierID)",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //新增支付单-获取项目列表
+  getProjectList(PartnerID = "", ProjectID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Partner_ProjectListService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Project",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": " PartnerID='" + PartnerID + "'  and   sc_project.DemandID = (select top 1 DemandID from sc_project where PartnerID='" + PartnerID + "' and SC_ProjectOID  = '" + ProjectID + "') and  (SC_ProjectOID  <> '" + ProjectID + "')",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
