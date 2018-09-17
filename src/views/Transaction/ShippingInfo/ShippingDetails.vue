@@ -20,12 +20,13 @@
       <van-field :value="list[27]" label="签收时间：" disabled/>
       <van-field :value="list[28]" label="签收人：" disabled/>
       <van-field :value="list[11]" label="发货金额：" disabled/>
-      <van-field v-model="list[29]" label="备注：" type="textarea" :disabled="list[41] != '已发货'" />
+      <van-field v-model="list[29]" label="备注：" type="textarea" :disabled="list[41] == '已发货'" />
       <van-cell title="发货单明细" is-link value="详情" @click="jumpPage(list)" />
     </van-cell-group>
     <div class="con-button" v-if="list[41] != '已发货'">
-      <van-button type="default" @click="saveOrder">保存</van-button>
       <van-button type="primary" @click="sendShipping">发货</van-button>
+      <van-button type="default" @click="saveOrder">保存</van-button>
+      <van-button type="danger" @click="deleteOrder">删除</van-button>
     </div>
   </div>
 </template>
@@ -49,6 +50,31 @@ export default {
     fahuoDate(val) {
       this.list[8] = new Date(val).Format("yyyy-MM-dd");
       this.showDate = false;
+    },
+    // 删除发货单
+    deleteOrder() {
+      this.$dialog
+        .confirm({
+          title: "提示",
+          message: "确认删除该发货单？"
+        })
+        .then(() => {
+          offer.deleteDeliverOrder(this.list[0]).then(res => {
+            try {
+              if (res.status === 1) {
+                this.$toast.success("删除成功");
+                setTimeout(() => {
+                  this.$router.go(-1);
+                }, 1500);
+              }
+            } catch (e) {
+              this.$toast.fail(e);
+            }
+          });
+        })
+        .catch(() => {
+          // on cancel
+        });
     },
     //编辑
     getDetails() {
@@ -76,7 +102,7 @@ export default {
           message: "确认单据发货？"
         })
         .then(() => {
-          offer.sendDeliveryButton(this.contractParams[0]).then(res => {
+          offer.sendDeliveryOption(this.contractParams[0]).then(res => {
             if (res.status === 1 && res.text == "True") {
               this.$toast.success("发货成功");
               this.$nextTick().then(() => {
@@ -98,61 +124,36 @@ export default {
         root: [
           {
             BC_SC_Deliver_Master: [
-              {
-                _attr: {
-                  UpdateKind: "ukModify"
-                }
-              },
-              {
-                SC_Deliver_MasterOID: list[0]
-              }
+              { _attr: { UpdateKind: "ukModify" } },
+              { SC_Deliver_MasterOID: list[0] }
             ]
           },
           {
             BC_SC_Deliver_Master: [
-              {
-                _attr: {
-                  UpdateKind: ""
-                }
-              },
-              {
-                SC_Order_MasterOID: "null"
-              },
-              {
-                Deliver_Date: list[8]
-              },
-              {
-                Deliver_Type: list[13]
-              },
-              {
-                Remark: list[29]
-              }
+              { _attr: { UpdateKind: "" } },
+              { SC_Order_MasterOID: "null" },
+              { Deliver_Date: list[8] },
+              { Deliver_Type: list[13] },
+              { Remark: list[29] }
             ]
           }
         ]
       });
-      this.$dialog
-        .confirm({
-          title: "保存",
-          message: "确认保存该询价单？"
-        })
-        .then(() => {
-          offer.saveDeliveryButton(xmlString).then(res => {
-            try {
-              if (res.status === 1) {
-                this.getDetails().then(result => {
-                  if (result) {
-                    this.$toast.success("保存成功");
-                    return;
-                  }
-                });
+      offer.saveGoodsDetail(xmlString).then(res => {
+        try {
+          if (res.status === 1) {
+            this.getDetails().then(result => {
+              if (result) {
+                this.$toast.success("保存成功");
+                return;
               }
-              throw "保存失败，请刷新页面重试";
-            } catch (e) {
-              this.$toast.fail(e);
-            }
-          });
-        });
+            });
+          }
+          throw "保存失败，请刷新页面重试";
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
     },
     pageInit() {
       this.getDetails();
@@ -179,7 +180,7 @@ export default {
     flex-wrap: wrap;
     justify-content: space-between;
     button {
-      width: 49%;
+      width: 32%;
       padding: 0;
       margin-bottom: 10px;
     }

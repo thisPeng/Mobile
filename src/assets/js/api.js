@@ -293,7 +293,7 @@ const classify = {
           SC_SMaterialType_FK +
           "') OR SC_SMaterialType_FK = '" +
           SC_SMaterialType_FK +
-          "' )" + " AND smt.SPUName LIKE '%" + keyword + "%' ",
+          "' )" + " AND smt.SPUName LIKE '%" + keyword + "%' AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') ",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": SQLFix,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -636,8 +636,8 @@ const task = {
       }
     });
   },
-  // 提交支付申请流程
-  submitAuditSheet(sc_oid = "") {
+  // 支付申请-提交支付申请流程
+  submitAuditSheet(sc_oid = "", DemandID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -645,7 +645,8 @@ const task = {
         _bpoName: "BPO_Start_Apply_InfoService",
         _methodName: "AuditSheet",
         "_parameters[sc_oid]": sc_oid,
-        _paraNames: "sc_oid",
+        "_parameters[DemandID]": DemandID,
+        _paraNames: "sc_oid,DemandID",
         _pUrl: ""
       }
     });
@@ -1035,7 +1036,7 @@ const conprice = {
     });
   },
   //获取询价单明细详情
-  getDetails(PurchaseOrderID = "", nStartPos = 0) {
+  getDetails(PurchaseOrderID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1043,8 +1044,8 @@ const conprice = {
         _bpoName: "BPO_Order_XJ_EditService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Order_Detail",
-        "_parameters[nStartPos]": nStartPos,
-        "_parameters[nRecords]": 20,
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
@@ -1099,7 +1100,7 @@ const conprice = {
       method: "post",
       data: {
         _bponame: "BPO_Order_XJService",
-        _methodName: "SendToSupplier",
+        _methodName: "feedbackSpupplier",
         "_parameters[BillOID]": BillOID,
         _paraNames: "BillOID",
         _pUrl: ""
@@ -1145,7 +1146,7 @@ const conprice = {
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Order_Contract",
         "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 20,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
@@ -1173,7 +1174,7 @@ const conprice = {
     })
   },
   //询价单明细删除增加后更新主表的合计和数量
-  conUpdateDelete(PurchaseOrderID) {
+  conUpdateDelete(PurchaseOrderID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1333,7 +1334,7 @@ const arrival = {
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Deliver_Detail",
         "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 20,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
@@ -1355,7 +1356,7 @@ const arrival = {
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Deliver_Master",
         "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 20,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
@@ -1491,20 +1492,6 @@ const financial = {
       }
     })
   },
-  //新增支付单保存
-  savePayment(sc_oid = "") {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_Start_Apply_InfoService",
-        _methodName: "AuditSheet",
-        "_parameters[sc_oid]": sc_oid,
-        _paraNames: "sc_oid",
-        _pUrl: ""
-      }
-    })
-  },
   //新增支付单-获取供应商列表
   getSupplierList(ProjectID = "") {
     return axios({
@@ -1599,8 +1586,8 @@ const financial = {
       }
     })
   },
-  //提交提交前先调用
-  submitPremomery(sc_oid = "") {
+  //与存单-提交前先调用
+  submitPremomery(sc_oid = "", DemandID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1608,6 +1595,7 @@ const financial = {
         _bpoName: "BPO_Start_YC_InOutFormService",
         _methodName: "AuditSheet",
         "_parameters[sc_oid]": sc_oid,
+        "_parameters[DemandID]": DemandID,
         _paraNames: "sc_oid",
         _pUrl: ""
       }
@@ -1933,7 +1921,7 @@ const offer = {
       }
     })
   },
-  // 报价单明细删除
+  // 报价单明细删除f
   deleteTranDetails(PurchaseOrderID = "", DetailOIDList = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1976,6 +1964,20 @@ const offer = {
       }
     })
   },
+  //询价单明细删除增加后更新主表的合计和数量
+  setUpdateDelete(DeliverID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_List_EditService",
+        _methodName: "UpdateDetailSum",
+        "_parameters[DeliverID]": DeliverID,
+        _paraNames: "DeliverID",
+        _pUrl: ""
+      }
+    })
+  },
   //发货信息
   getDelivery(parasm = {}) {
     return axios({
@@ -1991,22 +1993,8 @@ const offer = {
       }
     })
   },
-  //发货保存按钮
-  saveDeliveryButton(xmlData) {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_Deliver_List_EditService",
-        _methodName: "BusinessSubmit",
-        "_parameters[xmlData]": xmlData,
-        _paraNames: "xmlData",
-        _pUrl: ""
-      }
-    })
-  },
   //发货单明细保存按钮
-  saveSendDetail(xmlData) {
+  saveGoodsDetail(xmlData) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -2019,8 +2007,8 @@ const offer = {
       }
     })
   },
-  //发货按钮
-  sendDeliveryButton(BillOID = "") {
+  // 立即发货
+  sendDeliveryOption(BillOID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -2043,7 +2031,7 @@ const offer = {
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Deliver_Master",
         "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 20,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
@@ -2225,6 +2213,20 @@ const offer = {
         "_parameters[ContractList]": parasm.ContractList,
         "_parameters[DetailIDList]": parasm.DetailIDList,
         _paraNames: "SupplierID,PartnerID,ProjectID,ContractList,DetailIDList",
+        _pUrl: ""
+      }
+    })
+  },
+  // 保存发货单
+  deleteDeliverOrder(BillOID = {}) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_ListService",
+        _methodName: "DeleteBill",
+        "_parameters[BillOID]": BillOID,
+        _paraNames: "BillOID",
         _pUrl: ""
       }
     })

@@ -410,25 +410,27 @@ export default {
     },
     // 提交流程
     onSubmit() {
-      task.submitAuditSheet(this.businessKey).then(result => {
-        try {
-          if (result.status === 1) {
-            task.submitPayment(this.businessKey).then(res => {
-              if (res.status === 1) {
-                this.$toast.success("提交成功");
-                setTimeout(() => {
-                  this.$router.go(-1);
-                }, 1500);
-                return;
-              }
-            });
+      task
+        .submitAuditSheet(this.businessKey, this.projectInfo.DemandID)
+        .then(result => {
+          try {
+            if (result.status === 1) {
+              task.submitPayment(this.businessKey).then(res => {
+                if (res.status === 1) {
+                  this.$toast.success("提交成功");
+                  setTimeout(() => {
+                    this.$router.go(-1);
+                  }, 1500);
+                  return;
+                }
+              });
+            }
+            throw "提交失败，请先保存内容再提交";
+          } catch (e) {
+            this.$toast.fail(e);
+            console.log(e);
           }
-          throw "提交失败，请先保存内容再提交";
-        } catch (e) {
-          this.$toast.fail(e);
-          console.log(e);
-        }
-      });
+        });
     },
     // 确认供应商选择
     onConfrimItem() {

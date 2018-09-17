@@ -1,15 +1,12 @@
 <template>
   <!-- 询价单明细详情编辑 -->
   <div class="inquirydetails">
-    <!-- <form action="/">
-      <van-search v-model="search" placeholder="请输入搜索关键词" show-action />
-    </form> -->
     <div class="inquiry-data">
       <div class="inquiry-list">
         <div class="list-item" v-for="(item, index) in dspList" :key="index" @click="showInfo(item)">
-          <van-card :title="item[4]" :num="item[11]+' '+item[28]" :desc="item[8]">
-            <div slot="footer">
-              <van-button size="mini" type="danger" @click.stop="conDetailsDelete(item[0])" v-if="confirmParams[13] != '待报价'">删除</van-button>
+          <van-card :title="item[4]" :price="item[14]" :num="item[11]+' '+item[28]" :desc="item[8]" :thumb="item[29].replace('~',servePath)">
+            <div slot="footer" v-if="confirmParams[13] != '待报价'">
+              <van-button size="mini" type="danger" @click.stop="conDetailsDelete(item[0])">删除</van-button>
             </div>
           </van-card>
         </div>
@@ -18,11 +15,10 @@
     <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock">
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
-          <van-cell :title="'品名： ' + goods.brand" :label="'规格/型号：' + goods.unit" />
-          <van-cell :title="'赠送数量：' + goods.taxAll" :label="'单位：' + goods.shop" />
-          <van-cell :title="'税率：' + goods.taxRadio + '%'" />
-          <!-- <van-cell :title="'实价： ' + goods.howMuch" :label="'小计：' + goods.howMoney" /> -->
-          <van-field label="订购数量：" v-model="goods.taxRate" type="number" required :disabled="confirmParams[13] == '待报价'" :placeholder="confirmParams[13] != '待报价' ? '请输入备注' : ''" />
+          <van-cell :title="'单位： ' + goods.unit" :label="'规格/型号：' + goods.info" />
+          <van-cell :title="'发货数量：' + goods.num" :label="'赠送数量：' + goods.sendNum" />
+          <van-cell :title="'共计金额：' + goods.howMoney" :label="'税率：' + goods.taxRadio + '%'" />
+          <van-field label="实际数量：" v-model="goods.num" type="number" required :disabled="confirmParams[13] == '待报价'" :placeholder="confirmParams[13] != '待报价' ? '请输入实际数量' : ''" @change="onSalcSum" />
           <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[13] == '待报价'" :placeholder="confirmParams[13] != '待报价' ? '请输入备注' : ''" />
         </van-cell-group>
       </template>
@@ -36,6 +32,9 @@
         </div>
       </template>
     </van-sku>
+    <div class="inquiry-button" v-if="confirmParams[15] != '2'">
+      <van-button type="primary" size="large" @click="onAdd">添加物资</van-button>
+    </div>
   </div>
 </template>
 <script>
@@ -47,8 +46,6 @@ export default {
       search: "",
       dspList: [],
       showBase: false,
-      loading: false,
-      finished: false,
       sku: {
         tree: [],
         price: "0.00", // 默认价格（单位元）
@@ -63,11 +60,11 @@ export default {
         title: "", // 页面标题
         picture: "", // 默认商品 sku 缩略图
         brand: "",
-        // info: "",
+        info: "",
         unit: "",
-        shop: "",
-        taxRate: "",
-        taxAll: "",
+        num: "",
+        sendNum: "",
+        orderNum: "",
         howMuch: "",
         howMoney: "",
         taxRadio: "",
@@ -77,40 +74,55 @@ export default {
   },
   computed,
   methods: {
+    // 添加物资
+    onAdd() {
+      this.$store.commit("suppParams", {
+        id: this.confirmParams[2],
+        oid: this.confirmParams[0]
+      });
+      this.$router.push({
+        name: "supplierType"
+      });
+    },
+    // 计算物资总价
+    onSalcSum() {
+      this.goods.howMoney = this.goods.howMuch * this.goods.num;
+    },
     // 询价单明细
-    getDetails() {
-      conprice
-        .getDetails(this.confirmParams[0], this.dspList.length)
-        .then(res => {
-          try {
-            if (res && res.status === 1) {
-              const sp = res.text.split("[[");
-              const dsp = sp[1].split(";");
-              const arr = eval("[[" + dsp[0]);
-              // console.log(dsp);
-              this.dspList = this.dspList.concat(arr);
-              this.loading = false;
-              this.finished = this.pages.RecordCount <= this.goodsList.length;
-            }
-          } catch (e) {
-            this.loading = false;
-            this.finished = true;
+    getData() {
+      return conprice.conUpdateDelete(this.confirmParams[0]).then(result => {
+        try {
+          if (result.status === 1) {
+            return conprice.getDetails(this.confirmParams[0]).then(res => {
+              if (res.status === 1) {
+                const sp = res.text.split("[[");
+                const dsp = sp[1].split(";");
+                const arr = eval("[[" + dsp[0]);
+                this.dspList = arr;
+                return true;
+              }
+            });
           }
-        });
+          throw "获取数据失败，请刷新页面";
+        } catch (e) {
+          this.$toast.fail(e);
+          return false;
+        }
+      });
     },
     showInfo(item) {
       this.sku.price = item[14];
       this.goods = {
         id: item[0],
-        sid: item[4],
+        sid: item[6],
         title: item[4],
-        picture: item[41],
-        brand: item[4],
-        info: item[28],
-        unit: item[8],
-        shop: item[28],
-        taxRate: item[11],
-        taxAll: item[12],
+        picture: item[29].replace("~", this.servePath),
+        brand: item[27],
+        info: item[8],
+        unit: item[5],
+        orderNum: item[10],
+        num: item[11],
+        sendNum: item[12],
         howMuch: item[14],
         howMoney: item[15],
         taxRadio: item[16],
@@ -139,12 +151,9 @@ export default {
               } else if (res.text === "-2") {
                 this.$toast.fail("删除数量不能大于等于现有记录数量");
               } else {
-                this.conUpdateDelete();
-                this.getDetails();
-                this.$nextTick().then(() => {
-                  setTimeout(() => {
-                    this.$toast.success("删除成功");
-                  }, 300);
+                this.getData().then(result => {
+                  if (result) this.$toast.success("删除成功");
+                  else this.$router.go(0);
                 });
               }
             }
@@ -154,74 +163,46 @@ export default {
           // on cancel
         });
     },
-    //删除增加后更新主表的合计和数量
-    conUpdateDelete() {
-      conprice.conUpdateDelete(this.confirmParams[0]);
-    },
     priceDetails() {
       const xml = require("xml");
       const xmlString = xml({
         root: [
           {
             BC_SC_Order_Detail: [
-              {
-                _attr: {
-                  UpdateKind: "ukModify"
-                }
-              },
-              {
-                SC_Order_DetailOID: this.goods.id
-              }
+              { _attr: { UpdateKind: "ukModify" } },
+              { SC_Order_DetailOID: this.goods.id }
             ]
           },
           {
             BC_SC_Order_Detail: [
-              {
-                _attr: {
-                  UpdateKind: ""
-                }
-              },
-              {
-                Real_Qty: this.goods.taxRate
-              },
-              {
-                Sub_Amt: this.goods.taxRate * this.goods.howMuch
-              },
-              {
-                Remark: this.goods.reMarks
-              }
+              { _attr: { UpdateKind: "" } },
+              { Real_Qty: this.goods.num },
+              { Sub_Amt: this.goods.howMuch * this.goods.num },
+              { Remark: this.goods.reMarks }
             ]
           }
         ]
       });
-      this.$dialog
-        .confirm({
-          title: "保存",
-          message: "确认保存该询价单？"
-        })
-        .then(() => {
-          contractInfo.keepContract(xmlString).then(res => {
-            try {
-              if (res.status === 1) {
-                this.conUpdateDelete();
-                this.$nextTick().then(() => {
-                  setTimeout(() => {
-                    this.$toast.success("保存成功");
-                  }, 300);
-                });
+      contractInfo.keepContract(xmlString).then(res => {
+        try {
+          if (res.status === 1) {
+            this.getData().then(result => {
+              if (result) {
+                this.$toast.success(res.text);
+                this.showBase = false;
                 return;
               }
-              throw "保存失败，请刷新页面重试";
-            } catch (e) {
-              this.$toast.fail(e);
-            }
-          });
-        });
+            });
+          }
+          throw "保存失败，请刷新页面重试";
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
     }
   },
   mounted() {
-    this.getDetails();
-    // this.conUpdateDelete();
+    this.getData();
   }
 };
 </script>
@@ -236,6 +217,7 @@ export default {
     bottom: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    padding-bottom: 70px;
     .inquiry-list {
       width: 100%;
       padding: 0 10px;
@@ -246,15 +228,16 @@ export default {
           border: 1px solid #eee;
           border-radius: 5px;
           margin-bottom: 10px;
-          .item-brand {
-            padding: 5px 0;
-          }
-          .item-price {
-            color: #ff4257;
-          }
         }
       }
     }
+  }
+  .inquiry-button {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+    background-color: #fff;
   }
 }
 </style>

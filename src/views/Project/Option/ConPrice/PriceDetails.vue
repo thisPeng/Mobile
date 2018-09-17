@@ -27,10 +27,10 @@
     <div class="con-button">
       <van-button type="primary" @click="confrimPrice" v-if="list[39] === '已报价'">确认</van-button>
       <van-button type="primary" @click="sendOrder" v-if="list[39] === '初始状态'">发送</van-button>
-      <van-button type="primary" @click="saveOrder" v-if="list[39] !== '待报价'">保存</van-button>
+      <van-button type="primary" @click="saveOrder" v-if="list[39] !== '待报价' && list[39] !== '待确认'">保存</van-button>
       <van-button type="warning" @click="conProposal" v-if="list[39] === '已报价'">提议</van-button>
-      <van-button type="default" @click="conAddGoods" v-if="list[39] !== '待报价'">添加物资</van-button>
-      <van-button type="default" @click="jumpPage('contractwork')" v-if="list[39] !== '待报价'">合同编辑</van-button>
+      <van-button type="default" @click="conAddGoods" v-if="list[39] !== '待报价' && list[39] !== '待确认'">添加物资</van-button>
+      <van-button type="default" @click="jumpPage('contractwork')" v-if="list[39] !== '待报价' && list[39] !== '待确认'">合同编辑</van-button>
       <van-button type="danger" @click="confirmDelete">删除</van-button>
     </div>
   </div>
@@ -70,17 +70,6 @@ export default {
         }
       });
     },
-    // 询价单明细
-    // getDetails() {
-    //   conprice.getDetails(this.confirmParams[0]).then(res => {
-    //     if (res && res.status === 1) {
-    //       const sp = res.text.split("[[");
-    //       const dsp = sp[1].split(";");
-    //       this.dspList = eval("[[" + dsp[0]);
-    //       // console.log(this.dspList);
-    //     }
-    //   });
-    // },
     // 添加物资
     conAddGoods() {
       this.$store.commit("suppParams", {
@@ -104,7 +93,7 @@ export default {
               if (res.text === "0") {
                 this.$toast.fail("合同并未编辑，请先确定合同内容！");
                 setTimeout(() => {
-                  this.jumpInfo();
+                  this.jumpPage("contractwork");
                 }, 1500);
               } else if (res.text === "1") {
                 this.$toast.success("生成订单成功");
@@ -162,7 +151,7 @@ export default {
           message: "是否确认提议？"
         })
         .then(() => {
-          conprice.confrimPrice(this.confirmParams[0]).then(res => {
+          conprice.conProposal(this.confirmParams[0]).then(res => {
             try {
               if (res && res.status === 1) {
                 this.$toast.success("已提议，订单返回供应商");
@@ -237,62 +226,37 @@ export default {
         root: [
           {
             BC_SC_Order_Master: [
-              {
-                _attr: {
-                  UpdateKind: "ukModify"
-                }
-              },
-              {
-                SC_Order_MasterOID: list[0]
-              }
+              { _attr: { UpdateKind: "ukModify" } },
+              { SC_Order_MasterOID: list[0] }
             ]
           },
           {
             BC_SC_Order_Master: [
-              {
-                _attr: {
-                  UpdateKind: ""
-                }
-              },
-              {
-                SC_Order_MasterOID: "null"
-              },
-              {
-                Valid_Date: list[17]
-              },
-              {
-                Order_Man: list[18]
-              },
-              {
-                Remark: list[21]
-              }
+              { _attr: { UpdateKind: "" } },
+              { SC_Order_MasterOID: "null" },
+              { Valid_Date: list[17] },
+              { Order_Man: list[18] },
+              { Remark: list[21] }
             ]
           }
         ]
       });
-      this.$dialog
-        .confirm({
-          title: "保存",
-          message: "确认保存该询价单？"
-        })
-        .then(() => {
-          contractInfo.keepContract(xmlString).then(res => {
-            console.log(res);
-            try {
-              if (res && res.status === 1) {
-                this.$nextTick().then(() => {
-                  setTimeout(() => {
-                    this.$toast.success("保存成功");
-                  }, 300);
-                });
-                return;
-              }
-              throw "保存失败，请刷新页面重试";
-            } catch (e) {
-              this.$toast.fail(e);
-            }
-          });
-        });
+      contractInfo.keepContract(xmlString).then(res => {
+        console.log(res);
+        try {
+          if (res && res.status === 1) {
+            this.$nextTick().then(() => {
+              setTimeout(() => {
+                this.$toast.success("保存成功");
+              }, 300);
+            });
+            return;
+          }
+          throw "保存失败，请刷新页面重试";
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
     }
   },
   mounted() {
