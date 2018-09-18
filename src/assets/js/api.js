@@ -1338,7 +1338,7 @@ const arrival = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Deliver_MasterOID='" + DeliverID + "'",
+        "_parameters[SQLCondi]": "SC_Deliver_DetailOID='" + DeliverID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -1346,7 +1346,7 @@ const arrival = {
       }
     })
   },
-  // 发货单明细
+  // 发货单编辑
   getInvoiceEdit(DeliverID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1364,6 +1364,20 @@ const arrival = {
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //保存修改
+  saveKeepRevise(xmlData){
+    return axios({
+      url:"/UCMLWebServiceEntryForJs.aspx",
+      method:"post",
+      data:{
+        _bpoName:"BPO_Deliver_List_EditService",
+        _methodName:"BusinessSubmit",
+        "_parameters[xmlData]": xmlData,
+        _paraNames: "xmlData",
         _pUrl: ""
       }
     })

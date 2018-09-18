@@ -40,7 +40,7 @@
           </span>
         </div>
       </van-cell-group>
-      <div v-if="payment == '第三种付款方式'">
+      <div v-if="payment === '第三种付款方式'">
         <van-field v-model="cspList[13]" label="订金付款期限(天)" placeholder="请输入订金付款期限(天)" required />
         <van-field v-model="cspList[15]" label="进场付款期限(天)" placeholder="请输入付款期限(天)" required />
         <van-field v-model="cspList[20]" label="保质付款期限(天)" placeholder="请输入保质付款期限(天)" required />

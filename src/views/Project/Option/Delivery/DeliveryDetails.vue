@@ -12,15 +12,21 @@
       <van-field v-model="info[19]" label="审核人:" disabled />
       <van-field v-model="info[10]" label="发货数量:" disabled />
       <van-field v-model="info[42]" label="签收状态:" disabled />
-      <van-field v-model="info[27]" label="签收时间:" disabled />
-      <van-field v-model="info[28]" label="签收人:" disabled />
+      <!-- <van-field v-model="info[27]" label="签收时间:" v-if="info[41]==='已发货'" /> -->
+      <van-cell-group class="con-price">
+        <span class="con-label">签收时间</span>
+        <span class="con-select" @click="info[25] !== '1' && info[20] !== '1' ? showDateone=true : ''">{{info[27]}}</span>
+      </van-cell-group>
+      <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" class="contract-date" @confirm="jiaohuoDate" @cancel="showDateone=false" />
+      <van-field v-model="info[28]" label="签收人:" disabled/>
       <van-field v-model="info[11]" label="发货金额:" disabled />
-      <van-field v-model="info[29]" label="备注:" disabled type="textarea" />
+      <van-field v-model="info[29]" label="备注:" type="textarea" :disabled="info[41]!=='已发货'" />
       <van-cell title="发货单明细" is-link value="详情" @click="jumpPage" />
     </van-cell-group>
     <div class="con-button" v-if="info[25] !== '1' && info[20] !== '1'">
       <van-button type="primary" @click="DeliverySign">签收</van-button>
       <van-button type="danger" @click="DeliveryOffer">提议</van-button>
+      <!-- <van-button type="danger" @click="keepDelivery">保存</van-button> -->
     </div>
   </div>
 </template>
@@ -30,7 +36,9 @@ import { arrival } from "./../../../../assets/js/api.js"; //index
 export default {
   data() {
     return {
-      info: []
+      info: [],
+      currentDate: new Date(),
+      showDateone: false //交货时间
     };
   },
   computed,
@@ -73,8 +81,10 @@ export default {
           });
         });
     },
+
     //提议
     DeliveryOffer() {
+      this.keepDelivery();
       this.$dialog
         .confirm({
           title: "提议",
@@ -105,6 +115,37 @@ export default {
     jumpInfo(name) {
       this.$router.push({
         name
+      });
+    },
+    jiaohuoDate(val) {
+      this.info[27] = new Date(val).Format("yyyy-MM-dd");
+      this.showDateone = false;
+    },
+    //保存
+    keepDelivery() {
+      const info = this.info;
+      const xml = require("xml");
+      const xmlString = xml({
+        root: [
+          {
+            BC_SC_Deliver_Master: [
+              { _attr: { UpdateKind: "ukModify" } },
+              { SC_Deliver_MasterOID: info[0] }
+            ]
+          },
+          {
+            BC_SC_Deliver_Master: [
+              { _attr: { UpdateKind: "" } },
+              { SC_Deliver_MasterOID: "null" },
+              { Receive_Date: info[27] },
+              { Remark: info[29] }
+            ]
+          }
+        ]
+      });
+      console.log(xmlString);
+      arrival.saveKeepRevise(xmlString).then(res => {
+        console.log(res);
       });
     }
   },
@@ -177,6 +218,31 @@ export default {
       padding: 0;
       // flex: 1;
     }
+  }
+  .con-price {
+    display: flex;
+    padding: 4px 15px;
+    box-sizing: border-box;
+    line-height: 32px;
+    position: relative;
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    overflow: hidden;
+    .con-label {
+      min-width: 90px;
+      flex: 1;
+    }
+    .con-select {
+      flex: 5;
+    }
+  }
+  .contract-date {
+    width: 100%;
+    position: fixed;
+    z-index: 9999;
+    bottom: 0;
+    padding-right: 30px;
   }
 }
 </style>
