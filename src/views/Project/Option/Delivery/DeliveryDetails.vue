@@ -12,10 +12,15 @@
       <van-field v-model="info[19]" label="审核人:" disabled />
       <van-field v-model="info[10]" label="发货数量:" disabled />
       <van-field v-model="info[42]" label="签收状态:" disabled />
-      <van-field v-model="info[27]" label="签收时间:" disabled />
-      <van-field v-model="info[28]" label="签收人:" disabled />
+      <van-field v-model="info[27]" label="签收时间:" v-if="info[41]!=='提议'" />
+      <div class="con-price">
+        <span class="con-label">分包开工日期</span>
+        <span class="con-select" @click="showDateone=true">{{info[27]}}</span>
+      </div>
+      <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" class="contract-date" @confirm="saveDate" @cancel="showDateone=false" />
+      <van-field v-model="info[28]" label="签收人:" />
       <van-field v-model="info[11]" label="发货金额:" disabled />
-      <van-field v-model="info[29]" label="备注:" disabled type="textarea" />
+      <van-field v-model="info[29]" label="备注:" type="textarea" />
       <van-cell title="发货单明细" is-link value="详情" @click="jumpPage" />
     </van-cell-group>
     <div class="con-button" v-if="info[25] !== '1' && info[20] !== '1'">
@@ -30,7 +35,9 @@ import { arrival } from "./../../../../assets/js/api.js"; //index
 export default {
   data() {
     return {
-      info: []
+      info: [],
+      currentDate: new Date(),
+      showDateone: false
     };
   },
   computed,
@@ -41,7 +48,7 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.info = eval("[[" + csp[0])[0];
-          // console.log(this.info);
+          console.log(this.info);
           if (this.info[27] === "1900-01-01 00:00:00") {
             this.info[27] = "";
           } else {
@@ -106,6 +113,11 @@ export default {
       this.$router.push({
         name
       });
+    },
+    //选择分包开工日期
+    saveDate(val) {
+      this.paytime = new Date(val).Format("yyyy-MM-dd");
+      this.showDateone = false;
     }
   },
   mounted() {
@@ -177,6 +189,31 @@ export default {
       padding: 0;
       // flex: 1;
     }
+  }
+  .con-price {
+    display: flex;
+    padding: 4px 15px;
+    box-sizing: border-box;
+    line-height: 32px;
+    position: relative;
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    overflow: hidden;
+    .con-label {
+      min-width: 130px;
+      flex: 1;
+    }
+    .con-select {
+      flex: 5;
+    }
+  }
+  .contract-date {
+    width: 100%;
+    position: fixed;
+    z-index: 9999;
+    bottom: 0;
+    padding-right: 30px;
   }
 }
 </style>

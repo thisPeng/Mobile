@@ -19,8 +19,8 @@
           <van-cell :title="'订单数量：' + goods.taxAll" :label="'单位：' + goods.shop" />
           <van-cell :title="'税率：' + goods.taxRadio + '%'" :label="'实价：' + goods.howMuch" />
           <!-- <van-cell :title="'实价： ' + goods.howMuch" :label="'小计：' + goods.howMoney" /> -->
-          <van-field label="发货数量：" v-model="goods.taxRate" type="number" disabled required />
-          <van-field label="备注：" v-model="goods.reMarks" diabled />
+          <van-field label="发货数量：" v-model="goods.taxRate" type="number" :disabled="confirmParams[25] !== '1' && confirmParams[20] !== '1'" required />
+          <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[25] !== '1' && confirmParams[20] !== '1'" />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">
@@ -29,7 +29,7 @@
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
           <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <!-- <van-button type="primary" bottom-action>保存修改</van-button> -->
+          <van-button type="primary" bottom-action>保存修改</van-button>
         </div>
       </template>
     </van-sku>
