@@ -7,7 +7,7 @@
       <van-field v-model="info[39]" label="工程名称:" disabled />
       <van-field :value="new Date(info[8]).Format('yyyy-MM-dd')" label="发货时间:" disabled />
       <van-field v-model="info[40]" label="工程地址:" disabled />
-      <van-field :value="info[13] | codeValue('CodeTable_Deliver_Type')" label="发货方式:" disabled />
+      <van-field :value="info[13] | codeValue('CodeTable_Deliver_Type')" label="发货方式:"/>
       <van-field :value="info[41]" label="单据状态:" disabled />
       <van-field v-model="info[19]" label="审核人:" disabled />
       <van-field v-model="info[10]" label="发货数量:" disabled />
