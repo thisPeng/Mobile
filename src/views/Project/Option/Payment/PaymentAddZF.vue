@@ -1,77 +1,83 @@
 <template>
   <div class="task">
-    <van-cell-group>
-      <van-field :value="projectInfo.ProjectNo" label="工程编号" disabled />
-      <van-field :value="projectInfo.ProjectName" label="工程名称" disabled />
-      <van-field v-model="data.Partner_memo" label="申请说明" required />
-      <van-field v-model="dataMoney[3]" label="可用资金(￥)" disabled />
-      <van-field v-model="data.Sheet_Amt" label="单据金额(￥)" disabled v-if="payment === '支付供应商'" />
-      <van-cell-group class="from-payment">
-        <span class="from-label">支付类型</span>
-        <span :class="edit ? 'text-gray from-select' : 'from-select'" @click="edit ? '' : paymentShow=true">{{payment}}</span>
-        <van-popup v-model="paymentShow" position="bottom">
-          <van-picker show-toolbar title="支付类型" :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
-        </van-popup>
+    <div class="task-content">
+      <van-cell-group>
+        <van-field :value="projectInfo.ProjectNo" label="工程编号" disabled />
+        <van-field :value="projectInfo.ProjectName" label="工程名称" disabled />
+        <van-field v-model="data.Partner_memo" label="申请说明" required />
+        <van-field v-model="dataMoney[3]" label="可用资金(￥)" disabled />
+        <van-field v-model="data.Sheet_Amt" label="单据金额(￥)" disabled v-if="payment === '支付供应商'" />
+        <van-cell-group class="from-payment">
+          <span class="from-label">支付类型</span>
+          <span :class="edit ? 'text-gray from-select' : 'from-select'" @click="edit ? '' : paymentShow=true">{{payment}}</span>
+          <van-popup v-model="paymentShow" position="bottom">
+            <van-picker show-toolbar title="支付类型" :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
+          </van-popup>
+        </van-cell-group>
+        <!--退结余额-->
+        <van-field v-model="dataChild.Apply_SheetNO" label="支出名称" required v-if="payment === '其它支出申请'" />
+        <van-field v-model="dataChild.Supplier_Amt" label="申请金额(￥)" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
+        <van-field v-model="dataChild.Bank_Account" label="收款账号" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
+        <van-field v-model="dataChild.Bank_Name" label="开户行" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
+        <van-field v-model="dataChild.Remark" label="收款人" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
+        <!--余额转预存-->
+        <van-cell-group class="from-payment" v-if="payment === '余额转预存'">
+          <span class="from-label">目标项目</span>
+          <span class="from-select">{{dataChild.SupplierName}}
+            <van-button type="primary" size="mini" @click="projectShow=true">选择</van-button>
+          </span>
+        </van-cell-group>
+        <van-field v-model="dataChild.Supplier_Amt" label="转存金额(￥)" required v-if="payment === '余额转预存'" />
+        <van-field v-model="dataChild.Remark" label="转预存说明" required v-if="payment === '余额转预存'" />
+        <!--员工姓名、创建时间-->
+        <van-field :value="userInfo.name" label="制单人" disabled />
+        <van-field :value="new Date().Format('yyyy-MM-dd')" label="制单日期" disabled />
+        <div class="task-table" v-if="payment === '支付供应商'">
+          <table>
+            <thead>
+              <tr>
+                <td>单位名称</td>
+                <td>分配金额</td>
+                <td>款项说明</td>
+                <td>操作</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item,index) in dataTable" :key="index">
+                <td>
+                  <van-field :value="item.name" :disabled="true" />
+                </td>
+                <td>
+                  <van-field v-model="item.money" placeholder="请输入金额" @change="onChangeMoney" />
+                </td>
+                <td>
+                  <van-field v-model="item.remark" placeholder="请输入说明" />
+                </td>
+                <td>
+                  <van-button size="mini" type="danger" plain @click="onDeleteItem(item,index)">删除</van-button>
+                </td>
+              </tr>
+              <!--选择-->
+              <tr>
+                <td>
+                  <van-button size="mini" type="primary" plain @click="supplierShow=true">选择</van-button>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="padding" v-if="payment === '余额转预存'">
+          转预存是由一个项目的余额转给另一个项目的资金池中,供另一个项目使用, 不用通过银行,直接项目间产生资金的转移流水。
+        </div>
       </van-cell-group>
-      <!--退结余额-->
-      <van-field v-model="dataChild.Apply_SheetNO" label="支出名称" required v-if="payment === '其它支出申请'" />
-      <van-field v-model="dataChild.Supplier_Amt" label="申请金额(￥)" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
-      <van-field v-model="dataChild.Bank_Account" label="收款账号" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
-      <van-field v-model="dataChild.Bank_Name" label="开户行" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
-      <van-field v-model="dataChild.Remark" label="收款人" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
-      <!--余额转预存-->
-      <van-cell-group class="from-payment" v-if="payment === '余额转预存'">
-        <span class="from-label">目标项目</span>
-        <span class="from-select">{{dataChild.SupplierName}}
-          <van-button type="primary" size="mini" @click="projectShow=true">选择</van-button>
-        </span>
-      </van-cell-group>
-      <van-field v-model="dataChild.Supplier_Amt" label="转存金额(￥)" required v-if="payment === '余额转预存'" />
-      <van-field v-model="dataChild.Remark" label="转预存说明" required v-if="payment === '余额转预存'" />
-      <!--员工姓名、创建时间-->
-      <van-field :value="userInfo.name" label="制单人" disabled />
-      <van-field :value="new Date().Format('yyyy-MM-dd')" label="制单日期" disabled />
-      <div class="task-table" v-if="payment === '支付供应商'">
-        <table>
-          <thead>
-            <tr>
-              <td>单位名称</td>
-              <td>分配金额</td>
-              <td>款项说明</td>
-              <td>操作</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item,index) in dataTable" :key="index">
-              <td>
-                <van-field :value="item.name" :disabled="true" />
-              </td>
-              <td>
-                <van-field v-model="item.money" placeholder="请输入金额" @change="onChangeMoney" />
-              </td>
-              <td>
-                <van-field v-model="item.remark" placeholder="请输入说明" />
-              </td>
-              <td>
-                <van-button size="mini" type="danger" plain @click="onDeleteItem(item,index)">删除</van-button>
-              </td>
-            </tr>
-            <!--选择-->
-            <tr>
-              <td>
-                <van-button size="mini" type="primary" plain @click="supplierShow=true">选择</van-button>
-              </td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="padding" v-if="payment === '余额转预存'">
-        转预存是由一个项目的余额转给另一个项目的资金池中,供另一个项目使用, 不用通过银行,直接项目间产生资金的转移流水。
-      </div>
-    </van-cell-group>
+    </div>
+    <div class="payment-button">
+      <van-button @click="onSave">保存</van-button>
+      <van-button type="primary" @click="onSubmit">提交</van-button>
+    </div>
 
     <!--客户列表-->
     <van-popup v-model="supplierShow" position="right">
@@ -145,11 +151,6 @@
         </div>
       </div>
     </van-popup>
-
-    <div class="payment-button">
-      <van-button @click="onSave">保存</van-button>
-      <van-button type="primary" @click="onSubmit">提交</van-button>
-    </div>
   </div>
 </template>
 <script>
@@ -417,15 +418,21 @@ export default {
             if (result.status === 1) {
               task.submitPayment(this.businessKey).then(res => {
                 if (res.status === 1) {
-                  this.$toast.success("提交成功");
+                  this.$toast.success({
+                    forbidClick: true, // 禁用背景点击
+                    message: "提交成功"
+                  });
                   setTimeout(() => {
                     this.$router.go(-1);
                   }, 1500);
                   return;
+                } else {
+                  this.$toast.fail(res.text);
                 }
               });
+            } else {
+              this.$toast.fail("提交失败，请先保存内容再提交");
             }
-            throw "提交失败，请先保存内容再提交";
           } catch (e) {
             this.$toast.fail(e);
             console.log(e);
@@ -600,18 +607,25 @@ export default {
 .task {
   width: 100%;
   padding-bottom: 75px;
-  .task-title {
-    display: flex;
-    padding: 10px 15px;
-    box-sizing: border-box;
-    line-height: 24px;
-    position: relative;
-    background-color: #fff;
-    color: #333;
-    font-size: 14px;
-    overflow: hidden;
-    .center {
-      margin: 0 auto;
+  overflow: hidden !important;
+  .task-content {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    .task-title {
+      display: flex;
+      padding: 10px 15px;
+      box-sizing: border-box;
+      line-height: 24px;
+      position: relative;
+      background-color: #fff;
+      color: #333;
+      font-size: 14px;
+      overflow: hidden;
+      .center {
+        margin: 0 auto;
+      }
     }
   }
   /* 选择供应商 */

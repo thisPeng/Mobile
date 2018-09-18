@@ -1,7 +1,7 @@
 <template>
   <!-- 资金流水 -->
   <div class="capitalflow">
-    <div class="count-number" v-if="data.length > 0">
+    <div class="count-number" v-if="data && data.length > 0">
       <van-row class="count-row">
         <van-col span="12">
           <div class="row-title">
@@ -85,6 +85,7 @@ export default {
       financial.getClahFlow(this.projectInfo.SC_ProjectOID).then(res => {
         try {
           if (res && res.status === 1) {
+            console.log(res);
             const sp = res.text.split("=");
             const csp = sp[1].split(";");
             this.data = eval(csp[0])[0];

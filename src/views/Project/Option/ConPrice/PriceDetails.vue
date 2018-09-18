@@ -91,12 +91,18 @@ export default {
           conprice.confrimPrice(this.confirmParams[0]).then(res => {
             if (res && res.status === 1) {
               if (res.text === "0") {
-                this.$toast.fail("合同并未编辑，请先确定合同内容！");
+                this.$toast.fail({
+                  forbidClick: true, // 禁用背景点击
+                  message: "合同并未编辑，请先确定合同内容！"
+                });
                 setTimeout(() => {
                   this.jumpPage("contractwork");
                 }, 1500);
               } else if (res.text === "1") {
-                this.$toast.success("生成订单成功");
+                this.$toast.success({
+                  forbidClick: true, // 禁用背景点击
+                  message: "生成订单成功"
+                });
                 this.$nextTick().then(() => {
                   setTimeout(() => {
                     this.$router.go(-1);
@@ -125,7 +131,10 @@ export default {
           conprice.sendOrder(this.confirmParams[0]).then(res => {
             try {
               if (res && res.status === 1 && res.text === "True") {
-                this.$toast.success("发送成功");
+                this.$toast.success({
+                  forbidClick: true, // 禁用背景点击
+                  message: "发送成功"
+                });
                 this.$nextTick().then(() => {
                   setTimeout(() => {
                     this.$router.go(-1);
@@ -154,7 +163,10 @@ export default {
           conprice.conProposal(this.confirmParams[0]).then(res => {
             try {
               if (res && res.status === 1) {
-                this.$toast.success("已提议，订单返回供应商");
+                this.$toast.success({
+                  forbidClick: true, // 禁用背景点击
+                  message: "已提议，订单返回供应商"
+                });
                 this.$nextTick().then(() => {
                   setTimeout(() => {
                     this.$router.go(-1);
@@ -187,7 +199,10 @@ export default {
           conprice.confirmDelete(params).then(res => {
             try {
               if (res && res.status === 1 && res.text === "True") {
-                this.$toast.success("已删除");
+                this.$toast.success({
+                  forbidClick: true, // 禁用背景点击
+                  message: "已删除"
+                });
                 this.$nextTick().then(() => {
                   setTimeout(() => {
                     this.$router.go(-1);

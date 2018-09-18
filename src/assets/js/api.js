@@ -737,7 +737,7 @@ const task = {
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Money_InOut",
         "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 10,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
@@ -1450,6 +1450,28 @@ const financial = {
       }
     });
   },
+  // 获取预存详情
+  getTaskYCInfo(params = {}) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_YC_InOutFormService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Money_InOut",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_Money_InOutOID='" + params.InstanceID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    });
+  },
   //删除支付申请，
   deletePayBill(sc_id = "") {
     return axios({
@@ -1600,7 +1622,7 @@ const financial = {
       }
     })
   },
-  //与存单-提交前先调用
+  //预存单-提交前先调用
   submitPremomery(sc_oid = "", DemandID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1615,13 +1637,13 @@ const financial = {
       }
     })
   },
-  //提交
+  //提交-预存单
   conservationSubmit(BusinessKey = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_Start_YC_InOutForm",
+        _bpoName: "BPO_Start_YC_InOutFormService",
         _methodName: "__StartFlow",
         "_parameters[FlowID]": "FLow_10501VER10",
         "_parameters[DeltaXml]": "<root></root>",

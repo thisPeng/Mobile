@@ -6,8 +6,8 @@
       <van-field :value="projectInfo.ProjectNo" label="工程编号" :disabled="true" />
       <van-field v-model="projectInfo.ProjectName" label="工程名称" :disabled="true" />
       <van-field v-model="data[10]" label="汇款日期" readonly @click="showDate" />
-      <van-datetime-picker v-model="currentDate" v-show="dateShow" type="datetime" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
-      <van-field v-model="data[9]" label="汇款金额(￥)" required />
+      <van-datetime-picker v-model="currentDate" :min-date="new Date()" v-show="dateShow" type="datetime" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
+      <van-field v-model="data[9]" label="汇款金额(￥)" type="number" required />
       <van-field v-model="data[12]" label="银行账号" required />
       <van-field v-model="data[11]" label="开户行" required />
       <van-field v-model="data[13]" label="经手人" required />
@@ -29,14 +29,14 @@
     </van-cell-group>
     <div class="payment-button">
       <van-button @click="onSave">保存</van-button>
-      <van-button type="primary">提交</van-button>
+      <van-button type="primary" @click="onSubmit">提交</van-button>
     </div>
   </div>
 </template>
 <script>
 import computed from "../../../../assets/js/computed.js";
 import { ImagePreview } from "vant";
-import { task, financial } from "../../../../assets/js/api.js";
+import { financial } from "../../../../assets/js/api.js";
 
 export default {
   data() {
@@ -68,12 +68,12 @@ export default {
     },
     //保存先获取单号
     onSave() {
-      if (!this.data[10] == "") {
+      if (this.data[10] == "") {
         this.$toast.fail("请选择汇款日期");
         return;
       }
-      if (!this.data[9] == "") {
-        this.$toast.fail("请输入汇款金额");
+      if (isNaN(parseInt(this.data[9]))) {
+        this.$toast.fail("请输入正确汇款金额");
         return;
       }
       if (!this.data[12]) {
@@ -104,12 +104,8 @@ export default {
             if (this.edit) {
               xmlString = xml({
                 BC_SC_Money_InOut: [
-                  {
-                    _attr: { UpdateKind: "ukModify" }
-                  },
-                  {
-                    SC_Money_InOutOID: this.businessKey
-                  }
+                  { _attr: { UpdateKind: "ukModify" } },
+                  { SC_Money_InOutOID: this.businessKey }
                 ]
               });
             }
@@ -140,7 +136,7 @@ export default {
               ]
             });
             xmlString = "<root>" + xmlString + "</root>";
-            console.log(xmlString);
+            // console.log(xmlString);
             financial.preMemoryConservation(xmlString).then(res => {
               if (res.status === 1) {
                 this.$toast.success("保存成功");
@@ -155,23 +151,55 @@ export default {
           console.log(e);
         }
       });
+    },
+    onSubmit() {
+      try {
+        financial
+          .submitPremomery(this.businessKey, this.projectInfo.DemandID)
+          .then(result => {
+            if (result.status === 1) {
+              financial.conservationSubmit(this.businessKey).then(res => {
+                if (res.status === 1) {
+                  this.$toast.success({
+                    forbidClick: true, // 禁用背景点击
+                    message: "提交成功"
+                  });
+                  setTimeout(() => {
+                    this.$router.go(-1);
+                  }, 1500);
+                } else {
+                  this.$toast.fail(res.text);
+                }
+              });
+            } else {
+              this.$toast.fail("提交失败，请先保存内容再提交");
+            }
+          });
+      } catch (e) {
+        this.$toast.fail(e);
+        console.log(e);
+      }
+    },
+    pageInit() {
+      // 获取数据
+      financial.getTaskYCInfo(this.taskParams).then(result => {
+        try {
+          if (result && result.status === 1) {
+            let sp = result.text.split(";");
+            this.data = eval(sp[0].split("=")[1])[0];
+            this.businessKey = this.data[0];
+            this.edit = true;
+            // console.log(this.data);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      });
     }
   },
   computed,
   mounted() {
-    // 获取数据
-    task.getTaskYCInfo(this.taskParams).then(result => {
-      try {
-        if (result && result.status === 1) {
-          let sp = result.text.split(";");
-          console.log(sp);
-          // this.data = eval(sp[0].split("=")[1]);
-          // this.data[9] = this.$util.formatMoney(this.data[9]);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    });
+    this.pageInit();
   }
 };
 </script>

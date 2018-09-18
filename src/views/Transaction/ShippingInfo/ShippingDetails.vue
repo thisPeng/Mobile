@@ -62,7 +62,10 @@ export default {
           offer.deleteDeliverOrder(this.list[0]).then(res => {
             try {
               if (res.status === 1) {
-                this.$toast.success("删除成功");
+                this.$toast.success({
+                  forbidClick: true, // 禁用背景点击
+                  message: "删除成功"
+                });
                 setTimeout(() => {
                   this.$router.go(-1);
                 }, 1500);
@@ -104,7 +107,10 @@ export default {
         .then(() => {
           offer.sendDeliveryOption(this.contractParams[0]).then(res => {
             if (res.status === 1 && res.text == "True") {
-              this.$toast.success("发货成功");
+              this.$toast.success({
+                forbidClick: true, // 禁用背景点击
+                message: "发货成功"
+              });
               this.$nextTick().then(() => {
                 setTimeout(() => {
                   this.$router.go(-1);

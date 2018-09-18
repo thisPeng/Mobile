@@ -100,7 +100,10 @@ export default {
       };
       offer.saveDeliverBill(params).then(res => {
         if (res.status === 1 && res.text === "1") {
-          this.$toast.success("生成发货单成功");
+          this.$toast.success({
+            forbidClick: true, // 禁用背景点击
+            message: "生成发货单成功"
+          });
           setTimeout(() => {
             this.$router.go(-1);
           }, 1500);
