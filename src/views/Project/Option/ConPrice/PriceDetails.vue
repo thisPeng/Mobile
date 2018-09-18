@@ -19,7 +19,7 @@
       <van-datetime-picker v-model="currentDate" v-show="showData" type="date" class="contract-date" @confirm="dinghuoDate" @cancel="showData=false" />
       <van-field v-model="list[18]" label="业务员:" placeholder="请输入业务员" required :disabled="list[39] === '待报价'" :autofocus="true" />
       <van-field v-model="list[26]" label="员工姓名:" disabled />
-      <van-field v-model="list[21]" label="备注:" type="textarea" placeholder="请输入备注" :disabled="list[39] === '待报价'" />
+      <van-field v-model="list[21]" label="备注:" type="textarea" :placeholder="list[39] != '待报价' ? '请输入备注' : ''" :disabled="list[39] === '待报价'" />
       <van-cell title="询价单明细" is-link value="详情" @click="jumpInfo" />
       <van-cell title="询价单附件" is-link value="详情" @click="jumpPage('annexContent')" />
     </van-cell-group>
