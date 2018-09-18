@@ -7,7 +7,7 @@
           <div class="item-title">
             <span class="title">{{item[11]}}</span>
           </div>
-          <div class="item-content">
+            <van-cell is-link class="item-content">
             <div class="content-row">
               <span class="row-left">{{item[15]}}</span>
             </div>
@@ -24,7 +24,7 @@
               <span class="row-left">{{item[13]}}</span>
               <span class="row-right">{{item[16]}}</span>
             </div>
-          </div>
+            </van-cell>
         </div>
       </div>
     </div>
@@ -104,7 +104,7 @@ export default {
         }
         .item-content {
           padding: 5px 0;
-          font-size: 13px;
+          font-size: 12px;
           color: #666;
           .content-row {
             display: flex;

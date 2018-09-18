@@ -33,6 +33,9 @@
         </div>
       </template>
     </van-sku>
+    <div class="invoice-button">
+      <van-button type="primary" size="large" @click="onSave">生成发货单</van-button>
+    </div>
   </div>
 </template>
 <script>
@@ -41,8 +44,6 @@ import { offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-      item: [],
-      search: "",
       list: [],
       showBase: false,
       loading: false,
@@ -108,6 +109,34 @@ export default {
     },
     pageInit() {
       this.getData();
+    },
+    onSave() {
+      console.log(this.confirmParams);
+      const list = this.list;
+      let DetailIDList = [];
+      list.forEach(val => {
+        DetailIDList.push(val[0]);
+      });
+      DetailIDList = DetailIDList.join(",");
+      const params = {
+        SupplierID: this.userInfo.oid,
+        PartnerID: this.clientInfo[0],
+        ProjectID: "00000000-0000-0000-0000-000000000000",
+        ContractList: this.confirmParams[0],
+        DetailIDList
+      };
+
+      offer.saveDeliverBill(params).then(res => {
+        console.log(res);
+        // if (res.status === 1 && res.text === "1") {
+        //   this.$toast.success("生成发货单成功");
+        //   setTimeout(() => {
+        //     this.$router.go(-1);
+        //   }, 1500);
+        // } else {
+        //   this.$toast.fail("生成发货单失败，请勾选发货物资");
+        // }
+      });
     }
   },
   mounted() {
@@ -118,6 +147,15 @@ export default {
 <style lang="less" scoped>
 .inventory {
   width: 100%;
+  .invoice-button {
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    bottom: 5px;
+    button {
+      width: 95%;
+    }
+  }
   .inquiry-data {
     position: absolute;
     top: 10px;
