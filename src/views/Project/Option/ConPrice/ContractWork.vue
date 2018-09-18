@@ -150,15 +150,10 @@ export default {
     },
     conContract() {
       conprice.conContract(this.confirmParams[4]).then(res => {
-        // console.log(res);
         if (res && res.status === 1) {
-          // console.log(res.text);
           const sp = res.text.split("[[");
-          // console.log(sp);
           const csp = sp[1].split(";");
-          // console.log(csp);
           this.cspList = eval("[[" + csp[0])[0];
-          // console.log(this.cspList);
 
           if (this.cspList[9] && this.cspList[9] != "1900-01-01 00:00:00") {
             this.cspList[9] = new Date(this.cspList[9]).Format("yyyy-MM-dd");
@@ -303,7 +298,10 @@ export default {
           contractInfo.saveContract(xmlString).then(res => {
             try {
               if (res.status === 1) {
-                this.$toast.success("提交成功");
+                this.$toast.success({
+                  forbidClick: true, // 禁用背景点击
+                  message: "提交成功"
+                });
                 this.$nextTick().then(() => {
                   setTimeout(() => {
                     this.$router.go(-1);

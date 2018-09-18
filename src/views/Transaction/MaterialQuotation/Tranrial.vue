@@ -80,7 +80,10 @@ export default {
             try {
               if (res && res.status === 1) {
                 if (res.text === "1") {
-                  this.$toast.success("提交报价成功");
+                  this.$toast.success({
+                    forbidClick: true, // 禁用背景点击
+                    message: "提交报价成功"
+                  });
                   this.$nextTick().then(() => {
                     setTimeout(() => {
                       this.$router.go(-1);
@@ -88,7 +91,10 @@ export default {
                   });
                   return;
                 } else if (res.text === "0") {
-                  this.$toast.fail("合同未编辑，请先编辑合同");
+                  this.$toast.fail({
+                    forbidClick: true, // 禁用背景点击
+                    message: "合同未编辑，请先编辑合同"
+                  });
                   this.$nextTick().then(() => {
                     setTimeout(() => {
                       this.jumpInfo();

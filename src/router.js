@@ -57,7 +57,7 @@ import Customerlist from "./views/CustomerList/CustomerList";
 import InquiryDetails from "./views/Project/Option/ConPrice/InquiryDetails";
 import ContractWork from "./views/Project/Option/ConPrice/ContractWork";
 import ContractLabor from "./views/Project/Option/ContractInfo/ContractLabor";
-import SupplierAnnex from  "./views/Users/SupplierAnnex";
+import SupplierAnnex from "./views/Users/SupplierAnnex";
 Vue.use(Router);
 
 export default new Router({
@@ -76,8 +76,8 @@ export default new Router({
           name: "index",
           component: Index,
           meta: {
-            title: "首页",
-            // keepAlive: true
+            title: "首页", // 页面标题
+            // keepAlive: true  // 是否缓存
           }
         },
         {
@@ -330,7 +330,7 @@ export default new Router({
           name: "infoitem",
           component: InfoItem,
           meta: {
-            title: "项目信息" //页面标题
+            title: "项目信息"
           }
         },
         {
@@ -338,7 +338,7 @@ export default new Router({
           name: "pricedetails",
           component: PriceDetails,
           meta: {
-            title: "询价单编辑" //页面标题
+            title: "询价单编辑"
           }
         },
         {
@@ -346,7 +346,7 @@ export default new Router({
           name: "annexContent",
           component: AnnexContent,
           meta: {
-            title: "询价单附件" //页面标题
+            title: "询价单附件"
           }
         },
         {
@@ -354,7 +354,7 @@ export default new Router({
           name: "deliverydetails",
           component: DeliveryDetails,
           meta: {
-            title: "发货单编辑" //页面标题
+            title: "发货单编辑"
           }
         },
         {
@@ -362,7 +362,7 @@ export default new Router({
           name: "arrivalDetails",
           component: ArrivalDetails,
           meta: {
-            title: "发货单明细" //页面标题
+            title: "发货单明细"
           }
         },
         {
@@ -370,7 +370,7 @@ export default new Router({
           name: "contractdetails",
           component: ContractDetails,
           meta: {
-            title: "合同清单详情" //页面标题
+            title: "合同清单详情"
           }
         },
         {
@@ -378,7 +378,8 @@ export default new Router({
           name: "paymentlabel",
           component: PaymentLabel,
           meta: {
-            title: "付款信息列表" //页面标题
+            title: "付款信息列表",
+            // keepAlive: true
           }
         },
         {
@@ -386,7 +387,7 @@ export default new Router({
           name: "paymentAddZF",
           component: PaymentAddZF,
           meta: {
-            title: "新增支付申请单" //页面标题
+            title: "新增支付申请单"
           }
         },
         {
@@ -394,7 +395,7 @@ export default new Router({
           name: "paymentAddYC",
           component: PaymentAddYC,
           meta: {
-            title: "新增预存登记" //页面标题
+            title: "新增预存登记"
           }
         },
         {
@@ -402,7 +403,7 @@ export default new Router({
           name: "tranrialDetail",
           component: TranrialDetail,
           meta: {
-            title: "报价单明细" //页面标题
+            title: "报价单明细"
           }
         },
         {
@@ -410,7 +411,7 @@ export default new Router({
           name: "tranrialAdd",
           component: TranrialAdd,
           meta: {
-            title: "添加明细物资" //页面标题
+            title: "添加明细物资"
           }
         },
         {
@@ -418,7 +419,7 @@ export default new Router({
           name: "tranContractDetail",
           component: TranContractDetail,
           meta: {
-            title: "合同编辑" //页面标题
+            title: "合同编辑"
           }
         },
         {
@@ -426,7 +427,7 @@ export default new Router({
           name: "tranrialAnnex",
           component: TranrialAnnex,
           meta: {
-            title: "询价单附件" //页面标题
+            title: "询价单附件"
           }
         },
         {
@@ -434,7 +435,7 @@ export default new Router({
           name: "customerlist",
           component: Customerlist,
           meta: {
-            title: "客户列表" //页面标题
+            title: "客户列表"
           }
         },
         {
@@ -442,7 +443,7 @@ export default new Router({
           name: "trancontract",
           component: TranContract,
           meta: {
-            title: "合同信息" //页面标题
+            title: "合同信息"
           }
         },
         {
@@ -450,7 +451,7 @@ export default new Router({
           name: "shippinginfo",
           component: ShippingInfo,
           meta: {
-            title: "发货信息" //页面标题
+            title: "发货信息"
           }
         },
         {
@@ -458,7 +459,7 @@ export default new Router({
           name: "shippingDetails",
           component: ShippingDetails,
           meta: {
-            title: "发货单编辑" //页面标题
+            title: "发货单编辑"
           }
         },
         {
@@ -466,7 +467,7 @@ export default new Router({
           name: "newInvoice",
           component: NewInvoice,
           meta: {
-            title: "发货单编辑" //页面标题
+            title: "发货单编辑"
           }
         },
         {
@@ -474,7 +475,7 @@ export default new Router({
           name: "deliveryDetail",
           component: DeliveryDetail,
           meta: {
-            title: "发货单明细" //页面标题
+            title: "发货单明细"
           }
         },
         {
@@ -482,7 +483,7 @@ export default new Router({
           name: "tranpayment",
           component: TranPayment,
           meta: {
-            title: "付款信息" //页面标题
+            title: "付款信息"
           }
         },
         {
@@ -490,7 +491,7 @@ export default new Router({
           name: "tranrial",
           component: Tranrial,
           meta: {
-            title: "报价单详情" //页面标题
+            title: "报价单详情"
           }
         },
         {
@@ -498,7 +499,7 @@ export default new Router({
           name: "inventory",
           component: Inventory,
           meta: {
-            title: "清单详情" //页面标题
+            title: "清单详情"
           }
         },
         {
@@ -506,7 +507,7 @@ export default new Router({
           name: "inquirydetails",
           component: InquiryDetails,
           meta: {
-            title: "询价单明细编辑" //页面标题
+            title: "询价单明细编辑"
           }
         },
         {
@@ -514,7 +515,7 @@ export default new Router({
           name: "contractwork",
           component: ContractWork,
           meta: {
-            title: "材料合同编辑" //页面标题
+            title: "材料合同编辑"
           }
         },
         {
@@ -522,7 +523,7 @@ export default new Router({
           name: "contractlabor",
           component: ContractLabor,
           meta: {
-            title: "劳务合同编辑" //页面标题
+            title: "劳务合同编辑"
           }
         },
       ]

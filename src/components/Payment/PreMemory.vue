@@ -36,9 +36,9 @@
           </van-cell>
         </div>
       </div>
-      <!-- <div class="margin-top-sm">
+      <div class="margin-top-sm">
         <van-button type="primary" size="large" @click="onAdd">新增预存登记</van-button>
-      </div> -->
+      </div>
     </div>
     <!--分页组件-->
     <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getData" />
@@ -75,9 +75,9 @@ export default {
           bpoName: "SupplyChain/BizFinance/BPO_WF_Apply_Info"
         };
         this.$store.commit("taskParams", params);
-        // this.$router.push({
-        //   name: "paymentAddYC"
-        // });
+        this.$router.push({
+          name: "paymentAddYC"
+        });
       }
     },
     // 新增预存单

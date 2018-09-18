@@ -80,7 +80,10 @@ export default {
       task.submitInquiry(params).then(res => {
         try {
           if (res.status === 1 && res.text === "True") {
-            this.$toast.success("提交成功");
+            this.$toast.success({
+              forbidClick: true, // 禁用背景点击
+              message: "提交成功"
+            });
             setTimeout(() => {
               this.$router.go(-1);
             }, 1500);
