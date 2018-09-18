@@ -3,24 +3,25 @@
   <div class="deliverydetails">
     <div class="title-delivery">发货单</div>
     <van-cell-group>
-      <van-field v-model="info[2]" label="发货单号:" disabled />
-      <van-field v-model="info[39]" label="工程名称:" disabled />
-      <van-field :value="new Date(info[8]).Format('yyyy-MM-dd')" label="发货时间:" disabled />
-      <van-field v-model="info[40]" label="工程地址:" disabled />
-      <van-field :value="info[13] | codeValue('CodeTable_Deliver_Type')" label="发货方式:"/>
-      <van-field :value="info[41]" label="单据状态:" disabled />
-      <van-field v-model="info[19]" label="审核人:" disabled />
-      <van-field v-model="info[10]" label="发货数量:" disabled />
-      <van-field v-model="info[42]" label="签收状态:" disabled />
-      <!-- <van-field v-model="info[27]" label="签收时间:" v-if="info[41]==='已发货'" /> -->
-      <van-cell-group class="con-price">
-        <span class="con-label">签收时间</span>
-        <span :class="info[25] != '1' && info[20] != '1'? 'con-select' : 'con-select text-gray'" @click="info[25] != '1' && info[20] != '1' ? showDateone=true : ''">{{info[27]}}</span>
+      <van-field v-model="info[2]" label="发货单号：" disabled />
+      <van-field v-model="info[39]" label="工程名称：" disabled />
+      <van-field :value="new Date(info[8]).Format('yyyy-MM-dd')" label="发货时间：" disabled />
+      <van-field v-model="info[40]" label="工程地址：" disabled />
+      <cbh-select v-model="info[13]" label="发货方式：" code="CodeTable_Deliver_Type" @change="onDeliverChange" v-if="info[25] != '1' && info[20] != '1'" />
+      <van-field :value="info[13] | codeValue('CodeTable_Deliver_Type')" label="发货方式：" disabled v-else />
+      <van-field :value="info[41]" label="单据状态：" disabled />
+      <van-field v-model="info[19]" label="审核人：" disabled />
+      <van-field v-model="info[10]" label="发货数量：" disabled />
+      <van-field v-model="info[42]" label="签收状态：" disabled />
+      <van-cell-group class="con-price" v-if="info[25] != '1' && info[20] != '1'">
+        <span class="con-label">签收时间：</span>
+        <span class="con-select" @click="showDateone=true">{{info[27]}}</span>
       </van-cell-group>
+      <van-field v-model="info[27]" label="签收时间：" disabled v-else />
       <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" class="contract-date" @confirm="jiaohuoDate" @cancel="showDateone=false" />
-      <van-field v-model="info[28]" label="签收人:" disabled/>
-      <van-field v-model="info[11]" label="发货金额:" disabled />
-      <van-field v-model="info[29]" label="备注:" type="textarea" :disabled="info[25] == '1' || info[20] == '1'" :placeholder="info[25] != '1' && info[20] != '1' ? '请输入备注' : ''" />
+      <van-field v-model="info[28]" label="签收人：" disabled/>
+      <van-field v-model="info[11]" label="发货金额：" disabled />
+      <van-field v-model="info[29]" label="备注：" type="textarea" :disabled="info[25] == '1' || info[20] == '1'" :placeholder="info[25] != '1' && info[20] != '1' ? '请输入备注' : ''" />
       <van-cell title="发货单明细" is-link value="详情" @click="jumpPage" />
     </van-cell-group>
     <div class="con-button" v-if="info && info[25] != '1' && info[20] != '1'">
@@ -42,6 +43,9 @@ export default {
   },
   computed,
   methods: {
+    onDeliverChange(res) {
+      this.info[13] = res;
+    },
     getData() {
       arrival.getInvoice(this.confirmParams[0]).then(res => {
         if (res && res.status === 1) {
@@ -255,6 +259,13 @@ export default {
     z-index: 9999;
     bottom: 0;
     padding-right: 30px;
+  }
+}
+</style>
+<style lang="less">
+.deliverydetails {
+  .van-cell__title {
+    max-width: 90px;
   }
 }
 </style>

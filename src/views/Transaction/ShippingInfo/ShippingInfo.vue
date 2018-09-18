@@ -7,7 +7,7 @@
           <div class="item-title">
             <span class="title">{{item[8]}}</span>
             <span class="option">
-              <van-button type="primary" size="mini" plain @click="onDelete(item)">删除</van-button>
+              <van-button type="danger" size="mini" plain @click="onDelete(item)">删除</van-button>
             </span>
           </div>
           <van-cell is-link class="item-content" @click="jumpInfo(item)">
@@ -147,6 +147,9 @@ export default {
           .title {
             font-weight: 600;
             font-size: 16px;
+          }
+          .option {
+            padding: 10px;
           }
           .icon {
             font-size: 14px;
