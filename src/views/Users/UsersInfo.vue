@@ -278,5 +278,12 @@ export default {
   }
 }
 </style>
+<style lang="less">
+.usersinfo {
+  .van-cell__title {
+    max-width: 90px;
+  }
+}
+</style>
 
 
