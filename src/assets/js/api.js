@@ -1312,7 +1312,7 @@ const arrival = {
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_SC_Deliver_Master",
         "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": 20,
+        "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
@@ -1369,13 +1369,13 @@ const arrival = {
     })
   },
   //保存修改
-  saveKeepRevise(xmlData){
+  saveKeepRevise(xmlData) {
     return axios({
-      url:"/UCMLWebServiceEntryForJs.aspx",
-      method:"post",
-      data:{
-        _bpoName:"BPO_Deliver_List_EditService",
-        _methodName:"BusinessSubmit",
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Deliver_List_EditService",
+        _methodName: "BusinessSubmit",
         "_parameters[xmlData]": xmlData,
         _paraNames: "xmlData",
         _pUrl: ""
@@ -2130,7 +2130,7 @@ const offer = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SupplierID='" + SupplierID + "'" + " AND SC_Money_InOut.PartnerID='" + PartnerID + "'",
+        "_parameters[SQLCondi]": "SC_Money_InOut.SupplierID='" + SupplierID + "'" + " AND SC_Money_InOut.PartnerID='" + PartnerID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",

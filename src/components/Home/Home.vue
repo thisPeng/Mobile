@@ -54,11 +54,10 @@ export default {
         }
 
         // 监听路由的路径，可以通过不同的路径去选择不同的切换效果
-        const toDepth = to.path.split("/").length;
-        const fromDepth = from.path.split("/").length;
-
-        this.transitionName =
-          toDepth < fromDepth ? "slide-right" : "slide-left";
+        // const toDepth = to.path.split("/").length;
+        // const fromDepth = from.path.split("/").length;
+        // this.transitionName =
+        //   toDepth < fromDepth ? "slide-right" : "slide-left";
 
         if (
           to.name !== "index" &&
@@ -204,8 +203,6 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   .van-nav-bar {
     color: #fff;
     background-color: #00a0e9;
@@ -221,9 +218,10 @@ export default {
     right: 0;
     top: 46px;
     bottom: 0;
+    overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+    // transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
   }
 }
 </style>

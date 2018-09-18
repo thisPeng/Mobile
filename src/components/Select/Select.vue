@@ -45,14 +45,12 @@ export default {
         try {
           if (res.status === 1) {
             this.list = JSON.parse(res.text);
-            this.$nextTick(() => {
-              setTimeout(() => {
-                this.result = this.value;
-              }, 1000);
-            });
+            return true;
           }
+          return false;
         } catch (e) {
           console.log(e);
+          return false;
         }
       });
     },
@@ -61,7 +59,15 @@ export default {
     }
   },
   created() {
-    this.getData();
+    this.getData().then(res => {
+      if (res) {
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.result = this.value;
+          }, 1000);
+        });
+      }
+    });
   }
 };
 </script>

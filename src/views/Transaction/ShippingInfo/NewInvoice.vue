@@ -251,12 +251,11 @@ export default {
   }
   .invoice-button {
     position: fixed;
+    bottom: 0;
     width: 100%;
+    padding: 10px;
     text-align: center;
-    bottom: 5px;
-    button {
-      width: 95%;
-    }
+    background-color: #fff;
   }
 }
 </style>

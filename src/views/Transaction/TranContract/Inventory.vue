@@ -4,7 +4,7 @@
     <div class="inquiry-data">
       <div class="inquiry-list">
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
-          <van-card :title="item[4]" :price="item[14]" :num="item[11]+' '+item[28]" :desc="item[8]">
+          <van-card :title="item[4]" :price="item[14]" :num="item[11]+' '+item[28]" :desc="item[8]" :thumb="item[29].replace('~',servePath)">
             <!-- <div slot="footer">
               <van-button size="mini" type="danger" @click.stop="arrivalDelete(item[0])">删除</van-button>
             </div> -->
@@ -15,12 +15,10 @@
     <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock">
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
-          <van-cell :title="'品名： ' + goods.brand" :label="'规格/型号：' + goods.unit" />
-          <van-cell :title="'实际数量：' + goods.taxAll" :label="'赠送数量：' + goods.shop" />
-          <van-cell :title="'单位：' + goods.taxRadio + '%'" :label="'实价：' + goods.howMuch" />
-          <van-cell :title="'小计： ' + goods.taxRate" :label="'税率：' + goods.howMoney" />
-          <!-- <van-field label="小计：" v-model="goods.taxRate" type="number" required placeholder="请输入订购数量" /> -->
-          <van-field label="备注：" v-model="goods.reMarks" disabled/>
+          <van-cell :title="'单位： ' + goods.unit" :label="'规格/型号：' + goods.info" />
+          <van-cell :title="'发货数量：' + goods.num" :label="'赠送数量：' + goods.sendNum" />
+          <van-cell :title="'共计金额：' + goods.howMoney" :label="'税率：' + goods.taxRadio + '%'" />
+          <van-field label="备注：" v-model="goods.reMarks" disabled />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">
@@ -33,7 +31,7 @@
         </div>
       </template>
     </van-sku>
-    <div class="invoice-button">
+    <div class="invoice-button" v-if="confirmParams[20] != '发货情况：全部发货'">
       <van-button type="primary" size="large" @click="onSave">生成发货单</van-button>
     </div>
   </div>
@@ -62,11 +60,11 @@ export default {
         title: "", // 页面标题
         picture: "", // 默认商品 sku 缩略图
         brand: "",
-        // info: "",
+        info: "",
         unit: "",
-        shop: "",
-        taxRate: "",
-        taxAll: "",
+        num: "",
+        sendNum: "",
+        orderNum: "",
         howMuch: "",
         howMoney: "",
         taxRadio: "",
@@ -77,41 +75,43 @@ export default {
   computed,
   methods: {
     showInfo(item) {
-      this.sku.price = item[15];
+      this.sku.price = item[14];
       this.goods = {
-        id: item[23],
-        sid: item[19],
+        id: item[0],
+        sid: item[6],
         title: item[4],
-        // picture: item[23],
-        brand: item[4],
-        // info: item[23],
-        unit: item[8],
-        shop: item[12],
-        taxRate: item[15],
-        taxAll: item[11],
+        picture: item[29].replace("~", this.servePath),
+        brand: item[27],
+        info: item[8],
+        unit: item[5],
+        orderNum: item[10],
+        num: item[11],
+        sendNum: item[12],
         howMuch: item[14],
-        howMoney: item[16],
-        taxRadio: item[28],
+        howMoney: item[15],
+        taxRadio: item[16],
         reMarks: item[19]
       };
       this.showBase = true;
       // console.log(item);
     },
     getData() {
-      offer.getContractDetail(this.confirmParams[0]).then(res => {
+      return offer.getContractDetail(this.confirmParams[0]).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0]);
-          console.log(this.list);
+          // console.log(this.list);
+          return true;
         }
+        return false;
       });
     },
     pageInit() {
       this.getData();
     },
+    // 生成发货单
     onSave() {
-      console.log(this.confirmParams);
       const list = this.list;
       let DetailIDList = [];
       list.forEach(val => {
@@ -125,17 +125,18 @@ export default {
         ContractList: this.confirmParams[0],
         DetailIDList
       };
-
       offer.saveDeliverBill(params).then(res => {
-        console.log(res);
-        // if (res.status === 1 && res.text === "1") {
-        //   this.$toast.success("生成发货单成功");
-        //   setTimeout(() => {
-        //     this.$router.go(-1);
-        //   }, 1500);
-        // } else {
-        //   this.$toast.fail("生成发货单失败，请勾选发货物资");
-        // }
+        if (res.status === 1 && res.text === "1") {
+          this.$toast.success({
+            forbidClick: true,
+            message: "生成发货单成功"
+          });
+          setTimeout(() => {
+            this.$router.push({
+              name: "shippinginfo"
+            });
+          }, 1500);
+        }
       });
     }
   },
@@ -147,15 +148,6 @@ export default {
 <style lang="less" scoped>
 .inventory {
   width: 100%;
-  .invoice-button {
-    position: fixed;
-    width: 100%;
-    text-align: center;
-    bottom: 5px;
-    button {
-      width: 95%;
-    }
-  }
   .inquiry-data {
     position: absolute;
     top: 10px;
@@ -164,6 +156,7 @@ export default {
     bottom: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    padding-bottom: 70px;
     .inquiry-list {
       width: 100%;
       padding: 0 10px;
@@ -183,6 +176,14 @@ export default {
         }
       }
     }
+  }
+  .invoice-button {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
   }
 }
 </style>

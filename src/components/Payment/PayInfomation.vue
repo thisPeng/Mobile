@@ -50,19 +50,21 @@ export default {
   methods: {
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      financial.getPaymentInfo(this.projectInfo.SC_ProjectOID, page).then(res => {
-        try {
-          if (res && res.status === 1) {
-            const sp = res.text.split("[[");
-            const csp = sp[1].split(";");
-            this.list = eval("[[" + csp[0]);
-            this.pages = eval("(" + csp[1].split("=")[1] + ")");
-            // console.log(this.list);
+      financial
+        .getPaymentInfo(this.projectInfo.SC_ProjectOID, page)
+        .then(res => {
+          try {
+            if (res && res.status === 1) {
+              const sp = res.text.split("[[");
+              const csp = sp[1].split(";");
+              this.list = eval("[[" + csp[0]);
+              this.pages = eval("(" + csp[1].split("=")[1] + ")");
+              // console.log(this.list);
+            }
+          } catch (e) {
+            console.log(e);
           }
-        } catch (e) {
-          console.log(e);
-        }
-      });
+        });
     },
     pageInit() {
       this.getData();

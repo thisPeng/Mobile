@@ -7,7 +7,7 @@
       <van-field v-model="info[39]" label="工程名称:" disabled />
       <van-field :value="new Date(info[8]).Format('yyyy-MM-dd')" label="发货时间:" disabled />
       <van-field v-model="info[40]" label="工程地址:" disabled />
-      <van-field :value="info[13]|codeValue('CodeTable_Deliver_Type')" label="发货方式:" disabled />
+      <van-field :value="info[13] | codeValue('CodeTable_Deliver_Type')" label="发货方式:" disabled />
       <van-field :value="info[41]" label="单据状态:" disabled />
       <van-field v-model="info[19]" label="审核人:" disabled />
       <van-field v-model="info[10]" label="发货数量:" disabled />
@@ -15,18 +15,17 @@
       <!-- <van-field v-model="info[27]" label="签收时间:" v-if="info[41]==='已发货'" /> -->
       <van-cell-group class="con-price">
         <span class="con-label">签收时间</span>
-        <span class="con-select" @click="info[25] !== '1' && info[20] !== '1' ? showDateone=true : ''">{{info[27]}}</span>
+        <span :class="info[25] != '1' && info[20] != '1'? 'con-select' : 'con-select text-gray'" @click="info[25] != '1' && info[20] != '1' ? showDateone=true : ''">{{info[27]}}</span>
       </van-cell-group>
       <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" class="contract-date" @confirm="jiaohuoDate" @cancel="showDateone=false" />
       <van-field v-model="info[28]" label="签收人:" disabled/>
       <van-field v-model="info[11]" label="发货金额:" disabled />
-      <van-field v-model="info[29]" label="备注:" type="textarea" :disabled="info[41]!=='已发货'" />
+      <van-field v-model="info[29]" label="备注:" type="textarea" :disabled="info[25] == '1' || info[20] == '1'" :placeholder="info[25] != '1' && info[20] != '1' ? '请输入备注' : ''" />
       <van-cell title="发货单明细" is-link value="详情" @click="jumpPage" />
     </van-cell-group>
-    <div class="con-button" v-if="info[25] !== '1' && info[20] !== '1'">
+    <div class="con-button" v-if="info && info[25] != '1' && info[20] != '1'">
       <van-button type="primary" @click="DeliverySign">签收</van-button>
       <van-button type="danger" @click="DeliveryOffer">提议</van-button>
-      <!-- <van-button type="danger" @click="keepDelivery">保存</van-button> -->
     </div>
   </div>
 </template>
@@ -51,7 +50,7 @@ export default {
           this.info = eval("[[" + csp[0])[0];
           // console.log(this.info);
           if (this.info[27] === "1900-01-01 00:00:00") {
-            this.info[27] = "";
+            this.info[27] = "请选择签收时间";
           } else {
             this.info[27] = new Date(this.info[27]).Format("yyyy-MM-dd"); // 签收时间
           }
@@ -68,7 +67,10 @@ export default {
         .then(() => {
           arrival.getSign(this.confirmParams[0]).then(res => {
             if (res && res.status === 1) {
-              this.$toast.success("签收成功");
+              this.$toast.success({
+                forbidClick: true,
+                message: "签收成功"
+              });
               this.$nextTick().then(() => {
                 setTimeout(() => {
                   this.$router.go(-1);
@@ -81,27 +83,38 @@ export default {
           });
         });
     },
-
     //提议
     DeliveryOffer() {
-      this.keepDelivery();
-      this.$dialog
-        .confirm({
-          title: "提议",
-          message: "是否确认提议？"
-        })
-        .then(() => {
-          arrival.getOffer(this.confirmParams[0]).then(res => {
-            if (res && res.status === 1) {
-              this.$toast.success("提议成功");
-              this.$nextTick().then(() => {
-                setTimeout(() => {
-                  this.$router.go(-1);
-                }, 1500);
+      this.keepDelivery().then(result => {
+        try {
+          if (result) {
+            this.$dialog
+              .confirm({
+                title: "提议",
+                message: "是否确认提议？"
+              })
+              .then(() => {
+                arrival.getOffer(this.confirmParams[0]).then(res => {
+                  if (res && res.status === 1) {
+                    this.$toast.success({
+                      forbidClick: true,
+                      message: "提议成功"
+                    });
+                    this.$nextTick().then(() => {
+                      setTimeout(() => {
+                        this.$router.go(-1);
+                      }, 1500);
+                    });
+                  }
+                });
               });
-            }
-          });
-        });
+            return;
+          }
+          throw "保存失败，请重试";
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
     },
     pageInit() {
       this.getData();
@@ -136,16 +149,15 @@ export default {
           {
             BC_SC_Deliver_Master: [
               { _attr: { UpdateKind: "" } },
-              { SC_Deliver_MasterOID: "null" },
-              { Receive_Date: info[27] },
+              { Receive_Date: info[27] == "请选择签收时间" ? "" : info[27] },
               { Remark: info[29] }
             ]
           }
         ]
       });
-      console.log(xmlString);
-      arrival.saveKeepRevise(xmlString).then(res => {
-        console.log(res);
+      return arrival.saveKeepRevise(xmlString).then(res => {
+        if (res.status) return true;
+        else return false;
       });
     }
   },
@@ -212,7 +224,7 @@ export default {
     width: 100%;
     flex-direction: row;
     justify-content: space-around;
-    margin: 5px 0;
+    margin: 10px 0;
     button {
       width: 48%;
       padding: 0;

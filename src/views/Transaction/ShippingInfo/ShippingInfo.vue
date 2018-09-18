@@ -7,7 +7,7 @@
           <div class="item-title">
             <span class="title">{{item[8]}}</span>
             <span class="option">
-              <van-button type="primary" size="mini" plain @click="jumpAdd(item)">新增</van-button>
+              <van-button type="primary" size="mini" plain @click="onDelete(item)">删除</van-button>
             </span>
           </div>
           <van-cell is-link class="item-content" @click="jumpInfo(item)">
@@ -33,6 +33,10 @@
         </div>
       </div>
     </div>
+    <!--新增发货单-->
+    <div class="info-button">
+      <van-button type="primary" size="large" @click.stop="jumpAdd">新增发货单</van-button>
+    </div>
   </div>
 </template>
 <script>
@@ -51,13 +55,15 @@ export default {
         pid: this.clientInfo[0],
         sid: this.userInfo.oid
       };
-      offer.getDelivery(params).then(res => {
+      return offer.getDelivery(params).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0]);
           //  console.log(this.list);
+          return true;
         }
+        return false;
       });
     },
     pageInit() {
@@ -69,8 +75,37 @@ export default {
         name: "shippingDetails"
       });
     },
-    jumpAdd(item) {
-      this.$store.commit("contractParams", item);
+    onDelete(item) {
+      this.$dialog
+        .confirm({
+          title: "提示",
+          message: "确认删除该发货单？"
+        })
+        .then(() => {
+          offer.deleteDeliverOrder(item[0]).then(res => {
+            try {
+              if (res.status === 1) {
+                this.getData().then(result => {
+                  if (result) {
+                    this.$toast.success({
+                      forbidClick: true, // 禁用背景点击
+                      message: "删除成功"
+                    });
+                  } else {
+                    this.$router.go(0);
+                  }
+                });
+              }
+            } catch (e) {
+              this.$toast.fail(e);
+            }
+          });
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    jumpAdd() {
       this.$router.push({
         name: "newInvoice"
       });
@@ -88,9 +123,13 @@ export default {
 <style lang="less" scoped>
 .shippinginfo {
   width: 100%;
-  padding: 10px;
+  overflow: hidden !important;
   .info-data {
-    margin-bottom: 40px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 10px;
+    padding-bottom: 70px;
     .info-card {
       width: 100%;
       .info-item {
@@ -127,6 +166,17 @@ export default {
         }
       }
     }
+  }
+  .info-button {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    padding: 10px;
+    background-color: #fff;
+    text-align: center;
   }
 }
 </style>
