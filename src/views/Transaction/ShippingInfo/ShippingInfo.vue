@@ -3,11 +3,14 @@
   <div class="shippinginfo">
     <div class="info-data">
       <div class="info-card">
-        <div class="info-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
+        <div class="info-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">{{item[8]}}</span>
+            <span class="option">
+              <van-button type="primary" size="mini" plain @click="jumpAdd(item)">新增</van-button>
+            </span>
           </div>
-          <div class="item-content">
+          <van-cell is-link class="item-content" @click="jumpInfo(item)">
             <div class="content-row">
               <span class="row-left">{{item[10]}}</span>
               <span class="row-right">
@@ -26,7 +29,7 @@
               <span class="row-left">{{item[19]}}</span>
               <span class="row-left">{{item[18]}}</span>
             </div>
-          </div>
+          </van-cell>
         </div>
       </div>
     </div>
@@ -60,17 +63,17 @@ export default {
     pageInit() {
       this.getData();
     },
-    jumpPage(item) {
+    jumpInfo(item) {
       this.$store.commit("contractParams", item);
-      if (item[1]) {
-        this.$router.push({
-          name: "shippingDetails"
-        });
-      } else {
-        this.$router.push({
-          name: "newInvoice"
-        });
-      }
+      this.$router.push({
+        name: "shippingDetails"
+      });
+    },
+    jumpAdd(item) {
+      this.$store.commit("contractParams", item);
+      this.$router.push({
+        name: "newInvoice"
+      });
     }
   },
   mounted() {
@@ -92,7 +95,7 @@ export default {
       width: 100%;
       .info-item {
         background-color: #fff;
-        padding: 10px 15px;
+        padding: 5px 10px;
         border-bottom: 1px solid #eee;
         border-radius: 5px;
         margin-bottom: 10px;
@@ -111,8 +114,9 @@ export default {
           }
         }
         .item-content {
-          padding: 5px 0;
-          font-size: 13px;
+          padding: 5px;
+          padding-right: 0;
+          font-size: 12px;
           color: #666;
           .content-row {
             display: flex;

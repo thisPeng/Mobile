@@ -133,64 +133,40 @@ export default {
         root: [
           {
             BC_SC_Order_Master: [
-              {
-                _attr: {
-                  UpdateKind: "ukModify"
-                }
-              },
-              {
-                SC_Order_MasterOID: info[0]
-              }
+              { _attr: { UpdateKind: "ukModify" } },
+              { SC_Order_MasterOID: info[0] }
             ]
           },
           {
             BC_SC_Order_Master: [
-              {
-                _attr: {
-                  UpdateKind: ""
-                }
-              },
-              {
-                SC_Order_MasterOID: "null"
-              },
-              {
-                Valid_Date: info[17]
-              },
-              {
-                Order_Man: info[18]
-              },
-              {
-                Remark: info[21]
-              }
+              { _attr: { UpdateKind: "" } },
+              { SC_Order_MasterOID: "null" },
+              { Valid_Date: info[17] },
+              { Order_Man: info[18] },
+              { Remark: info[21] }
             ]
           }
         ]
       });
       // console.log(xmlString);
-      this.$dialog
-        .confirm({
-          title: "保存",
-          message: "确认保存该询价单？"
-        })
-        .then(() => {
-          offer.saveTranDetails(xmlString).then(res => {
-            console.log(res);
-            try {
-              if (res.status === 1) {
-                this.getOffer();
-                this.$nextTick().then(() => {
-                  setTimeout(() => {
-                    this.$toast.success("保存成功");
-                  }, 300);
-                });
-                return;
-              }
-              throw "保存失败，请刷新页面重试";
-            } catch (e) {
-              this.$toast.fail(e);
-            }
-          });
-        });
+
+      offer.saveTranDetails(xmlString).then(res => {
+        console.log(res);
+        try {
+          if (res.status === 1) {
+            this.getOffer();
+            this.$nextTick().then(() => {
+              setTimeout(() => {
+                this.$toast.success("保存成功");
+              }, 300);
+            });
+            return;
+          }
+          throw "保存失败，请刷新页面重试";
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
     }
   },
   mounted() {

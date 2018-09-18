@@ -53,7 +53,6 @@ export default {
             const list = eval("[[" + tsp[0]);
             const listOrder = [];
             let tmp = "";
-            // console.log(list);
             // 数据分组
             list.forEach(val => {
               if (val[2] !== tmp) {

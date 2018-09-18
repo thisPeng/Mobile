@@ -214,56 +214,19 @@ export default {
       return xml([
         {
           BC_SC_IntentionSKU: [
-            {
-              _attr: {
-                UpdateKind: "ukModify"
-              }
-            },
-            {
-              SC_IntentionSKUOID: item[0]
-            },
-            {
-              Order_Qty: "null"
-            },
-            {
-              Remark: "null"
-            },
-            {
-              SKU_Status: "null"
-            },
-            {
-              SYS_LAST_UPD: "null"
-            },
-            {
-              SYS_LAST_UPD_BY: "null"
-            }
+            { _attr: { UpdateKind: "ukModify" } },
+            { SC_IntentionSKUOID: item[0] }
           ]
         },
         {
           BC_SC_IntentionSKU: [
-            {
-              _attr: {
-                UpdateKind: ""
-              }
-            },
-            {
-              SC_IntentionSKUOID: "null"
-            },
-            {
-              Order_Qty: item[3]
-            },
-            {
-              Remark: "null"
-            },
-            {
-              SKU_Status: item[23]
-            },
-            {
-              SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss")
-            },
-            {
-              SYS_LAST_UPD_BY: this.userInfo.oid
-            }
+            { _attr: { UpdateKind: "" } },
+            { SC_IntentionSKUOID: "null" },
+            { Order_Qty: item[3] },
+            { Remark: "null" },
+            { SKU_Status: item[23] },
+            { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") },
+            { SYS_LAST_UPD_BY: this.userInfo.oid }
           ]
         }
       ]);

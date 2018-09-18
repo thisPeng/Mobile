@@ -56,7 +56,11 @@ export default {
       });
     },
     pageInit() {
-      this.getData();
+      if (this.clientInfo[0]) {
+        this.getData();
+      } else {
+        this.$toast("请先点击屏幕右上角按钮，选择客户");
+      }
     },
     jumpPage(item) {
       this.$store.commit("confirmParams", item);

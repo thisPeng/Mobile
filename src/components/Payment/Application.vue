@@ -54,12 +54,14 @@ export default {
   },
   computed,
   methods: {
+    // 新增支付申请
     onAdd() {
       this.$store.commit("taskParams", "");
       this.$router.push({
         name: "paymentAddZF"
       });
     },
+    // 删除支付申请
     onDelete(id) {
       this.$dialog
         .confirm({
@@ -87,8 +89,9 @@ export default {
           // on cancel
         });
     },
+    // 跳转详情
     jumpInfo(item) {
-      if (item[35]) {
+      if (item[33] == "true") {
         const params = {
           InstanceID: item[34],
           name: "支付申请详情",

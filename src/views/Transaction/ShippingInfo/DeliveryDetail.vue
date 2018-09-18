@@ -4,7 +4,7 @@
     <div class="inquiry-data">
       <div class="inquiry-list">
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
-          <van-card :title="item[9]" :price="item[18]" :num="item[14]+' '+item[11]" :desc="item[10]" :thumb="item[26].replace('~',servePath)">
+          <van-card :title="item[9]" :price="item[17]" :num="item[14]+' '+item[11]" :desc="item[10]" :thumb="item[26].replace('~',servePath)">
             <div slot="footer">
               <van-button size="mini" type="danger" @click.stop="deleteItem(item[0])" v-if="confirmParams[41] != '已发货'">删除</van-button>
             </div>
@@ -15,11 +15,10 @@
     <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock">
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
-          <van-cell :title="'产品名称： ' + goods.brand" :label="'规格/型号：' + goods.unit" />
-          <van-cell :title="'单位： ' + goods.taxRate" :label="'订单数量：' + goods.taxAll" />
-          <van-cell :title="'赠送数量： ' + goods.taxbrand" :label="'税率：' + goods.taxRadio + '%'" />
-          <van-cell :title="'实价 ' + goods.howMuch" :label="'金额：' + goods.howMoney" />
-          <van-field label="发货数量：" v-model="goods.taxunit" :disabled="confirmParams[41] == '已发货'" :required="confirmParams[41] != '已发货'" :placeholder="confirmParams[41] != '已发货' ? '请输入发货数量' : ''" />
+          <van-cell :title="'单位：' + goods.unit" :label="'规格/型号：' + goods.info" />
+          <van-cell :title="'订单数量：' + goods.orderNum" :label="'赠送数量： ' + goods.sendNum" />
+          <van-cell :title="'共计金额：' + goods.howMoney" :label="'税率：' + goods.taxRate + '%'" />
+          <van-field label="发货数量：" v-model="goods.num" :disabled="confirmParams[41] == '已发货'" :required="confirmParams[41] != '已发货'" :placeholder="confirmParams[41] != '已发货' ? '请输入发货数量' : ''" @change="onSalcSum" />
           <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[41] == '已发货'" :placeholder="confirmParams[41] != '已发货' ? '请输入备注' : ''" />
         </van-cell-group>
       </template>
@@ -61,16 +60,14 @@ export default {
         sid: "",
         title: "", // 页面标题
         picture: "", // 默认商品 sku 缩略图
-        brand: "",
-        // info: "",
+        info: "",
         unit: "",
         taxRate: "",
-        taxAll: "",
+        orderNum: "",
         howMuch: "",
         howMoney: "",
-        taxRadio: "",
-        taxbrand: "",
-        taxunit: "",
+        num: "",
+        sendNum: "",
         reMarks: ""
       }
     };
@@ -79,15 +76,23 @@ export default {
   methods: {
     //发货单明细
     getData() {
-      return offer.getDeliveryDetail(this.contractParams[0]).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split("[[");
-          const csp = sp[2].split(";");
-          this.list = eval("[[" + csp[0]);
-          return true;
-          // console.log(this.list);
+      return offer.setUpdateDelete(this.confirmParams[0]).then(result => {
+        try {
+          if (result.status === 1) {
+            return offer.getDeliveryDetail(this.contractParams[0]).then(res => {
+              if (res.status === 1) {
+                const sp = res.text.split("[[");
+                const csp = sp[2].split(";");
+                this.list = eval("[[" + csp[0]);
+                return true;
+              }
+            });
+          }
+          throw "获取数据失败，请刷新页面";
+        } catch (e) {
+          this.$toast.fail(e);
+          return false;
         }
-        return false;
       });
     },
     //删除按钮
@@ -128,38 +133,21 @@ export default {
         root: [
           {
             BC_SC_Deliver_Detail: [
-              {
-                _attr: {
-                  UpdateKind: "ukModify"
-                }
-              },
-              {
-                SC_Deliver_DetailOID: this.goods.id
-              }
+              { _attr: { UpdateKind: "ukModify" } },
+              { SC_Deliver_DetailOID: this.goods.id }
             ]
           },
           {
             BC_SC_Deliver_Detail: [
-              {
-                _attr: {
-                  UpdateKind: ""
-                }
-              },
-              {
-                SC_Deliver_DetailOID: "null"
-              },
-              {
-                Real_Qty: this.goods.taxunit
-              },
-              {
-                Remark: this.goods.reMarks
-              }
+              { _attr: { UpdateKind: "" } },
+              { SC_Deliver_DetailOID: "null" },
+              { Real_Qty: this.goods.num },
+              { Remark: this.goods.reMarks }
             ]
           }
         ]
       });
-      // console.log(xmlString);
-      offer.saveSendDetail(xmlString).then(res => {
+      offer.saveGoodsDetail(xmlString).then(res => {
         try {
           if (res.status === 1) {
             this.showBase = false;
@@ -175,29 +163,32 @@ export default {
         }
       });
     },
+    // 计算物资总价
+    onSalcSum() {
+      this.goods.howMoney = this.goods.howMuch * this.goods.num;
+    },
+    // 显示详情
     showInfo(item) {
-      this.sku.price = item[18];
+      this.sku.price = item[17];
       this.goods = {
         id: item[0],
         sid: item[5],
         title: item[9],
-        picture: item[26],
-        brand: item[9],
+        picture: item[26].replace("~", this.servePath),
         info: item[10],
         unit: item[11],
-        taxRate: item[11],
-        taxAll: item[13],
+        num: item[14],
+        sendNum: item[15],
+        orderNum: item[13],
         howMuch: item[17],
         howMoney: item[18],
-        taxRadio: item[19],
-        taxbrand: item[15],
-        taxunit: item[14],
+        taxRate: item[19],
         reMarks: item[21]
       };
       this.showBase = true;
       // console.log(item);
     }
-  }, //methods
+  },
   mounted() {
     this.getData();
   }
@@ -226,12 +217,6 @@ export default {
           border: 1px solid #eee;
           border-radius: 5px;
           margin-bottom: 10px;
-          .item-brand {
-            padding: 5px 0;
-          }
-          .item-price {
-            color: #ff4257;
-          }
         }
       }
     }

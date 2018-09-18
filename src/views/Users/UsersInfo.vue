@@ -68,7 +68,7 @@
           <van-swipe-item>
             <img class="img" :src="(servePath+list[25]).replace('~','')" alt="签约单位营业执照" @click="preView">
           </van-swipe-item>
-            <van-swipe-item>
+          <van-swipe-item>
             <img class="img" :src="(servePath+list[24]).replace('~','')" alt="合作商身份证照" @click="preView">
           </van-swipe-item>
         </van-swipe>
@@ -112,81 +112,43 @@ export default {
         root: [
           {
             BC_SC_Partner: [
-              {
-                _attr: {
-                  UpdateKind: "ukModify"
-                }
-              },
-              {
-                SC_PartnerOID: this.userId.UCML_OrganizeOID
-              }
+              { _attr: { UpdateKind: "ukModify" } },
+              { SC_PartnerOID: this.userId.UCML_OrganizeOID }
             ]
           },
           {
             BC_SC_Partner: [
-              {
-                _attr: {
-                  UpdateKind: ""
-                }
-              },
-              {
-                SC_PartnerOID: "null"
-              },
-              {
-                Second_Name: this.list[27] //签约单位名称
-              },
-              {
-                Representative: this.list[22] //法定代表人
-              },
-              {
-                IdCard_NO: this.list[26] //法人身份证
-              },
-              {
-                Telephone: this.list[10] //法人电话
-              },
-              {
-                Contacts: this.list[8] //联系人姓名
-              },
-              {
-                Mobilehone: this.list[11] //联系人电话
-              },
-              {
-                Mailbox: this.list[12] //联系人邮箱
-              },
-              {
-                Address: this.list[9] //地址
-              },
-              {
-                Remark: this.list[13] //备注
-              }
+              { _attr: { UpdateKind: "" } },
+              { SC_PartnerOID: "null" },
+              { Second_Name: this.list[27] }, //签约单位名称
+              { Representative: this.list[22] }, //法定代表人
+              { IdCard_NO: this.list[26] }, //法人身份证
+              { Telephone: this.list[10] }, //法人电话
+              { Contacts: this.list[8] }, //联系人姓名
+              { Mobilehone: this.list[11] }, //联系人电话
+              { Mailbox: this.list[12] }, //联系人邮箱
+              { Address: this.list[9] }, //地址
+              { Remark: this.list[13] } //备注
             ]
           }
         ]
       });
       // console.log(xmlString);
-      this.$dialog
-        .confirm({
-          title: "保存",
-          message: "确认保存该询价单？"
-        })
-        .then(() => {
-          users.saveMessage(xmlString).then(res => {
-            // console.log(res);
-            try {
-              if (res.status === 1) {
-                this.$nextTick().then(() => {
-                  setTimeout(() => {
-                    this.$toast.success("保存成功");
-                  }, 300);
-                });
-                return;
-              }
-              throw "保存失败，请刷新页面重试";
-            } catch (e) {
-              this.$toast.fail(e);
-            }
-          });
-        });
+      users.saveMessage(xmlString).then(res => {
+        try {
+          if (res.status === 1) {
+            this.$nextTick().then(() => {
+              setTimeout(() => {
+                this.$toast.success("保存成功");
+              }, 300);
+            });
+            return;
+          }
+          throw "保存失败，请刷新页面重试";
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
     },
     //获取用户信息
     getData() {

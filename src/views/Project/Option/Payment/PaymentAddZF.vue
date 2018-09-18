@@ -197,7 +197,6 @@ export default {
     //保存前先获取单号
     onSave() {
       financial.getSheetNo("SQ").then(result => {
-        console.log(result);
         try {
           if (result && result.status === 1) {
             const xml = require("xml");
@@ -206,7 +205,7 @@ export default {
               this.businessKey = uuidv1();
             }
 
-            if (this.data.Partner_memo.trim() == "") {
+            if (!this.data.Partner_memo.trim()) {
               this.$toast.fail("请输入申请说明");
               return;
             } else if (this.paymentIndex === "") {
@@ -257,7 +256,7 @@ export default {
                 if (isNaN(parseInt(val.money))) {
                   this.$toast.fail("请输入正确的分配金额");
                   throw "请输入正确的分配金额";
-                } else if (val.remark.trim() == "") {
+                } else if (!val.remark.trim()) {
                   this.$toast.fail("请输入款项说明");
                   throw "请输入款项说明";
                 }
@@ -411,25 +410,27 @@ export default {
     },
     // 提交流程
     onSubmit() {
-      task.submitAuditSheet(this.businessKey).then(result => {
-        try {
-          if (result.status === 1) {
-            task.submitPayment(this.businessKey).then(res => {
-              if (res.status === 1) {
-                this.$toast.success("提交成功");
-                setTimeout(() => {
-                  this.$router.go(-1);
-                }, 1500);
-                return;
-              }
-            });
+      task
+        .submitAuditSheet(this.businessKey, this.projectInfo.DemandID)
+        .then(result => {
+          try {
+            if (result.status === 1) {
+              task.submitPayment(this.businessKey).then(res => {
+                if (res.status === 1) {
+                  this.$toast.success("提交成功");
+                  setTimeout(() => {
+                    this.$router.go(-1);
+                  }, 1500);
+                  return;
+                }
+              });
+            }
+            throw "提交失败，请先保存内容再提交";
+          } catch (e) {
+            this.$toast.fail(e);
+            console.log(e);
           }
-          throw "提交失败，请先保存内容再提交";
-        } catch (e) {
-          this.$toast.fail(e);
-          console.log(e);
-        }
-      });
+        });
     },
     // 确认供应商选择
     onConfrimItem() {

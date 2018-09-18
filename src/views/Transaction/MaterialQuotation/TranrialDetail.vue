@@ -4,7 +4,7 @@
     <div class="tranrial-data">
       <div class="tranrial-list">
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="showInfo(item)">
-          <van-card :title="item[4]" :price="item[15]" :num="item[11]+' '+item[28]" :desc="item[8]" :thumb="item[29].replace('~',servePath)">
+          <van-card :title="item[4]" :price="item[14]" :num="item[11]+' '+item[28]" :desc="item[8]" :thumb="item[29].replace('~',servePath)">
             <div slot="footer" v-if="confirmParams[15] != '2'">
               <van-button size="mini" type="danger" @click.stop="onDelete(item)">删除</van-button>
             </div>
@@ -15,11 +15,11 @@
     <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock">
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
-          <van-cell :title="'产品名称： ' + goods.title" :label="'规格/型号：' + goods.info" />
+          <van-cell :title="'单位： ' + goods.unit" :label="'规格/型号：' + goods.info" />
           <van-field label="数量：" v-model="goods.num" type="number" :required="confirmParams[15] != '2'" :disabled="confirmParams[15] == '2'" placeholder="请输入数量" @change="onSalcSum" />
           <van-field label="赠送数量：" v-model="goods.sendNum" type="number" :required="confirmParams[15] != '2'" :disabled="confirmParams[15] == '2'" placeholder="请输入赠送数量" />
           <van-field label="单价：" v-model="goods.howMuch" type="number" :required="confirmParams[15] != '2'" :disabled="confirmParams[15] == '2'" placeholder="请输入售价" @change="onSalcSum" />
-          <van-field label="金额：" v-model="goods.howMoney" type="number" disabled />
+          <van-field label="共计金额：" v-model="goods.howMoney" type="number" disabled />
           <van-field label="税率：" v-model="goods.taxRadio" type="number" :required="confirmParams[15] != '2'" :disabled="confirmParams[15] == '2'" placeholder="请输入税率" />
           <van-field label="备注：" v-model="goods.reMarks" placeholder="请输入物资备注" :disabled="confirmParams[15] == '2'" />
         </van-cell-group>
@@ -41,7 +41,7 @@
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
-import { offer } from "./../../../assets/js/api.js";
+import { offer, conprice } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -95,12 +95,22 @@ export default {
     },
     // 获取列表数据
     getData() {
-      offer.getTranrial(this.confirmParams[0]).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split("[[");
-          const csp = sp[2].split(";");
-          this.list = eval("[[" + csp[0]);
-          // console.log(this.list);
+      return conprice.conUpdateDelete(this.confirmParams[0]).then(result => {
+        try {
+          if (result.status === 1) {
+            return offer.getTranrial(this.confirmParams[0]).then(res => {
+              if (res.status === 1) {
+                const sp = res.text.split("[[");
+                const csp = sp[2].split(";");
+                this.list = eval("[[" + csp[0]);
+                return true;
+              }
+            });
+          }
+          throw "获取数据失败，请刷新页面";
+        } catch (e) {
+          this.$toast.fail(e);
+          return false;
         }
       });
     },
@@ -108,12 +118,12 @@ export default {
       this.getData();
     },
     showInfo(item) {
-      this.sku.price = item[15];
+      this.sku.price = item[14];
       this.goods = {
         id: item[0],
         sid: item[6],
         title: item[4],
-        picture: item[29],
+        picture: item[29].replace("~", this.servePath),
         brand: item[27],
         info: item[8],
         unit: item[5],
@@ -134,60 +144,41 @@ export default {
         root: [
           {
             BC_SC_Order_Detail: [
-              {
-                _attr: {
-                  UpdateKind: "ukModify"
-                }
-              },
-              {
-                SC_Order_DetailOID: this.goods.id
-              }
+              { _attr: { UpdateKind: "ukModify" } },
+              { SC_Order_DetailOID: this.goods.id }
             ]
           },
           {
             BC_SC_Order_Detail: [
-              {
-                _attr: {
-                  UpdateKind: ""
-                }
-              },
-              {
-                SC_Order_DetailOID: "null"
-              },
-              {
-                Real_Qty: this.goods.num
-              },
-              {
-                send_qty: this.goods.sendNum
-              },
-              {
-                Real_Price: this.goods.howMuch
-              },
-              {
-                Sub_Amt: this.goods.num * this.goods.howMuch
-              },
-              {
-                Sheet_Tax: this.goods.taxRadio
-              },
-              {
-                Remark: this.goods.reMarks
-              }
+              { _attr: { UpdateKind: "" } },
+              { SC_Order_DetailOID: "null" },
+              { Real_Qty: this.goods.num },
+              { send_qty: this.goods.sendNum },
+              { Real_Price: this.goods.howMuch },
+              { Sub_Amt: this.goods.num * this.goods.howMuch },
+              { Sheet_Tax: this.goods.taxRadio },
+              { Remark: this.goods.reMarks }
             ]
           }
         ]
       });
       // console.log(xmlString);
       offer.saveTranDetails(xmlString).then(res => {
-        if (res.status === 1) {
-          this.showBase = false;
-          this.$toast.success(res.text);
-          this.$nextTick().then(() => {
-            setTimeout(() => {
-              this.getData();
-            }, 1500);
-          });
-        } else {
-          this.$toast.fail(res.text);
+        try {
+          if (res.status === 1) {
+            this.getData().then(result => {
+              if (result) {
+                this.$toast.success(res.text);
+                this.showBase = false;
+                return;
+              }
+            });
+            throw "保存失败，请重试。";
+          } else {
+            throw res.text;
+          }
+        } catch (e) {
+          this.$toast.fail(e);
         }
       });
     },
@@ -197,19 +188,15 @@ export default {
         try {
           if (res.status === 1) {
             if (res.text === "1") {
-              this.$toast.success("删除成功");
-              this.$nextTick().then(() => {
-                setTimeout(() => {
-                  this.getData();
-                }, 1500);
+              this.getData().then(result => {
+                if (result) this.$toast.success("删除成功");
+                else this.$router.go(0);
               });
-              return;
+              throw "删除失败，请重试。";
             } else if (res.text === "-1") {
-              this.$toast.success("物资明细至少保留一条数据");
-              return;
+              throw "物资明细至少保留一条数据";
             } else if (res.text === "-2") {
-              this.$toast.success("删除数量不能大于等于现有记录数量");
-              return;
+              throw "删除数量不能大于等于现有记录数量";
             }
           }
           throw res.text;
@@ -246,12 +233,6 @@ export default {
           border: 1px solid #eee;
           border-radius: 5px;
           margin-bottom: 10px;
-          .item-brand {
-            padding: 5px 0;
-          }
-          .item-price {
-            color: #ff4257;
-          }
         }
       }
     }
