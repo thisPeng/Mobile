@@ -4,7 +4,7 @@
       <div class="inquiry-list">
         <div class="list-item" v-for="(item, index) in dspList" :key="index" @click="showInfo(item)">
           <!--  -->
-          <van-card :title="item[9]" :num="item[14]+' '+item[11]" :desc="item[10]">
+          <van-card :title="item[9]" :num="item[14]+' '+item[11]" :price="item[17]" :desc="item[10]">
             <div slot="footer">
               <van-button size="mini" type="danger" @click.stop="arrivalDelete(item[0])" v-if="confirmParams[25] !== '1' && confirmParams[20] !== '1'">删除</van-button>
             </div>
@@ -17,10 +17,9 @@
         <van-cell-group>
           <van-cell :title="'产品名称： ' + goods.brand" :label="'规格/型号：' + goods.unit" />
           <van-cell :title="'订单数量：' + goods.taxAll" :label="'单位：' + goods.shop" />
-          <van-cell :title="'税率：' + goods.taxRadio + '%'" :label="'实价：' + goods.howMuch" />
-          <!-- <van-cell :title="'实价： ' + goods.howMuch" :label="'小计：' + goods.howMoney" /> -->
-          <van-field label="发货数量：" v-model="goods.taxRate" type="number" :disabled="confirmParams[25] !== '1' && confirmParams[20] !== '1'" required />
-          <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[25] !== '1' && confirmParams[20] !== '1'" />
+          <van-cell :title="'共计金额：' + goods.howMoney" :label="'税率：' + goods.taxRadio + '%'" />
+          <van-field label="发货数量：" v-model="goods.taxRate" type="number" required />
+          <van-field label="备注：" v-model="goods.reMarks" />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">
@@ -29,7 +28,7 @@
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
           <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <van-button type="primary" bottom-action>保存修改</van-button>
+          <van-button type="primary" bottom-action @click="Keep">保存修改</van-button>
         </div>
       </template>
     </van-sku>
@@ -41,9 +40,8 @@ import { arrival } from "./../../../../assets/js/api.js";
 export default {
   data() {
     return {
-      item: [],
       search: "",
-      dspList: [],
+      dspList: "",
       showBase: false,
       loading: false,
       finished: false,
@@ -120,14 +118,56 @@ export default {
           // on cancel
         });
     },
+    //保存修改
+    Keep() {
+      const xml = require("xml");
+      const xmlString = xml({
+        root: [
+          {
+            BC_SC_Deliver_Detail: [
+              { _attr: { UpdateKind: "ukModify" } },
+              { SC_Deliver_DetailOID: this.goods.id }
+            ]
+          },
+          {
+            BC_SC_Deliver_Detail: [
+              { _attr: { UpdateKind: "" } },
+              {
+                Real_Qty: this.goods.taxRate
+              },
+              {
+                Sub_Amt: this.goods.taxRate * this.goods.howMuch
+              },
+              {
+                Remark: this.goods.reMarks
+              }
+            ]
+          }
+        ]
+      });
+      arrival.saveKeepRevise(xmlString).then(res => {
+        try {
+          if (res && res.status === 1) {
+              this.$toast.success("保存成功");
+              this.$nextTick().then(() => {
+                setTimeout(() => {
+                  this.$router.go(-1);
+                }, 1500);
+              });
+            }
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
+    },
     pageInit() {
       this.getData();
     },
 
     showInfo(item) {
-      this.sku.price = item[18];
+      this.sku.price = item[17];
       this.goods = {
-        id: item[23],
+        id: item[0],
         sid: item[19],
         title: item[9],
         picture: item[23],
@@ -138,7 +178,7 @@ export default {
         taxRate: item[14],
         taxAll: item[13],
         howMuch: item[17],
-        howMoney: item[23],
+        howMoney: item[18],
         taxRadio: item[19],
         reMarks: item[21]
       };
