@@ -9,7 +9,7 @@
         <span class="con-label">发货时间：</span>
         <span class="con-select" @click="showDate=true">{{new Date(list[8]).Format("yyyy-MM-dd")}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDate" type="date" class="contract-date" @confirm="fahuoDate" @cancel="showDate=false" />
+      <van-datetime-picker v-model="currentDate" v-show="showDate" type="date" :min-date="new Date()" class="contract-date" @confirm="fahuoDate" @cancel="showDate=false" />
       <van-field :value="list[7]" label="工程地址：" disabled/>
       <cbh-select v-model="list[13]" label="发货方式：" code="CodeTable_Deliver_Type" @change="onDeliverChange" v-if="list[41] != '已发货'" />
       <van-field :value="list[13] | codeValue('CodeTable_Deliver_Type')" label="发货方式：" disabled v-else />

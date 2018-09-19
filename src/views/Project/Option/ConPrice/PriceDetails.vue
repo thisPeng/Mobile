@@ -16,7 +16,7 @@
         <span class="con-select" v-if="list[39] === '初始状态'" @click="showData=true">{{list[17]}}</span>
         <span class="con-select text-gray" v-else>{{list[17]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showData" type="date" class="contract-date" @confirm="dinghuoDate" @cancel="showData=false" />
+      <van-datetime-picker v-model="currentDate" v-show="showData" :min-date="new Date()" type="date" class="contract-date" @confirm="dinghuoDate" @cancel="showData=false" />
       <van-field v-model="list[18]" label="业务员:" placeholder="请输入业务员" required :disabled="list[39] === '待报价'" :autofocus="true" />
       <van-field v-model="list[26]" label="员工姓名:" disabled />
       <van-field v-model="list[21]" label="备注:" type="textarea" :placeholder="list[39] != '待报价' ? '请输入备注' : ''" :disabled="list[39] === '待报价'" />

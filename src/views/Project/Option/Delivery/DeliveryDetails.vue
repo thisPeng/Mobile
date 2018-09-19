@@ -18,7 +18,7 @@
         <span class="con-select" @click="showDateone=true">{{info[27]}}</span>
       </van-cell-group>
       <van-field v-model="info[27]" label="签收时间：" disabled v-else />
-      <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" class="contract-date" @confirm="jiaohuoDate" @cancel="showDateone=false" />
+      <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" :min-date="new Date()" class="contract-date" @confirm="jiaohuoDate" @cancel="showDateone=false" />
       <van-field v-model="info[28]" label="签收人：" disabled/>
       <van-field v-model="info[11]" label="发货金额：" disabled />
       <van-field v-model="info[29]" label="备注：" type="textarea" :disabled="info[25] == '1' || info[20] == '1'" :placeholder="info[25] != '1' && info[20] != '1' ? '请输入备注' : ''" />
@@ -38,7 +38,8 @@ export default {
     return {
       info: [],
       currentDate: new Date(),
-      showDateone: false //交货时间
+      showDateone: false //交货时间,
+
     };
   },
   computed,
