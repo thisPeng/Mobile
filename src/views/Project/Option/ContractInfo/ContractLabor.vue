@@ -238,7 +238,7 @@ export default {
 <style lang="less">
 .contractlabor {
   .van-field .van-cell__title {
-    min-width: 122px;
+    min-width: 122px !important;
   }
 }
 </style>

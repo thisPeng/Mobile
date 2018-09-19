@@ -388,7 +388,7 @@ export default {
 .contractwork {
   .van-field .van-cell__title {
     color: black;
-    max-width: 130px;
+    max-width: 130px !important;
   }
 }
 </style>

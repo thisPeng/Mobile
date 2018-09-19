@@ -8,54 +8,54 @@
     <div class="info-users">
       <!-- 合作商编号 -->
       <van-cell-group>
-        <van-field :value="list[1]" label="合作商编号" disabled />
+        <van-field :value="list[1]" label="合作商编号：" disabled />
       </van-cell-group>
       <!-- 姓名 -->
       <van-cell-group>
-        <van-field :value="list[2]" label="合作商名称" disabled />
+        <van-field :value="list[2]" label="合作商名称：" disabled />
       </van-cell-group>
       <!-- 签约单位名称 -->
       <van-cell-group>
-        <van-field v-model="list[27]" label="签约单位名称" required placeholder="请输入签约单位名称" />
+        <van-field v-model="list[27]" label="签约单位名称：" placeholder="请输入签约单位名称" />
       </van-cell-group>
       <!-- 法定代表人 -->
       <van-cell-group>
-        <van-field v-model="list[22]" label="法定代表人" required placeholder="请输入法定代表人" />
+        <van-field v-model="list[22]" label="法定代表人：" placeholder="请输入法定代表人" />
       </van-cell-group>
       <!-- 法人身份证号 -->
       <van-cell-group>
-        <van-field v-model="list[26]" label="法人身份证号" required placeholder="请输入法人身份证号" />
+        <van-field v-model="list[26]" label="法人身份证号：" placeholder="请输入法人身份证号" />
       </van-cell-group>
       <!-- 法人电话 -->
       <van-cell-group>
-        <van-field v-model="list[10]" label="法人电话" required placeholder="请输入法人电话" />
+        <van-field v-model="list[10]" label="法人电话：" placeholder="请输入法人电话" />
       </van-cell-group>
       <!-- 联系人姓名 -->
       <van-cell-group>
-        <van-field v-model="list[8]" label="联系人姓名" placeholder="请输入联系人姓名" required />
+        <van-field v-model="list[8]" label="联系人姓名：" placeholder="请输入联系人姓名" />
       </van-cell-group>
       <!-- 联系人电话 -->
       <van-cell-group>
-        <van-field v-model="list[11]" label="联系人电话" placeholder="请输入联系人电话" required />
+        <van-field v-model="list[11]" label="联系人电话：" placeholder="请输入联系人电话" />
       </van-cell-group>
       <!-- 联系人邮箱 -->
       <van-cell-group>
-        <van-field v-model="list[12]" label="联系人邮箱" required placeholder="请输入联系人邮箱" />
+        <van-field v-model="list[12]" label="联系人邮箱：" placeholder="请输入联系人邮箱" />
       </van-cell-group>
 
       <!-- 状态 -->
       <van-cell-group>
-        <van-field :value="list[7] | supplierStatus" label="状态" disabled />
+        <van-field :value="list[7] | supplierStatus" label="状态：" disabled />
       </van-cell-group>
       <!-- 公司地址 -->
-      <cbh-region :prov="list[30]" :city="list[31]" :district="list[32]" @change="onRegionChange" />
+      <cbh-region :prov="list[30]" :city="list[31]" :district="list[32]" @change="onRegionChange" v-if="list.length>0" />
       <!-- 地址 -->
       <van-cell-group>
-        <van-field v-model="list[9]" label="地址" required placeholder="请输入地址" />
+        <van-field v-model="list[9]" label="地址：" placeholder="请输入地址" />
       </van-cell-group>
       <!-- 备注 -->
       <van-cell-group>
-        <van-field v-model="list[13]" label="备注" required placeholder="请输入备注" />
+        <van-field v-model="list[13]" label="备注：" placeholder="请输入备注" />
       </van-cell-group>
       <van-cell-group>
         <div class="task-title">
@@ -73,12 +73,12 @@
           </van-swipe-item>
         </van-swipe>
       </van-cell-group>
-      <van-cell-group>
+      <van-cell-group class="padding-vertical">
         <van-cell title="供应商" is-link value="附件" @click="jumpPage('supplierAnnex')" v-if="userType === 2" />
         <!-- <van-cell title="合作商" is-link value="附件" @click="jumpPage('supplierAnnex')" v-else /> -->
       </van-cell-group>
       <div class="pwd-button" @click="saveMessage">
-        <van-button size="normal">
+        <van-button type="primary" size="large">
           <span class="pwd-icon">
             <van-icon name="success" />
           </span>保存</van-button>
@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     onRegionChange(res) {
-      // console.log(res);
+      console.log(res);
       this.list[30] = res.prov;
       this.list[32] = res.city;
       this.list[32] = res.district;
@@ -120,15 +120,21 @@ export default {
             BC_SC_Partner: [
               { _attr: { UpdateKind: "" } },
               { SC_PartnerOID: "null" },
-              { Second_Name: this.list[27] }, //签约单位名称
-              { Representative: this.list[22] }, //法定代表人
-              { IdCard_NO: this.list[26] }, //法人身份证
-              { Telephone: this.list[10] }, //法人电话
-              { Contacts: this.list[8] }, //联系人姓名
-              { Mobilehone: this.list[11] }, //联系人电话
-              { Mailbox: this.list[12] }, //联系人邮箱
-              { Address: this.list[9] }, //地址
-              { Remark: this.list[13] } //备注
+              { Second_Name: this.list[27] || "null" }, //签约单位名称
+              { Representative: this.list[22] || "null" }, //法定代表人
+              { IdCard_NO: this.list[26] || "null" }, //法人身份证
+              { Telephone: this.list[10] || "null" }, //法人电话
+              { Contacts: this.list[8] || "null" }, //联系人姓名
+              { Mobilehone: this.list[11] || "null" }, //联系人电话
+              { Mailbox: this.list[12] || "null" }, //联系人邮箱
+              { Address: this.list[9] || "null" }, //地址
+              { Remark: this.list[13] || "null" }, //备注
+              { prov_ID: this.list[30] || "null" }, //省ID
+              { district_ID: this.list[31] || "null" }, //市ID
+              { city_ID: this.list[32] || "null" }, //区ID
+              { ProvincesName: this.list[33] || "null" }, //省名
+              { DistrictName: this.list[34] || "null" }, //市名
+              { CityName: this.list[35] || "null" } //区名
             ]
           }
         ]
@@ -137,11 +143,7 @@ export default {
       users.saveMessage(xmlString).then(res => {
         try {
           if (res.status === 1) {
-            this.$nextTick().then(() => {
-              setTimeout(() => {
-                this.$toast.success("保存成功");
-              }, 300);
-            });
+            this.$toast.success("保存成功");
             return;
           }
           throw "保存失败，请刷新页面重试";
@@ -153,12 +155,9 @@ export default {
     //获取用户信息
     getData() {
       users.getUserInfo(this.userId.UCML_OrganizeOID).then(res => {
-        // console.log(res);
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
-          // console.log(sp);
           const csp = sp[1].split(";");
-          // console.log(csp);
           this.list = eval("[[" + csp[0])[0];
           // console.log(this.list);
         }
@@ -166,9 +165,9 @@ export default {
     },
     preView() {
       ImagePreview([
-        (this.servePath + this.data).replace("~", ""),
-        (this.servePath + this.data).replace("~", ""),
-        (this.servePath + this.data).replace("~", "")
+        (this.servePath + this.list[26]).replace("~", ""),
+        (this.servePath + this.list[25]).replace("~", ""),
+        (this.servePath + this.list[24]).replace("~", "")
       ]);
     },
     jumpPage(name) {
@@ -246,12 +245,8 @@ export default {
     }
   }
   .pwd-button {
-    padding-top: 10px;
+    padding: 10px;
     text-align: center;
-    button {
-      color: #fff;
-      background-color: #3d95d5;
-    }
   }
   .pwd-icon {
     margin-right: 10px;
@@ -281,7 +276,7 @@ export default {
 <style lang="less">
 .usersinfo {
   .van-cell__title {
-    max-width: 90px;
+    max-width: 110px !important;
   }
 }
 </style>
