@@ -6,7 +6,7 @@
         <div class="list-item" v-for="(item, index) in dspList" :key="index" @click="showInfo(item)">
           <van-card :title="item[4]" :price="item[14]" :num="item[11]+' '+item[28]" :desc="item[8]" :thumb="item[29].replace('~',servePath)">
             <div slot="footer" v-if="confirmParams[13] != '待报价'">
-              <van-button size="mini" type="danger" @click.stop="conDetailsDelete(item[0])">删除</van-button>
+              <van-button size="mini" type="danger" @click.stop="conDetailsDelete(item[0])" v-if="confirmParams[13] !== '待报价' && confirmParams[13] !== '待确认'">删除</van-button>
             </div>
           </van-card>
         </div>
@@ -17,9 +17,10 @@
         <van-cell-group>
           <van-cell :title="'单位： ' + goods.unit" :label="'规格/型号：' + goods.info" />
           <van-cell :title="'发货数量：' + goods.num" :label="'赠送数量：' + goods.sendNum" />
-          <van-cell :title="'共计金额：' + goods.howMoney" :label="'税率：' + goods.taxRadio + '%'" />
-          <van-field label="实际数量：" v-model="goods.num" type="number" required :disabled="confirmParams[13] == '待报价'" :placeholder="confirmParams[13] != '待报价' ? '请输入实际数量' : ''" @change="onSalcSum" />
-          <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[13] == '待报价'" :placeholder="confirmParams[13] != '待报价' ? '请输入备注' : ''" />
+          <van-cell :title="'共计金额：' + goods.howMoney" />
+          <van-field label="税率：" v-model="goods.taxRadio" required :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] === '待报价' || confirmParams[13] === '待确认' ? '请输入税率' : ''" />
+          <van-field label="实际数量：" v-model="goods.num" type="number" required :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] === '待报价' ? '请输入实际数量' : ''" @change="onSalcSum" />
+          <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] === '待报价' || confirmParams[13] === '待确认' ? '请输入备注' : ''" />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">
@@ -28,12 +29,12 @@
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
           <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <van-button type="primary" bottom-action @click="priceDetails">保存修改</van-button>
+          <van-button type="primary" bottom-action @click="priceDetails" v-if="confirmParams[13] !== '待报价' && confirmParams[13] !== '待确认'">保存修改</van-button>
         </div>
       </template>
     </van-sku>
     <div class="inquiry-button" v-if="confirmParams[15] != '2'">
-      <van-button type="primary" size="large" @click="onAdd">添加物资</van-button>
+      <van-button type="primary" size="large" @click="onAdd" v-if="confirmParams[13] !== '待报价' && confirmParams[13] !== '待确认'">添加物资</van-button>
     </div>
   </div>
 </template>
