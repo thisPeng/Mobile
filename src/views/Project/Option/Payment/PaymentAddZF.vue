@@ -241,8 +241,8 @@ export default {
                 { SYS_ORG: this.userId.UCML_OrganizeOID },
                 { EmployeeName: this.userId.PersonName },
                 { Print_Flag: "0000000000" },
-                { SYS_Created: new Date().Format("yyyy-MM-dd hh:mm:ss") },
-                { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") },
+                { SYS_Created: this.$util.formatDate("yyyy-MM-dd hh:mm:ss") },
+                { SYS_LAST_UPD: this.$util.formatDate("yyyy-MM-dd hh:mm:ss") },
                 { SYS_LAST_UPD_BY: this.userInfo.oid }
               ]
             });
@@ -289,7 +289,7 @@ export default {
                       { SYS_ORG: this.userId.UCML_OrganizeOID },
                       { SYS_Created: val.time },
                       {
-                        SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss")
+                        SYS_LAST_UPD: this.$util.formatDate("yyyy-MM-dd hh:mm:ss")
                       },
                       { SYS_LAST_UPD_BY: this.userInfo.oid }
                     ]
@@ -365,9 +365,9 @@ export default {
                     { SYS_POSTN: this.userId.UCML_PostOID || "null" },
                     { SYS_DIVISION: this.userId.UCML_DivisionOID || "null" },
                     { SYS_ORG: this.userId.UCML_OrganizeOID || "null" },
-                    { SYS_Created: new Date().Format("yyyy-MM-dd hh:mm:ss") },
+                    { SYS_Created: this.$util.formatDate("yyyy-MM-dd hh:mm:ss") },
                     {
-                      SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss")
+                      SYS_LAST_UPD: this.$util.formatDate("yyyy-MM-dd hh:mm:ss")
                     },
                     { SYS_LAST_UPD_BY: this.userInfo.oid }
                   ]

@@ -58,12 +58,12 @@ export default {
     },
     // 显示时间选择
     showDate() {
-      this.currentDate = new Date(this.data[10]);
+      this.currentDate = this.$util.formatDate(this.data[10]);
       this.dateShow = true;
     },
     // 确认时间
     saveDate(val) {
-      this.data[10] = new Date(val).Format("yyyy-MM-dd hh:mm:ss");
+      this.data[10] = this.$util.formatDate(val,"yyyy-MM-dd hh:mm:ss");
       this.dateShow = false;
     },
     //保存先获取单号
@@ -130,8 +130,8 @@ export default {
                 { SYS_DIVISION: this.userId.UCML_DivisionOID },
                 { SYS_ORG: this.userId.UCML_OrganizeOID },
                 { EmployeeName: this.userId.PersonName },
-                { SYS_Created: new Date().Format("yyyy-MM-dd hh:mm:ss") },
-                { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") },
+                { SYS_Created: this.$util.formatDate("yyyy-MM-dd hh:mm:ss") },
+                { SYS_LAST_UPD: this.$util.formatDate("yyyy-MM-dd hh:mm:ss") },
                 { SYS_LAST_UPD_BY: this.userInfo.oid }
               ]
             });

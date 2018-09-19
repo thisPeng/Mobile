@@ -125,27 +125,27 @@ export default {
     },
     // 保质开始时间
     saveDate(val) {
-      this.cspList[23] = new Date(val).Format("yyyy-MM-dd");
+      this.cspList[23] =this.$util.formatDate(val);
       this.showDate = false;
     },
     //交货时间
     jiaohuoDate(val) {
-      this.cspList[9] = new Date(val).Format("yyyy-MM-dd");
+      this.cspList[9] = this.$util.formatDate(val);
       this.showDateone = false;
     },
     //保质结束时间
     jieshuDate(val) {
-      this.cspList[24] = new Date(val).Format("yyyy-MM-dd");
+      this.cspList[24] = this.$util.formatDate(val);
       this.showDatatwo = false;
     },
     //甲方
     jiafangDate(val) {
-      this.cspList[38] = new Date(val).Format("yyyy-MM-dd");
+      this.cspList[38] =this.$util.formatDate(val);
       this.showDatathree = false;
     },
     //乙方
     yifangDate(val) {
-      this.cspList[46] = new Date(val).Format("yyyy-MM-dd");
+      this.cspList[46] = this.$util.formatDate(val);
       this.showDatafour = false;
     },
     conContract() {
@@ -156,27 +156,27 @@ export default {
           this.cspList = eval("[[" + csp[0])[0];
 
           if (this.cspList[9] && this.cspList[9] != "1900-01-01 00:00:00") {
-            this.cspList[9] = new Date(this.cspList[9]).Format("yyyy-MM-dd");
+            this.cspList[9] =this.$util.formatDate(this.cspList[9]);
           } else {
             this.cspList[9] = "请选择时间"; // 确认时间
           }
           if (this.cspList[23] && this.cspList[23] != "1900-01-01 00:00:00") {
-            this.cspList[23] = new Date(this.cspList[23]).Format("yyyy-MM-dd");
+            this.cspList[23] =this.$util.formatDate(this.cspList[23]);
           } else {
             this.cspList[23] = "请选择时间"; // 交货时间
           }
           if (this.cspList[24] && this.cspList[24] != "1900-01-01 00:00:00") {
-            this.cspList[24] = new Date(this.cspList[24]).Format("yyyy-MM-dd");
+            this.cspList[24] = this.$util.formatDate(this.cspList[24]);
           } else {
             this.cspList[24] = "请选择时间"; // 保质结束时间
           }
           if (this.cspList[38] && this.cspList[38] != "1900-01-01 00:00:00") {
-            this.cspList[38] = new Date(this.cspList[38]).Format("yyyy-MM-dd");
+            this.cspList[38] = this.$util.formatDate(this.cspList[38]);
           } else {
             this.cspList[38] = "请选择时间"; // 甲方
           }
           if (this.cspList[46] && this.cspList[46] != "1900-01-01 00:00:00") {
-            this.cspList[46] = new Date(this.cspList[46]).Format("yyyy-MM-dd");
+            this.cspList[46] =this.$util.formatDate(this.cspList[46]);
           } else {
             this.cspList[46] = "请选择时间"; // 乙方
           }
