@@ -14,7 +14,7 @@
       <van-field v-model="info[17]" label="订货有效期：" v-if="info[15] == '2'" :disabled="info[15] == '2'" />
       <van-cell-group class="con-price" v-else>
         <span class="con-label">订货有效期：</span>
-        <span class="con-select" @click="showDate=true">{{new Date(info[17]).Format("yyyy-MM-dd")}}</span>
+        <span class="con-select" @click="showDate=true">{{this.$util.formatDate(info[17])}}</span>
       </van-cell-group>
       <van-datetime-picker v-model="currentDate" v-show="showDate" type="date" :min-date="new Date()" class="contract-date" @confirm="fahuoDate" @cancel="showDate=false" />
       <van-field v-model="info[18]" label="业务员：" :disabled="info[15] == '2'" :required="info[15] != '2'" :placeholder="info[15] != '2' ? '请输入业务员' : ''" />
@@ -128,7 +128,7 @@ export default {
     },
     //订货有效期
     fahuoDate(val) {
-      this.info[17] = new Date(val).Format("yyyy-MM-dd");
+      this.info[17] = this.$util.formatDate(val);
       this.showDate = false;
     },
     //保存

@@ -38,12 +38,12 @@ export default {
   methods: {
     // 显示时间选择
     showDate() {
-      this.currentDate = new Date(this.data[10]);
+      this.currentDate = this.$util.formatDate(this.data[10]);
       this.dateShow = true;
     },
     // 确认时间
     saveDate(val) {
-      this.data[10] = new Date(val).Format("yyyy-MM-dd hh:mm:ss");
+      this.data[10] = this.$util.formatDate(val,"yyyy-MM-dd hh:mm:ss");
       this.dateShow = false;
     }
   },

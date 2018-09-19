@@ -3,23 +3,23 @@
   <div class="pricedetails">
     <div class="title-price">询价单</div>
     <van-cell-group>
-      <van-field v-model="list[2]" label="单据编号:" disabled />
-      <van-field v-model="list[3]" label="供应商名称:" disabled />
-      <van-field v-model="list[5]" label="联系人:" disabled />
-      <van-field v-model="list[6]" label="联系电话:" disabled />
-      <van-field v-model="list[4]" label="供应商地址:" disabled />
-      <van-field v-model="list[9]" label="订单数量:" disabled />
-      <van-field v-model="list[10]" label="订单金额:" disabled />
-      <van-field v-model="list[39]" label="订单状态:" disabled />
+      <van-field v-model="list[2]" label="单据编号：" disabled />
+      <van-field v-model="list[3]" label="供应商名称：" disabled />
+      <van-field v-model="list[5]" label="联系人：" disabled />
+      <van-field v-model="list[6]" label="联系电话：" disabled />
+      <van-field v-model="list[4]" label="供应商地址：" disabled />
+      <van-field v-model="list[9]" label="订单数量：" disabled />
+      <van-field v-model="list[10]" label="订单金额：" disabled />
+      <van-field v-model="list[39]" label="订单状态：" disabled />
       <van-cell-group class="con-price">
-        <span class="con-label">订货有效期:</span>
+        <span class="con-label">订货有效期：</span>
         <span class="con-select" v-if="list[39] === '初始状态'" @click="showData=true">{{list[17]}}</span>
         <span class="con-select text-gray" v-else>{{list[17]}}</span>
       </van-cell-group>
       <van-datetime-picker v-model="currentDate" v-show="showData" :min-date="new Date()" type="date" class="contract-date" @confirm="dinghuoDate" @cancel="showData=false" />
-      <van-field v-model="list[18]" label="业务员:" :placeholder="list[39] === '待报价' || list[39] === '待确认' ? '请输入业务员' : ''" required :disabled="list[39] === '待报价' || list[39] === '待确认'" :autofocus="true" />
-      <van-field v-model="list[26]" label="员工姓名:" disabled />
-      <van-field v-model="list[21]" label="备注:" type="textarea" :placeholder="list[39] === '待报价' || list[39] === '待确认' ? '请输入备注' : ''" :disabled="list[39] === '待报价' || list[39] === '待确认'" />
+      <van-field v-model="list[18]" label="业务员：" :placeholder="list[39] === '待报价' || list[39] === '待确认' ? '请输入业务员' : ''" required :disabled="list[39] === '待报价' || list[39] === '待确认'" :autofocus="true" />
+      <van-field v-model="list[26]" label="员工姓名：" disabled />
+      <van-field v-model="list[21]" label="备注：" type="textarea" :placeholder="list[39] === '待报价' || list[39] === '待确认' ? '请输入备注' : ''" :disabled="list[39] === '待报价' || list[39] === '待确认'" />
       <van-cell title="询价单明细" is-link value="详情" @click="jumpInfo" />
       <van-cell title="询价单附件" is-link value="详情" @click="jumpPage('annexContent')" />
     </van-cell-group>
@@ -51,7 +51,7 @@ export default {
   methods: {
     //订货有效期
     dinghuoDate(val) {
-      this.list[17] = new Date(val).Format("yyyy-MM-dd");
+      this.list[17] = this.$util.formatDate(val);
       this.showData = false;
     },
     // 询价单主表

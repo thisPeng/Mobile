@@ -60,7 +60,7 @@ export default {
               this.info[27] = "";
             }
           } else {
-            this.info[27] = new Date(this.info[27]).Format("yyyy-MM-dd"); // 签收时间
+            this.info[27] = this.$util.formatDate(this.info[27]); // 签收时间
           }
         }
       });
@@ -139,7 +139,7 @@ export default {
       });
     },
     jiaohuoDate(val) {
-      this.info[27] = new Date(val).Format("yyyy-MM-dd");
+      this.info[27] = this.$util.formatDate(val);
       this.showDateone = false;
     },
     //保存

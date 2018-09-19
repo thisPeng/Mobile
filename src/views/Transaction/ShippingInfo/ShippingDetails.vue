@@ -7,7 +7,7 @@
       <van-field :value="list[8]" label="发货时间：" disabled v-if="list[41] == '已发货'" />
       <van-cell-group class="con-price" v-else>
         <span class="con-label">发货时间：</span>
-        <span class="con-select" @click="showDate=true">{{new Date(list[8]).Format("yyyy-MM-dd")}}</span>
+        <span class="con-select" @click="showDate=true">{{this.$util.formatDate(list[8])}}</span>
       </van-cell-group>
       <van-datetime-picker v-model="currentDate" v-show="showDate" type="date" :min-date="new Date()" class="contract-date" @confirm="fahuoDate" @cancel="showDate=false" />
       <van-field :value="list[7]" label="工程地址：" disabled/>
@@ -48,7 +48,7 @@ export default {
     },
     //发货时间
     fahuoDate(val) {
-      this.list[8] = new Date(val).Format("yyyy-MM-dd");
+      this.list[8] = this.$util.formatDate(val);
       this.showDate = false;
     },
     // 删除发货单
@@ -88,7 +88,7 @@ export default {
           this.list = eval("[[" + csp[0])[0];
           // console.log(this.list);
           if (this.list[27] === "1900-01-01") {
-            this.list[27] = new Date(this.list[27]).Format("yyyy-MM-dd");
+            this.list[27] = this.$util.formatDate(this.list[27]);
           } else {
             this.list[27] = ""; // 确认时间
           }

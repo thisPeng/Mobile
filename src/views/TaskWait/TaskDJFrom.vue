@@ -44,7 +44,7 @@ export default {
     },
     // 确认时间
     saveDate(val) {
-      this.data[10] = new Date(val).Format("yyyy-MM-dd hh:mm:ss");
+      this.data[10] = this.$util.formatDate(val,"yyyy-MM-dd hh:mm:ss");
       this.dateShow = false;
     }
   },
