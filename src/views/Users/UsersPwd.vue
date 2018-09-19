@@ -5,11 +5,8 @@
       <van-field v-model="newPwd" type="password" label="新密码" placeholder="请输入密码" required />
       <van-field v-model="cfmPwd" type="password" label="密码确认" placeholder="请输入密码" required />
     </van-cell-group>
-    <div class="pwd-button">
-      <van-button size="normal" @click="updatePwd">
-        <span class="pwd-icon">
-          <van-icon name="success" />
-        </span>修改密码</van-button>
+    <div class="pwd-button" @click="updatePwd">
+      <van-button type="primary" size="large">修改密码</van-button>
     </div>
   </div>
 </template>
@@ -47,12 +44,12 @@ export default {
 .usersPwd {
   width: 100%;
   .pwd-button {
-    padding-top: 15px;
+    padding: 10px;
     text-align: center;
-    button {
-      color: #fff;
-      background-color: #3d95d5;
-    }
+    // button {
+    //   color: #fff;
+    //   background-color: #3d95d5;
+    // }
   }
   .pwd-icon {
     margin-right: 10px;

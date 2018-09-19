@@ -58,15 +58,13 @@ module.exports = {
   // see https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
   pwa: {
     name: '材博汇',
-    themeColor: '#00a0e9',
+    themeColor: '#FFFFFF',
     msTileColor: '#ffffff',
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black',
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
-      // swSrc is required in InjectManifest mode.
       swSrc: 'src/registerServiceWorker.js',
-      // ...other Workbox options...
     }
   },
   // webpack-dev-server 相关配置

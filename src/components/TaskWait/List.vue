@@ -1,7 +1,7 @@
 <template>
   <section class="message">
     <div class="message-button">
-      <van-button type="default" class="button" @click="onClick">{{buttonText}}</van-button>
+      <van-button type="primary" class="button" @click="onClick">{{buttonText}}</van-button>
     </div>
     <div class="task-table">
       <ul class="table">
@@ -96,9 +96,6 @@ export default {
     padding: 10px 0;
     .button {
       margin: 0 10px;
-      color: #fff;
-      border-radius: 5px;
-      background-color: #3d95d5;
     }
   }
   .task-table {
