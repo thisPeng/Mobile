@@ -179,7 +179,7 @@ export default {
 <style lang="less">
 .taskgysFrom {
   .van-cell .van-cell__title {
-    max-width: 120px;
+    max-width: 120px !important;
   }
 }
 </style>

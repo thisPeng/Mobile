@@ -14,7 +14,7 @@
         </select>
       </van-cell>
       <van-cell title="区域：">
-        <select class="taskSelect" v-model="districtRes">
+        <select class="taskSelect" v-model="districtRes" @change="onChangeX()">
           <option>请选择</option>
           <option v-for="(item,index) in regionX" :key="index" :value="item.id">{{item.name}}</option>
         </select>
@@ -70,51 +70,45 @@ export default {
             if (BCName === "BC_SC_RegionalData_C") {
               this.regionC = arr;
               this.regionX = [];
+              return true;
             } else if (BCName === "BC_SC_RegionalData_X") {
               this.regionX = arr;
+              return true;
             } else {
               this.regionP = arr;
               this.regionC = this.regionX = [];
+              return true;
             }
           }
         } catch (e) {
           console.log(e);
+          return false;
         }
       });
     },
     // 获取城市数据
     getCity(val) {
       this.getRegional("BC_SC_RegionalData_C", "ParentOID='" + val + "'");
-      const params = {
-        prov: this.provRes,
-        city: this.cityRes,
-        district: this.districtRes
-      };
-      this.$emit("change", params);
     },
     // 获取县/区域数据
     getDistrict(val) {
       this.getRegional("BC_SC_RegionalData_X", "ParentOID='" + val + "'");
-      const params = {
-        prov: this.provRes,
-        city: this.cityRes,
-        district: this.districtRes
-      };
-      this.$emit("change", params);
     },
     // 选择省份，重新获取城市数据
     onChangeP() {
       this.getCity(this.provRes);
+    },
+    // 选择城市，重新获取县/区域数据
+    onChangeC() {
+      this.getDistrict(this.cityRes);
+    },
+    onChangeX() {
       const params = {
         prov: this.provRes,
         city: this.cityRes,
         district: this.districtRes
       };
       this.$emit("change", params);
-    },
-    // 选择城市，重新获取县/区域数据
-    onChangeC() {
-      this.getDistrict(this.cityRes);
     }
   },
   mounted() {
@@ -135,6 +129,8 @@ export default {
   width: 100%;
   .taskSelect {
     width: 100%;
+    height: 100%;
+    background-color: #fff;
   }
 }
 </style>

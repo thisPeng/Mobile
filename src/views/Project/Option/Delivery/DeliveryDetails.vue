@@ -272,7 +272,7 @@ export default {
 <style lang="less">
 .deliverydetails {
   .van-cell__title {
-    max-width: 90px;
+    max-width: 90px !important;
   }
 }
 </style>
