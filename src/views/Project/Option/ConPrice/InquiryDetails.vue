@@ -179,6 +179,7 @@ export default {
               { _attr: { UpdateKind: "" } },
               { Real_Qty: this.goods.num },
               { Sub_Amt: this.goods.howMuch * this.goods.num },
+              {Sheet_Tax:this.goods.taxRadio},
               { Remark: this.goods.reMarks }
             ]
           }

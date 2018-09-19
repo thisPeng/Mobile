@@ -21,7 +21,7 @@
         <span class="con-label">交货时间</span>
         <span class="con-select" @click="showDateone=true">{{cspList[9]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" class="contract-date" @confirm="jiaohuoDate" @cancel="showDateone=false" />
+      <van-datetime-picker v-model="currentDate" v-show="showDateone" :min-date="new Date()" type="date" class="contract-date" @confirm="jiaohuoDate" @cancel="showDateone=false" />
       <van-field v-model="cspList[8]" label="交货地点" placeholder="请输入交货地点" />
       <van-cell-group class="con-price">
         <span class="con-label">付款方式</span>
@@ -54,12 +54,12 @@
         <span class="con-label">保质开始时间</span>
         <span class="con-select" @click="showDate=true">{{cspList[23]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDate" type="date" class="contract-date" @confirm="saveDate" @cancel="showDate=false" />
+      <van-datetime-picker v-model="currentDate" v-show="showDate" :min-date="new Date()" type="date" class="contract-date" @confirm="saveDate" @cancel="showDate=false" />
       <van-cell-group class="con-price">
         <span class="con-label">保质结束时间</span>
         <span class="con-select" @click="showDatatwo=true">{{cspList[24]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDatatwo" type="date" class="contract-date" @confirm="jieshuDate" @cancel="showDatetwo=false" />
+      <van-datetime-picker v-model="currentDate" v-show="showDatatwo" :min-date="new Date()" type="date" class="contract-date" @confirm="jieshuDate" @cancel="showDatetwo=false" />
       <van-field v-model="cspList[25]" label="保证金比例(%)" placeholder="请输入保证金比例" />
       <van-field v-model="cspList[26]" label="保质期处理期限(天)" placeholder="请输入保质期处理期限" />
       <van-field v-model="cspList[27]" label="保质期处理备注" placeholder="请输入保质期处理备注" />
@@ -76,7 +76,7 @@
         <span class="con-label">甲方签订日期</span>
         <span class="con-select" @click="showDatathree=true">{{cspList[38]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDatathree" type="date" class="contract-date" @confirm="jiafangDate" @cancel="showDatathree=false" />
+      <van-datetime-picker v-model="currentDate" v-show="showDatathree" :min-date="new Date()" type="date" class="contract-date" @confirm="jiafangDate" @cancel="showDatathree=false" />
       <van-field v-model="cspList[35]" label="甲方地址" disabled />
       <div class="title-delivery">乙方信息</div>
       <van-field v-model="cspList[39]" label="乙方(盖章签名处)" disabled />
@@ -89,7 +89,7 @@
         <span class="con-label">乙方签订日期</span>
         <span class="con-select" @click="showDatafour=true">{{cspList[46]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDatafour" type="date" class="contract-date" @confirm="yifangDate" @cancel="showDatafour=false" />
+      <van-datetime-picker v-model="currentDate" v-show="showDatafour" :min-date="new Date()" type="date" class="contract-date" @confirm="yifangDate" @cancel="showDatafour=false" />
       <van-field v-model="cspList[43]" label="乙方地址" disabled/>
     </van-cell-group>
     <!-- <div class="title-delivery">合同附件表</div>  -->
