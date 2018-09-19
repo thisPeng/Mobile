@@ -22,7 +22,7 @@
               <span class="row-right">批款ID：{{item[7]}}</span>
             </div>
             <div class="content-row">
-              <span>批款日期：{{new Date(item[10]).Format("yyyy-MM-dd")}}</span>
+              <span>批款日期：{{$util.formatDate(item[10])}}</span>
             </div>
           </div>
         </div>

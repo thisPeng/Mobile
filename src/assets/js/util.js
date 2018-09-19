@@ -10,8 +10,7 @@
 // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423
 // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18
 Date.prototype.Format = function (fmt) {
-  fmt = fmt.replace(/-/g, "/");
-  let o = {
+  const o = {
     "M+": this.getMonth() + 1, //月份
     "d+": this.getDate(), //日
     "h+": this.getHours(), //小时
@@ -24,6 +23,22 @@ Date.prototype.Format = function (fmt) {
   for (let k in o)
     if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
   return fmt;
+};
+
+const formatDate = function (dateStr, formatter = "yyyy-MM-dd") {
+  if (!dateStr) {
+    return "";
+  }
+
+  if (typeof dateStr === "string") {
+    if (dateStr.indexOf(".") > -1) {
+      // 有些日期接口返回带有.0。
+      dateStr = dateStr.substring(0, dateStr.indexOf("."));
+    }
+    // 解决IOS上无法从dateStr parse 到Date类型问题
+    dateStr = dateStr.replace(/-/g, '/');
+  }
+  return new Date(dateStr).Format(formatter);
 };
 
 // 格式金额，保留两位小数
@@ -65,6 +80,7 @@ const xmlData = function xmlData(xml, val) {
 };
 
 export default {
+  formatDate,
   formatMoney,
   replacePos,
   codeValue,

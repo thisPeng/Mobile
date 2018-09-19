@@ -63,7 +63,7 @@ export default {
           this.list = eval("[[" + csp[0])[0];
           // console.log(this.list);
           if (this.list[17]) {
-            this.list[17] = new Date(this.list[17]).Format("yyyy-MM-dd");
+            this.list[17] = this.$util.formatDate(this.list[17]);
           } else {
             this.list[17] = "请选择时间";
           }

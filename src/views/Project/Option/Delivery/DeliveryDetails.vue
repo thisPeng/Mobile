@@ -5,7 +5,7 @@
     <van-cell-group>
       <van-field v-model="info[2]" label="发货单号：" disabled />
       <van-field v-model="info[39]" label="工程名称：" disabled />
-      <van-field :value="new Date(info[8]).Format('yyyy-MM-dd')" label="发货时间：" disabled />
+      <van-field :value="info[8]" label="发货时间：" disabled />
       <van-field v-model="info[40]" label="工程地址：" disabled />
       <cbh-select v-model="info[13]" label="发货方式：" code="CodeTable_Deliver_Type" @change="onDeliverChange" v-if="info[25] != '1' && info[20] != '1'" />
       <van-field :value="info[13] | codeValue('CodeTable_Deliver_Type')" label="发货方式：" disabled v-else />
@@ -39,7 +39,6 @@ export default {
       info: [],
       currentDate: new Date(),
       showDateone: false //交货时间,
-
     };
   },
   computed,
@@ -55,7 +54,11 @@ export default {
           this.info = eval("[[" + csp[0])[0];
           // console.log(this.info);
           if (this.info[27] === "1900-01-01 00:00:00") {
-            this.info[27] = "请选择签收时间";
+            if (this.info[25] != "1" && this.info[20] != "1") {
+              this.info[27] = "请选择签收时间";
+            } else {
+              this.info[27] = "";
+            }
           } else {
             this.info[27] = new Date(this.info[27]).Format("yyyy-MM-dd"); // 签收时间
           }
@@ -154,7 +157,10 @@ export default {
           {
             BC_SC_Deliver_Master: [
               { _attr: { UpdateKind: "" } },
-              { Receive_Date: info[27] == "请选择签收时间" ? "" : info[27] },
+              {
+                Receive_Date:
+                  info[27] && info[27] != "请选择签收时间" ? info[27] : "null"
+              },
               { Remark: info[29] }
             ]
           }

@@ -63,7 +63,7 @@ export default {
           this.$store.commit("confirmParams", this.info);
           //  console.log(this.info);
           if (this.info[25]) {
-            this.info[25] = new Date(this.info[25]).Format("yyyy-MM-dd");
+            this.info[25] = this.$util.formatDate(this.info[25]);
           }
         }
       });
