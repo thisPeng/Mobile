@@ -557,7 +557,7 @@ const supplier = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "(BusinessState != 1 or BusinessState is null) AND ComSupplier.Organize_ID='" + DemandID + "' AND SupplierName like '%" + keyword + "%'",
+        "_parameters[SQLCondi]": "ComSupplier.Organize_ID='" + DemandID + "' AND SupplierName like '%" + keyword + "%'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
