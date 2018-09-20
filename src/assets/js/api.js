@@ -339,7 +339,7 @@ const classify = {
         _pUrl: ""
       }
     });
-  }
+  },
 };
 
 // 应用页
@@ -542,6 +542,44 @@ const supplier = {
         _pUrl: ""
       }
     });
+  },
+  //获取劳务供应商列表
+  getSupplierDetails(keyword = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Labor_SelSuppService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_Purchase_Supplier",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "((BusinessState != 1 or BusinessState is null) AND SupplierName like '%" + keyword + "%')",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  //提交供应商审核
+  SubmitSupplier(BusinessKey = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Company_SupplierService",
+        _methodName: "__StartFlow",
+        "_parameters[FlowID]": "FLow_10604VER10",
+        "_parameters[DeltaXml]": "<root></root>",
+        "_parameters[BusinessKey]": BusinessKey,
+        _paraNames: "FlowID,DeltaXml,BusinessKey",
+        _pUrl: ""
+      }
+    })
   },
   // 收藏供应商
   addCollect(params = {}) {

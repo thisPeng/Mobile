@@ -31,6 +31,10 @@ import UsersPwd from "./views/Users/UsersPwd";
 import UsersInfo from "./views/Users/UsersInfo";
 import Supplier from "./views/Supplier/Supplier";
 import SupplierType from "./views/Supplier/SupplierType";
+import SupplierList from "./views/Supplier/SupplierList";
+import SupplierAccessory from "./views/Supplier/SupplierAccessory";
+import SupplierDetailsAnnex from "./views/Supplier/SupplierDetailsAnnex";
+import SupplierDetails from "./views/Supplier/SupplierDetails";
 import TaskList from "./views/TaskWait/TaskList";
 import TaskWait from "./views/TaskWait/TaskWait";
 import TaskYCFrom from "./views/TaskWait/TaskYCFrom";
@@ -291,6 +295,42 @@ export default new Router({
           meta: {
             title: "供应商设置",
             keepAlive: true // 需要被缓存
+          }
+        },
+        {
+          path: "/supplier/supplierList",
+          name: "supplierList",
+          component: SupplierList,
+          meta: {
+            title: "劳务供应商列表",
+            keepAlive: true
+          }
+        },
+        {
+          path: "/supplier/supplierAccessory",
+          name: "supplierAccessory",
+          component: SupplierAccessory,
+          meta: {
+            title: "劳务供应商列表详情",
+            keepAlive: true
+          }
+        },
+        {
+          path: "/supplier/supplierDetailsAnnex",
+          name: "supplierDetailsAnnex",
+          component: SupplierDetailsAnnex,
+          meta: {
+            title: "劳务供应商列表附件",
+            keepAlive: true
+          }
+        },
+        {
+          path: "/supplier/supplierDetails",
+          name: "supplierDetails",
+          component: SupplierDetails,
+          meta: {
+            title: "劳务供应商详情",
+            keepAlive: true
           }
         },
         {

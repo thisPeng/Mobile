@@ -1,8 +1,8 @@
 <template>
+  <!-- 附件 -->
   <div class="annex">
     <div class="annex-content">
       <div class="annex-item" v-for="(item, index) in data" :key="index" @click="preView(item[3])">
-        <!--  -->
         <div class="item-img">
           <img :src="(servePath+item[3]).replace('..','')" :alt="item[1]">
         </div>
@@ -28,14 +28,14 @@ export default {
       ImagePreview([(this.servePath + img).replace("..", "")]);
     },
     pageInit() {
-      offer.getSupplierAnnex(this.userInfo.oid).then(res => {
+      offer.getSupplierAnnex(this.suppParams[0]).then(res => {
+        console.log(res);
         try {
           if (res.status === 1) {
             const sp = res.text.split("[[");
             const dsp = sp[1].split(";");
-            const arr = eval("[[" + dsp[0]);
-            this.data = arr;
-            // console.log(arr);
+            this.data = eval("[[" + dsp[0]);
+            // console.log(this.data);
           }
         } catch (e) {
           console.log(e);
