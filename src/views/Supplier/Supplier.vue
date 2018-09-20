@@ -14,7 +14,7 @@
             <van-cell is-link @click="jumpPage(item, 0)">
               <div class="item-content">
                 <div class="content-row">
-                  <span class="row-left flex-3">联系人：{{item[10]}}</span>
+                  <span class="row-left">联系人：{{item[10]}}</span>
                   <span class="row-right text-right">
                     <van-tag type="danger" v-if="item[26] === '1'">状态：待审批</van-tag>
                     <van-tag type="primary" v-else-if="item[26] === '2'">状态：审批中</van-tag>
@@ -52,7 +52,7 @@
             <van-cell is-link @click="jumpPage(item, 1)">
               <div class="item-content">
                 <div class="content-row">
-                  <span class="row-left flex-3">联系人：{{item[13]}}</span>
+                  <span class="row-left">联系人：{{item[13]}}</span>
                   <span class="row-right text-right">
                     <van-tag type="danger" v-if="item[44] === '1'">待审批</van-tag>
                     <van-tag type="primary" v-else-if="item[44] === '2'">审批中</van-tag>

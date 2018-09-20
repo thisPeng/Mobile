@@ -93,7 +93,7 @@
           <!--内容-->
           <div class="item-content">
             <div class="content-row">
-              <span class="row-left flex-3">联系人：{{item[6]}}</span>
+              <span class="row-left">联系人：{{item[6]}}</span>
               <span class="row-right text-right">
                 <van-tag type="danger" v-if="item[9] == '-1'">{{item[9] | supplierStatus}}</van-tag>
                 <van-tag type="primary" v-else-if="item[9] === '2'">{{item[9] | supplierStatus}}</van-tag>
