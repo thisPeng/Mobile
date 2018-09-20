@@ -1,6 +1,6 @@
 <template>
   <div class="supplierDetails">
-    <van-cell-group>
+    <van-cell-group class="supplierDetails-data">
       <van-field :value="data[35]" label="供应商编号:" disabled/>
       <van-field :value="data[22]" label="单位名称:" disabled/>
       <van-field :value="data[25]" label="统一社会信用代码:" disabled/>
@@ -97,8 +97,11 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.supplier {
+.supplierDetails {
   width: 100%;
+  .supplierDetails-data {
+    margin-bottom: 80px;
+  }
   .info-button {
     width: 100%;
     position: fixed;
