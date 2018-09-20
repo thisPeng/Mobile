@@ -1,27 +1,20 @@
 import store from "./store.js";
 
-const formatDate = (date = '', fmt = 'yyyy-MM-dd') => {
-  //yyyy-MM-dd hh:mm
-  if (date == '1900-01-01 00:00:00') return ''
-  date = new Date(date);
-  if (/(y+)/.test(fmt)) {
-    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+const formatDate = function (dateStr, formatter = "yyyy-MM-dd") {
+  if (!dateStr) {
+    return "";
   }
-  let o = {
-    'M+': date.getMonth() + 1,
-    'd+': date.getDate(),
-    'h+': date.getHours(),
-    'm+': date.getMinutes(),
-    's+': date.getSeconds()
-  }
-  for (let k in o) {
-    if (new RegExp(`(${k})`).test(fmt)) {
-      let str = o[k] + ''
-      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : ('00' + str).substr(str.length))
+
+  if (typeof dateStr === "string") {
+    if (dateStr.indexOf(".") > -1) {
+      // 有些日期接口返回带有.0。
+      dateStr = dateStr.substring(0, dateStr.indexOf("."));
     }
+    // 解决IOS上无法从dateStr parse 到Date类型问题
+    dateStr = dateStr.replace(/-/g, '/');
   }
-  return fmt
-}
+  return new Date(dateStr).Format(formatter);
+};
 
 // 格式金额，保留两位小数
 const formatMoney = str => {
