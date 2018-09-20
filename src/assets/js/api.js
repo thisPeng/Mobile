@@ -1214,7 +1214,7 @@ const contractInfo = {
         _methodName: "ReturnContract",
         "_parameters[ContractID]": ContractID,
         "_parameters[Contract_Type]": Contract_Type,
-        _paraNames: "ContractID, Contract_Type",
+        _paraNames: "ContractID,Contract_Type",
         _pUrl: ""
       }
     });
@@ -1270,7 +1270,7 @@ const contractInfo = {
       }
     })
   },
-  //
+  // 保存劳务合同
   keepContract(xml) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",

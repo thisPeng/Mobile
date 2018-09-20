@@ -387,8 +387,13 @@ export default {
       if (this.checkedArr.length === this.list.length) {
         str = "-1";
       } else {
-        str = this.checkedArr.join("|");
+        const arr = [];
+        this.checkedArr.forEach(val => {
+          arr.push(val[0]);
+        });
+        str = arr.join("|");
       }
+      console.log(str);
       cart.cartSelect(this.projectInfo.SC_ProjectOID, str);
     }
   },

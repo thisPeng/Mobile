@@ -1,31 +1,35 @@
-<template>
+ <template>
   <!-- 合同信息 -->
   <div class="contractInfo">
-    <div class="con-data">
-      <div class="data-item" v-for="(ite,idx) in listOrder" :key="idx">
-        <van-cell-group>
-          <van-switch-cell v-model="ite.checked" :title="ite.name" class="item-title " />
-        </van-cell-group>
-        <div class="con-card" v-show="ite.checked">
-          <van-cell class="con-item" v-for="(item,index) in ite.list" :key="index">
-            <div class="item-content">
-              <div class="content-row">
-                <span class="row-left">{{item[14]}}</span>
-              </div>
-              <div class="content-row">
-                <span class="row-left">{{item[12]}}</span>
-                <span class="row-right">
-                  <van-tag type="danger" v-if="item[18] === '审核情况：未审核'">{{item[18]}}</van-tag>
-                  <van-tag type="success" v-else-if="item[18] === '审核情况：已审核'">{{item[18]}}</van-tag>
-                  <van-tag type="primary" v-else-if="item[18] === '发货情况：部分发货'">{{item[18]}}</van-tag>
-                  <van-tag type="success" v-else-if="item[18] === '发货情况：已发货'">{{item[18]}}</van-tag>
-                  <van-tag v-else>{{item[18]}}</van-tag>
-                </span>
-              </div>
-              <div class="content-row">
-                <span class="row-left">{{item[15]}}</span>
-                <span class="row-left">{{item[13]}}</span>
-              </div>
+    <div class="tran-data">
+      <div class="tran-card">
+        <div class="tran-item" v-for="(item,index) in list" :key="index">
+          <div class="item-title">
+            <span class="title">{{item[22]}}</span>
+            <span class="option" v-if="item[18] === '发货情况：未发货' || item[18] === '审核情况：未审核'">
+              <van-button type="danger" size="mini" plain @click.stop="onReturn(item)">退回</van-button>
+            </span>
+          </div>
+          <van-cell :is-link="item[5]==0" class="item-content" @click="item[5]==0 ? jumpInfo(item) : ''">
+            <div class="content-row">
+              <span class="row-left">{{item[14]}}</span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">{{item[15]}}</span>
+              <span class="row-right">
+                <van-tag type="danger" v-if="item[18] === '审核情况：未审核'">{{item[18]}}</van-tag>
+                <van-tag type="success" v-else-if="item[18] === '审核情况：已审核'">{{item[18]}}</van-tag>
+                <van-tag type="danger" v-else-if="item[18] === '发货情况：未发货'">{{item[18]}}</van-tag>
+                <van-tag type="primary" v-else-if="item[18] === '发货情况：部分发货'">{{item[18]}}</van-tag>
+                <van-tag type="success" v-else-if="item[18] === '发货情况：全部发货'">{{item[18]}}</van-tag>
+                <van-tag v-else>{{item[18]}}</van-tag>
+              </span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">{{item[12]}}</span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">{{item[13]}}</span>
             </div>
           </van-cell>
         </div>
@@ -39,39 +43,50 @@ import { contractInfo } from "./../../../../assets/js/api.js";
 export default {
   data() {
     return {
+      list: [],
       listOrder: []
     };
   },
   computed,
   methods: {
     getList() {
-      contractInfo.getList(this.projectInfo.SC_ProjectOID).then(res => {
+      return contractInfo.getList(this.projectInfo.SC_ProjectOID).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");
             const tsp = sp[1].split(";");
             const list = eval("[[" + tsp[0]);
-            const listOrder = [];
-            let tmp = "";
-            // 数据分组
-            list.forEach(val => {
-              if (val[2] !== tmp) {
-                listOrder.push({
-                  name: val[10],
-                  checked: true,
-                  list: []
-                });
-                listOrder[listOrder.length - 1].list.push(val);
-                tmp = val[2];
-              } else {
-                listOrder[listOrder.length - 1].list.push(val);
-              }
+            this.list = list;
+            return true;
+          }
+          throw "数据获取失败，请刷新重试";
+        } catch (e) {
+          console.log(e);
+          return false;
+        }
+      });
+    },
+    // 合同退回
+    onReturn(item) {
+      contractInfo.returnContract(item[0], item[5]).then(res => {
+        try {
+          if (res.status === 1) {
+            console.log(res);
+            this.getList().then(result => {
+              if (result) this.$toast.success("合同已退回");
+              else this.$router.go(0);
             });
-            this.listOrder = listOrder;
           }
         } catch (e) {
           console.log(e);
         }
+      });
+    },
+    // 跳转详情
+    jumpInfo(item) {
+      this.$store.commit("contractParams", item);
+      this.$router.push({
+        name: "contractdetails"
       });
     },
     jumpPage(item) {
@@ -94,43 +109,43 @@ export default {
 <style lang="less" scoped>
 .contractInfo {
   width: 100%;
-  .con-data {
-    .data-item {
-      background-color: #fff;
-      margin-bottom: 10px;
-      .item-title {
-        font-size: 14px;
-        font-weight: 600;
-      }
-      .con-card {
-        width: 100%;
-        .con-item {
-          background-color: #fff;
-          padding: 5px 15px;
-          .item-title {
-            padding: 10px 0;
-            border-bottom: 1px solid #f6f6f6;
+  padding: 10px;
+  .tran-data {
+    margin-bottom: 40px;
+    .tran-card {
+      width: 100%;
+      .tran-item {
+        background-color: #fff;
+        padding: 0 15px;
+        border-bottom: 1px solid #eee;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        .item-title {
+          height: 40px;
+          border-bottom: 1px solid #f6f6f6;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .title {
+            font-weight: 600;
+            font-size: 16px;
+          }
+          .option {
+            padding: 10px;
+          }
+          .icon {
+            font-size: 14px;
+          }
+        }
+        .item-content {
+          padding: 5px 0;
+          font-size: 12px;
+          color: #666;
+          .content-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            .title {
-              font-weight: 600;
-              font-size: 16px;
-            }
-            .icon {
-              font-size: 14px;
-            }
-          }
-          .item-content {
-            padding: 5px 0;
-            font-size: 13px;
-            color: #666;
-            .content-row {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              padding: 2px 0;
-            }
+            padding: 2.5px 0;
           }
         }
       }

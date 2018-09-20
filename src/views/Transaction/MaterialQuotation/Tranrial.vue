@@ -24,9 +24,9 @@
       <van-cell title="报价单附件" is-link value="详情" @click="jumpPage('tranrialAnnex')" />
     </van-cell-group>
     <div class="con-button">
-      <van-button type="default" @click="jumpInfo" v-if="info[15] != '3'">编辑合同</van-button>
       <van-button type="primary" @click="onSubmit" v-if="info[15] != '2'">提交报价</van-button>
-      <van-button type="primary" @click="saveTranDetails" v-if="info[15] != '2'">保存</van-button>
+      <!-- <van-button type="primary" @click="saveTranDetails" v-if="info[15] != '2'">保存</van-button> -->
+      <van-button type="main" @click="jumpInfo" v-if="info[15] != '3'">编辑合同</van-button>
       <van-button type="default" @click="onAddItem" v-if="info[15] != '2'">添加物资</van-button>
     </div>
   </div>
@@ -61,7 +61,6 @@ export default {
           const csp = sp[1].split(";");
           this.info = eval("[[" + csp[0])[0];
           this.$store.commit("confirmParams", this.info);
-          //  console.log(this.info);
           if (this.info[25]) {
             this.info[25] = this.$util.formatDate(this.info[25]);
           }
@@ -76,32 +75,37 @@ export default {
           message: "是否确认提交报价？"
         })
         .then(() => {
-          offer.getPriceButton(this.confirmParams[0]).then(res => {
+          this.saveTranDetails().then(result => {
             try {
-              if (res && res.status === 1) {
-                if (res.text === "1") {
-                  this.$toast.success({
-                    forbidClick: true, // 禁用背景点击
-                    message: "提交报价成功"
-                  });
-                  this.$nextTick().then(() => {
-                    setTimeout(() => {
-                      this.$router.go(-1);
-                    }, 1500);
-                  });
-                  return;
-                } else if (res.text === "0") {
-                  this.$toast.fail({
-                    forbidClick: true, // 禁用背景点击
-                    message: "合同未编辑，请先编辑合同"
-                  });
-                  this.$nextTick().then(() => {
-                    setTimeout(() => {
-                      this.jumpInfo();
-                    }, 1500);
-                  });
-                  return;
-                }
+              if (result) {
+                offer.getPriceButton(this.confirmParams[0]).then(res => {
+                  if (res && res.status === 1) {
+                    if (res.text === "1") {
+                      this.$toast.success({
+                        forbidClick: true, // 禁用背景点击
+                        message: "提交报价成功"
+                      });
+                      this.$nextTick().then(() => {
+                        setTimeout(() => {
+                          this.$router.go(-1);
+                        }, 1500);
+                      });
+                      return;
+                    } else if (res.text === "0") {
+                      this.$toast.fail({
+                        forbidClick: true, // 禁用背景点击
+                        message: "合同未编辑，请先编辑合同"
+                      });
+                      this.$nextTick().then(() => {
+                        setTimeout(() => {
+                          this.jumpInfo();
+                        }, 1500);
+                      });
+                      return;
+                    }
+                  }
+                  throw "提交报价失败，请刷新页面重试";
+                });
               }
               throw "提交报价失败，请刷新页面重试";
             } catch (e) {
@@ -155,22 +159,15 @@ export default {
         ]
       });
       // console.log(xmlString);
-
-      offer.saveTranDetails(xmlString).then(res => {
-        console.log(res);
+      return offer.saveTranDetails(xmlString).then(res => {
         try {
           if (res.status === 1) {
-            this.getOffer();
-            this.$nextTick().then(() => {
-              setTimeout(() => {
-                this.$toast.success("保存成功");
-              }, 300);
-            });
-            return;
+            return true;
           }
           throw "保存失败，请刷新页面重试";
         } catch (e) {
-          this.$toast.fail(e);
+          console.log(e);
+          return false;
         }
       });
     }
