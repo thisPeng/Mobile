@@ -97,7 +97,6 @@ export default {
   },
   methods: {
     onRegionChange(res) {
-      console.log(res);
       this.list[30] = res.prov;
       this.list[32] = res.city;
       this.list[32] = res.district;

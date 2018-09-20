@@ -1,7 +1,7 @@
 <template>
   <div class="count">
     <!--统计数据-->
-    <div class="count-number">
+    <div class="count-number" v-if="userType !== 3">
       <van-row class="count-row">
         <van-col span="12">
           <div class="row-title">
@@ -62,15 +62,15 @@
     </div>
 
     <!--统计排行-->
-    <div class="count-chart">
+    <div class="count-chart" v-if="userType !== 3">
       <div id="myChart1" :style="{width: '100%', height: '300px'}"></div>
     </div>
 
-    <div class="count-chart">
+    <div class="count-chart" v-if="userType !== 3">
       <div id="myChart2" :style="{width: '100%', height: '300px'}"></div>
     </div>
 
-    <div class="count-chart">
+    <div class="count-chart" v-if="userType !== 3">
       <div id="myChart3" :style="{width: '100%', height: '300px'}"></div>
     </div>
   </div>
@@ -323,7 +323,16 @@ export default {
           that.tableData2 = eval(sp[3].split("=")[1]);
           that.tableData3 = eval(sp[4].split("=")[1]);
           that.model = that.data.length > 8;
-          that.$store.commit("userType", that.model ? 1 : 2);
+          if (that.model) {
+            that.$store.commit("userType", 1);
+          } else {
+            // console.log(that.data);
+            // if (that.data[0] > 0) {
+            that.$store.commit("userType", 2);
+            // } else {
+            //   that.$store.commit("userType", 3);
+            // }
+          }
           that.drawLine();
         }
       });

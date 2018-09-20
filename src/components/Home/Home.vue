@@ -2,7 +2,7 @@
   <div class="home">
     <van-nav-bar :title="title" :left-arrow="isBack" @click-left="onBack" @click-right="onMenu">
       <!-- <van-icon name="pending-evaluate" slot="right" class="home-icon" /> -->
-      <i slot="right" class="iconfont icon-qiehuan home-icon" v-if="isMenu" />
+      <i slot="right" class="iconfont icon-qiehuan home-icon" v-if="isMenu && userType !== 3" />
     </van-nav-bar>
 
     <keep-alive>
@@ -22,7 +22,7 @@
     </van-tabbar>
     <van-tabbar v-model="active" v-show="isTabbar" v-else>
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
-      <van-tabbar-item icon="records" @click="jumpTabs('inquiry')">报价单</van-tabbar-item>
+      <van-tabbar-item icon="records" @click="jumpTabs('inquiry')" v-if="userType !== 3">报价单</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
