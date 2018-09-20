@@ -25,7 +25,7 @@
       <van-cell title="劳务供应商" is-link value="详情" @click="jumpPage" />
       <van-cell title="劳务供应商" is-link value="附件" @click="jumpInfo" />
     </van-cell-group>
-    <div class="info-button">
+    <div class="info-button" v-if="data[9]=='false'">
       <van-button size="large" type="primary" @click="onSubmit">提交供应商审核</van-button>
     </div>
   </div>
