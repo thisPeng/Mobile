@@ -1,6 +1,6 @@
 <template>
   <div class="supplierList">
-    <van-search placeholder="请输入搜索关键词" v-model="keyword" @change="searchData" @cancel="getData" show-action />
+    <van-search placeholder="请输入搜索关键词" v-model="keyword" @change="searchData" @cancel="onCancel" show-action />
     <div class="info-data">
       <div class="info-card">
         <div class="info-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
@@ -30,6 +30,7 @@
         </div>
       </div>
     </div>
+    <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="supplier-pages" @change="getData" />
   </div>
 </template>
 <script>
@@ -39,27 +40,43 @@ export default {
   data() {
     return {
       keyword: "",
-      list: []
+      list: [],
+      curPage: 1,
+      pages: {}
     };
   },
   computed,
   methods: {
     // 获取列表数据
-    getData(keyword = "") {
+    getData() {
+      const page = this.curPage > 0 ? this.curPage - 1 : 0;
       supplier
-        .getSupplierDetails(this.projectInfo.DemandID, keyword)
+        .getSupplierDetails(this.projectInfo.DemandID, this.keyword, page)
         .then(res => {
-          if (res && res.status === 1) {
-            const sp = res.text.split("[[");
-            const csp = sp[1].split("]]");
-            this.list = eval("[[" + csp[0] + "]]");
-            // console.log(this.list);
+          try {
+            if (res && res.status === 1) {
+              const sp = res.text.split("[[");
+              const csp = sp[1].split("]]");
+              this.list = eval("[[" + csp[0] + "]]");
+              this.pages = eval(
+                "(" + sp[1].split("=")[1].replace(";", "") + ")"
+              );
+            }
+          } catch (e) {
+            this.list = [];
+            this.pages = {};
           }
         });
     },
     // 搜索
     searchData() {
-      this.getData(this.keyword);
+      this.curPage = 1;
+      this.getData();
+    },
+    onCancel() {
+      this.keyword = "";
+      this.curPage = 1;
+      this.getData();
     },
     // 跳转详情
     jumpPage(item) {
@@ -132,6 +149,13 @@ export default {
         }
       }
     }
+  }
+  .supplier-pages {
+    width: 100%;
+    background-color: #f6f6f6;
+    position: fixed;
+    bottom: 0;
+    z-index: 99;
   }
 }
 </style>

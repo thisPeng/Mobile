@@ -544,7 +544,7 @@ const supplier = {
     });
   },
   //获取劳务供应商列表
-  getSupplierDetails(DemandID = "", keyword = "") {
+  getSupplierDetails(DemandID = "", keyword = "", page = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -552,8 +552,8 @@ const supplier = {
         _bpoName: "BPO_Labor_SelSuppService",
         _methodName: "getCondiActorDataBCString",
         "_parameters[BCName]": "BC_Purchase_Supplier",
-        "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": -1,
+        "_parameters[nStartPos]": page * 10,
+        "_parameters[nRecords]": 10,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
