@@ -19,6 +19,13 @@
             </div>
           </template>
         </van-cell>
+        <van-cell title="劳务供应商列表" is-link @click="jumpPage('supplierList')">
+          <template slot="icon">
+            <div class="icon">
+              <i class="iconfont icon-laowuhetong"></i>
+            </div>
+          </template>
+        </van-cell>
       </van-cell-group>
       <van-cell-group>
         <van-cell title="修改密码" is-link @click="jumpPage('usersPwd')">
