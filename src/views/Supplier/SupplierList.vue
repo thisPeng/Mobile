@@ -12,12 +12,17 @@
               <span class="row-left">统一社会信用代码：{{item[5]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">单位类别：{{item[3]  | codeValue('CodeTable_Unit')}}</span>
+              <span class="row-left">纳税人类别：{{item[6] | codeValue('CodeTable_TaxClass')}}</span>
+              <span class="row-right">
+                <van-tag type="danger" v-if="item[44] === '1'">待审批</van-tag>
+                <van-tag type="primary" v-else-if="item[44] === '2'">审批中</van-tag>
+                <van-tag type="success" v-else-if="item[44] === '3'">已审批</van-tag>
+                <van-tag v-else>未审批</van-tag>
+              </span>
             </div>
             <div class="content-row">
               <span class="row-left">联系人：{{item[13]}}</span>
             </div>
-
             <div class="content-row">
               <span class="row-right">联系电话：{{item[14]}}</span>
             </div>
@@ -39,29 +44,43 @@ export default {
   },
   computed,
   methods: {
+    // 获取列表数据
     getData(keyword = "") {
-      supplier.getSupplierDetails(keyword).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split("[[");
-          const csp = sp[1].split("]]");
-          this.list = eval("[[" + csp[0] + "]]");
-          // console.log(this.list);
-        }
-      });
+      supplier
+        .getSupplierDetails(this.projectInfo.DemandID, keyword)
+        .then(res => {
+          if (res && res.status === 1) {
+            const sp = res.text.split("[[");
+            const csp = sp[1].split("]]");
+            this.list = eval("[[" + csp[0] + "]]");
+            // console.log(this.list);
+          }
+        });
     },
-    //搜索
+    // 搜索
     searchData() {
       this.getData(this.keyword);
     },
+    // 跳转详情
     jumpPage(item) {
       this.$store.commit("suppParams", item);
       this.$router.push({
         name: "supplierDetails"
       });
+    },
+    // 页面初始化
+    pageInit() {
+      this.$nextTick().then(() => {
+        if (this.projectInfo.SC_ProjectOID) {
+          this.getData();
+        } else {
+          this.$toast("请先点击屏幕右上角按钮，选择项目");
+        }
+      });
     }
   },
   mounted() {
-    this.getData();
+    this.pageInit();
   }
 };
 </script>

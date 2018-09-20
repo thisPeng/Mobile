@@ -158,8 +158,8 @@ export default {
   .users-wrap {
     margin: 10px 0;
     .icon {
-      width: 25px;
-      height: 25px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       background-color: #00a0e9;
       display: flex;
@@ -168,9 +168,15 @@ export default {
       margin-right: 10px;
       .iconfont {
         color: #fff;
-        font-size: 18px;
+        font-size: 23px;
       }
     }
+  }
+
+  .van-cell {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
   }
   .users-button {
     padding: 0 15px 60px 15px;
