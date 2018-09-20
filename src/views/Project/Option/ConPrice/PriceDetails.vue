@@ -27,10 +27,10 @@
     <div class="con-button">
       <van-button type="primary" @click="confrimPrice" v-if="list[39] === '已报价'">确认</van-button>
       <van-button type="primary" @click="sendOrder" v-if="list[39] === '初始状态'">发送</van-button>
-      <van-button type="primary" @click="saveOrder" v-if="list[39] !== '待报价' && list[39] !== '待确认'">保存</van-button>
+      <!-- <van-button type="primary" @click="saveOrder" v-if="list[39] !== '待报价' && list[39] !== '待确认' && list[39] !== '初始状态'">保存</van-button> -->
       <van-button type="warning" @click="conProposal" v-if="list[39] === '已报价'">提议</van-button>
+      <van-button type="main" @click="jumpPage('contractwork')" v-if="list[39] !== '待报价' && list[39] !== '待确认'">编辑合同</van-button>
       <van-button type="default" @click="conAddGoods" v-if="list[39] !== '待报价' && list[39] !== '待确认'">添加物资</van-button>
-      <van-button type="default" @click="jumpPage('contractwork')" v-if="list[39] !== '待报价' && list[39] !== '待确认'">合同编辑</van-button>
       <van-button type="danger" @click="confirmDelete">删除</van-button>
     </div>
   </div>
@@ -95,13 +95,15 @@ export default {
                   forbidClick: true, // 禁用背景点击
                   message: "合同并未编辑，请先确定合同内容！"
                 });
-                setTimeout(() => {
-                  this.jumpPage("contractwork");
-                }, 1500);
+                this.$nextTick().then(() => {
+                  setTimeout(() => {
+                    this.jumpPage("contractwork");
+                  }, 1500);
+                });
               } else if (res.text === "1") {
                 this.$toast.success({
                   forbidClick: true, // 禁用背景点击
-                  message: "生成订单成功"
+                  message: "生成订单成功，等待供应商发货"
                 });
                 this.$nextTick().then(() => {
                   setTimeout(() => {
@@ -128,21 +130,26 @@ export default {
           message: "确认发送订单给供应商？"
         })
         .then(() => {
-          conprice.sendOrder(this.confirmParams[0]).then(res => {
+          this.saveOrder().then(result => {
             try {
-              if (res && res.status === 1 && res.text === "True") {
-                this.$toast.success({
-                  forbidClick: true, // 禁用背景点击
-                  message: "发送成功"
+              if (result) {
+                conprice.sendOrder(this.confirmParams[0]).then(res => {
+                  if (res && res.status === 1 && res.text === "True") {
+                    this.$toast.success({
+                      forbidClick: true, // 禁用背景点击
+                      message: "发送成功"
+                    });
+                    this.$nextTick().then(() => {
+                      setTimeout(() => {
+                        this.$router.go(-1);
+                      }, 1500);
+                    });
+                    return;
+                  }
+                  throw "发送失败，请刷新页面重试";
                 });
-                this.$nextTick().then(() => {
-                  setTimeout(() => {
-                    this.$router.go(-1);
-                  }, 1500);
-                });
-                return;
               }
-              throw "删除失败，请刷新页面重试";
+              throw "发送失败，请刷新页面重试";
             } catch (e) {
               this.$toast.fail(e);
             }
@@ -256,20 +263,15 @@ export default {
           }
         ]
       });
-      contractInfo.keepContract(xmlString).then(res => {
-        console.log(res);
+      return contractInfo.keepContract(xmlString).then(res => {
         try {
           if (res && res.status === 1) {
-            this.$nextTick().then(() => {
-              setTimeout(() => {
-                this.$toast.success("保存成功");
-              }, 300);
-            });
-            return;
+            return true;
           }
           throw "保存失败，请刷新页面重试";
         } catch (e) {
-          this.$toast.fail(e);
+          console.log(e);
+          return false;
         }
       });
     }

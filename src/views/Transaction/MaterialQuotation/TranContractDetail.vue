@@ -154,7 +154,7 @@ export default {
           const csp = sp[1].split(";");
           this.cspList = eval("[[" + csp[0])[0];
           if (this.cspList[9] && this.cspList[9] != "1900-01-01 00:00:00") {
-            this.cspList[9] =this.$util.formatDate(this.cspList[9]);
+            this.cspList[9] = this.$util.formatDate(this.cspList[9]);
           } else {
             this.cspList[9] = "请选择时间"; // 确认时间
           }
@@ -176,7 +176,7 @@ export default {
           if (this.cspList[46] && this.cspList[46] != "1900-01-01 00:00:00") {
             this.cspList[46] = this.$util.formatDate(this.cspList[46]);
           } else {
-            this.cspList[46] = "请选择时间"; // 乙方
+            this.cspList[46] = this.$util.formatDate(new Date()); // 乙方
           }
           const i = this.cspList[12];
           this.payment = this.columns[i - 1];

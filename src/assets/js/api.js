@@ -544,7 +544,7 @@ const supplier = {
     });
   },
   //获取劳务供应商列表
-  getSupplierDetails(keyword = "") {
+  getSupplierDetails(DemandID = "", keyword = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -557,7 +557,7 @@ const supplier = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "((BusinessState != 1 or BusinessState is null) AND SupplierName like '%" + keyword + "%')",
+        "_parameters[SQLCondi]": "(BusinessState != 1 or BusinessState is null) AND ComSupplier.Organize_ID='" + DemandID + "' AND SupplierName like '%" + keyword + "%'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -1252,7 +1252,7 @@ const contractInfo = {
         _methodName: "ReturnContract",
         "_parameters[ContractID]": ContractID,
         "_parameters[Contract_Type]": Contract_Type,
-        _paraNames: "ContractID, Contract_Type",
+        _paraNames: "ContractID,Contract_Type",
         _pUrl: ""
       }
     });
@@ -1308,7 +1308,7 @@ const contractInfo = {
       }
     })
   },
-  //
+  // 保存劳务合同
   keepContract(xml) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",

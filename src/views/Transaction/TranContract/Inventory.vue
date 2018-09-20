@@ -31,9 +31,9 @@
         </div>
       </template>
     </van-sku>
-    <div class="invoice-button" v-if="confirmParams[20] != '发货情况：全部发货'">
+    <!-- <div class="invoice-button" v-if="contractParams[20] != '发货情况：全部发货'">
       <van-button type="primary" size="large" @click="onSave">生成发货单</van-button>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -96,7 +96,7 @@ export default {
       // console.log(item);
     },
     getData() {
-      return offer.getContractDetail(this.confirmParams[0]).then(res => {
+      return offer.getContractDetail(this.contractParams[0]).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
@@ -122,7 +122,7 @@ export default {
         SupplierID: this.userInfo.oid,
         PartnerID: this.clientInfo[0],
         ProjectID: "00000000-0000-0000-0000-000000000000",
-        ContractList: this.confirmParams[0],
+        ContractList: this.contractParams[0],
         DetailIDList
       };
       offer.saveDeliverBill(params).then(res => {

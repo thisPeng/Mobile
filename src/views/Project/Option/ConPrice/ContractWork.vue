@@ -1,5 +1,4 @@
 <template>
-
   <!-- 合同编辑 -->
   <div class="contractwork">
     <van-cell-group>
@@ -125,7 +124,7 @@ export default {
     },
     // 保质开始时间
     saveDate(val) {
-      this.cspList[23] =this.$util.formatDate(val);
+      this.cspList[23] = this.$util.formatDate(val);
       this.showDate = false;
     },
     //交货时间
@@ -140,7 +139,7 @@ export default {
     },
     //甲方
     jiafangDate(val) {
-      this.cspList[38] =this.$util.formatDate(val);
+      this.cspList[38] = this.$util.formatDate(val);
       this.showDatathree = false;
     },
     //乙方
@@ -156,12 +155,12 @@ export default {
           this.cspList = eval("[[" + csp[0])[0];
 
           if (this.cspList[9] && this.cspList[9] != "1900-01-01 00:00:00") {
-            this.cspList[9] =this.$util.formatDate(this.cspList[9]);
+            this.cspList[9] = this.$util.formatDate(this.cspList[9]);
           } else {
             this.cspList[9] = "请选择时间"; // 确认时间
           }
           if (this.cspList[23] && this.cspList[23] != "1900-01-01 00:00:00") {
-            this.cspList[23] =this.$util.formatDate(this.cspList[23]);
+            this.cspList[23] = this.$util.formatDate(this.cspList[23]);
           } else {
             this.cspList[23] = "请选择时间"; // 交货时间
           }
@@ -176,7 +175,7 @@ export default {
             this.cspList[38] = "请选择时间"; // 甲方
           }
           if (this.cspList[46] && this.cspList[46] != "1900-01-01 00:00:00") {
-            this.cspList[46] =this.$util.formatDate(this.cspList[46]);
+            this.cspList[46] = this.$util.formatDate(this.cspList[46]);
           } else {
             this.cspList[46] = "请选择时间"; // 乙方
           }

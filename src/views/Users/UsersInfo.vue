@@ -73,15 +73,12 @@
           </van-swipe-item>
         </van-swipe>
       </van-cell-group>
-      <van-cell-group class="padding-vertical">
-        <van-cell title="供应商" is-link value="附件" @click="jumpPage('supplierAnnex')" v-if="userType === 2" />
+      <van-cell-group v-if="userType === 2">
+        <van-cell class="padding-vertical" title="供应商" is-link value="附件" @click="jumpPage('supplierAnnex')" />
         <!-- <van-cell title="合作商" is-link value="附件" @click="jumpPage('supplierAnnex')" v-else /> -->
       </van-cell-group>
       <div class="pwd-button" @click="saveMessage">
-        <van-button type="primary" size="large">
-          <span class="pwd-icon">
-            <van-icon name="success" />
-          </span>保存</van-button>
+        <van-button type="primary" size="large">保 存</van-button>
       </div>
     </div>
   </div>
