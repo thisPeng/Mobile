@@ -46,7 +46,8 @@ export default {
   computed,
   methods: {
     getData() {
-      financial.getAppropriation(this.projectInfo.SC_ProjectOID).then(res => {
+      const page = this.curPage > 0 ? this.curPage - 1 : 0;
+      financial.getAppropriation(this.projectInfo.SC_ProjectOID,page).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("=");
