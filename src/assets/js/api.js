@@ -409,6 +409,28 @@ const users = {
       }
     });
   },
+   //获取工程商用户信息
+  //  getUserInfo(SC_PartnerOID = "") {
+  //   return axios({
+  //     url: "/UCMLWebServiceEntryForJs.aspx",
+  //     method: "post",
+  //     data: {
+  //       _bpoName: "BPO_SC_Partner_EditService",
+  //       _methodName: "getCondiActorDataBCString",
+  //       "_parameters[BCName]": "BC_SC_Partner",
+  //       "_parameters[nStartPos]": 0,
+  //       "_parameters[nRecords]": -1,
+  //       "_parameters[fieldList]": "",
+  //       "_parameters[valueList]": "",
+  //       "_parameters[condiIndentList]": "",
+  //       "_parameters[SQLCondi]": "SC_PartnerOID='" + SC_PartnerOID + "'",
+  //       "_parameters[SQLCondiType]": 0,
+  //       "_parameters[SQLFix]": "",
+  //       _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+  //       _pUrl: ""
+  //     }
+  //   })
+  // },
   //获取合作商用户信息
   getUserInfo(SC_PartnerOID = "") {
     return axios({
@@ -431,6 +453,28 @@ const users = {
       }
     })
   },
+    //获取供应商用户信息
+    getSupplierUserInfo(SC_SupplierOID = "") {
+      return axios({
+        url: "/UCMLWebServiceEntryForJs.aspx",
+        method: "post",
+        data: {
+          _bpoName: "BPO_SC_Partner_EditService",
+          _methodName: "getCondiActorDataBCString",
+          "_parameters[BCName]": "BC_SC_Supplier",
+          "_parameters[nStartPos]": 0,
+          "_parameters[nRecords]": -1,
+          "_parameters[fieldList]": "",
+          "_parameters[valueList]": "",
+          "_parameters[condiIndentList]": "",
+          "_parameters[SQLCondi]": "SC_SupplierOID='" + SC_SupplierOID + "'",
+          "_parameters[SQLCondiType]": 0,
+          "_parameters[SQLFix]": "",
+          _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+          _pUrl: ""
+        }
+      })
+    },
   // 更新用户密码
   updatePwd(params = {}) {
     return axios({
