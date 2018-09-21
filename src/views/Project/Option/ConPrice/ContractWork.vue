@@ -5,7 +5,7 @@
       <div class="title-delivery">基本合同信息</div>
       <van-field v-model="cspList[1]" label="合同编号" disabled/>
       <van-field v-model="cspList[2]" label="合同名称" placeholder="请输入合同名称" required />
-      <van-field v-model="cspList[11]" label="合同金额" placeholder="请输入合同金额" required type="number" />
+      <van-field v-model="cspList[11]" label="合同金额" placeholder="请输入合同金额" type="number" />
       <van-cell-group class="tact-price">
         <span class="tact-label">税率(%)</span>
         <span class="tact-select">

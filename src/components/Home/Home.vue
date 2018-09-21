@@ -14,7 +14,7 @@
       <router-view class="content" v-if="!$route.meta.keepAlive"></router-view>
     </transition>
 
-    <van-tabbar v-model="active" v-show="isTabbar" v-if="userType === 1">
+    <van-tabbar v-model="active" v-show="isTabbar" v-if="userType <= 2">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
       <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item>
       <van-tabbar-item icon="cart" @click="jumpTabs('cart')">购物车</van-tabbar-item>
@@ -22,7 +22,7 @@
     </van-tabbar>
     <van-tabbar v-model="active" v-show="isTabbar" v-else>
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
-      <van-tabbar-item icon="records" @click="jumpTabs('inquiry')" v-if="userType !== 3">报价单</van-tabbar-item>
+      <van-tabbar-item icon="records" @click="jumpTabs('inquiry')" v-if="userType === 3">报价单</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -83,10 +83,10 @@ export default {
               this.active = 2;
               break;
             case "users":
-              this.active = this.userType === 1 ? 3 : 2;
+              this.active = this.userType <= 2 ? 3 : 2;
               break;
             case "inquiry":
-              this.active = this.userType === 1 ? 0 : 1;
+              this.active = this.userType <= 2 ? 0 : 1;
               break;
           }
         }
@@ -106,7 +106,7 @@ export default {
       this.$router.go(-1);
     },
     onMenu() {
-      if (this.userType === 1) {
+      if (this.userType <= 2) {
         this.$router.push({ name: "projectList" });
       } else {
         this.$router.push({ name: "customerlist" });
@@ -150,10 +150,10 @@ export default {
           this.active = 2;
           break;
         case "users":
-          this.active = this.userType === 1 ? 3 : 2;
+          this.active = this.userType <= 2 ? 3 : 2;
           break;
         case "inquiry":
-          this.active = this.userType === 1 ? 0 : 1;
+          this.active = this.userType <= 2 ? 0 : 1;
           break;
       }
     }
@@ -165,7 +165,13 @@ export default {
           this.$store.commit("userInfo", result);
           users.userId(result.oid).then(res => {
             if (res && res.status === 1) {
-              this.$store.commit("userId", JSON.parse(res.text)[0]);
+              const uId = JSON.parse(res.text)[0];
+              this.$store.commit("userId", uId);
+              users.userType(uId.UCML_OrganizeOID).then(r => {
+                if (r && r.status === 1) {
+                  this.$store.commit("userType", JSON.parse(r.text).UserType);
+                }
+              });
             }
           });
         }

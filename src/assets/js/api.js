@@ -382,6 +382,20 @@ const users = {
     });
   },
   // 获取用户ID
+  userType(UCML_OrganizeOID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Vue_CommonService",
+        _methodName: "GetUserRole",
+        "_parameters[UCML_OrganizeOID]": UCML_OrganizeOID,
+        _paraNames: "UCML_OrganizeOID",
+        _pUrl: ""
+      }
+    });
+  },
+  // 获取用户ID
   userId(id = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -2230,7 +2244,7 @@ const offer = {
     })
   },
   // 发货单合同详情
-  getShipped(PartnerID = "") {
+  getShipped(SupplierID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -2243,7 +2257,7 @@ const offer = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "ProjectID ='" + PartnerID + "'" + " AND (Approve_Flag = '1'  or Approve_Flag='2' )",
+        "_parameters[SQLCondi]": "SupplierID='" + SupplierID + "'" + " AND (Approve_Flag='1'  or Approve_Flag='2')",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",

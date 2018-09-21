@@ -75,10 +75,19 @@ export default {
                 });
                 users.userId(result.oid).then(res => {
                   if (res && res.status === 1) {
-                    this.$store.commit("userId", JSON.parse(res.text)[0]);
+                    const uId = JSON.parse(res.text)[0];
+                    this.$store.commit("userId", uId);
                     this.$parent.isMenu = true;
-                    this.$router.replace({
-                      name: "index"
+                    users.userType(uId.UCML_OrganizeOID).then(r => {
+                      this.$store.commit(
+                        "userType",
+                        JSON.parse(r.text).UserType
+                      );
+                      if (r && r.status === 1) {
+                        this.$router.replace({
+                          name: "index"
+                        });
+                      }
                     });
                   }
                 });
