@@ -17,7 +17,7 @@
         <span class="con-select" @click="showDate=true">{{this.$util.formatDate(info[17])}}</span>
       </van-cell-group>
       <van-datetime-picker v-model="currentDate" v-show="showDate" type="date" :min-date="new Date()" class="contract-date" @confirm="fahuoDate" @cancel="showDate=false" />
-      <van-field v-model="info[18]" label="业务员：" :disabled="info[15] == '2'" :required="info[15] != '2'" :placeholder="info[15] != '2' ? '请输入业务员' : ''" />
+      <van-field v-model="info[18]" label="业务员：" :disabled="info[15] == '2'" :placeholder="info[15] != '2' ? '请输入业务员' : ''" />
       <van-field v-model="info[25]" label="创建日期：" disabled />
       <van-field v-model="info[21]" label="备注：" type="textarea" :disabled="info[15] == '2'" :placeholder="info[15] != '2' ? '请输入备注' : ''" />
       <van-cell title="报价单明细" is-link value="详情" @click="jumpPage('tranrialDetail')" />

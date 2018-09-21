@@ -31,9 +31,9 @@
         </div>
       </template>
     </van-sku>
-    <!-- <div class="invoice-button" v-if="contractParams[20] != '发货情况：全部发货'">
+    <div class="invoice-button" v-if="contractParams[20] != '发货情况：全部发货'">
       <van-button type="primary" size="large" @click="onSave">生成发货单</van-button>
-    </div> -->
+    </div>
   </div>
 </template>
 <script>

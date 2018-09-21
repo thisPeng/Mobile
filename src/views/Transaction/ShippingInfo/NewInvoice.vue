@@ -94,7 +94,7 @@ export default {
       const params = {
         SupplierID: this.userInfo.oid,
         PartnerID: this.clientInfo[0],
-        ProjectID: this.contractParams[3],
+        ProjectID: "00000000-0000-0000-0000-000000000000",
         ContractList,
         DetailIDList
       };
@@ -154,7 +154,7 @@ export default {
       const params = {
         suid: this.userInfo.oid,
         paid: this.clientInfo[0],
-        prid: this.contractParams[3]
+        prid: "00000000-0000-0000-0000-000000000000"
       };
       offer.getNotShippded(params).then(res => {
         try {
@@ -168,7 +168,7 @@ export default {
     },
     // 发货单详情
     getData() {
-      offer.getShipped(this.contractParams[3]).then(res => {
+      offer.getShipped("00000000-0000-0000-0000-000000000000").then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = eval("[[" + sp[1].split(";")[0]);
@@ -201,7 +201,7 @@ export default {
       });
     },
     pageInit() {
-      this.getInfo();
+      this.getData();
     }
   },
   mounted() {
