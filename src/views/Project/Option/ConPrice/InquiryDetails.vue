@@ -166,33 +166,49 @@ export default {
     },
     priceDetails() {
       const xml = require("xml");
-      const xmlString = xml({
-        root: [
-          {
-            BC_SC_Order_Detail: [
-              { _attr: { UpdateKind: "ukModify" } },
-              { SC_Order_DetailOID: this.goods.id }
-            ]
-          },
-          {
-            BC_SC_Order_Detail: [
-              { _attr: { UpdateKind: "" } },
-              { Real_Qty: this.goods.num },
-              { Sub_Amt: this.goods.howMuch * this.goods.num },
-              {Sheet_Tax:this.goods.taxRadio},
-              { Remark: this.goods.reMarks }
-            ]
-          }
-        ]
-      });
+      let xmlString = xml([
+        {
+          BC_SC_Order_Detail: [
+            { _attr: { UpdateKind: "ukModify" } },
+            { SC_Order_DetailOID: this.goods.id }
+          ]
+        },
+        {
+          BC_SC_Order_Detail: [
+            { _attr: { UpdateKind: "" } },
+            { Real_Qty: this.goods.num },
+            { Sub_Amt: this.goods.howMuch * this.goods.num },
+            { Sheet_Tax: this.goods.taxRadio },
+            { Remark: this.goods.reMarks }
+          ]
+        }
+      ]);
+      xmlString += xml([
+        {
+          BC_SC_Order_Detail: [
+            { _attr: { UpdateKind: "ukModify" } },
+            { SC_Order_MasterOID: "" }
+          ]
+        },
+        {
+          BC_SC_Order_Detail: [
+            { _attr: { UpdateKind: "" } },
+            { Edit_Flag: "1" }
+          ]
+        }
+      ]);
+      xmlString = "<root>" + xmlString + "</root>";
       contractInfo.keepContract(xmlString).then(res => {
         try {
+          // if (this.item[11] >= "100000") {
+          //   this.$toast.fail("输入的实际数量过大，请重新输入");
+          //   return;
+          // }
           if (res.status === 1) {
             this.getData().then(result => {
               if (result) {
                 this.$toast.success(res.text);
                 this.showBase = false;
-                return;
               }
             });
           }
