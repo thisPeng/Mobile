@@ -382,6 +382,7 @@ export default {
     },
     // 显示物资详情
     showInfo(item) {
+      this.sku.price = item[5];
       this.goods = {
         id: item[0],
         sid: item[31],
