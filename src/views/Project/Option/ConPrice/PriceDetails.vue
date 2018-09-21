@@ -25,7 +25,7 @@
     </van-cell-group>
     <!--功能操作-->
     <div class="con-button">
-      <van-button type="primary" @click="confrimPrice" v-if="list[39] === '已报价'">确认</van-button>
+      <van-button type="primary" @click="confrimPrice" v-if="list[39] === '已报价' && list[16] !== '1'">确认</van-button>
       <van-button type="primary" @click="sendOrder" v-if="list[39] === '初始状态'">发送</van-button>
       <!-- <van-button type="primary" @click="saveOrder" v-if="list[39] !== '待报价' && list[39] !== '待确认' && list[39] !== '初始状态'">保存</van-button> -->
       <van-button type="warning" @click="conProposal" v-if="list[39] === '已报价'">提议</van-button>
@@ -61,7 +61,7 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0])[0];
-          console.log(this.list);
+          // console.log(this.list);
           if (this.list[17]) {
             this.list[17] = this.$util.formatDate(this.list[17]);
           } else {

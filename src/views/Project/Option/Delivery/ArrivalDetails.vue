@@ -122,25 +122,38 @@ export default {
     //保存修改
     onSave() {
       const xml = require("xml");
-      const xmlString = xml({
-        root: [
-          {
-            BC_SC_Deliver_Detail: [
-              { _attr: { UpdateKind: "ukModify" } },
-              { SC_Deliver_DetailOID: this.goods.id }
-            ]
-          },
-          {
-            BC_SC_Deliver_Detail: [
-              { _attr: { UpdateKind: "" } },
-              { SC_Deliver_DetailOID: "null" },
-              { Sub_Amt: this.goods.num * this.goods.howMuch },
-              { Real_Qty: this.goods.num },
-              { Remark: this.goods.reMarks }
-            ]
-          }
-        ]
-      });
+      let xmlString = xml([
+        {
+          BC_SC_Deliver_Detail: [
+            { _attr: { UpdateKind: "ukModify" } },
+            { SC_Deliver_DetailOID: this.goods.id }
+          ]
+        },
+        {
+          BC_SC_Deliver_Detail: [
+            { _attr: { UpdateKind: "" } },
+            { SC_Deliver_DetailOID: "null" },
+            { Sub_Amt: this.goods.num * this.goods.howMuch },
+            { Real_Qty: this.goods.num },
+            { Remark: this.goods.reMarks }
+          ]
+        }
+      ]);
+        xmlString += xml([
+        {
+          BC_SC_Deliver_Master: [
+            { _attr: { UpdateKind: "ukModify" } },
+            { SC_Deliver_MasterOID: this.confirmParams[0] }
+          ]
+        },
+        {
+          BC_SC_Deliver_Master: [
+            { _attr: { UpdateKind: "" } },
+            { Approve_Flag: "2" }
+          ]
+        }
+      ]);
+      xmlString = "<root>" + xmlString + "</root>";
       arrival.saveKeepRevise(xmlString).then(res => {
         try {
           if (res.status === 1) {

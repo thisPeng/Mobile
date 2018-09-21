@@ -165,6 +165,10 @@ export default {
         });
     },
     priceDetails() {
+      if (this.goods.num >= "100000") {
+        this.$toast.fail("输入的实际数量超过有效值，请重新输入");
+        return;
+      }
       const xml = require("xml");
       let xmlString = xml([
         {
@@ -185,13 +189,13 @@ export default {
       ]);
       xmlString += xml([
         {
-          BC_SC_Order_Detail: [
+          BC_SC_Order_Master: [
             { _attr: { UpdateKind: "ukModify" } },
-            { SC_Order_MasterOID: "" }
+            { SC_Order_MasterOID: this.confirmParams[0] }
           ]
         },
         {
-          BC_SC_Order_Detail: [
+          BC_SC_Order_Master: [
             { _attr: { UpdateKind: "" } },
             { Edit_Flag: "1" }
           ]
@@ -200,10 +204,6 @@ export default {
       xmlString = "<root>" + xmlString + "</root>";
       contractInfo.keepContract(xmlString).then(res => {
         try {
-          // if (this.item[11] >= "100000") {
-          //   this.$toast.fail("输入的实际数量过大，请重新输入");
-          //   return;
-          // }
           if (res.status === 1) {
             this.getData().then(result => {
               if (result) {

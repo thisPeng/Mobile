@@ -52,7 +52,7 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.info = eval("[[" + csp[0])[0];
-          // console.log(this.info);
+          console.log(this.info);
           if (this.info[27] === "1900-01-01 00:00:00") {
             if (this.info[25] != "1" && this.info[20] != "1") {
               this.info[27] = "请选择签收时间";
