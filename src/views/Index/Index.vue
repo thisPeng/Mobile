@@ -48,7 +48,7 @@
           <div class="apply-text">合作项目</div>
         </div> -->
       </div>
-      <van-swipe class="apply-project" v-if="userType === 1">
+      <van-swipe class="apply-project" v-if="userType <= 2">
         <van-swipe-item>
           <div class="project">
             <!-- <div class="project-item" @click="jumpPage('material')">
@@ -104,7 +104,7 @@
           </div>
         </van-swipe-item> -->
       </van-swipe>
-      <van-swipe class="apply-project" v-else-if="userType === 2">
+      <van-swipe class="apply-project" v-else-if="userType === 3">
         <van-swipe-item>
           <div class="project">
             <!-- <div class="project-item" @click="jumpPage('quotation')">

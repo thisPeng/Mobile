@@ -13,21 +13,27 @@
           <van-cell is-link class="item-content" @click="jumpInfo(item)">
             <div class="content-row">
               <span class="row-left">{{item[10]}}</span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">{{item[16]}}</span>
               <span class="row-right">
-                <van-tag :type="item[14] === '已发货' ? '' : 'danger'">{{item[14]}}</van-tag>
+                <van-tag :type="item[14] === '发货状态：已发货' ? 'success' : 'danger'">{{item[14]}}</van-tag>
               </span>
             </div>
             <div class="content-row">
-              <span class="row-left">{{item[11]}}</span>
-              <span class="row-right">{{item[16]}}</span>
+              <span class="row-left">{{item[19]}}</span>
+              <span class="row-right">
+                <van-tag plain :type="item[18] === '签收状态：已签收' ? 'success' : 'danger'">{{item[18]}}</van-tag>
+              </span>
             </div>
             <div class="content-row">
               <span class="row-left">{{item[12]}}</span>
-              <span class="row-right">{{item[13]}}</span>
+            </div>
+            <div>
+              <span class="row-left">{{item[13]}}</span>
             </div>
             <div class="content-row">
-              <span class="row-left">{{item[19]}}</span>
-              <span class="row-left">{{item[18]}}</span>
+
             </div>
           </van-cell>
         </div>
@@ -60,7 +66,7 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0]);
-          //  console.log(this.list);
+          console.log(this.list);
           return true;
         }
         return false;

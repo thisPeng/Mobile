@@ -79,12 +79,23 @@ export default {
       const listOrder = this.listOrder;
       let ContractList = [];
       let DetailIDList = [];
+      let pid = "",
+        isTow = false;
       listOrder.forEach(val => {
         if (val.checked) {
+          if (!pid) {
+            pid = val.pid;
+          } else if (pid != val.pid) {
+            isTow = true;
+          }
           ContractList.push(val.id);
           DetailIDList = DetailIDList.concat(val.checkArr);
         }
       });
+      if (isTow) {
+        this.$toast.fail("存在不同项目的合同物资，不得合并生成");
+        return;
+      }
       if (ContractList.length === 0 || DetailIDList.length === 0) {
         this.$toast.fail("请勾选发货物资");
         return;
@@ -94,7 +105,7 @@ export default {
       const params = {
         SupplierID: this.userInfo.oid,
         PartnerID: this.clientInfo[0],
-        ProjectID: "00000000-0000-0000-0000-000000000000",
+        ProjectID: pid,
         ContractList,
         DetailIDList
       };
@@ -114,24 +125,21 @@ export default {
     },
     // 显示合同详情
     onShowInfo(i) {
-      const te = this.$options.filters["deliverStatus"];
+      // const te = this.$options.filters["deliverStatus"];
       this.$dialog
         .alert({
           message:
-            "合同编号：" +
-            this.list[i][1] +
-            "<br>甲方：" +
-            this.list[i][3] +
-            "<br>乙方：" +
-            this.list[i][4] +
-            "<br>交货地点：" +
-            this.list[i][8] +
-            "<br>交货时间：" +
-            this.list[i][9] +
-            "<br>合同金额：" +
             this.list[i][11] +
-            "<br>合同状态：" +
-            te(this.list[i][48])
+            "<br>" +
+            this.list[i][13] +
+            "<br>" +
+            this.list[i][14] +
+            "<br>" +
+            this.list[i][16] +
+            "<br>" +
+            this.list[i][19] +
+            "<br>" +
+            this.list[i][20]
         })
         .then(() => {
           // on close
@@ -168,21 +176,34 @@ export default {
     },
     // 发货单详情
     getData() {
-      offer.getShipped("00000000-0000-0000-0000-000000000000").then(res => {
+      const params = {
+        pid: this.clientInfo[0],
+        sid: this.userInfo.oid
+      };
+      offer.getContract(params).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
-          const csp = eval("[[" + sp[1].split(";")[0]);
-          this.list = csp;
-          csp.forEach(val => {
-            this.listOrder.push({
-              id: val[0],
-              name: val[2],
-              checked: false,
-              checkArr: [],
-              list: []
-            });
+          const csp = sp[1].split(";");
+          const list = eval("[[" + csp[0]);
+          const listOrder = [];
+          let tmp = "";
+          // console.log(list);
+          // 数据分组
+          list.forEach(val => {
+            if (val[0] !== tmp) {
+              listOrder.push({
+                id: val[0],
+                pid: val[3],
+                name: val[15],
+                checked: false,
+                checkArr: [],
+                list: []
+              });
+              tmp = val[0];
+            }
           });
-          // console.log(this.listOrder);
+          this.list = list;
+          this.listOrder = listOrder;
         }
       });
     },
