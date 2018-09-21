@@ -16,10 +16,10 @@
                 <div class="content-row">
                   <span class="row-left">联系人：{{item[10]}}</span>
                   <span class="row-right text-right">
-                    <van-tag type="danger" v-if="item[26] === '1'">状态：待审批</van-tag>
-                    <van-tag type="primary" v-else-if="item[26] === '2'">状态：审批中</van-tag>
-                    <van-tag type="success" v-else-if="item[26] === '3'">状态：已审批</van-tag>
-                    <van-tag v-else>状态：未审批</van-tag>
+                    <van-tag type="danger" v-if="item[26] === '1'">待审批</van-tag>
+                    <van-tag type="primary" v-else-if="item[26] === '2'">审批中</van-tag>
+                    <van-tag type="success" v-else-if="item[26] === '3'">已审批</van-tag>
+                    <van-tag v-else>未审批</van-tag>
                   </span>
                 </div>
                 <div class="content-row">
