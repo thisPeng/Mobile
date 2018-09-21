@@ -54,7 +54,7 @@ export default {
             if (this.data[55] && this.data[55] != "1900-01-01 00:00:00") {
               this.data[55] = this.$util.formatDate(this.data[55]);
             } else {
-              this.cspList[38] = "";
+              this.data[55] = "";
             }
           }
         });
