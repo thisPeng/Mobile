@@ -12,14 +12,14 @@
     </div>
     <div class="users-wrap">
       <van-cell-group class="margin-bottom-sm" v-if="userType === 1">
-        <van-cell title="供应商设置" is-link @click="jumpPage('supplier')">
+        <van-cell title="材料供应商" is-link @click="jumpPage('supplier')">
           <template slot="icon">
             <div class="icon">
               <i class="iconfont icon-gongkaobei"></i>
             </div>
           </template>
         </van-cell>
-        <van-cell title="劳务供应商列表" is-link @click="jumpPage('supplierList')">
+        <van-cell title="劳务供应商" is-link @click="jumpPage('supplierList')">
           <template slot="icon">
             <div class="icon">
               <i class="iconfont icon-laowuhetong"></i>

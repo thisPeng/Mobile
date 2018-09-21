@@ -299,7 +299,7 @@ export default {
               if (res.status === 1) {
                 this.$toast.success({
                   forbidClick: true, // 禁用背景点击
-                  message: "提交成功"
+                  message: "合同提交成功"
                 });
                 this.$nextTick().then(() => {
                   setTimeout(() => {
