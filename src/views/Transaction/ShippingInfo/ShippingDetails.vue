@@ -25,7 +25,7 @@
     </van-cell-group>
     <div class="con-button" v-if="list[41] != '已发货'">
       <van-button type="primary" @click="sendShipping">发货</van-button>
-      <van-button type="default" @click="saveOrder">保存</van-button>
+      <!-- <van-button type="default" @click="saveOrder">保存</van-button> -->
       <van-button type="danger" @click="deleteOrder">删除</van-button>
     </div>
   </div>
@@ -80,7 +80,7 @@ export default {
         });
     },
     //编辑
-    getDetails() {
+    getData() {
       return offer.getDeliveryDetail(this.contractParams[0]).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
@@ -105,19 +105,23 @@ export default {
           message: "确认单据发货？"
         })
         .then(() => {
-          offer.sendDeliveryOption(this.contractParams[0]).then(res => {
-            if (res.status === 1 && res.text == "True") {
-              this.$toast.success({
-                forbidClick: true, // 禁用背景点击
-                message: "发货成功"
+          this.saveOrder().then(result => {
+            if (result) {
+              offer.sendDeliveryOption(this.contractParams[0]).then(res => {
+                if (res.status === 1 && res.text == "True") {
+                  this.$toast.success({
+                    forbidClick: true, // 禁用背景点击
+                    message: "发货成功"
+                  });
+                  this.$nextTick().then(() => {
+                    setTimeout(() => {
+                      this.$router.go(-1);
+                    }, 1500);
+                  });
+                } else {
+                  this.$toast.fail("发货失败");
+                }
               });
-              this.$nextTick().then(() => {
-                setTimeout(() => {
-                  this.$router.go(-1);
-                }, 1500);
-              });
-            } else {
-              this.$toast.fail("发货失败");
             }
           });
         });
@@ -145,24 +149,20 @@ export default {
           }
         ]
       });
-      offer.saveGoodsDetail(xmlString).then(res => {
+      return offer.saveGoodsDetail(xmlString).then(res => {
         try {
           if (res.status === 1) {
-            this.getDetails().then(result => {
-              if (result) {
-                this.$toast.success("保存成功");
-                return;
-              }
-            });
+            return true;
           }
           throw "保存失败，请刷新页面重试";
         } catch (e) {
           this.$toast.fail(e);
+          return false;
         }
       });
     },
     pageInit() {
-      this.getDetails();
+      this.getData();
     },
     jumpPage(list) {
       this.$store.commit("confirmParams", list);
@@ -186,7 +186,7 @@ export default {
     flex-wrap: wrap;
     justify-content: space-between;
     button {
-      width: 32%;
+      width: 49%;
       padding: 0;
       margin-bottom: 10px;
     }
