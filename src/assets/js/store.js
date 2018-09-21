@@ -62,7 +62,7 @@ export default new Vuex.Store({
       state.userInfo = val;
     },
     userType: (state, val) => {
-      state.userType = val;
+      state.userType = parseInt(val);
     },
     loginInfo: (state, val) => {
       state.loginInfo = val;
