@@ -108,6 +108,12 @@ export default {
       });
     },
     pageInit() {
+      const params = {
+        suid: this.userInfo.oid,
+        paid: this.clientInfo[0],
+        prid: this.contractParams[4]
+      };
+      offer.getNotShippded(params);
       this.getData();
     },
     // 生成发货单
@@ -121,7 +127,7 @@ export default {
       const params = {
         SupplierID: this.userInfo.oid,
         PartnerID: this.clientInfo[0],
-        ProjectID: "00000000-0000-0000-0000-000000000000",
+        ProjectID: this.contractParams[4],
         ContractList: this.contractParams[0],
         DetailIDList
       };

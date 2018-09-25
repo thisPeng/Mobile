@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Login from "./views/Login/Login";
 import Home from "./components/Home/Home";
 import Index from "./views/Index/Index";
+import Api from "./views/Index/Api";
 import Classify from "./views/Classify/Classify";
 import GoodsList from "./views/Classify/GoodsList";
 import GoodsSearch from "./views/Classify/GoodsSearch";
@@ -70,6 +71,11 @@ export default new Router({
       path: "/login",
       name: "login",
       component: Login
+    },
+    {
+      path: "/api",
+      name: "api",
+      component: Api
     },
     {
       path: "/",

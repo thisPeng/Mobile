@@ -4,9 +4,12 @@
     <!--列表-->
     <div class="list-item" v-for="(ite, idx) in listOrder" :key="idx">
       <van-cell-group>
-        <van-cell class="text-bold" :title="ite.name">
+        <van-cell :title="ite.name">
           <template slot="title">
-            <div @click="onShowInfo(idx)">{{ite.name}}</div>
+            <div @click="onShowInfo(idx)">
+              <div class="text-sx">{{ite.pname}}</div>
+              <div class="text-xs text-gray">{{ite.name}}</div>
+            </div>
           </template>
           <template slot="right-icon">
             <van-switch v-model="ite.checked" size="26px" @change="onSwitechSupp(idx)" />
@@ -36,7 +39,7 @@
       </div>
     </div>
     <!--操作-->
-    <div class="invoice-button">
+    <div class="invoice-button" v-if="clientInfo.length > 0">
       <van-button type="primary" size="large" @click="onSave">生成发货单</van-button>
     </div>
   </div>
@@ -93,7 +96,7 @@ export default {
         }
       });
       if (isTow) {
-        this.$toast.fail("存在不同项目的合同物资，不得合并生成");
+        this.$toast.fail("存在不同项目的合同，不得合并生成发货单");
         return;
       }
       if (ContractList.length === 0 || DetailIDList.length === 0) {
@@ -117,6 +120,7 @@ export default {
           });
           setTimeout(() => {
             this.$router.go(-1);
+            this.getInfo(pid);
           }, 1500);
         } else {
           this.$toast.fail("生成发货单失败，请勾选发货物资");
@@ -125,7 +129,6 @@ export default {
     },
     // 显示合同详情
     onShowInfo(i) {
-      // const te = this.$options.filters["deliverStatus"];
       this.$dialog
         .alert({
           message:
@@ -158,21 +161,13 @@ export default {
       }
     },
     // 刷新未发货的数据
-    getInfo() {
+    getInfo(prid = "") {
       const params = {
         suid: this.userInfo.oid,
         paid: this.clientInfo[0],
-        prid: "00000000-0000-0000-0000-000000000000"
+        prid
       };
-      offer.getNotShippded(params).then(res => {
-        try {
-          if (res.status === 1 && res.text === "True") {
-            this.getData();
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      });
+      offer.getNotShippded(params);
     },
     // 发货单详情
     getData() {
@@ -187,13 +182,13 @@ export default {
           const list = eval("[[" + csp[0]);
           const listOrder = [];
           let tmp = "";
-          // console.log(list);
           // 数据分组
           list.forEach(val => {
             if (val[0] !== tmp) {
               listOrder.push({
                 id: val[0],
-                pid: val[3],
+                pid: val[4],
+                pname: val[11],
                 name: val[15],
                 checked: false,
                 checkArr: [],

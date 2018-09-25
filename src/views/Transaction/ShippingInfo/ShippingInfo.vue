@@ -32,15 +32,12 @@
             <div>
               <span class="row-left">{{item[13]}}</span>
             </div>
-            <div class="content-row">
-
-            </div>
           </van-cell>
         </div>
       </div>
     </div>
     <!--新增发货单-->
-    <div class="info-button">
+    <div class="info-button" v-if="clientInfo.length > 0">
       <van-button type="primary" size="large" @click.stop="jumpAdd">新增发货单</van-button>
     </div>
   </div>
