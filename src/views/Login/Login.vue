@@ -79,14 +79,23 @@ export default {
                     this.$store.commit("userId", uId);
                     this.$parent.isMenu = true;
                     users.userType(uId.UCML_OrganizeOID).then(r => {
-                      this.$store.commit(
-                        "userType",
-                        JSON.parse(r.text).UserType
-                      );
-                      if (r && r.status === 1) {
-                        this.$router.replace({
-                          name: "index"
-                        });
+                      try {
+                        this.$store.commit(
+                          "userType",
+                          JSON.parse(r.text).UserType
+                        );
+                        if (r && r.status === 1) {
+                          this.$router.replace({
+                            name: "index"
+                          });
+                        }
+                      } catch (e) {
+                        if (r && r.status === 1) {
+                          this.$router.replace({
+                            name: "index"
+                          });
+                        }
+                        console.log(e);
                       }
                     });
                   }

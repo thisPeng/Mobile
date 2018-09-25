@@ -323,16 +323,13 @@ export default {
           that.tableData2 = eval(sp[3].split("=")[1]);
           that.tableData3 = eval(sp[4].split("=")[1]);
           that.model = that.data.length > 8;
-          // if (that.model) {
-          //   that.$store.commit("userType", 1);
-          // } else {
-          //   // console.log(that.data);
-          //   // if (that.data[0] > 0) {
-          //   that.$store.commit("userType", 2);
-          //   // } else {
-          //   //   that.$store.commit("userType", 3);
-          //   // }
-          // }
+          if (!this.userType) {
+            if (that.model) {
+              that.$store.commit("userType", 2);
+            } else {
+              that.$store.commit("userType", 3);
+            }
+          }
           that.drawLine();
         }
       });
