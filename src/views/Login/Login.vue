@@ -90,11 +90,10 @@ export default {
                           });
                         }
                       } catch (e) {
-                        if (r && r.status === 1) {
-                          this.$router.replace({
-                            name: "index"
-                          });
-                        }
+                        this.$store.commit("userType", "");
+                        this.$router.replace({
+                          name: "index"
+                        });
                         console.log(e);
                       }
                     });
