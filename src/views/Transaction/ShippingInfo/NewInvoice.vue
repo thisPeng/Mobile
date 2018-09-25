@@ -1,41 +1,43 @@
 <template>
   <!-- 新增发货单 -->
   <div class="newinvoice">
-    <!--列表-->
-    <div class="list-item" v-for="(ite, idx) in listOrder" :key="idx">
-      <van-cell-group>
-        <van-cell :title="ite.name">
-          <template slot="title">
-            <div @click="onShowInfo(idx)">
-              <div class="text-sx">{{ite.pname}}</div>
-              <div class="text-xs text-gray">{{ite.name}}</div>
-            </div>
-          </template>
-          <template slot="right-icon">
-            <van-switch v-model="ite.checked" size="26px" @change="onSwitechSupp(idx)" />
-          </template>
-        </van-cell>
-      </van-cell-group>
-      <div v-show="ite.checked">
-        <van-checkbox-group v-model="ite.checkArr">
-          <van-swipe-cell v-for="(item,index) in ite.list" :key="index">
-            <div class="cart-item">
-              <van-checkbox :name="item[0]" class="item-check" ref="checked"></van-checkbox>
-              <van-card :desc="item[8] + ' | 单位：' + item[5]">
-                <div slot="thumb">
-                  <img :src="item[29].replace('~', servePath)" class="van-card__img">
-                </div>
-                <div slot="title" class="van-card__row">
-                  <div class="van-card__title">{{item[4]}}</div>
-                  <div class="van-card__price">{{'￥ '+item[14]}}</div>
-                </div>
-                <div slot="footer">
-                  <van-stepper v-model="item[11]" :integer="true" />
-                </div>
-              </van-card>
-            </div>
-          </van-swipe-cell>
-        </van-checkbox-group>
+    <div class="newinvoice-data">
+      <!--列表-->
+      <div class="list-item" v-for="(ite, idx) in listOrder" :key="idx">
+        <van-cell-group>
+          <van-cell :title="ite.name">
+            <template slot="title">
+              <div @click="onShowInfo(idx)">
+                <div class="text-sx">{{ite.pname}}</div>
+                <div class="text-xs text-gray">{{ite.name}}</div>
+              </div>
+            </template>
+            <template slot="right-icon">
+              <van-switch v-model="ite.checked" size="26px" @change="onSwitechSupp(idx)" />
+            </template>
+          </van-cell>
+        </van-cell-group>
+        <div v-show="ite.checked">
+          <van-checkbox-group v-model="ite.checkArr">
+            <van-swipe-cell v-for="(item,index) in ite.list" :key="index">
+              <div class="cart-item">
+                <van-checkbox :name="item[0]" class="item-check" ref="checked"></van-checkbox>
+                <van-card :desc="item[8] + ' | 单位：' + item[5]">
+                  <div slot="thumb">
+                    <img :src="item[29].replace('~', servePath)" class="van-card__img">
+                  </div>
+                  <div slot="title" class="van-card__row">
+                    <div class="van-card__title">{{item[4]}}</div>
+                    <div class="van-card__price">{{'￥ '+item[14]}}</div>
+                  </div>
+                  <div slot="footer">
+                    <van-stepper v-model="item[11]" :integer="true" />
+                  </div>
+                </van-card>
+              </div>
+            </van-swipe-cell>
+          </van-checkbox-group>
+        </div>
       </div>
     </div>
     <!--操作-->
@@ -228,42 +230,30 @@ export default {
 <style lang="less" scoped>
 .newinvoice {
   width: 100%;
-  margin-bottom: 60px;
-  .list-item {
-    border-bottom: 5px solid #f6f6f6;
-  }
-  .cart-item {
-    padding-left: 10px;
-    border-bottom: 1px solid #eee;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    .item-check {
-      overflow: inherit;
+  overflow: hidden !important;
+  .newinvoice-data {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 10px;
+    padding-bottom: 70px;
+    .list-item {
+      border-bottom: 5px solid #f6f6f6;
     }
-    .van-card {
+    .cart-item {
+      padding-left: 10px;
+      border-bottom: 1px solid #eee;
       background-color: #fff;
-      overflow: hidden;
+      display: flex;
+      align-items: center;
+      .item-check {
+        overflow: inherit;
+      }
+      .van-card {
+        background-color: #fff;
+        overflow: hidden;
+      }
     }
-  }
-  .left {
-    color: #ffffff;
-    font-size: 15px;
-    width: 65px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .right {
-    color: #ffffff;
-    font-size: 15px;
-    width: 65px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f44;
   }
   .invoice-button {
     width: 100%;
