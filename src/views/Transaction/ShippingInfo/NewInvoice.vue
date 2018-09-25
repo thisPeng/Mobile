@@ -266,12 +266,15 @@ export default {
     background-color: #f44;
   }
   .invoice-button {
-    position: fixed;
-    bottom: 0;
     width: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
     padding: 10px;
-    text-align: center;
     background-color: #fff;
+    text-align: center;
   }
 }
 </style>
