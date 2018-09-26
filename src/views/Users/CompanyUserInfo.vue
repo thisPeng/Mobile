@@ -55,8 +55,8 @@
       <van-cell-group>
         <van-cell class="padding-vertical" title="工程商" is-link value="用户信息" @click="jumpPage('usersInfoAccessory')" />
       </van-cell-group>
-      <div class="pwd-button">
-        <van-button type="primary" size="large" @click="saveMessage">保 存</van-button>
+      <div class="pwd-button" @click="saveMessage">
+        <van-button type="primary" size="large">保 存</van-button>
       </div>
     </div>
   </div>
@@ -71,7 +71,16 @@ export default {
       list: [],
       areaList,
       comType: "请选择公司类型",
-      comTypecolumns: ["国资（独资或合资）", "有限责任公司","股份有限公司","独资（法人或自然人）","港澳台合资","外商合资","港澳台独资","外商独资"],
+      comTypecolumns: [
+        "国资（独资或合资）",
+        "有限责任公司",
+        "股份有限公司",
+        "独资（法人或自然人）",
+        "港澳台合资",
+        "外商合资",
+        "港澳台独资",
+        "外商独资"
+      ],
       comTypeShow: false,
       comUnit: "请选择纳税人类别",
       comUnitcolumns: ["一般纳税人", "小规模纳税人"],
