@@ -36,7 +36,7 @@ export default {
   data() {
     return {
       title: "材博汇",
-      transitionName: "slide-left",
+      transitionName: "",
       isBack: false,
       isTabbar: true,
       isMenu: true,
@@ -72,6 +72,7 @@ export default {
         } else {
           this.isBack = false;
           this.isTabbar = true;
+          /*
           this.transitionName = "";
           switch (to.name) {
             case "index":
@@ -90,6 +91,7 @@ export default {
               this.active = this.userType <= 2 ? 0 : 1;
               break;
           }
+          */
         }
         if (from.name === "projectList" || from.name === "customerlist") {
           if (to.meta.keepAlive && this.isReload) {
@@ -140,6 +142,7 @@ export default {
     } else {
       this.isBack = false;
       this.isTabbar = true;
+      /*
       switch (current.name) {
         case "index":
           this.active = 0;
@@ -157,6 +160,7 @@ export default {
           this.active = this.userType <= 2 ? 0 : 1;
           break;
       }
+      */
     }
 
     if (current.name !== "goodsSearch") {

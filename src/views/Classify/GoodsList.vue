@@ -205,6 +205,7 @@ export default {
     },
     // 跳转购物车
     jumpCart() {
+      this.$parent.active = 2;
       this.$router.replace({
         name: "cart"
       });

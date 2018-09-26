@@ -410,27 +410,27 @@ const users = {
     });
   },
   //获取工程商用户信息
-  //  getUserInfo(SC_PartnerOID = "") {
-  //   return axios({
-  //     url: "/UCMLWebServiceEntryForJs.aspx",
-  //     method: "post",
-  //     data: {
-  //       _bpoName: "BPO_SC_Partner_EditService",
-  //       _methodName: "getCondiActorDataBCString",
-  //       "_parameters[BCName]": "BC_SC_Partner",
-  //       "_parameters[nStartPos]": 0,
-  //       "_parameters[nRecords]": -1,
-  //       "_parameters[fieldList]": "",
-  //       "_parameters[valueList]": "",
-  //       "_parameters[condiIndentList]": "",
-  //       "_parameters[SQLCondi]": "SC_PartnerOID='" + SC_PartnerOID + "'",
-  //       "_parameters[SQLCondiType]": 0,
-  //       "_parameters[SQLFix]": "",
-  //       _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
-  //       _pUrl: ""
-  //     }
-  //   })
-  // },
+  getCompanyUserInfo(SC_CompanyOID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Company_InfoService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Company",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_CompanyOID='" + SC_CompanyOID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
   //获取合作商用户信息
   getUserInfo(SC_PartnerOID = "") {
     return axios({
@@ -454,20 +454,20 @@ const users = {
     })
   },
   //获取供应商用户信息
-  getSupplierUserInfo(SC_SupplierOID = "") {
+  getSupplierUserInfo(Company_SupplierID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_SC_Partner_EditService",
+        _bpoName: "BPO_Start_Company_SupplierService",
         _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_SC_Supplier",
+        "_parameters[BCName]": "BC_Company_Supplier",
         "_parameters[nStartPos]": 0,
         "_parameters[nRecords]": -1,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_SupplierOID='" + SC_SupplierOID + "'",
+        "_parameters[SQLCondi]": "SupplierID='" + Company_SupplierID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -504,13 +504,41 @@ const users = {
         params.worktelno
     });
   },
-  //保存用户数据信息
+  //合作商保存用户数据信息
   saveMessage(xmlData) {
     return axios({
       url: "UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
         _bpoName: "BPO_SC_Partner_EditService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xmlData,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
+  //供应商保存用户数据信息
+  saveMessageSupplier(xmlData) {
+    return axios({
+      url: "UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Company_SupplierService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xmlData,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
+  //工程商保存用户数据信息
+  saveMessageCompany(xmlData) {
+    return axios({
+      url: "UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SC_CompanyFormService",
         _methodName: "BusinessSubmit",
         "_parameters[xmlData]": xmlData,
         _paraNames: "xmlData",

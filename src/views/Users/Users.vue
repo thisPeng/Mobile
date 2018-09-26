@@ -1,6 +1,26 @@
 <template>
   <div class="users">
-    <div class="users-admin" @click="admininfo">
+    <div class="users-admin" @click="companyadmininfo" v-if="userType==1">
+      <div class="users-head">
+        <img id="m_avatar" src="../../../public/img/ms_ico5.png" alt="">
+        <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
+      </div>
+      <div class="m-code-box">
+        <img id="m_barcode" src="../../../public/img/codeico.png" alt="">
+        <van-icon class="users-icon" name="arrow" />
+      </div>
+    </div>
+    <div class="users-admin" @click="admininfo" v-else-if="userType==2">
+      <div class="users-head">
+        <img id="m_avatar" src="../../../public/img/ms_ico5.png" alt="">
+        <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
+      </div>
+      <div class="m-code-box">
+        <img id="m_barcode" src="../../../public/img/codeico.png" alt="">
+        <van-icon class="users-icon" name="arrow" />
+      </div>
+    </div>
+    <div class="users-admin" @click="supplieradmininfo" v-else>
       <div class="users-head">
         <img id="m_avatar" src="../../../public/img/ms_ico5.png" alt="">
         <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
@@ -107,6 +127,16 @@ export default {
     admininfo() {
       this.$router.push({
         name: "usersInfo"
+      });
+    },
+    companyadmininfo() {
+      this.$router.push({
+        name: "companyUserInfo"
+      });
+    },
+    supplieradmininfo() {
+      this.$router.push({
+        name: "supplierUserInfo"
       });
     }
   },

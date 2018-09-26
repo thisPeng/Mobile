@@ -58,24 +58,7 @@
         <van-field v-model="list[13]" label="备注：" placeholder="请输入备注" />
       </van-cell-group>
       <van-cell-group>
-        <div class="task-title">
-          <span>用户信息</span>
-        </div>
-        <van-swipe class="task-img" :loop="true">
-          <van-swipe-item>
-            <img class="img" :src="(servePath+list[26]).replace('~','')" alt="签约单位法人身份证" @click="preView">
-          </van-swipe-item>
-          <van-swipe-item>
-            <img class="img" :src="(servePath+list[25]).replace('~','')" alt="签约单位营业执照" @click="preView">
-          </van-swipe-item>
-          <van-swipe-item>
-            <img class="img" :src="(servePath+list[24]).replace('~','')" alt="合作商身份证照" @click="preView">
-          </van-swipe-item>
-        </van-swipe>
-      </van-cell-group>
-      <van-cell-group v-if="userType === 2">
-        <van-cell class="padding-vertical" title="供应商" is-link value="附件" @click="jumpPage('supplierAnnex')" />
-        <!-- <van-cell title="合作商" is-link value="附件" @click="jumpPage('supplierAnnex')" v-else /> -->
+        <van-cell title="合作商" is-link value="用户信息" @click="jumpPage('usersInfoAccessory')" />
       </van-cell-group>
       <div class="pwd-button" @click="saveMessage">
         <van-button type="primary" size="large">保 存</van-button>
@@ -98,7 +81,7 @@ export default {
   methods: {
     onRegionChange(res) {
       this.list[30] = res.prov;
-      this.list[32] = res.city;
+      this.list[31] = res.city;
       this.list[32] = res.district;
     },
     //保存
@@ -150,6 +133,7 @@ export default {
     },
     //获取用户信息
     getData() {
+      //合作商
       users.getUserInfo(this.userId.UCML_OrganizeOID).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
