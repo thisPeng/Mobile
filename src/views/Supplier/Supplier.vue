@@ -272,9 +272,11 @@ export default {
           font-size: 16px;
         }
         .option {
-          padding: 10px 15px;
+          width: 75px;
+          padding: 10px;
           font-size: 12px;
           color: #00a0e9;
+          text-align: right;
           text-decoration: underline;
         }
       }
