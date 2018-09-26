@@ -65,10 +65,12 @@ export default {
       this.data[26] = res;
     },
     onRegionChange(res) {
-      // console.log(res);
       this.data[58] = res.prov;
       this.data[59] = res.city;
       this.data[60] = res.district;
+      this.data[62] = res.provStr;
+      this.data[63] = res.cityStr;
+      this.data[64] = res.districtStr;
     },
     // 提交审核供应商
     onSubmit() {
@@ -119,6 +121,9 @@ export default {
               prov_ID: this.data[58],
               district_ID: this.data[59],
               city_ID: this.data[60],
+              ProvincesName: this.data[62], //省名
+              DistrictName: this.data[63], //市名
+              CityName: this.data[64], //区名
               Taxrate_Can: this.data[49],
               FactoryAddress: this.data[30],
               Contacts: this.data[31],
@@ -139,6 +144,9 @@ export default {
               58,
               59,
               60,
+              62,
+              63,
+              64,
               49,
               30,
               31,

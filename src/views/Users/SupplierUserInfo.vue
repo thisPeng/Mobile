@@ -13,9 +13,9 @@
         <!-- 统一社会信用代码 -->
         <van-field :value="data[25]" label="统一社会信用代码：" placeholder="请输入统一社会信用代码" />
         <!-- 单位类别 -->
-         <cbh-select v-model="data[26]" label="单位类别：" code="CodeTable_Unit" @change="unitConfirm" v-if="data.length>0" />
+        <cbh-select v-model="data[26]" label="单位类别：" code="CodeTable_Unit" @change="unitConfirm" v-if="data.length>0" />
         <!-- 纳税人类别 -->
-         <cbh-select v-model="data[23]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onConfirm" v-if="data.length>0" />
+        <cbh-select v-model="data[23]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onConfirm" v-if="data.length>0" />
         <!-- 税率 -->
         <van-field :value="data[27]" label="税率：" placeholder="请输入联系人税率" />
         <!-- 开户行 -->
@@ -24,7 +24,7 @@
         <van-field :value="data[29]" label="银行账号：" placeholder="请输入银行账号" />
       </van-cell-group>
       <!-- 公司地址 -->
-      <cbh-region :prov="data[62]" :city="data[63]" :district="data[64]" @change="onRegionChange" v-if="data.length>0" />
+      <cbh-region :prov="data[58]" :city="data[59]" :district="data[60]" @change="onRegionChange" v-if="data.length>0" />
       <!-- 可开票税率 -->
       <van-cell-group>
         <van-field :value="data[49]" label="可开票税率：" placeholder="请输入可开票税率" />
@@ -48,28 +48,30 @@
 <script>
 import computed from "./../../assets/js/computed.js";
 import { users } from "./../../assets/js/api.js";
-import areadata from "./../../assets/js/area.js";
 export default {
   data() {
     return {
-      data: [],
-      areadata,
+      data: []
     };
   },
   methods: {
     //纳税人类别
     onConfirm(res) {
-      this.taxClass = res;
+      this.data[23] = res;
     },
     //单位类别
     unitConfirm(res) {
-      this.unit = res;
+      this.data[26] = res;
     },
     //省市区
     onRegionChange(res) {
-      this.data[62] = res.prov;
-      this.data[63] = res.city;
-      this.data[64] = res.district;
+      this.data[58] = res.prov;
+      this.data[59] = res.city;
+      this.data[60] = res.district;
+      this.data[62] = res.provStr;
+      this.data[63] = res.cityStr;
+      this.data[64] = res.districtStr;
+      // console.log(res);
     },
     //保存
     saveMessage() {
@@ -79,7 +81,7 @@ export default {
           {
             BC_Company_Supplier: [
               { _attr: { UpdateKind: "ukModify" } },
-              { SC_Company_SupplierOID: this.userId.UCML_OrganizeOID }
+              { SC_Company_SupplierOID: this.data[0] }
             ]
           },
           {
@@ -111,7 +113,6 @@ export default {
       });
       // console.log(xmlString);
       users.saveMessageSupplier(xmlString).then(res => {
-        console.log(res);
         try {
           if (res.status === 1) {
             this.$toast.success("保存成功");
@@ -132,11 +133,6 @@ export default {
           const csp = sp[1].split("]]");
           this.data = eval("[[" + csp[0] + "]]")[0];
           // console.log(this.data);
-          const i = this.data[26];
-          this.taxClass = this.columns[i - 1];
-
-          const t = this.data[23];
-          this.unit = this.unitcolumns[t - 1];
         }
       });
     },

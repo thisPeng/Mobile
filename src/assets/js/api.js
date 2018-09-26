@@ -505,7 +505,7 @@ const users = {
     });
   },
   //合作商保存用户数据信息
-  saveMessage(xmlData) {
+  saveMessage(xmlData = "") {
     return axios({
       url: "UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -519,7 +519,7 @@ const users = {
     })
   },
   //供应商保存用户数据信息
-  saveMessageSupplier(xmlData) {
+  saveMessageSupplier(xmlData = "") {
     return axios({
       url: "UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -533,7 +533,7 @@ const users = {
     })
   },
   //工程商保存用户数据信息
-  saveMessageCompany(xmlData) {
+  saveMessageCompany(xmlData = "") {
     return axios({
       url: "UCMLWebServiceEntryForJs.aspx",
       method: "post",

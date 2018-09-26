@@ -3,7 +3,7 @@
     <van-cell-group>
       <van-cell :title="label">
         <select class="cbhSelect" v-model="result" @change="onChange">
-          <option>请选择</option>
+          <option value="">请选择</option>
           <option v-for="(item,index) in list" :key="index" :value="item.CodeID">{{item.CodeName}}</option>
         </select>
       </van-cell>

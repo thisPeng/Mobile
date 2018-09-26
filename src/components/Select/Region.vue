@@ -3,19 +3,19 @@
     <van-cell-group>
       <van-cell title="省份：">
         <select class="taskSelect" v-model="provRes" @change="districtRes=cityRes='';onChangeP()">
-          <option>请选择</option>
+          <option value="">请选择</option>
           <option v-for="(item,index) in regionP" :key="index" :value="item.id">{{item.name}}</option>
         </select>
       </van-cell>
       <van-cell title="城市：">
         <select class="taskSelect" v-model="cityRes" @change="districtRes='';onChangeC()">
-          <option>请选择</option>
+          <option value="">请选择</option>
           <option v-for="(item,index) in regionC" :key="index" :value="item.id">{{item.name}}</option>
         </select>
       </van-cell>
       <van-cell title="区域：">
         <select class="taskSelect" v-model="districtRes" @change="onChangeX()">
-          <option>请选择</option>
+          <option value="">请选择</option>
           <option v-for="(item,index) in regionX" :key="index" :value="item.id">{{item.name}}</option>
         </select>
       </van-cell>
@@ -103,10 +103,34 @@ export default {
       this.getDistrict(this.cityRes);
     },
     onChangeX() {
+      let provStr = "",
+        cityStr = "",
+        districtStr = "";
+      for (const i in this.regionP) {
+        if (this.regionP[i].id == this.provRes) {
+          provStr = this.regionP[i].name;
+          break;
+        }
+      }
+      for (const i in this.regionC) {
+        if (this.regionC[i].id == this.cityRes) {
+          cityStr = this.regionC[i].name;
+          break;
+        }
+      }
+      for (const i in this.regionX) {
+        if (this.regionX[i].id == this.districtRes) {
+          districtStr = this.regionX[i].name;
+          break;
+        }
+      }
       const params = {
         prov: this.provRes,
         city: this.cityRes,
-        district: this.districtRes
+        district: this.districtRes,
+        provStr,
+        cityStr,
+        districtStr
       };
       this.$emit("change", params);
     }

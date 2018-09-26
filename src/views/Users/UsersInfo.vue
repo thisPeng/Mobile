@@ -8,54 +8,54 @@
     <div class="info-users">
       <!-- 合作商编号 -->
       <van-cell-group>
-        <van-field :value="list[1]" label="合作商编号：" disabled />
+        <van-field :value="data[1]" label="合作商编号：" disabled />
       </van-cell-group>
       <!-- 姓名 -->
       <van-cell-group>
-        <van-field :value="list[2]" label="合作商名称：" disabled />
+        <van-field :value="data[2]" label="合作商名称：" disabled />
       </van-cell-group>
       <!-- 签约单位名称 -->
       <van-cell-group>
-        <van-field v-model="list[27]" label="签约单位名称：" placeholder="请输入签约单位名称" />
+        <van-field v-model="data[27]" label="签约单位名称：" placeholder="请输入签约单位名称" />
       </van-cell-group>
       <!-- 法定代表人 -->
       <van-cell-group>
-        <van-field v-model="list[22]" label="法定代表人：" placeholder="请输入法定代表人" />
+        <van-field v-model="data[22]" label="法定代表人：" placeholder="请输入法定代表人" />
       </van-cell-group>
       <!-- 法人身份证号 -->
       <van-cell-group>
-        <van-field v-model="list[26]" label="法人身份证号：" placeholder="请输入法人身份证号" />
+        <van-field v-model="data[26]" label="法人身份证号：" placeholder="请输入法人身份证号" />
       </van-cell-group>
       <!-- 法人电话 -->
       <van-cell-group>
-        <van-field v-model="list[10]" label="法人电话：" placeholder="请输入法人电话" />
+        <van-field v-model="data[10]" label="法人电话：" placeholder="请输入法人电话" />
       </van-cell-group>
       <!-- 联系人姓名 -->
       <van-cell-group>
-        <van-field v-model="list[8]" label="联系人姓名：" placeholder="请输入联系人姓名" />
+        <van-field v-model="data[8]" label="联系人姓名：" placeholder="请输入联系人姓名" />
       </van-cell-group>
       <!-- 联系人电话 -->
       <van-cell-group>
-        <van-field v-model="list[11]" label="联系人电话：" placeholder="请输入联系人电话" />
+        <van-field v-model="data[11]" label="联系人电话：" placeholder="请输入联系人电话" />
       </van-cell-group>
       <!-- 联系人邮箱 -->
       <van-cell-group>
-        <van-field v-model="list[12]" label="联系人邮箱：" placeholder="请输入联系人邮箱" />
+        <van-field v-model="data[12]" label="联系人邮箱：" placeholder="请输入联系人邮箱" />
       </van-cell-group>
 
       <!-- 状态 -->
       <van-cell-group>
-        <van-field :value="list[7] | supplierStatus" label="状态：" disabled />
+        <van-field :value="data[7] | supplierStatus" label="状态：" disabled />
       </van-cell-group>
       <!-- 公司地址 -->
-      <cbh-region :prov="list[30]" :city="list[31]" :district="list[32]" @change="onRegionChange" v-if="list.length>0" />
+      <cbh-region :prov="data[30]" :city="data[31]" :district="data[32]" @change="onRegionChange" v-if="data.length>0" />
       <!-- 地址 -->
       <van-cell-group>
-        <van-field v-model="list[9]" label="地址：" placeholder="请输入地址" />
+        <van-field v-model="data[9]" label="地址：" placeholder="请输入地址" />
       </van-cell-group>
       <!-- 备注 -->
       <van-cell-group>
-        <van-field v-model="list[13]" label="备注：" placeholder="请输入备注" />
+        <van-field v-model="data[13]" label="备注：" placeholder="请输入备注" />
       </van-cell-group>
       <van-cell-group>
         <van-cell title="合作商" is-link value="用户信息" @click="jumpPage('usersInfoAccessory')" />
@@ -69,20 +69,21 @@
 <script>
 import computed from "./../../assets/js/computed.js";
 import { users } from "./../../assets/js/api.js";
-import areaList from "./../../assets/js/area.js";
 import { ImagePreview } from "vant";
 export default {
   data() {
     return {
-      list: [],
-      areaList
+      data: []
     };
   },
   methods: {
     onRegionChange(res) {
-      this.list[30] = res.prov;
-      this.list[31] = res.city;
-      this.list[32] = res.district;
+      this.data[30] = res.prov;
+      this.data[31] = res.city;
+      this.data[32] = res.district;
+      this.data[33] = res.provStr;
+      this.data[34] = res.cityStr;
+      this.data[35] = res.districtStr;
     },
     //保存
     saveMessage() {
@@ -92,28 +93,28 @@ export default {
           {
             BC_SC_Partner: [
               { _attr: { UpdateKind: "ukModify" } },
-              { SC_PartnerOID: this.userId.UCML_OrganizeOID }
+              { SC_PartnerOID: this.data[0] }
             ]
           },
           {
             BC_SC_Partner: [
               { _attr: { UpdateKind: "" } },
               { SC_PartnerOID: "null" },
-              { Second_Name: this.list[27] || "null" }, //签约单位名称
-              { Representative: this.list[22] || "null" }, //法定代表人
-              { IdCard_NO: this.list[26] || "null" }, //法人身份证
-              { Telephone: this.list[10] || "null" }, //法人电话
-              { Contacts: this.list[8] || "null" }, //联系人姓名
-              { Mobilehone: this.list[11] || "null" }, //联系人电话
-              { Mailbox: this.list[12] || "null" }, //联系人邮箱
-              { Address: this.list[9] || "null" }, //地址
-              { Remark: this.list[13] || "null" }, //备注
-              { prov_ID: this.list[30] || "null" }, //省ID
-              { district_ID: this.list[31] || "null" }, //市ID
-              { city_ID: this.list[32] || "null" }, //区ID
-              { ProvincesName: this.list[33] || "null" }, //省名
-              { DistrictName: this.list[34] || "null" }, //市名
-              { CityName: this.list[35] || "null" } //区名
+              { Second_Name: this.data[27] || "null" }, //签约单位名称
+              { Representative: this.data[22] || "null" }, //法定代表人
+              { IdCard_NO: this.data[26] || "null" }, //法人身份证
+              { Telephone: this.data[10] || "null" }, //法人电话
+              { Contacts: this.data[8] || "null" }, //联系人姓名
+              { Mobilehone: this.data[11] || "null" }, //联系人电话
+              { Mailbox: this.data[12] || "null" }, //联系人邮箱
+              { Address: this.data[9] || "null" }, //地址
+              { Remark: this.data[13] || "null" }, //备注
+              { prov_ID: this.data[30] || "null" }, //省ID
+              { district_ID: this.data[31] || "null" }, //市ID
+              { city_ID: this.data[32] || "null" }, //区ID
+              { ProvincesName: this.data[33] || "null" }, //省名
+              { DistrictName: this.data[34] || "null" }, //市名
+              { CityName: this.data[35] || "null" } //区名
             ]
           }
         ]
@@ -138,16 +139,16 @@ export default {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
-          this.list = eval("[[" + csp[0])[0];
-          console.log(this.list);
+          this.data = eval("[[" + csp[0])[0];
+          // console.log(this.data);
         }
       });
     },
     preView() {
       ImagePreview([
-        (this.servePath + this.list[26]).replace("~", ""),
-        (this.servePath + this.list[25]).replace("~", ""),
-        (this.servePath + this.list[24]).replace("~", "")
+        (this.servePath + this.data[26]).replace("~", ""),
+        (this.servePath + this.data[25]).replace("~", ""),
+        (this.servePath + this.data[24]).replace("~", "")
       ]);
     },
     jumpPage(name) {

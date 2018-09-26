@@ -6,97 +6,97 @@
         <div class="taskimage">
           <img :src="(servePath+data[24]).replace('~','')" alt="签约单位法人身份证" @click="preViewInfo" />
         </div>
+      </div>
+      <div class="title-contract">签约单位营业执照</div>
+      <div class="taskcontract">
+        <div class="taskimage">
+          <img :src="(servePath+data[25]).replace('~','')" alt="签约单位营业执照" @click="preViewInfotwo" />
         </div>
-        <div class="title-contract">签约单位营业执照</div>
-        <div class="taskcontract">
-          <div class="taskimage">
-            <img :src="(servePath+data[25]).replace('~','')" alt="签约单位营业执照" @click="preViewInfotwo" />
+      </div>
+      <div class="title-contract">合作商身份证照</div>
+      <div class="taskcontract">
+        <div class="taskimage">
+          <img :src="(servePath+data[38]).replace('~','')" alt="合作商身份证照" @click="preViewInfothree" />
         </div>
-          </div>
-          <div class="title-contract">合作商身份证照</div>
-          <div class="taskcontract">
-            <div class="taskimage">
-              <img :src="(servePath+data[38]).replace('~','')" alt="合作商身份证照" @click="preViewInfothree" />
+      </div>
+    </div>
+    <div class="title" v-else-if="userType == 1">
+      <div class="title-contract">法人身份证</div>
+      <div class="taskcontract">
+        <div class="taskimage">
+          <img :src="(servePath+data[22]).replace('~','')" alt="法人身份证" @click="preViewcomone" />
         </div>
-            </div>
-          </div>
-          <div class="title" v-else-if="userType == 1">
-            <div class="title-contract">法人身份证</div>
-            <div class="taskcontract">
-              <div class="taskimage">
-                <img :src="(servePath+data[22]).replace('~','')" alt="法人身份证" @click="preViewcomone" />
+      </div>
+      <div class="title-contract">营业许可证</div>
+      <div class="taskcontract">
+        <div class="taskimage">
+          <img :src="(servePath+data[19]).replace('~','')" alt="营业许可证" @click="preViewcomtwo" />
         </div>
-              </div>
-              <div class="title-contract">营业许可证</div>
-              <div class="taskcontract">
-                <div class="taskimage">
-                  <img :src="(servePath+data[19]).replace('~','')" alt="营业许可证" @click="preViewcomtwo" />
+      </div>
+      <div class="title-contract">开户许可证</div>
+      <div class="taskcontract">
+        <div class="taskimage">
+          <img :src="(servePath+data[21]).replace('~','')" alt="开户许可证" @click="preViewcomthree" />
         </div>
-                </div>
-                <div class="title-contract">开户许可证</div>
-                <div class="taskcontract">
-                  <div class="taskimage">
-                    <img :src="(servePath+data[21]).replace('~','')" alt="开户许可证" @click="preViewcomthree" />
+      </div>
+      <div class="title-contract">税种核定通知书(国)</div>
+      <div class="taskcontract">
+        <div class="taskimage">
+          <img :src="(servePath+data[20]).replace('~','')" alt="税种核定通知书(国)" @click="preViewcomfour" />
         </div>
-                  </div>
-                  <div class="title-contract">税种核定通知书(国)</div>
-                  <div class="taskcontract">
-                    <div class="taskimage">
-                      <img :src="(servePath+data[20]).replace('~','')" alt="税种核定通知书(国)" @click="preViewcomfour" />
+      </div>
+      <div class="title-contract">税种核定通知书(地)</div>
+      <div class="taskcontract">
+        <div class="taskimage">
+          <img :src="(servePath+data[26]).replace('~','')" alt="税种核定通知书(地)" @click="preViewcomfive" />
         </div>
-                    </div>
-                    <div class="title-contract">税种核定通知书(地)</div>
-                    <div class="taskcontract">
-                      <div class="taskimage">
-                        <img :src="(servePath+data[26]).replace('~','')" alt="税种核定通知书(地)" @click="preViewcomfive" />
+      </div>
+    </div>
+    <div class="contract" v-else>
+      <div class="title-contract">法人身份证</div>
+      <div class="taskcontract">
+        <div class="taskimage">
+          <img :src="(servePath+data[46]).replace('~','')" alt="法人身份证" @click="preView" />
         </div>
-                      </div>
-                    </div>
-                    <div class="contract" v-else>
-                      <div class="title-contract">法人身份证</div>
-                      <div class="taskcontract">
-                        <div class="taskimage">
-                          <img :src="(servePath+data[46]).replace('~','')" alt="法人身份证" @click="preView" />
+      </div>
+      <div class="taskcontract">
+        <div class="title-contract">营业许可证</div>
+        <div class="taskimage">
+          <img :src="(servePath+data[39]).replace('~','')" alt="营业许可证" @click="preViewtwo" />
         </div>
-                        </div>
-                        <div class="taskcontract">
-                          <div class="title-contract">营业许可证</div>
-                          <div class="taskimage">
-                            <img :src="(servePath+data[39]).replace('~','')" alt="营业许可证" @click="preViewtwo" />
+      </div>
+      <div class="taskcontract">
+        <div class="title-contract">开户许可证</div>
+        <div class="taskimage">
+          <img :src="(servePath+data[45]).replace('~','')" alt="开户许可证" @click="preViewthree" />
         </div>
-                          </div>
-                          <div class="taskcontract">
-                            <div class="title-contract">开户许可证</div>
-                            <div class="taskimage">
-                              <img :src="(servePath+data[45]).replace('~','')" alt="开户许可证" @click="preViewthree" />
+      </div>
+      <div class="taskcontract">
+        <div class="title-contract">税种核定通知书(国)</div>
+        <div class="taskimage">
+          <img :src="(servePath+data[40]).replace('~','')" alt="税种核定通知书(国)" @click="preViewfour" />
         </div>
-                            </div>
-                            <div class="taskcontract">
-                              <div class="title-contract">税种核定通知书(国)</div>
-                              <div class="taskimage">
-                                <img :src="(servePath+data[40]).replace('~','')" alt="税种核定通知书(国)" @click="preViewfour" />
+      </div>
+      <div class="taskcontract">
+        <div class="title-contract">上月增值税完税证明</div>
+        <div class="taskimage">
+          <img :src="(servePath+data[50]).replace('~','')" alt="上月增值税完税证明" @click="preViewfive" />
         </div>
-                              </div>
-                              <div class="taskcontract">
-                                <div class="title-contract">上月增值税完税证明</div>
-                                <div class="taskimage">
-                                  <img :src="(servePath+data[50]).replace('~','')" alt="上月增值税完税证明" @click="preViewfive" />
+      </div>
+      <div class="taskcontract">
+        <div class="title-contract">上季度企业所得税完税证明</div>
+        <div class="taskimage">
+          <img :src="(servePath+data[51]).replace('~','')" alt="上季度企业所得税完税证明" @click="preViewexit" />
         </div>
-                                </div>
-                                <div class="taskcontract">
-                                  <div class="title-contract">上季度企业所得税完税证明</div>
-                                  <div class="taskimage">
-                                    <img :src="(servePath+data[51]).replace('~','')" alt="上季度企业所得税完税证明" @click="preViewexit" />
+      </div>
+      <div class="taskcontract">
+        <div class="title-contract">税种核定通知书(地)</div>
+        <div class="taskimage">
+          <img :src="(servePath+data[43]).replace('~','')" alt="税种核定通知书(地)" @click="preViewend" />
         </div>
-                                  </div>
-                                  <div class="taskcontract">
-                                    <div class="title-contract">税种核定通知书(地)</div>
-                                    <div class="taskimage">
-                                      <img :src="(servePath+data[43]).replace('~','')" alt="税种核定通知书(地)" @click="preViewend" />
-        </div>
-                                    </div>
-                                  </div>
-                                </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
