@@ -13,21 +13,9 @@
         <!-- 统一社会信用代码 -->
         <van-field :value="data[25]" label="统一社会信用代码：" placeholder="请输入统一社会信用代码" />
         <!-- 单位类别 -->
-        <van-cell-group class="con-price">
-          <span class="con-label">单位类别</span>
-          <span class="con-select" @click="unitShow=true">{{unit}}</span>
-          <van-popup v-model="unitShow" position="bottom">
-            <van-picker show-toolbar :columns="unitcolumns" @cancel="unitShow=false" @confirm="unitConfirm" />
-          </van-popup>
-        </van-cell-group>
+         <cbh-select v-model="data[26]" label="单位类别：" code="CodeTable_Unit" @change="unitConfirm" v-if="data.length>0" />
         <!-- 纳税人类别 -->
-        <van-cell-group class="con-price">
-          <span class="con-label">纳税人类别</span>
-          <span class="con-select" @click="taxClassShow=true">{{taxClass}}</span>
-          <van-popup v-model="taxClassShow" position="bottom">
-            <van-picker show-toolbar :columns="columns" @cancel="taxClassShow=false" @confirm="onConfirm" />
-          </van-popup>
-        </van-cell-group>
+         <cbh-select v-model="data[23]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onConfirm" v-if="data.length>0" />
         <!-- 税率 -->
         <van-field :value="data[27]" label="税率：" placeholder="请输入联系人税率" />
         <!-- 开户行 -->
@@ -66,24 +54,16 @@ export default {
     return {
       data: [],
       areadata,
-      taxClass: "请选择纳税人类别",
-      columns: ["一般纳税人", "小规模纳税人"],
-      taxClassShow: false,
-      unit: "请选择单位类别",
-      unitcolumns: ["生产厂家", "经销商"],
-      unitShow: false
     };
   },
   methods: {
     //纳税人类别
     onConfirm(res) {
       this.taxClass = res;
-      this.taxClassShow = false;
     },
     //单位类别
     unitConfirm(res) {
       this.unit = res;
-      this.unitShow = false;
     },
     //省市区
     onRegionChange(res) {
