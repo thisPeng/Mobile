@@ -29,6 +29,9 @@ import Count from "./views/Count/Count";
 import Users from "./views/Users/Users";
 import UsersPwd from "./views/Users/UsersPwd";
 import UsersInfo from "./views/Users/UsersInfo";
+import CompanyUserInfo from "./views/Users/CompanyUserInfo";
+import SupplierUserInfo from "./views/Users/SupplierUserInfo";
+import UsersInfoAccessory from "./views/Users/UsersInfoAccessory";
 import Supplier from "./views/Supplier/Supplier";
 import SupplierType from "./views/Supplier/SupplierType";
 import SupplierList from "./views/Supplier/SupplierList";
@@ -277,7 +280,31 @@ export default new Router({
           name: "usersInfo",
           component: UsersInfo,
           meta: {
-            title: "个人信息"
+            title: "合作商个人信息"
+          }
+        },
+        {
+          path: "/users/companyUserInfo",
+          name: "companyUserInfo",
+          component: CompanyUserInfo,
+          meta: {
+            title: "工程商个人信息"
+          }
+        },
+        {
+          path: "/users/supplierUserInfo",
+          name: "supplierUserInfo",
+          component: SupplierUserInfo,
+          meta: {
+            title: "供应商个人信息"
+          }
+        },
+        {
+          path: "/users/usersInfoAccessory",
+          name: "usersInfoAccessory",
+          component: UsersInfoAccessory,
+          meta: {
+            title: "用户信息"
           }
         },
         {
