@@ -52,10 +52,6 @@ module.exports = {
     themeColor: '#FFFFFF',
     msTileColor: '#ffffff',
     appleMobileWebAppCapable: 'yes',
-    appleMobileWebAppStatusBarStyle: 'black',
-    workboxPluginMode: 'InjectManifest',
-    workboxOptions: {
-      swSrc: 'src/registerServiceWorker.js',
-    }
+    appleMobileWebAppStatusBarStyle: 'black'
   }
 };
