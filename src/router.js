@@ -39,7 +39,6 @@ import SupplierList from "./views/Supplier/SupplierList";
 import SupplierAccessory from "./views/Supplier/SupplierAccessory";
 import SupplierDetailsAnnex from "./views/Supplier/SupplierDetailsAnnex";
 import SupplierDetails from "./views/Supplier/SupplierDetails";
-import TaskList from "./views/TaskWait/TaskList";
 import TaskWait from "./views/TaskWait/TaskWait";
 import TaskYCFrom from "./views/TaskWait/TaskYCFrom";
 import TaskZFFrom from "./views/TaskWait/TaskZFFrom";
@@ -142,14 +141,6 @@ export default new Router({
           component: TaskWait,
           meta: {
             title: "待办列表"
-          }
-        },
-        {
-          path: "/taskList",
-          name: "taskList",
-          component: TaskList,
-          meta: {
-            title: "待办事宜"
           }
         },
         {

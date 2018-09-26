@@ -11,7 +11,7 @@
       </van-cell-group>
       <van-datetime-picker v-model="currentDate" v-show="showDate" type="date" :min-date="new Date()" class="contract-date" @confirm="fahuoDate" @cancel="showDate=false" />
       <van-field :value="list[7]" label="工程地址：" disabled/>
-      <cbh-select v-model="list[13]" label="发货方式：" code="CodeTable_Deliver_Type" @change="onDeliverChange" v-if="list[41] != '已发货'" />
+      <cbh-select v-model="list[13]" label="发货方式：" code="CodeTable_Deliver_Type" @change="onDeliverChange" v-if="list.length > 0 && list[41] != '已发货'" />
       <van-field :value="list[13] | codeValue('CodeTable_Deliver_Type')" label="发货方式：" disabled v-else />
       <van-field :value="list[41]" label="单据状态：" disabled/>
       <van-field :value="list[22]" label="审核人：" disabled/>
@@ -20,7 +20,7 @@
       <van-field :value="list[27]" label="签收时间：" disabled/>
       <van-field :value="list[28]" label="签收人：" disabled/>
       <van-field :value="list[11]" label="发货金额：" disabled/>
-      <van-field v-model="list[29]" label="备注：" type="textarea" :disabled="list[41] == '已发货'" />
+      <van-field v-model="list[29]" label="备注：" type="textarea" :disabled="list[41] == '已发货'" :placeholder="confirmParams[41] == '已发货' ? '' : '请输入备注'" />
       <van-cell title="发货单明细" is-link value="详情" @click="jumpPage(list)" />
     </van-cell-group>
     <div class="con-button" v-if="list[41] != '已发货'">
@@ -99,6 +99,10 @@ export default {
     },
     //发货按钮
     sendShipping() {
+      if (!this.list[13]) {
+        this.$toast.fail("请选择发货方式");
+        return;
+      }
       this.$dialog
         .confirm({
           title: "发货",

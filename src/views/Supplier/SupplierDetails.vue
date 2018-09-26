@@ -5,7 +5,7 @@
       <van-field :value="data[22]" label="单位名称:" disabled/>
       <van-field :value="data[25]" label="统一社会信用代码:" disabled/>
       <van-field :value="data[26] | codeValue('CodeTable_TaxClass')" label="纳税人类别：" :disabled="edit" v-if="edit" />
-      <cbh-select :value="data[26]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onTaxChange" v-else />
+      <cbh-select v-model="data[26]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onTaxChange" v-else-if="data.length > 0" />
       <van-field :value="data[27]" label="税率:" disabled/>
       <van-field :value="data[28]" label="开户行:" disabled/>
       <van-field :value="data[29]" label="银行账号:" disabled/>

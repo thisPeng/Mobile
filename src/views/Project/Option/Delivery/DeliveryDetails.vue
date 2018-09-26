@@ -7,7 +7,7 @@
       <van-field v-model="info[39]" label="工程名称：" disabled />
       <van-field :value="info[8]" label="发货时间：" disabled />
       <van-field v-model="info[40]" label="工程地址：" disabled />
-      <cbh-select v-model="info[13]" label="发货方式：" code="CodeTable_Deliver_Type" @change="onDeliverChange" v-if="info[25] != '1' && info[20] != '1'" />
+      <cbh-select v-model="info[13]" label="发货方式：" code="CodeTable_Deliver_Type" @change="onDeliverChange" v-if="info.length > 0 && info[25] != '1' && info[20] != '1'" />
       <van-field :value="info[13] | codeValue('CodeTable_Deliver_Type')" label="发货方式：" disabled v-else />
       <van-field :value="info[41]" label="单据状态：" disabled />
       <van-field v-model="info[19]" label="审核人：" disabled />

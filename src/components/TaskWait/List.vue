@@ -1,7 +1,7 @@
 <template>
   <section class="message">
     <div class="message-button">
-      <van-button type="primary" class="button" @click="onClick">{{buttonText}}</van-button>
+      <van-button :type="buttonText == '删除' ? 'danger' : 'main'" class="button" @click="onClick">{{buttonText}}</van-button>
     </div>
     <div class="task-table">
       <ul class="table">
