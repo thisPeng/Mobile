@@ -104,7 +104,7 @@
           </div>
         </van-swipe-item> -->
       </van-swipe>
-      <van-swipe class="apply-project" v-else-if="userType === 3">
+      <van-swipe class="apply-project" v-else-if="userType == 3">
         <van-swipe-item>
           <div class="project">
             <!-- <div class="project-item" @click="jumpPage('quotation')">

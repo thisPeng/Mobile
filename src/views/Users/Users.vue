@@ -1,73 +1,53 @@
 <template>
   <div class="users">
-    <div class="users-admin" @click="companyadmininfo" v-if="userType==1">
+    <div class="users-admin" @click="jumpInfo">
       <div class="users-head">
         <img id="m_avatar" src="../../../public/img/ms_ico5.png" alt="">
         <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
+        </div>
+        <div class="m-code-box">
+          <img id="m_barcode" src="../../../public/img/codeico.png" alt="">
+          <van-icon class="users-icon" name="arrow" />
+        </div>
       </div>
-      <div class="m-code-box">
-        <img id="m_barcode" src="../../../public/img/codeico.png" alt="">
-        <van-icon class="users-icon" name="arrow" />
+      <div class="users-wrap">
+        <van-cell-group class="margin-bottom-sm" v-if="userType <= 2">
+          <van-cell title="材料供应商" is-link @click="jumpPage('supplier')">
+            <template slot="icon">
+              <div class="icon">
+                <i class="iconfont icon-gongkaobei"></i>
+              </div>
+            </template>
+          </van-cell>
+          <van-cell title="劳务供应商" is-link @click="jumpPage('supplierList')">
+            <template slot="icon">
+              <div class="icon">
+                <i class="iconfont icon-laowuhetong"></i>
+              </div>
+            </template>
+          </van-cell>
+        </van-cell-group>
+        <van-cell-group>
+          <van-cell title="修改密码" is-link @click="jumpPage('usersPwd')">
+            <template slot="icon">
+              <div class="icon">
+                <i class="iconfont icon-mima"></i>
+              </div>
+            </template>
+          </van-cell>
+          <van-cell title="清除缓存" is-link @click="cleanStore">
+            <template slot="icon">
+              <div class="icon">
+                <i class="iconfont icon-shezhi"></i>
+              </div>
+            </template>
+          </van-cell>
+        </van-cell-group>
+      </div>
+      <div class="users-button">
+        <van-button type="danger" size="large" @click="exit">退出</van-button>
       </div>
     </div>
-    <div class="users-admin" @click="admininfo" v-else-if="userType==2">
-      <div class="users-head">
-        <img id="m_avatar" src="../../../public/img/ms_ico5.png" alt="">
-        <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
-      </div>
-      <div class="m-code-box">
-        <img id="m_barcode" src="../../../public/img/codeico.png" alt="">
-        <van-icon class="users-icon" name="arrow" />
-      </div>
-    </div>
-    <div class="users-admin" @click="supplieradmininfo" v-else>
-      <div class="users-head">
-        <img id="m_avatar" src="../../../public/img/ms_ico5.png" alt="">
-        <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
-      </div>
-      <div class="m-code-box">
-        <img id="m_barcode" src="../../../public/img/codeico.png" alt="">
-        <van-icon class="users-icon" name="arrow" />
-      </div>
-    </div>
-    <div class="users-wrap">
-      <van-cell-group class="margin-bottom-sm" v-if="userType === 1">
-        <van-cell title="材料供应商" is-link @click="jumpPage('supplier')">
-          <template slot="icon">
-            <div class="icon">
-              <i class="iconfont icon-gongkaobei"></i>
-            </div>
-          </template>
-        </van-cell>
-        <van-cell title="劳务供应商" is-link @click="jumpPage('supplierList')">
-          <template slot="icon">
-            <div class="icon">
-              <i class="iconfont icon-laowuhetong"></i>
-            </div>
-          </template>
-        </van-cell>
-      </van-cell-group>
-      <van-cell-group>
-        <van-cell title="修改密码" is-link @click="jumpPage('usersPwd')">
-          <template slot="icon">
-            <div class="icon">
-              <i class="iconfont icon-mima"></i>
-            </div>
-          </template>
-        </van-cell>
-        <van-cell title="清除缓存" is-link @click="cleanStore">
-          <template slot="icon">
-            <div class="icon">
-              <i class="iconfont icon-shezhi"></i>
-            </div>
-          </template>
-        </van-cell>
-      </van-cell-group>
-    </div>
-    <div class="users-button">
-      <van-button type="danger" size="large" @click="exit">退出</van-button>
-    </div>
-  </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
@@ -124,20 +104,20 @@ export default {
         }
       });
     },
-    admininfo() {
-      this.$router.push({
-        name: "usersInfo"
-      });
-    },
-    companyadmininfo() {
-      this.$router.push({
-        name: "companyUserInfo"
-      });
-    },
-    supplieradmininfo() {
-      this.$router.push({
-        name: "supplierUserInfo"
-      });
+    jumpInfo() {
+      if (this.userType == 1) {
+        this.$router.push({
+          name: "companyUserInfo"
+        });
+      } else if (this.userType == 2) {
+        this.$router.push({
+          name: "usersInfo"
+        });
+      } else if (this.userType == 3) {
+        this.$router.push({
+          name: "supplierUserInfo"
+        });
+      }
     }
   },
   computed
