@@ -58,13 +58,13 @@ export default {
       this.$emit("change", this.result);
     }
   },
-  created() {
+  mounted() {
     this.getData().then(res => {
       if (res) {
         this.$nextTick(() => {
           setTimeout(() => {
             this.result = this.value;
-          }, 1000);
+          }, 10);
         });
       }
     });

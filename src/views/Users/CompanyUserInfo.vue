@@ -14,23 +14,9 @@
         <!-- 统一社会信用代码 -->
         <van-field :value="list[5]" label="统一社会信用代码：" placeholder="请输入统一社会信用代码" />
         <!-- 公司类型 -->
-        <!-- <van-field :value="list[3]" label="公司类型：" placeholder="请输入公司类型" /> -->
-        <van-cell-group class="con-price">
-          <span class="con-label">公司类型</span>
-          <span class="con-select" @click="comTypeShow=true">{{comType}}</span>
-          <van-popup v-model="comTypeShow" position="bottom">
-            <van-picker show-toolbar :columns="comTypecolumns" @cancel="comTypeShow=false" @confirm="comTypeConfirm" />
-          </van-popup>
-        </van-cell-group>
+        <cbh-select v-model="list[3]" label="公司类型：" code="CodeTable_CoType" @change="comTypeConfirm" v-if="list.length>0" />
         <!-- 纳税人类别 -->
-        <!-- <van-field v-model="list[6]" label="纳税人类别：" placeholder="请输入纳税人类别" /> -->
-        <van-cell-group class="con-price">
-          <span class="con-label">纳税人类别</span>
-          <span class="con-select" @click="comUnitShow=true">{{comUnit}}</span>
-          <van-popup v-model="comUnitShow" position="bottom">
-            <van-picker show-toolbar :columns="comUnitcolumns" @cancel="comUnitShow=false" @confirm="comUnitConfirm" />
-          </van-popup>
-        </van-cell-group>
+        <cbh-select v-model="list[6]" label="纳税人类别：" code="CodeTable_TaxClass" @change="comUnitConfirm" v-if="list.length>0" />
         <!-- 法人代表 -->
         <van-field v-model="list[27]" label="法人代表：" placeholder="请输入法人代表" />
         <!-- 开户行 -->
@@ -64,29 +50,19 @@
 <script>
 import computed from "./../../assets/js/computed.js";
 import { users } from "./../../assets/js/api.js";
-import areaList from "./../../assets/js/area.js";
 export default {
   data() {
     return {
-      list: [],
-      areaList,
-      comType: "请选择公司类型",
-      comTypecolumns: ["国资（独资或合资）", "有限责任公司","股份有限公司","独资（法人或自然人）","港澳台合资","外商合资","港澳台独资","外商独资"],
-      comTypeShow: false,
-      comUnit: "请选择纳税人类别",
-      comUnitcolumns: ["一般纳税人", "小规模纳税人"],
-      comUnitShow: false
+      list: []
     };
   },
   methods: {
     //公司类型
     comTypeConfirm(res) {
-      this.comType = res;
-      this.comTypeShow = false;
+      this.list[3] = res;
     },
     comUnitConfirm(res) {
-      this.comUnit = res;
-      this.comUnitShow = false;
+      this.list[6] = res;
     },
     onRegionChange(res) {
       this.list[39] = res.prov;
@@ -153,10 +129,6 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split("]]");
           this.list = eval("[[" + csp[0] + "]]")[0];
-          const t = this.list[3];
-          this.comType = this.comTypecolumns[t - 1];
-          const c = this.list[6];
-          this.comUnit = this.comUnitcolumns[c - 1];
         }
       });
     },
