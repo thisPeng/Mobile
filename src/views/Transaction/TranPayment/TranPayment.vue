@@ -14,18 +14,12 @@
             <div class="content-row">
               <span class="row-left">支付金额：{{item[9]}}</span>
               <span class="row-right">
-                <van-tag type="danger" v-if="item[6] == '0'">单据状态：{{item[6] | codeValue("CodeTable_Approve")}}</van-tag>
-                <van-tag v-else-if="item[6] == '1'">单据状态：{{item[6] | codeValue("CodeTable_Approve")}}</van-tag>
-                <van-tag type="primary" v-else-if="item[6] == '2'">单据状态：{{item[6] | codeValue("CodeTable_Approve")}}</van-tag>
-                <van-tag type="success" v-else-if="item[6] == '3'">单据状态：{{item[6] | codeValue("CodeTable_Approve")}}</van-tag>
+                <van-tag type="danger" v-if="item[6] == '0'">单据状态：{{item[6] | codeValue("CodeTable_Pay_Info")}}</van-tag>
+                <van-tag type="success" v-else-if="item[6] == '1'">单据状态：{{item[6] | codeValue("CodeTable_Pay_Info")}}</van-tag>
               </span>
             </div>
             <div class="content-row">
               <span class="row-left">支付日期：{{item[18] | formatDate}}</span>
-              <span class="row-right">
-                <van-tag type="danger" plain v-if="item[6] == '0'">付款状态：{{item[6] | codeValue("CodeTable_Pay_Info")}}</van-tag>
-                <van-tag type="success" plain v-else-if="item[6] == '1'">付款状态：{{item[6] | codeValue("CodeTable_Pay_Info")}}</van-tag>
-              </span>
             </div>
             <div class="content-row">
               <span class="row-left">银行账号：{{item[12]}}</span>
@@ -53,7 +47,7 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0]);
-          // console.log(this.list);
+          console.log(this.list);
         }
       });
     },
