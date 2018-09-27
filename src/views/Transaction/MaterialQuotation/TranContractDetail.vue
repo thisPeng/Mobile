@@ -302,7 +302,7 @@ export default {
                 this.$nextTick().then(() => {
                   setTimeout(() => {
                     this.$router.go(-1);
-                  }, 1500);
+                  }, 800);
                 });
                 return;
               }

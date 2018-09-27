@@ -327,10 +327,10 @@ export default {
           };
           classify.addCartForOrder(params).then(res => {
             try {
-              if (res.status === 1 && res.text === "1") {
+              if (res.status === 1 && res.text == "1") {
                 this.$toast.success("添加物资成功");
                 return;
-              } else if (res.status === 1 && res.text === "-1") {
+              } else if (res.status === 1 && res.text == "-1") {
                 throw "供应商未通过审核，添加物资失败";
               }
               throw "添加失败，请刷新页面后重试";
@@ -347,10 +347,10 @@ export default {
           };
           classify.addCart(params).then(res => {
             try {
-              if (res.status === 1 && res.text === "1") {
+              if (res.status === 1 && res.text == "1") {
                 this.$toast.success("添加物资成功");
                 return;
-              } else if (res.status === 1 && res.text === "-1") {
+              } else if (res.status === 1 && res.text == "-1") {
                 throw "供应商未通过审核，添加物资失败";
               }
               throw "添加失败，请刷新页面后重试";

@@ -172,9 +172,9 @@ export default {
       };
       supplier.addCollect(params).then(res => {
         if (res && res.status === 1) {
-          if (res.text === "1") {
+          if (res.text == "1") {
             this.$toast.fail("供应商已经是常用供应商");
-          } else if (res.text === "2") {
+          } else if (res.text == "2") {
             this.getList();
             this.$nextTick().then(() => {
               setTimeout(() => {

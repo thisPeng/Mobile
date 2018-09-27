@@ -95,7 +95,7 @@ export default {
                 this.$toast("缓存已清除");
                 // setTimeout(() => {
                 //   location.reload();
-                // }, 1500);
+                // }, 800);
               }
             });
           }

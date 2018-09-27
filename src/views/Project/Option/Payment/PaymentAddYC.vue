@@ -166,7 +166,7 @@ export default {
                   });
                   setTimeout(() => {
                     this.$router.go(-1);
-                  }, 1500);
+                  }, 800);
                 } else {
                   this.$toast.fail(res.text);
                 }

@@ -109,9 +109,9 @@ export default {
           };
           offer.deleteDeliveryDetails(params).then(res => {
             if (res.status === 1) {
-              if (res.text === "-1") {
+              if (res.text == "-1") {
                 this.$toast.fail("明细至少有一条记录");
-              } else if (res.text === "-2") {
+              } else if (res.text == "-2") {
                 this.$toast.fail("删除数量不能大于等于现有记录数量");
               } else {
                 this.getData().then(result => {

@@ -89,11 +89,12 @@ export default {
     onSalcSum() {
       this.goods.howMoney = "￥" + this.goods.howMuch * this.goods.num;
     },
+    // 删除物资
     arrivalDelete(item) {
       this.$dialog
         .confirm({
           title: "删除",
-          message: "确认删除此产品记录？"
+          message: "确认删除此物资记录？"
         })
         .then(() => {
           const params = {
@@ -102,9 +103,9 @@ export default {
           };
           arrival.getDeleteOffer(params).then(res => {
             if (res.status === 1) {
-              if (res.text === "-1") {
+              if (res.text == "-1") {
                 this.$toast.fail("明细至少有一条记录");
-              } else if (res.text === "-2") {
+              } else if (res.text == "-2") {
                 this.$toast.fail("删除数量不能大于等于现有记录数量");
               } else {
                 const xml = require("xml");
@@ -122,13 +123,13 @@ export default {
                     ]
                   }
                 ]);
-                xmlString += "<root>" + xmlString + "</root>";
+                xmlString = "<root>" + xmlString + "</root>";
                 arrival.saveKeepRevise(xmlString).then(ress => {
                   try {
                     if (ress.status === 1) {
                       this.showBase = false;
                       this.getData().then(result => {
-                        if (result) this.$toast.success(res.text);
+                        if (result) this.$toast.success("删除成功");
                         else this.$router.go(0);
                       });
                     } else {

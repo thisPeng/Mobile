@@ -63,7 +63,6 @@ export default {
       if (res) {
         this.$nextTick(() => {
           setTimeout(() => {
-            console.log(this.value);
             this.result = this.value;
           }, 10);
         });

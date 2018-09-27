@@ -135,7 +135,7 @@ export default {
                   this.servePath +
                   "/SupplyChain/Images/MaterialType/default.jpg";
               }
-              if (val[23] === "1") {
+              if (val[23] == "1") {
                 arr.push(val);
                 listOrder[listOrder.length - 1].checked = true;
               }
@@ -244,7 +244,7 @@ export default {
             // 多个删除
             cart.delCartMaterials(str).then(res => {
               try {
-                if (res.status === 1 && res.text === "True") {
+                if (res.status === 1 && res.text == "True") {
                   this.$toast.success("已删除");
                   this.$nextTick().then(() => {
                     setTimeout(() => {
@@ -269,20 +269,6 @@ export default {
       this.listOrder.forEach(val => {
         val.checked = res;
       });
-      /*
-      const str = res ? "-1" : "";
-      cart.cartSelect(this.projectInfo.SC_ProjectOID, str).then(res => {
-        try {
-          if (res.status === 1 && res.text === "True") {
-            this.getCart();
-            return;
-          }
-          throw "全选失败，请刷新页面重试";
-        } catch (e) {
-          this.$toast.fail(e);
-        }
-      });
-      */
     },
     // 找同款
     onSearchSame(name) {
@@ -313,7 +299,7 @@ export default {
               try {
                 if (result.status === 1) {
                   const res = JSON.parse(result.text)[0];
-                  if (res.iReturn === "1") {
+                  if (res.iReturn == "1") {
                     this.$toast.success("提交成功");
                     this.$nextTick().then(() => {
                       setTimeout(() => {
@@ -354,7 +340,7 @@ export default {
     onDeleteItem(id) {
       cart.delCartMaterials(id).then(res => {
         try {
-          if (res.status === 1 && res.text === "True") {
+          if (res.status === 1 && res.text == "True") {
             this.$toast.success("已删除");
             this.$nextTick().then(() => {
               setTimeout(() => {

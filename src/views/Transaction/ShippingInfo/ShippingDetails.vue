@@ -14,7 +14,7 @@
       <cbh-select v-model="list[13]" label="发货方式：" code="CodeTable_Deliver_Type" @change="onDeliverChange" v-if="list.length > 0 && list[41] != '已发货'" />
       <van-field :value="list[13] | codeValue('CodeTable_Deliver_Type')" label="发货方式：" disabled v-else />
       <van-field :value="list[41]" label="单据状态：" disabled />
-      <van-field :value="list[22]" label="审核人：" disabled />
+      <van-field :value="list[22] || userInfo.name" label="审核人：" disabled />
       <van-field :value="list[10]" label="发货数量：" disabled />
       <van-field :value="list[42]" label="签收状态：" disabled />
       <van-field :value="list[27]" label="签收时间：" disabled v-if="list[42] == '已签收'" />
@@ -68,7 +68,7 @@ export default {
                 });
                 setTimeout(() => {
                   this.$router.go(-1);
-                }, 1500);
+                }, 800);
               }
             } catch (e) {
               this.$toast.fail(e);
@@ -120,7 +120,7 @@ export default {
                   this.$nextTick().then(() => {
                     setTimeout(() => {
                       this.$router.go(-1);
-                    }, 1500);
+                    }, 800);
                   });
                 } else {
                   this.$toast.fail("发货失败");

@@ -187,15 +187,15 @@ export default {
       offer.deleteTranDetails(this.confirmParams[0], item[0]).then(res => {
         try {
           if (res.status === 1) {
-            if (res.text === "1") {
+            if (res.text == "1") {
               this.getData().then(result => {
                 if (result) this.$toast.success("删除成功");
                 else this.$router.go(0);
               });
               throw "删除失败，请重试。";
-            } else if (res.text === "-1") {
+            } else if (res.text == "-1") {
               throw "物资明细至少保留一条数据";
-            } else if (res.text === "-2") {
+            } else if (res.text == "-2") {
               throw "删除数量不能大于等于现有记录数量";
             }
           }

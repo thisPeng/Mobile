@@ -26,13 +26,13 @@
                   <div slot="thumb">
                     <img :src="item[29].replace('~', servePath)" class="van-card__img">
                   </div>
-                  <div slot="title" class="van-card__row">
-                    <div class="van-card__title">{{item[4]}}</div>
-                    <div class="van-card__price">{{'￥ '+item[14]}}</div>
-                  </div>
-                  <div slot="footer">
-                    <van-stepper v-model="item[11]" :integer="true" />
-                  </div>
+                    <div slot="title" class="van-card__row">
+                      <div class="van-card__title">{{item[4]}}</div>
+                      <div class="van-card__price">{{'￥ '+item[14]}}</div>
+                    </div>
+                    <div slot="footer">
+                      <van-stepper v-model="item[11]" :integer="true" />
+                    </div>
                 </van-card>
               </div>
             </van-swipe-cell>
@@ -115,7 +115,7 @@ export default {
         DetailIDList
       };
       offer.saveDeliverBill(params).then(res => {
-        if (res.status === 1 && res.text === "1") {
+        if (res.status === 1 && res.text == "1") {
           this.$toast.success({
             forbidClick: true, // 禁用背景点击
             message: "生成发货单成功"
@@ -123,7 +123,7 @@ export default {
           setTimeout(() => {
             this.$router.go(-1);
             this.getInfo(pid);
-          }, 1500);
+          }, 800);
         } else {
           this.$toast.fail("生成发货单失败，请勾选发货物资");
         }
@@ -186,7 +186,7 @@ export default {
           let tmp = "";
           // 数据分组
           list.forEach(val => {
-            if (val[0] !== tmp) {
+            if (val[0] !== tmp && val[20] != "发货情况：全部发货") {
               listOrder.push({
                 id: val[0],
                 pid: val[4],

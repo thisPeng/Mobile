@@ -90,7 +90,7 @@ export default {
         .then(() => {
           conprice.confrimPrice(this.confirmParams[0]).then(res => {
             if (res && res.status === 1) {
-              if (res.text === "0") {
+              if (res.text == "0") {
                 this.$toast.fail({
                   forbidClick: true, // 禁用背景点击
                   message: "合同并未编辑，请先确定合同内容！"
@@ -98,9 +98,9 @@ export default {
                 this.$nextTick().then(() => {
                   setTimeout(() => {
                     this.jumpPage("contractwork");
-                  }, 1500);
+                  }, 800);
                 });
-              } else if (res.text === "1") {
+              } else if (res.text == "1") {
                 this.$toast.success({
                   forbidClick: true, // 禁用背景点击
                   message: "生成订单成功，等待供应商发货"
@@ -108,7 +108,7 @@ export default {
                 this.$nextTick().then(() => {
                   setTimeout(() => {
                     this.$router.go(-1);
-                  }, 1500);
+                  }, 800);
                 });
               } else {
                 this.$toast.fail("生成订单失败");
@@ -134,7 +134,7 @@ export default {
             try {
               if (result) {
                 conprice.sendOrder(this.confirmParams[0]).then(res => {
-                  if (res && res.status === 1 && res.text === "True") {
+                  if (res && res.status === 1 && res.text == "True") {
                     this.$toast.success({
                       forbidClick: true, // 禁用背景点击
                       message: "发送成功"
@@ -142,7 +142,7 @@ export default {
                     this.$nextTick().then(() => {
                       setTimeout(() => {
                         this.$router.go(-1);
-                      }, 1500);
+                      }, 800);
                     });
                     return;
                   }
@@ -177,7 +177,7 @@ export default {
                 this.$nextTick().then(() => {
                   setTimeout(() => {
                     this.$router.go(-1);
-                  }, 1500);
+                  }, 800);
                 });
                 return;
               }
@@ -205,7 +205,7 @@ export default {
           };
           conprice.confirmDelete(params).then(res => {
             try {
-              if (res && res.status === 1 && res.text === "True") {
+              if (res && res.status === 1 && res.text == "True") {
                 this.$toast.success({
                   forbidClick: true, // 禁用背景点击
                   message: "已删除"
@@ -213,7 +213,7 @@ export default {
                 this.$nextTick().then(() => {
                   setTimeout(() => {
                     this.$router.go(-1);
-                  }, 1500);
+                  }, 800);
                 });
                 return;
               }

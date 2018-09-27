@@ -132,7 +132,7 @@ export default {
         DetailIDList
       };
       offer.saveDeliverBill(params).then(res => {
-        if (res.status === 1 && res.text === "1") {
+        if (res.status === 1 && res.text == "1") {
           this.$toast.success({
             forbidClick: true,
             message: "生成发货单成功"
@@ -141,7 +141,7 @@ export default {
             this.$router.push({
               name: "shippinginfo"
             });
-          }, 1500);
+          }, 800);
         }
       });
     }

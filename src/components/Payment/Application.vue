@@ -71,9 +71,9 @@ export default {
         .then(() => {
           financial.deletePayBill(id).then(res => {
             if (res && res.status === 1) {
-              if (res.text === "0") {
+              if (res.text == "0") {
                 this.$toast.fail("单据已审核，不能删除！");
-              } else if (res.text === "1") {
+              } else if (res.text == "1") {
                 this.getData().then(() => {
                   this.$toast.success("删除数据成功");
                 });
