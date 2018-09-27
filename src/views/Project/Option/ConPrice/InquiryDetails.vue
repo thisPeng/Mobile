@@ -18,9 +18,9 @@
           <van-cell :title="'单位： ' + goods.unit" :label="'规格/型号：' + goods.info" />
           <!-- <van-cell :title="'发货数量：' + goods.num" :label="'赠送数量：' + goods.sendNum" /> -->
           <van-cell :title="'小计：' + goods.howMoney " />
-          <van-field label="税率：" v-model="goods.taxRadio" type="number" :required="confirmParams[13] !== '待报价'" :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] === '待报价' || confirmParams[13] === '待确认' ? '请输入税率' : ''" />
-          <van-field label="数量：" v-model="goods.num" type="number" :required="confirmParams[13] !== '待报价'" :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] !== '待报价' ? '请输入实际数量' : ''" @change="onSalcSum" />
-          <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] !== '待报价' ? '请输入备注' : ''" />
+          <van-field label="税率：" v-model="goods.taxRadio" type="number" :required="confirmParams[13] !== '待报价' && confirmParams[13] !== '待确认'" :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] !== '待报价' && confirmParams[13] !== '待确认' ? '请输入税率' : ''" />
+          <van-field label="数量：" v-model="goods.num" type="number" :required="confirmParams[13] !== '待报价' && confirmParams[13] !== '待确认'" :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] !== '待报价' && confirmParams[13] !== '待确认' ? '请输入实际数量' : ''" @change="onSalcSum" />
+          <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] !== '待报价' && confirmParams[13] !== '待确认' ? '请输入备注' : ''" />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">
