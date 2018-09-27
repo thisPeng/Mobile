@@ -2116,7 +2116,7 @@ const offer = {
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_Order_SetPriceService",
+        _bpoName: "BPO_Order_SetPrice_EditService",
         _methodName: "SendToPartner",
         "_parameters[BillOID]": BillOID,
         _paraNames: "BillOID",

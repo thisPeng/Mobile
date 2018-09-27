@@ -19,13 +19,13 @@
       </van-cell-group>
       <van-field v-model="info[27]" label="签收时间：" disabled v-else />
       <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" :min-date="new Date()" class="contract-date" @confirm="jiaohuoDate" @cancel="showDateone=false" />
-      <van-field v-model="info[28]" label="签收人：" disabled />
+      <van-field :value="userInfo.name" label="签收人：" disabled />
       <van-field v-model="info[11]" label="发货金额：" disabled />
       <van-field v-model="info[29]" label="备注：" type="textarea" :disabled="info[25] == '1' || info[20] == '1'" :placeholder="info[25] != '1' && info[20] != '1' ? '请输入备注' : ''" />
       <van-cell title="发货单明细" is-link value="详情" @click="jumpPage" />
     </van-cell-group>
     <div class="con-button" v-if="info && info[25] != '1' && info[20] != '1'">
-      <van-button type="primary" @click="DeliverySign" v-if="info[48] != '1'">签收</van-button>
+      <van-button type="primary" @click="DeliverySign">签收</van-button>
       <van-button type="danger" @click="DeliveryOffer">提议</van-button>
     </div>
   </div>
@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       info: [],
-      currentDate: new Date(),
+      currentDate: "",
       showDateone: false //交货时间,
     };
   },
@@ -55,7 +55,7 @@ export default {
           // console.log(this.info);
           if (this.info[27] === "1900-01-01 00:00:00") {
             if (this.info[25] != "1" && this.info[20] != "1") {
-              this.info[27] = "请选择签收时间";
+              this.info[27] = this.$util.formatDate(new Date());
             } else {
               this.info[27] = "";
             }
