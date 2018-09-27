@@ -17,7 +17,6 @@
               </div>
               <div class="content-row">
                 <span class="row-left">{{item[11]}} {{item[12]}}</span>
-                <span class="row-right"></span>
               </div>
               <div class="content-row">
                 <span class="row-left">{{item[15]}}</span>
@@ -114,6 +113,10 @@ export default {
               align-items: center;
               justify-content: space-between;
               padding: 2px 0;
+              .row-right {
+                width: 75px;
+                text-align: right;
+              }
             }
           }
         }

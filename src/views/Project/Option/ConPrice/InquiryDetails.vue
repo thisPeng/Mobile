@@ -16,11 +16,11 @@
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
           <van-cell :title="'单位： ' + goods.unit" :label="'规格/型号：' + goods.info" />
-          <van-cell :title="'发货数量：' + goods.num" :label="'赠送数量：' + goods.sendNum" />
-          <van-cell :title="'共计金额：' + goods.howMoney" />
-          <van-field label="税率：" v-model="goods.taxRadio" required :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] === '待报价' || confirmParams[13] === '待确认' ? '请输入税率' : ''" />
-          <van-field label="实际数量：" v-model="goods.num" type="number" required :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] === '待报价' ? '请输入实际数量' : ''" @change="onSalcSum" />
-          <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] === '待报价' || confirmParams[13] === '待确认' ? '请输入备注' : ''" />
+          <!-- <van-cell :title="'发货数量：' + goods.num" :label="'赠送数量：' + goods.sendNum" /> -->
+          <van-cell :title="'小计：' + goods.howMoney " />
+          <van-field label="税率：" v-model="goods.taxRadio" type="number" :required="confirmParams[13] !== '待报价'" :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] === '待报价' || confirmParams[13] === '待确认' ? '请输入税率' : ''" />
+          <van-field label="数量：" v-model="goods.num" type="number" :required="confirmParams[13] !== '待报价'" :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] !== '待报价' ? '请输入实际数量' : ''" @change="onSalcSum" />
+          <van-field label="备注：" v-model="goods.reMarks" :disabled="confirmParams[13] === '待报价' || confirmParams[13] === '待确认'" :placeholder="confirmParams[13] !== '待报价' ? '请输入备注' : ''" />
         </van-cell-group>
       </template>
       <template slot="sku-stepper" slot-scope="props">
@@ -87,7 +87,7 @@ export default {
     },
     // 计算物资总价
     onSalcSum() {
-      this.goods.howMoney = this.goods.howMuch * this.goods.num;
+      this.goods.howMoney = "￥" + this.goods.howMuch * this.goods.num;
     },
     // 询价单明细
     getData() {
@@ -125,7 +125,7 @@ export default {
         num: item[11],
         sendNum: item[12],
         howMuch: item[14],
-        howMoney: item[15],
+        howMoney: "￥" + item[15],
         taxRadio: item[16],
         reMarks: item[19]
       };
@@ -152,9 +152,34 @@ export default {
               } else if (res.text === "-2") {
                 this.$toast.fail("删除数量不能大于等于现有记录数量");
               } else {
-                this.getData().then(result => {
-                  if (result) this.$toast.success("删除成功");
-                  else this.$router.go(0);
+                const xml = require("xml");
+                let xmlString = xml([
+                  {
+                    BC_SC_Order_Master: [
+                      { _attr: { UpdateKind: "ukModify" } },
+                      { SC_Order_MasterOID: this.confirmParams[0] }
+                    ]
+                  },
+                  {
+                    BC_SC_Order_Master: [
+                      { _attr: { UpdateKind: "" } },
+                      { Edit_Flag: "1" }
+                    ]
+                  }
+                ]);
+                xmlString += "<root>" + xmlString + "</root>";
+                contractInfo.keepContract(xmlString).then(ress => {
+                  try {
+                    if (ress.status === 1) {
+                      this.getData().then(result => {
+                        if (result) this.$toast.success("删除成功");
+                        else this.$router.go(0);
+                      });
+                    }
+                    throw "保存失败，请刷新页面重试";
+                  } catch (e) {
+                    this.$toast.fail(e);
+                  }
                 });
               }
             }
@@ -165,7 +190,7 @@ export default {
         });
     },
     priceDetails() {
-      if (this.goods.num >= "100000") {
+      if (parseInt(this.goods.num) > 999999999) {
         this.$toast.fail("输入的实际数量超过有效值，请重新输入");
         return;
       }
@@ -259,3 +284,11 @@ export default {
   }
 }
 </style>
+<style lang="less">
+.inquirydetails {
+  .van-field .van-cell__title {
+    max-width: 45px;
+  }
+}
+</style>
+
