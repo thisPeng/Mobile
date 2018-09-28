@@ -6,38 +6,52 @@
     <div class="logo">
       <img src="img\icons\android-chrome-512x512.png" alt="logo">
     </div>
-    <div class="login-title">材博汇供应链系统</div>
-    <div class="login-form">
-      <form @submit.prevent="userLogin()">
-        <div class="login-form-input">
-          <span class="input-icon">
-            <i class="iconfont icon-zhanghao"></i>
-          </span>
-          <input v-model="loginName" type="text" name="loginName" placeholder="请输入账号" autocomplete="off">
-        </div>
-        <div class="login-form-input">
-          <span class="input-icon">
-            <i class="iconfont icon-mima"></i>
-          </span>
-          <input v-model="password" type="password" name="password" ref="password" placeholder="请输入密码" autocomplete="off">
-          <span class="input-show" @click="pwdShow">
-            <i class="iconfont icon-xianshi" v-show="isShow"></i>
-            <i class="iconfont icon-yincang" v-show="!isShow"></i>
-          </span>
-        </div>
-        <div class="login-form-input login-form-button">
-          <!-- <div class="login-form-check">
-            <span class="check-option">
-              <router-link :to="{ name:'index' }">忘记密码</router-link>
+      <div class="login-title">材博汇供应链系统</div>
+      <div class="login-form">
+        <form @submit.prevent="userLogin">
+          <div class="login-form-input">
+            <span class="input-icon">
+              <i class="iconfont icon-zhanghao"></i>
             </span>
-          </div> -->
-          <div class="button-option">
-            <van-button type="primary">登 录</van-button>
+            <input v-model="loginName" type="text" name="loginName" placeholder="请输入账号" autocomplete="off">
           </div>
-        </div>
-      </form>
+            <div class="login-form-input">
+              <span class="input-icon">
+                <i class="iconfont icon-mima"></i>
+              </span>
+              <input v-model="password" type="password" name="password" ref="password" placeholder="请输入密码" autocomplete="off">
+              <span class="input-show" @click="pwdShow">
+                <i class="iconfont icon-xianshi" v-show="isShow"></i>
+                <i class="iconfont icon-yincang" v-show="!isShow"></i>
+              </span>
+            </div>
+            <div class="login-form-input login-form-button">
+              <div class="login-form-check">
+                <!-- <span class="check-option">
+                  <router-link :to="{ name:'register' }">注册账号</router-link>
+                </span> -->
+                <!-- <span class="check-option">
+                  <router-link :to="{ name:'index' }">忘记密码</router-link>
+                </span> -->
+              </div>
+              <div class="button-option">
+                <van-button type="main">登 录</van-button>
+              </div>
+            </div>
+        </form>
+        <!-- <div class="login-oauth">
+          <div class="oauth-text">第三方登录</div>
+          <div class="oauth-icon">
+            <div class="icon-qy">
+              <i class="iconfont icon-weixin"></i>
+            </div>
+            <div class="icon-wx">
+              <i class="iconfont icon-weixin_work-copy"></i>
+            </div>
+          </div>
+        </div> -->
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -222,10 +236,64 @@ export default {
           font-size: 18px;
           border: 0;
           border-radius: 130px;
-          margin-top: 70px;
-          color: #fff;
-          background-color: #3d95d5;
+          margin-top: 30px;
         }
+      }
+    }
+  }
+  .login-oauth {
+    width: 100%;
+    height: 100px;
+    position: absolute;
+    bottom: 0px;
+    text-align: center;
+    color: #666;
+    /*CSS伪类用法*/
+    .oauth-text:after,
+    .oauth-text:before {
+      position: absolute;
+      top: 10px;
+      background: #ddd;
+      content: "";
+      height: 1px;
+      width: 35%;
+    }
+    /*调整背景横线的左右距离*/
+    .oauth-text:before {
+      left: 0;
+    }
+    .oauth-text:after {
+      right: 0;
+    }
+    .oauth-icon {
+      width: 100%;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .icon-qy {
+        width: 50px;
+        height: 50px;
+        border-radius: 5px;
+        background-color: rgb(7, 185, 6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 10px;
+      }
+      .icon-wx {
+        width: 50px;
+        height: 50px;
+        border-radius: 5px;
+        background-color: #00a0e9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 10px;
+      }
+      .iconfont {
+        color: #fff;
+        font-size: 45px;
       }
     }
   }

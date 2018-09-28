@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login/Login";
+import Register from "./views/Login/Register";
 import Home from "./components/Home/Home";
 import Index from "./views/Index/Index";
 import Api from "./views/Index/Api";
@@ -73,6 +74,11 @@ export default new Router({
       path: "/login",
       name: "login",
       component: Login
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: Register
     },
     {
       path: "/api",

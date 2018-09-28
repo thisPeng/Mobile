@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <van-nav-bar :title="title" :left-arrow="isBack" @click-left="onBack" @click-right="onMenu">
-      <!-- <van-icon name="pending-evaluate" slot="right" class="home-icon" /> -->
       <i slot="right" class="iconfont icon-qiehuan home-icon" v-if="isMenu && userType <= 3" />
     </van-nav-bar>
 
@@ -218,8 +217,6 @@ export default {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   .van-nav-bar {
-    color: #fff;
-    background-color: #00a0e9;
     .home-icon {
       font-size: 18px;
       color: #fff;

@@ -1,7 +1,7 @@
 <template>
   <div class="project">
     <van-tabs v-model="active" @click="switchType">
-      <van-tab title="合作项目">
+      <van-tab title="合作项目" v-if="userType != 2">
         <div class="project-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
           <div class="item-title">
             <span class="title">{{item.ProjectName}}</span>
@@ -57,7 +57,7 @@ export default {
       });
     },
     switchType(res) {
-      this.getData(res);
+      this.getData(this.userType != 2 ? res : 1);
     },
     jumpPage(item) {
       this.$store.commit("projectInfo", item);
@@ -67,7 +67,7 @@ export default {
   },
   computed,
   mounted() {
-    this.getData(0);
+    this.getData(this.userType != 2 ? 0 : 1);
   }
 };
 </script>

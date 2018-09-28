@@ -28,7 +28,7 @@
               </div>
               <div class="item-price">￥ {{item[5]}}</div>
             </div> -->
-            <div slot="footer">
+            <div slot="footer" v-if="userType != 3">
               <!-- <i class="iconfont icon-xiangqing" @click="showInfo(item)"></i> -->
               <i class="iconfont icon-add" @click.stop="addCart(item)"></i>
             </div>
@@ -73,7 +73,7 @@
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
           <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">加入购物车</van-button>
+          <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')" v-if="userType != 3">加入购物车</van-button>
         </div>
       </template>
     </van-sku>
