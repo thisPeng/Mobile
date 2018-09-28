@@ -1,31 +1,41 @@
 <template>
   <!-- 新增预存列表 -->
   <div class="task">
-    <van-cell-group :style="tabsShow ? 'padding-bottom: 280px;' : 'padding-bottom: 30px;'">
+    <van-cell-group style="margin-bottom: 70px">
       <!-- <van-field v-model="data[1]" label="单号" :disabled="true" /> -->
-      <van-field :value="projectInfo.ProjectNo" label="工程编号" :disabled="true" />
-      <van-field v-model="projectInfo.ProjectName" label="工程名称" :disabled="true" />
-      <van-field v-model="data[10]" label="汇款日期" readonly @click="showDate" />
-      <van-datetime-picker v-model="currentDate" :min-date="new Date()" v-show="dateShow" type="datetime" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
-      <van-field v-model="data[9]" label="汇款金额(￥)" type="number" required />
-      <van-field v-model="data[12]" label="银行账号" required />
-      <van-field v-model="data[11]" label="开户行" required />
-      <van-field v-model="data[13]" label="经手人" required />
-      <van-field v-model="data[16]" label="汇款说明" required />
-      <van-field :value="data[29] || userInfo.name" label="制单人" disabled />
-      <van-field :value="data[17] || new Date().Format('yyyy-MM-dd')" label="制单日期" disabled />
-      <!-- <van-field v-model="data[18]" label="修改日期" /> -->
-      <!-- <div class="task-title">
-        <span>资金凭证</span>
-      </div>
-      <van-swipe class="task-img" :loop="true">
-        <van-swipe-item>
-          <img class="img" :src="(servePath+data[14]).replace('~','')" alt="资金凭证1" @click="preView">
-        </van-swipe-item>
-        <van-swipe-item>
-          <img class="img" :src="(servePath+data[15]).replace('~','')" alt="资金凭证2" @click="preView">
-        </van-swipe-item>
-      </van-swipe> -->
+      <van-field :value="projectInfo.ProjectNo" label="工程编号：" :disabled="true" />
+      <van-field v-model="projectInfo.ProjectName" label="工程名称：" :disabled="true" />
+      <van-field :value="data[10] || new Date().Format('yyyy-MM-dd hh:mm:ss')" label="汇款日期：" required readonly @click="showDate" />
+      <van-datetime-picker v-model="currentDate" title="汇款日期" v-show="dateShow" type="datetime" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
+      <van-field v-model="data[9]" label="汇款金额(￥)：" type="number" required />
+      <van-field v-model="data[12]" label="银行账号：" required />
+      <van-field v-model="data[11]" label="开户行：" required />
+      <van-field v-model="data[13]" label="经手人：" required />
+      <van-field v-model="data[16]" label="汇款说明：" required />
+      <van-field :value="data[29] || userInfo.name" label="制单人：" disabled />
+      <van-field :value="data[17] || new Date().Format('yyyy-MM-dd')" label="制单日期：" disabled />
+      <!-- <van-field :value="data[18] || new Date().Format('yyyy-MM-dd')" label="修改日期" disabled /> -->
+      <van-cell-group class="task-upload">
+        <div class="task-title">
+          <span>资金凭证：</span>
+        </div>
+        <div class="task-content">
+          <van-uploader class="task-imgage" :after-read="onReadFile1" accept="image/jpeg, image/png">
+            <img :src="image1" alt="资金凭证1" v-if="image1">
+            <div class="content-upload" v-else>
+              <van-icon name="photograph" />
+              <span>点击上传凭证</span>
+            </div>
+          </van-uploader>
+          <van-uploader class="task-imgage" :after-read="onReadFile2" accept="image/jpeg, image/png">
+            <img :src="image2" alt="资金凭证2" v-if="image2">
+            <div class="content-upload" v-else>
+              <van-icon name="photograph" />
+              <span>点击上传凭证</span>
+            </div>
+          </van-uploader>
+        </div>
+      </van-cell-group>
     </van-cell-group>
     <div class="payment-button">
       <van-button @click="onSave">保存</van-button>
@@ -45,10 +55,24 @@ export default {
       dateShow: false,
       currentDate: new Date(),
       data: [],
+      names: [],
+      image1: "",
+      image2: "",
+      images: [],
       businessKey: ""
     };
   },
   methods: {
+    onReadFile1(file) {
+      this.names[0] = file.file.name;
+      this.image1 = file.content;
+      this.images[0] = file.content.split(",")[1];
+    },
+    onReadFile2(file) {
+      this.names[1] = file.file.name;
+      this.image2 = file.content;
+      this.images[1] = file.content.split(",")[1];
+    },
     // 图片预览
     preView() {
       ImagePreview([
@@ -58,17 +82,17 @@ export default {
     },
     // 显示时间选择
     showDate() {
-      this.currentDate = this.$util.formatDate(this.data[10]);
+      this.currentDate = this.data[10] || new Date();
       this.dateShow = true;
     },
     // 确认时间
     saveDate(val) {
-      this.data[10] = this.$util.formatDate(val,"yyyy-MM-dd hh:mm:ss");
+      this.data[10] = this.$util.formatDate(val, "yyyy-MM-dd hh:mm:ss");
       this.dateShow = false;
     },
     //保存先获取单号
     onSave() {
-      if (this.data[10] == "") {
+      if (!this.data[10] || this.data[10] == "1900-01-01 00:00:00") {
         this.$toast.fail("请选择汇款日期");
         return;
       }
@@ -92,63 +116,86 @@ export default {
         this.$toast.fail("请输入汇款说明");
         return;
       }
-      financial.getMemorySheetNo("YC").then(res => {
+      let img = [];
+      const params = {
+        UserPhoto: this.images.join(","),
+        PhotoName: this.names.join(",")
+      };
+      financial.uploadImage(params).then(result => {
         try {
-          if (res && res.status === 1) {
-            const xml = require("xml");
-            if (this.businessKey == "") {
-              const uuidv1 = require("uuid/v1");
-              this.businessKey = uuidv1();
-            }
-            let xmlString = "";
-            if (this.edit) {
-              xmlString = xml({
+          if (result.status == 1) {
+            img = result.text.split(",");
+          }
+          financial.getMemorySheetNo("YC").then(ress => {
+            if (ress && ress.status === 1) {
+              const xml = require("xml");
+              if (this.businessKey == "") {
+                const uuidv1 = require("uuid/v1");
+                this.businessKey = uuidv1();
+              }
+              let xmlString = "";
+              if (this.edit) {
+                xmlString = xml({
+                  BC_SC_Money_InOut: [
+                    { _attr: { UpdateKind: "ukModify" } },
+                    { SC_Money_InOutOID: this.businessKey }
+                  ]
+                });
+              }
+              xmlString += xml({
                 BC_SC_Money_InOut: [
-                  { _attr: { UpdateKind: "ukModify" } },
-                  { SC_Money_InOutOID: this.businessKey }
+                  { _attr: { UpdateKind: this.edit ? "" : "ukInsert" } },
+                  {
+                    SC_Money_InOutOID: this.edit ? "null" : this.businessKey
+                  },
+                  { InOut_SheetNO: ress.text },
+                  { ProjectID: this.projectInfo.SC_ProjectOID },
+                  { PartnerID: this.projectInfo.PartnerID },
+                  { DemandID: this.projectInfo.DemandID },
+                  { Sheet_Type: "YC" },
+                  { Approve_Flag: 0 },
+                  { InOut_Date: this.data[10] },
+                  { InOut_Amt: this.data[9] },
+                  { Bank_Account: this.data[12] },
+                  { Bank_Name: this.data[11] },
+                  { Operator: this.data[13] },
+                  { Remark: this.data[16] },
+                  { Certificate1: img[0] || "null" },
+                  { Certificate2: img[1] || "null" },
+                  { SYS_CreatedBy: this.userId.UCML_UserOID },
+                  { SYS_POSTN: this.userId.UCML_PostOID },
+                  { SYS_DIVISION: this.userId.UCML_DivisionOID },
+                  { SYS_ORG: this.userId.UCML_OrganizeOID },
+                  { EmployeeName: this.userId.PersonName },
+                  {
+                    SYS_Created:
+                      this.data[17] ||
+                      this.$util.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss")
+                  },
+                  {
+                    SYS_LAST_UPD: this.$util.formatDate(
+                      new Date(),
+                      "yyyy-MM-dd hh:mm:ss"
+                    )
+                  },
+                  { SYS_LAST_UPD_BY: this.userInfo.oid }
                 ]
               });
+              xmlString = "<root>" + xmlString + "</root>";
+              // console.log(xmlString);
+              financial.preMemoryConservation(xmlString).then(res => {
+                if (res.status === 1) {
+                  this.$toast.success("保存成功");
+                  return;
+                }
+                throw res.text;
+              });
+            } else {
+              throw ress.text;
             }
-            xmlString += xml({
-              BC_SC_Money_InOut: [
-                { _attr: { UpdateKind: this.edit ? "" : "ukInsert" } },
-                { SC_Money_InOutOID: this.edit ? "null" : this.businessKey },
-                { InOut_SheetNO: res.text },
-                { ProjectID: this.projectInfo.SC_ProjectOID },
-                { PartnerID: this.projectInfo.PartnerID },
-                { DemandID: this.projectInfo.DemandID },
-                { Sheet_Type: "YC" },
-                { Approve_Flag: 0 },
-                { InOut_Date: this.data[10] },
-                { InOut_Amt: this.data[9] },
-                { Bank_Account: this.data[12] },
-                { Bank_Name: this.data[11] },
-                { Operator: this.data[13] },
-                { Remark: this.data[16] },
-                { SYS_CreatedBy: this.userId.UCML_UserOID },
-                { SYS_POSTN: this.userId.UCML_PostOID },
-                { SYS_DIVISION: this.userId.UCML_DivisionOID },
-                { SYS_ORG: this.userId.UCML_OrganizeOID },
-                { EmployeeName: this.userId.PersonName },
-                { SYS_Created: this.$util.formatDate("yyyy-MM-dd hh:mm:ss") },
-                { SYS_LAST_UPD: this.$util.formatDate("yyyy-MM-dd hh:mm:ss") },
-                { SYS_LAST_UPD_BY: this.userInfo.oid }
-              ]
-            });
-            xmlString = "<root>" + xmlString + "</root>";
-            // console.log(xmlString);
-            financial.preMemoryConservation(xmlString).then(res => {
-              if (res.status === 1) {
-                this.$toast.success("保存成功");
-                return;
-              }
-              this.$toast.fail(res.text);
-            });
-          } else {
-            this.$toast.fail(res.text);
-          }
+          });
         } catch (e) {
-          console.log(e);
+          this.$toast.fail(e);
         }
       });
     },
@@ -189,7 +236,14 @@ export default {
             this.data = eval(sp[0].split("=")[1])[0];
             this.businessKey = this.data[0];
             this.edit = true;
-            // console.log(this.data);
+            this.image1 = this.data[14].replace("~", this.servePath);
+            this.image2 = this.data[15].replace("~", this.servePath);
+          }
+          if (!this.data[10] || this.data[10] == "1900-01-01 00:00:00") {
+            this.data[10] = this.$util.formatDate(
+              new Date(),
+              "yyyy-MM-dd hh:mm:ss"
+            );
           }
         } catch (e) {
           console.log(e);
@@ -219,24 +273,55 @@ export default {
       width: 49%;
     }
   }
-  .task-title {
-    display: flex;
-    padding: 10px 15px;
-    box-sizing: border-box;
-    line-height: 24px;
-    position: relative;
-    background-color: #fff;
-    color: #333;
-    font-size: 14px;
-    overflow: hidden;
-    .center {
-      margin: 0 auto;
+
+  .task-upload {
+    padding-bottom: 15px;
+    .task-title {
+      display: flex;
+      padding: 10px 15px;
+      box-sizing: border-box;
+      line-height: 24px;
+      position: relative;
+      background-color: #fff;
+      color: #333;
+      font-size: 14px;
+      overflow: hidden;
+      &::before {
+        content: "*";
+        position: absolute;
+        left: 7px;
+        font-size: 14px;
+        color: #f44;
+      }
     }
-  }
-  .task-img {
-    .img {
-      width: 100%;
-      height: 150px;
+    .task-content {
+      display: flex;
+      justify-content: space-around;
+      .task-imgage {
+        width: 120px;
+        height: 120px;
+        border: 1px solid #ddd;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+        .content-upload {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          i {
+            font-size: 30px;
+          }
+          span {
+            color: #666;
+            font-size: 12px;
+            padding-top: 10px;
+          }
+        }
+      }
     }
   }
   .task-date {
@@ -244,6 +329,13 @@ export default {
     position: fixed;
     z-index: 9999;
     bottom: 0;
+  }
+}
+</style>
+<style lang="less">
+.task {
+  .van-field .van-cell__title {
+    max-width: 100px;
   }
 }
 </style>

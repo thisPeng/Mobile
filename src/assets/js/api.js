@@ -62,6 +62,19 @@ const index = {
         _pUrl: ""
       }
     });
+  },
+  // 上传文件
+  uploadFile(params = {}) {
+    return axios({
+      url: "/OtherSource/UCMLFileUploadNew.aspx",
+      method: "post",
+      data: {
+        name: params.name,
+        Action: "Upload",
+        uploadPath: "../SupplyChain/Images/other",
+        file: params.file,
+      }
+    });
   }
 };
 
@@ -1728,6 +1741,21 @@ const financial = {
         _methodName: "GetSheetNo",
         "_parameters[SheetType]": SheetType,
         _paraNames: "SheetType",
+        _pUrl: ""
+      }
+    })
+  },
+  // 上传预存图片
+  uploadImage(params = {}) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_YC_InOutFormService",
+        _methodName: "UploadImageByBase64",
+        "_parameters[UserPhoto]": params.UserPhoto,
+        "_parameters[PhotoName]": params.PhotoName,
+        _paraNames: "UserPhoto,PhotoName",
         _pUrl: ""
       }
     })
