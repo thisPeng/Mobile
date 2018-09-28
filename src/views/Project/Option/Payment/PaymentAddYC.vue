@@ -20,14 +20,14 @@
           <span>资金凭证：</span>
         </div>
         <div class="task-content">
-          <van-uploader class="task-imgage" :after-read="onReadFile1" accept="image/jpeg, image/png">
+          <van-uploader class="task-imgage" :after-read="onReadFile1" accept="image/jpeg, image/png" :max-size="2097152" @oversize="$toast.fail('图片大小不能超过2M')">
             <img :src="image1" alt="资金凭证1" v-if="image1">
             <div class="content-upload" v-else>
               <van-icon name="photograph" />
               <span>点击上传凭证</span>
             </div>
           </van-uploader>
-          <van-uploader class="task-imgage" :after-read="onReadFile2" accept="image/jpeg, image/png">
+          <van-uploader class="task-imgage" :after-read="onReadFile2" accept="image/jpeg, image/png" :max-size="2097152" @oversize="$toast.fail('图片大小不能超过2M')">
             <img :src="image2" alt="资金凭证2" v-if="image2">
             <div class="content-upload" v-else>
               <van-icon name="photograph" />
@@ -125,6 +125,10 @@ export default {
         try {
           if (result.status == 1) {
             img = result.text.split(",");
+            // 修正资金凭证1
+            if (img.length > 0 && img[0].length <= 33) {
+              img[0] = "null";
+            }
           }
           financial.getMemorySheetNo("YC").then(ress => {
             if (ress && ress.status === 1) {
