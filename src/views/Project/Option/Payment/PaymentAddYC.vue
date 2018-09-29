@@ -116,6 +116,10 @@ export default {
         this.$toast.fail("请输入汇款说明");
         return;
       }
+      if (!this.image1 && !this.image2) {
+        this.$toast.fail("请上传支付凭证");
+        return;
+      }
       let img = [];
       const params = {
         UserPhoto: this.images.join(","),
@@ -189,6 +193,7 @@ export default {
               // console.log(xmlString);
               financial.preMemoryConservation(xmlString).then(res => {
                 if (res.status === 1) {
+                  this.$store.commit("isReload", true);
                   this.$toast.success("保存成功");
                   return;
                 }

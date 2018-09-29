@@ -38,7 +38,7 @@ export default {
     };
   },
   watch: {
-    $route(to, from) {
+    $route(to) {
       try {
         if (this.projectInfo.SC_ProjectOID) {
           this.title = this.projectInfo.ProjectName;
@@ -61,11 +61,9 @@ export default {
           this.isBack = false;
           this.isTabbar = true;
         }
-        if (from.name === "projectList" || from.name === "customerlist") {
-          if (to.meta.keepAlive && this.isReload) {
-            this.$store.commit("isReload", false);
-            this.$router.go(0);
-          }
+        if (to.meta.keepAlive && this.isReload) {
+          this.$store.commit("isReload", false);
+          this.$router.go(0);
         }
       } catch (e) {
         console.log(e);

@@ -382,11 +382,11 @@ export default {
             // console.log(xmlString);
 
             financial.payConservation(xmlString).then(res => {
-              console.log(res);
               if (res.status === 1) {
                 this.delTable = [];
                 this.edit = true;
                 this.dataChild.SC_Pay_DetailOID = uuid;
+                this.$store.commit("isReload", true);
                 this.$toast.success("保存成功");
                 return;
               }
