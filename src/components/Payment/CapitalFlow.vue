@@ -85,7 +85,6 @@ export default {
       financial.getClahFlow(this.projectInfo.SC_ProjectOID).then(res => {
         try {
           if (res && res.status === 1) {
-            console.log(res);
             const sp = res.text.split("=");
             const csp = sp[1].split(";");
             this.data = eval(csp[0])[0];
@@ -120,7 +119,12 @@ export default {
     }
   },
   mounted() {
-    this.pageInit();
+    if (this.projectInfo.SC_ProjectOID) {
+      this.$parent.active = 6;
+      this.pageInit();
+    } else {
+      this.$toast("请先点击屏幕右上角按钮，选择项目");
+    }
   }
 };
 </script>

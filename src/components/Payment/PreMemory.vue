@@ -36,7 +36,7 @@
           </van-cell>
         </div>
       </div>
-      <div class="margin-top-sm">
+      <div class="margin-top-sm" v-if="projectInfo.SC_ProjectOID">
         <van-button type="primary" size="large" @click="onAdd">新增预存登记</van-button>
       </div>
     </div>
@@ -141,7 +141,12 @@ export default {
     }
   },
   mounted() {
-    this.pageInit();
+    if (this.projectInfo.SC_ProjectOID) {
+      this.$parent.active = 1;
+      this.pageInit();
+    } else {
+      this.$toast("请先点击屏幕右上角按钮，选择项目");
+    }
   }
 };
 </script>

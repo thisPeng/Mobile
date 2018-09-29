@@ -70,7 +70,12 @@ export default {
     }
   },
   mounted() {
-    this.pageInit();
+    if (this.projectInfo.SC_ProjectOID) {
+      this.$parent.active = 4;
+      this.pageInit();
+    } else {
+      this.$toast("请先点击屏幕右上角按钮，选择项目");
+    }
   }
 };
 </script>

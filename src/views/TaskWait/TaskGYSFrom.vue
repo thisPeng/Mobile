@@ -157,16 +157,20 @@ export default {
               13
             ];
             task.getFlowAssignData(this.data[10]).then(res => {
-              if (res && res.status === 1) {
-                sp = res.text.split(";");
-                const tmp = eval(sp[1].split("=")[1])[0];
-                this.taskTabs.TaskOID = tmp[0];
-                this.taskTabs.ActivityID = tmp[5];
-                if (tmp[13]) {
-                  this.taskTabs.codeJson = JSON.parse(tmp[13]);
-                } else if (this.taskModel === "我的待办") {
-                  this.edit = false;
+              try {
+                if (res && res.status === 1) {
+                  sp = res.text.split(";");
+                  const tmp = eval(sp[1].split("=")[1])[0];
+                  this.taskTabs.TaskOID = tmp[0];
+                  this.taskTabs.ActivityID = tmp[5];
+                  if (tmp[13]) {
+                    this.taskTabs.codeJson = JSON.parse(tmp[13]);
+                  } else if (this.taskModel === "我的待办") {
+                    this.edit = false;
+                  }
                 }
+              } catch (e) {
+                console.log(e);
               }
             });
           }

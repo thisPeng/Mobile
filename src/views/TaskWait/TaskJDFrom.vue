@@ -44,7 +44,7 @@ export default {
     },
     // 确认时间
     saveDate(val) {
-      this.data[10] =this.$util.formatDate(val,"yyyy-MM-dd hh:mm:ss");
+      this.data[10] = this.$util.formatDate(val, "yyyy-MM-dd hh:mm:ss");
       this.dateShow = false;
     }
   },
@@ -75,16 +75,20 @@ export default {
           this.taskTabs.arrays = [0, 16, 13, 25, 17];
 
           task.getFlowAssignData(this.data[32]).then(res => {
-            if (res && res.status === 1) {
-              sp = res.text.split(";");
-              const tmp = eval(sp[1].split("=")[1])[0];
-              this.taskTabs.TaskOID = tmp[0];
-              this.taskTabs.ActivityID = tmp[5];
-              if (tmp[13]) {
-                this.taskTabs.codeJson = JSON.parse(tmp[13]);
-              } else if (this.taskModel === "我的待办") {
-                this.edit = false;
+            try {
+              if (res && res.status === 1) {
+                sp = res.text.split(";");
+                const tmp = eval(sp[1].split("=")[1])[0];
+                this.taskTabs.TaskOID = tmp[0];
+                this.taskTabs.ActivityID = tmp[5];
+                if (tmp[13]) {
+                  this.taskTabs.codeJson = JSON.parse(tmp[13]);
+                } else if (this.taskModel === "我的待办") {
+                  this.edit = false;
+                }
               }
+            } catch (e) {
+              console.log(e);
             }
           });
         }

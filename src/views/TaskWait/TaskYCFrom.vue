@@ -21,8 +21,8 @@
         <van-swipe-item>
           <img class="img" :src="(servePath+data[14]).replace('~','')" alt="资金凭证1" @click="preView">
         </van-swipe-item>
-        <van-swipe-item>
-          <img class="img" :src="(servePath+data[15]).replace('~','')" alt="资金凭证2" @click="preView">
+          <van-swipe-item>
+            <img class="img" :src="(servePath+data[15]).replace('~','')" alt="资金凭证2" @click="preView">
         </van-swipe-item>
       </van-swipe>
     </van-cell-group>
@@ -64,7 +64,7 @@ export default {
     },
     // 确认时间
     saveDate(val) {
-      this.data[10] = this.$util.formatDate(val,"yyyy-MM-dd hh:mm:ss");
+      this.data[10] = this.$util.formatDate(val, "yyyy-MM-dd hh:mm:ss");
       this.dateShow = false;
     }
   },
@@ -98,16 +98,20 @@ export default {
           this.taskTabs.arrays = [0, 10, 9, 12, 11, 13, 16, 25, 17];
 
           task.getFlowAssignData(this.data[32]).then(res => {
-            if (res && res.status === 1) {
-              sp = res.text.split(";");
-              const tmp = eval(sp[1].split("=")[1])[0];
-              this.taskTabs.TaskOID = tmp[0];
-              this.taskTabs.ActivityID = tmp[5];
-              if (tmp[13]) {
-                this.taskTabs.codeJson = JSON.parse(tmp[13]);
-              } else if (this.taskModel === "我的待办") {
-                this.edit = false;
+            try {
+              if (res && res.status === 1) {
+                sp = res.text.split(";");
+                const tmp = eval(sp[1].split("=")[1])[0];
+                this.taskTabs.TaskOID = tmp[0];
+                this.taskTabs.ActivityID = tmp[5];
+                if (tmp[13]) {
+                  this.taskTabs.codeJson = JSON.parse(tmp[13]);
+                } else if (this.taskModel === "我的待办") {
+                  this.edit = false;
+                }
               }
+            } catch (e) {
+              console.log(e);
             }
           });
         }
