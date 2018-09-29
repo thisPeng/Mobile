@@ -427,6 +427,7 @@ export default {
                     message: "提交成功"
                   });
                   setTimeout(() => {
+                    this.$store.commit("isReload", true);
                     this.$router.go(-1);
                   }, 800);
                   return;

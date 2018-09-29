@@ -5,13 +5,9 @@
     </van-nav-bar>
 
     <keep-alive>
-      <transition :name="transitionName">
-        <router-view class="content" v-if="$route.meta.keepAlive"></router-view>
-      </transition>
+      <router-view class="content" v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
-    <transition :name="transitionName">
-      <router-view class="content" v-if="!$route.meta.keepAlive"></router-view>
-    </transition>
+    <router-view class="content" v-if="!$route.meta.keepAlive"></router-view>
 
     <van-tabbar v-model="active" v-show="isTabbar" v-if="userType <= 2">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
@@ -35,7 +31,6 @@ export default {
   data() {
     return {
       title: "材博汇",
-      transitionName: "",
       isBack: false,
       isTabbar: true,
       isMenu: true,
@@ -53,12 +48,6 @@ export default {
           this.title = to.meta.title;
         }
 
-        // 监听路由的路径，可以通过不同的路径去选择不同的切换效果
-        // const toDepth = to.path.split("/").length;
-        // const fromDepth = from.path.split("/").length;
-        // this.transitionName =
-        //   toDepth < fromDepth ? "slide-right" : "slide-left";
-
         if (
           to.name !== "index" &&
           to.name !== "classify" &&
@@ -71,26 +60,6 @@ export default {
         } else {
           this.isBack = false;
           this.isTabbar = true;
-          /*
-          this.transitionName = "";
-          switch (to.name) {
-            case "index":
-              this.active = 0;
-              break;
-            case "classify":
-              this.active = 1;
-              break;
-            case "cart":
-              this.active = 2;
-              break;
-            case "users":
-              this.active = this.userType <= 2 ? 3 : 2;
-              break;
-            case "inquiry":
-              this.active = this.userType <= 2 ? 0 : 1;
-              break;
-          }
-          */
         }
         if (from.name === "projectList" || from.name === "customerlist") {
           if (to.meta.keepAlive && this.isReload) {
@@ -141,25 +110,6 @@ export default {
     } else {
       this.isBack = false;
       this.isTabbar = true;
-      /*
-      switch (current.name) {
-        case "index":
-          this.active = 0;
-          break;
-        case "classify":
-          this.active = 1;
-          break;
-        case "cart":
-          this.active = 2;
-          break;
-        case "users":
-          this.active = this.userType <= 2 ? 3 : 2;
-          break;
-        case "inquiry":
-          this.active = this.userType <= 2 ? 0 : 1;
-          break;
-      }
-      */
     }
 
     if (current.name !== "goodsSearch") {
@@ -232,7 +182,6 @@ export default {
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    // transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
   }
 }
 </style>

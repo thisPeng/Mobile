@@ -1,27 +1,27 @@
 <template>
   <div class="supplierDetails">
     <van-cell-group class="supplierDetails-data">
-      <van-field :value="data[35]" label="供应商编号:" disabled/>
-      <van-field :value="data[22]" label="单位名称:" disabled/>
-      <van-field :value="data[25]" label="统一社会信用代码:" disabled/>
+      <van-field :value="data[35]" label="供应商编号:" disabled />
+      <van-field :value="data[22]" label="单位名称:" disabled />
+      <van-field :value="data[25]" label="统一社会信用代码:" disabled />
       <van-field :value="data[26] | codeValue('CodeTable_TaxClass')" label="纳税人类别：" :disabled="edit" v-if="edit" />
       <cbh-select v-model="data[26]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onTaxChange" v-else-if="data.length > 0" />
-      <van-field :value="data[27]" label="税率:" disabled/>
-      <van-field :value="data[28]" label="开户行:" disabled/>
-      <van-field :value="data[29]" label="银行账号:" disabled/>
-      <van-field :value="data[62]" label="省:" disabled/>
-      <van-field :value="data[63]" label="市:" disabled/>
-      <van-field :value="data[64]" label="区：" disabled/>
-      <van-field :value="data[49]" label="可开票税率：" disabled/>
-      <van-field :value="data[30]" label="详细地址：" disabled/>
-      <van-field :value="data[31]" label="联系人：" disabled/>
-      <van-field :value="data[32]" label="固定电话：" disabled/>
-      <van-field :value="data[33]" label="手机：" disabled/>
-      <van-field :value="data[34]" label="邮箱：" disabled/>
-      <van-field :value="data[52]" label="证书号码：" disabled/>
-      <van-field :value="data[53]" label="发证机关：" disabled/>
+      <van-field :value="data[27]" label="税率:" disabled />
+      <van-field :value="data[28]" label="开户行:" disabled />
+      <van-field :value="data[29]" label="银行账号:" disabled />
+      <van-field :value="data[62]" label="省:" disabled />
+      <van-field :value="data[63]" label="市:" disabled />
+      <van-field :value="data[64]" label="区：" disabled />
+      <van-field :value="data[49]" label="可开票税率：" disabled />
+      <van-field :value="data[30]" label="详细地址：" disabled />
+      <van-field :value="data[31]" label="联系人：" disabled />
+      <van-field :value="data[32]" label="固定电话：" disabled />
+      <van-field :value="data[33]" label="手机：" disabled />
+      <van-field :value="data[34]" label="邮箱：" disabled />
+      <van-field :value="data[52]" label="证书号码：" disabled />
+      <van-field :value="data[53]" label="发证机关：" disabled />
       <van-field :value="data[54]" label="专业资质等级：" disabled />
-      <van-field :value="data[55]" label="复核时间及有效期：" disabled/>
+      <van-field :value="data[55]" label="复核时间及有效期：" disabled />
       <van-cell title="劳务供应商" is-link value="详情" @click="jumpPage" />
       <van-cell title="劳务供应商" is-link value="附件" @click="jumpInfo" />
     </van-cell-group>
