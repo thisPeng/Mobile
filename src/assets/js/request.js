@@ -86,14 +86,14 @@ axios.interceptors.response.use(
           error.message = "请求超时";
           break;
         case 500:
-          error.message = '服务器内部错误';
-          // window.localStorage.clear();
-          // window.sessionStorage.clear();
-          // window.vm.$store.commit("cleanStore", true);
-          // error.message = "登录过期，请重新登录";
-          // window.vm.$router.replace({
-          //   name: "login"
-          // });
+          // error.message = '服务器内部错误';
+          window.localStorage.clear();
+          window.sessionStorage.clear();
+          window.vm.$store.commit("cleanStore", true);
+          error.message = "登录过期，请重新登录";
+          window.vm.$router.replace({
+            name: "login"
+          });
           break;
         case 501:
           error.message = "服务未实现";
