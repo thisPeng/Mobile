@@ -30,6 +30,7 @@ import PriceDetails from "./views/Project/Option/ConPrice/PriceDetails";
 import AnnexContent from "./views/Project/Option/ConPrice/AnnexContent";
 import DeliveryDetails from "./views/Project/Option/Delivery/DeliveryDetails";
 import ArrivalDetails from "./views/Project/Option/Delivery/ArrivalDetails";
+import ArrivaAnnex from "./views/Project/Option/Delivery/ArrivaAnnex";
 import ContractDetails from "./views/Project/Option/ContractInfo/ContractDetails";
 import MsgList from "./views/Message/MsgList";
 import Message from "./views/Message/Message";
@@ -99,8 +100,8 @@ export default new Router({
       name: "index",
       component: Index,
       meta: {
-        title: "首页", // 页面标题
-        // keepAlive: true  // 是否缓存
+        title: "首页" // 页面标题
+
       }
     }, {
       path: "/classify",
@@ -108,7 +109,7 @@ export default new Router({
       component: Classify,
       meta: {
         title: "物资分类",
-        keepAlive: true
+        keepAlive: true // 是否缓存
       }
     }, {
       path: "/goodsList",
@@ -371,7 +372,7 @@ export default new Router({
       name: "pricedetails",
       component: PriceDetails,
       meta: {
-        title: "询价单编辑"
+        title: "询价单详情"
       }
     }, {
       path: "/option/details/annexContent/annex",
@@ -393,6 +394,13 @@ export default new Router({
       component: ArrivalDetails,
       meta: {
         title: "发货单明细"
+      }
+    }, {
+      path: "/option/details/arrivalDetails/annex",
+      name: "arrivaAnnex",
+      component: ArrivaAnnex,
+      meta: {
+        title: "发货单附件"
       }
     }, {
       path: "/option/details/contractdetails",

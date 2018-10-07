@@ -3,6 +3,7 @@
  * @file axios请求封装
  * @author DJ
  */
+import Qs from "qs";
 import axios from "axios";
 
 // 根据环境设置请求服务器地址
@@ -37,13 +38,9 @@ axios.interceptors.request.use(
       });
     }
     if (config.method === "post") {
-      config.transformRequest = function (data) {
-        let ret = "";
-        for (const it in data) {
-          ret +=
-            encodeURIComponent(it) + "=" + encodeURIComponent(data[it]) + "&";
-        }
-        return ret;
+      config.transformRequest = data => {
+        if (config.headers['Content-Type'] === 'application/x-www-form-urlencoded; charset=UTF-8') return Qs.stringify(data)
+        else return data
       };
     }
     return config;
@@ -59,12 +56,14 @@ axios.interceptors.response.use(
   response => {
     window.vm.$toast.clear();
     const result = response.data;
-    const res = result.substr(result.indexOf("("), result.length);
-    if (res !== "()") {
-      return eval(res);
-    } else {
-      return res;
+    let res = ""
+    if (typeof result === 'string') {
+      res = result.substr(result.indexOf("("), result.length);
+      if (res !== "()") {
+        return eval(res);
+      }
     }
+    return res || result;
   },
   error => {
     window.vm.$toast.clear();
@@ -87,14 +86,14 @@ axios.interceptors.response.use(
           error.message = "请求超时";
           break;
         case 500:
-          // error.message = '服务器内部错误';
-          window.localStorage.clear();
-          window.sessionStorage.clear();
-          window.vm.$store.commit("cleanStore", true);
-          error.message = "登录过期，请重新登录";
-          window.vm.$router.replace({
-            name: "login"
-          });
+          error.message = '服务器内部错误';
+          // window.localStorage.clear();
+          // window.sessionStorage.clear();
+          // window.vm.$store.commit("cleanStore", true);
+          // error.message = "登录过期，请重新登录";
+          // window.vm.$router.replace({
+          //   name: "login"
+          // });
           break;
         case 501:
           error.message = "服务未实现";

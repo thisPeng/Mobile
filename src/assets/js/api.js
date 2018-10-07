@@ -71,7 +71,7 @@ const index = {
       data: {
         name: params.name,
         Action: "Upload",
-        uploadPath: "../SupplyChain/Images/other",
+        uploadPath: "../SupplyChain/Images/Order",
         file: params.file,
       }
     });
@@ -1216,7 +1216,32 @@ const conprice = {
       }
     });
   },
-  //确认订单
+  // 保存确认订单的附件
+  saveAnnex(xml) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_XJ_EditService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xml,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
+  // 删除附件
+  deleteAnnex(path = "") {
+    return axios({
+      url: "/OtherSource/UCMLFileUploadNew.aspx",
+      method: "post",
+      data: {
+        Action: "Delete",
+        filePath: path
+      }
+    })
+  },
+  // 确认订单
   confrimPrice(PurchaseOrderID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1230,7 +1255,7 @@ const conprice = {
       }
     });
   },
-  //提议
+  // 提议
   conProposal(BillOID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1244,7 +1269,7 @@ const conprice = {
       }
     });
   },
-  //发送订单
+  // 发送订单
   sendOrder(BillOID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1258,7 +1283,7 @@ const conprice = {
       }
     });
   },
-  //删除询价单
+  // 删除询价单
   confirmDelete(params) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -2109,7 +2134,7 @@ const offer = {
       }
     })
   },
-  // 报价单明细删除f
+  // 报价单明细删除
   deleteTranDetails(PurchaseOrderID = "", DetailOIDList = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",

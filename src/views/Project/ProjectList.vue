@@ -1,7 +1,7 @@
 <template>
   <div class="project">
-    <van-tabs v-model="active" @click="switchType">
-      <van-tab title="合作项目" v-if="userType != 2">
+    <van-tabs v-model="active" @click="switchType" v-if="userType != 2">
+      <van-tab title="合作项目">
         <div class="project-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
           <div class="item-title">
             <span class="title">{{item.ProjectName}}</span>
@@ -30,6 +30,19 @@
         </div>
       </van-tab>
     </van-tabs>
+    <!--合作商项目列表-->
+    <div class="project-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)" v-else>
+      <div class="item-title">
+        <span class="title">{{item.ProjectName}}</span>
+        <span class="icon">
+          <van-icon name="success" color="#00A0E9" v-if="item.ProjectNo === projectInfo.ProjectNo" />
+        </span>
+      </div>
+      <div class="item-content">
+        <span class="content-left">联系人：{{item.Contact}}</span>
+        <span class="content-right">联系电话：{{item.Telephone}}</span>
+      </div>
+    </div>
   </div>
 </template>
 <script>

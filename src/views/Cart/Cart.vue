@@ -379,7 +379,6 @@ export default {
         });
         str = arr.join("|");
       }
-      console.log(str);
       cart.cartSelect(this.projectInfo.SC_ProjectOID, str);
     }
   },

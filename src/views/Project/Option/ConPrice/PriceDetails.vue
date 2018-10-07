@@ -20,8 +20,8 @@
       <van-field v-model="list[18]" label="业务员：" :placeholder="list[39] === '待报价' || list[39] === '待确认' ? '' : '请输入业务员'" :disabled="list[39] === '待报价' || list[39] === '待确认'" :autofocus="true" />
       <van-field v-model="list[26]" label="员工姓名：" disabled />
       <van-field v-model="list[21]" label="备注：" type="textarea" :placeholder="list[39] === '待报价' || list[39] === '待确认' ? '' : '请输入备注'" :disabled="list[39] === '待报价' || list[39] === '待确认'" />
-      <van-cell title="询价单明细" is-link value="详情" @click="jumpInfo" />
-      <van-cell title="询价单附件" is-link value="详情" @click="jumpPage('annexContent')" />
+      <van-cell title="询价单详情" is-link value="物资明细" @click="jumpInfo" />
+      <van-cell title="询价单详情" is-link value="附件" @click="jumpPage('annexContent')" />
     </van-cell-group>
     <!--功能操作-->
     <div class="con-button">

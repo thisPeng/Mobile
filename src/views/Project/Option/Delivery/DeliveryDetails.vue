@@ -18,11 +18,12 @@
         <span class="con-select" @click="showDateone=true">{{info[27]}}</span>
       </van-cell-group>
       <van-field v-model="info[27]" label="签收时间：" disabled v-else />
-      <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" :min-date="new Date()" class="contract-date" @confirm="jiaohuoDate" @cancel="showDateone=false" />
+      <van-datetime-picker v-model="currentDate" v-show="showDateone" type="date" :min-date="new Date()" class="contract-date" @confirm="arrivalDate" @cancel="showDateone=false" />
       <van-field :value="info[28] || userInfo.name" label="签收人：" disabled />
       <van-field v-model="info[11]" label="发货金额：" disabled />
       <van-field v-model="info[29]" label="备注：" type="textarea" :disabled="info[25] == '1' || info[20] == '1'" :placeholder="info[25] != '1' && info[20] != '1' ? '请输入备注' : ''" />
-      <van-cell title="发货单明细" is-link value="详情" @click="jumpPage" />
+      <van-cell title="发货单详情" is-link value="物资明细" @click="jumpInfo" />
+      <!-- <van-cell title="发货单详情" is-link value="附件" @click="jumpPage('arrivaAnnex')" /> -->
     </van-cell-group>
     <div class="con-button" v-if="info && info[25] != '1' && info[20] != '1'">
       <van-button type="primary" @click="DeliverySign" v-if="info[47] != '1'">签收</van-button>
@@ -52,7 +53,6 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.info = eval("[[" + csp[0])[0];
-          console.log(this.info);
           if (this.info[27] === "1900-01-01 00:00:00") {
             if (this.info[25] != "1" && this.info[20] != "1") {
               this.info[27] = this.$util.formatDate(new Date());
@@ -126,18 +126,19 @@ export default {
     pageInit() {
       this.getData();
     },
-    jumpPage() {
+    // 跳转页面
+    jumpPage(name) {
+      this.$router.push({
+        name
+      });
+    },
+    jumpInfo() {
       this.$store.commit("confirmParams", this.info);
       this.$router.push({
         name: "arrivalDetails"
       });
     },
-    jumpInfo(name) {
-      this.$router.push({
-        name
-      });
-    },
-    jiaohuoDate(val) {
+    arrivalDate(val) {
       this.info[27] = this.$util.formatDate(val);
       this.showDateone = false;
     },
@@ -215,10 +216,6 @@ export default {
         }
       }
     }
-  }
-  .van-cell {
-    font-size: 15px;
-    // color: rgb(153, 148, 148);
   }
   .title-delivery {
     font-size: 16px;
