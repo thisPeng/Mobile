@@ -29,7 +29,8 @@ export default new Vuex.Store({
     confirmParams: {},
     contractParams: {},
     servePath: "",
-    tabsShow: true
+    tabsShow: true,
+    tabsActive: 0
   },
   //写入缓存并同步state
   mutations: {
@@ -100,6 +101,9 @@ export default new Vuex.Store({
     },
     tabsShow: (state, val) => {
       state.tabsShow = val;
+    },
+    tabsActive: (state, val) => {
+      state.tabsActive = val;
     }
   }
 });

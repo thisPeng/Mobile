@@ -173,7 +173,7 @@ export default {
                     if (ress.status === 1) {
                       this.getData().then(result => {
                         if (result) this.$toast.success("删除成功");
-                        else this.$router.go(0);
+                        else location.reload();
                       });
                     }
                     throw "保存失败，请刷新页面重试";

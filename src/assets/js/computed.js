@@ -58,5 +58,8 @@ export default mapState({
   },
   tabsShow: state => {
     return state.tabsShow;
+  },
+  tabsActive: state => {
+    return state.tabsActive;
   }
 });

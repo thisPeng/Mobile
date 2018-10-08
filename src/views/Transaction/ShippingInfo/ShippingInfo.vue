@@ -95,7 +95,7 @@ export default {
                       message: "删除成功"
                     });
                   } else {
-                    this.$router.go(0);
+                    location.reload();
                   }
                 });
               }

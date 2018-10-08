@@ -116,7 +116,7 @@ export default {
               } else {
                 this.getData().then(result => {
                   if (result) this.$toast.success("删除成功");
-                  else this.$router.go(0);
+                  else location.reload();
                 });
               }
             }
@@ -153,7 +153,7 @@ export default {
             this.showBase = false;
             this.getData().then(result => {
               if (result) this.$toast.success(res.text);
-              else this.$router.go(0);
+              else location.reload();
             });
           } else {
             this.$toast.fail(res.text);

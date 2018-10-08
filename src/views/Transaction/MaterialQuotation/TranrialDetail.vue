@@ -190,7 +190,7 @@ export default {
             if (res.text == "1") {
               this.getData().then(result => {
                 if (result) this.$toast.success("删除成功");
-                else this.$router.go(0);
+                else location.reload();
               });
               throw "删除失败，请重试。";
             } else if (res.text == "-1") {

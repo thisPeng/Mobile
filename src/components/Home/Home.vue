@@ -11,7 +11,6 @@
 
     <van-tabbar v-model="active" v-show="isTabbar" v-if="userType <= 2">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
-      <!-- <van-tabbar-item icon="sign" @click="jumpTabs('')">项目</van-tabbar-item> -->
       <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item>
       <van-tabbar-item icon="cart" @click="jumpTabs('cart')">购物车</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
@@ -61,13 +60,16 @@ export default {
           this.isBack = false;
           this.isTabbar = true;
         }
-        if (to.meta.keepAlive && this.isReload) {
+        if (this.isReload) {
           this.$store.commit("isReload", false);
-          this.$router.go(0);
+          location.reload();
         }
       } catch (e) {
         console.log(e);
       }
+    },
+    active() {
+      this.$store.commit("tabsActive", this.active);
     }
   },
   methods: {
@@ -87,6 +89,7 @@ export default {
   },
   computed,
   created() {
+    this.active = this.tabsActive;
     const current = this.$router.history.current;
     if (this.projectInfo.SC_ProjectOID) {
       this.title = this.projectInfo.ProjectName;

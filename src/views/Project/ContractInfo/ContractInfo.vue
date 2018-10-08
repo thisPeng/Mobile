@@ -74,7 +74,7 @@ export default {
             console.log(res);
             this.getList().then(result => {
               if (result) this.$toast.success("合同已退回");
-              else this.$router.go(0);
+              else location.reload();
             });
           }
         } catch (e) {
