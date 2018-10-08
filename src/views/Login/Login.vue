@@ -6,40 +6,40 @@
     <div class="logo">
       <img src="img\icons\android-chrome-512x512.png" alt="logo">
     </div>
-      <div class="login-title">材博汇供应链系统</div>
-      <div class="login-form">
-        <form @submit.prevent="userLogin">
-          <div class="login-form-input">
-            <span class="input-icon">
-              <i class="iconfont icon-zhanghao"></i>
-            </span>
-            <input v-model="loginName" type="text" name="loginName" placeholder="请输入账号" autocomplete="off">
-          </div>
-            <div class="login-form-input">
-              <span class="input-icon">
-                <i class="iconfont icon-mima"></i>
-              </span>
-              <input v-model="password" type="password" name="password" ref="password" placeholder="请输入密码" autocomplete="off">
-              <span class="input-show" @click="pwdShow">
-                <i class="iconfont icon-xianshi" v-show="isShow"></i>
-                <i class="iconfont icon-yincang" v-show="!isShow"></i>
-              </span>
-            </div>
-            <div class="login-form-input login-form-button">
-              <div class="login-form-check">
-                <!-- <span class="check-option">
+    <div class="login-title">材博汇供应链系统</div>
+    <div class="login-form">
+      <form @submit.prevent="userLogin">
+        <div class="login-form-input">
+          <span class="input-icon">
+            <i class="iconfont icon-zhanghao"></i>
+          </span>
+          <input v-model="loginName" type="text" name="loginName" placeholder="请输入账号" autocomplete="off">
+        </div>
+        <div class="login-form-input">
+          <span class="input-icon">
+            <i class="iconfont icon-mima"></i>
+          </span>
+          <input v-model="password" type="password" name="password" ref="password" placeholder="请输入密码" autocomplete="off">
+          <span class="input-show" @click="pwdShow">
+            <i class="iconfont icon-xianshi" v-show="isShow"></i>
+            <i class="iconfont icon-yincang" v-show="!isShow"></i>
+          </span>
+        </div>
+        <div class="login-form-input login-form-button">
+          <div class="login-form-check">
+            <!-- <span class="check-option">
                   <router-link :to="{ name:'register' }">注册账号</router-link>
                 </span> -->
-                <!-- <span class="check-option">
+            <!-- <span class="check-option">
                   <router-link :to="{ name:'index' }">忘记密码</router-link>
                 </span> -->
-              </div>
-              <div class="button-option">
-                <van-button type="main">登 录</van-button>
-              </div>
-            </div>
-        </form>
-        <!-- <div class="login-oauth">
+          </div>
+          <div class="button-option">
+            <van-button type="main">登 录</van-button>
+          </div>
+        </div>
+      </form>
+      <!-- <div class="login-oauth">
           <div class="oauth-text">第三方登录</div>
           <div class="oauth-icon">
             <div class="icon-qy">
@@ -50,8 +50,8 @@
             </div>
           </div>
         </div> -->
-      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -82,6 +82,7 @@ export default {
             users.userInfo().then(result => {
               if (result) {
                 this.$store.commit("cleanStore", true);
+                this.$store.commit("tabsActive", 0);
                 this.$store.commit("userInfo", result);
                 this.$store.commit("loginInfo", {
                   login: this.loginName,
