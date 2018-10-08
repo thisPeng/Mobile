@@ -10,9 +10,9 @@
       <van-cell-group>
         <van-field :value="data[1]" label="工程商编号：" disabled />
         <!-- 工程商名称： -->
-        <van-field :value="data[2]" label="工程商名称：" />
+        <van-field v-model="data[2]" label="工程商名称：" />
         <!-- 统一社会信用代码 -->
-        <van-field :value="data[5]" label="统一社会信用代码：" placeholder="请输入统一社会信用代码" />
+        <van-field v-model="data[5]" label="统一社会信用代码：" placeholder="请输入统一社会信用代码" />
         <!-- 公司类型 -->
         <cbh-select v-model="data[3]" label="公司类型：" code="CodeTable_CoType" @change="comTypeConfirm" v-if="data.length>0" />
         <!-- 纳税人类别 -->
@@ -32,7 +32,7 @@
         <!-- 联系人 -->
         <van-field v-model="data[11]" label="联系人：" placeholder="请输入联系人" />
         <!-- 手机号码 -->
-        <van-field :value="data[14]" label="手机号码：" placeholder="请输入手机号码" />
+        <van-field v-model="data[14]" label="手机号码：" placeholder="请输入手机号码" />
         <!-- 诉讼法院 -->
         <van-field v-model="data[28]" label="诉讼法院：" placeholder="请输入诉讼法院" />
         <!-- 邮箱 -->

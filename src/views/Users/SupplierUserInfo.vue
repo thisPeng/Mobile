@@ -9,31 +9,31 @@
       <van-cell-group>
         <van-field :value="data[35]" label="供应商编号：" disabled />
         <!-- 单位名称 -->
-        <van-field :value="data[22]" label="单位名称：" placeholder="请输入单位名称" />
+        <van-field v-model="data[22]" label="单位名称：" placeholder="请输入单位名称" />
         <!-- 统一社会信用代码 -->
-        <van-field :value="data[25]" label="统一社会信用代码：" placeholder="请输入统一社会信用代码" />
+        <van-field v-model="data[25]" label="统一社会信用代码：" placeholder="请输入统一社会信用代码" />
         <!-- 单位类别 -->
-        <cbh-select v-model="data[26]" label="单位类别：" code="CodeTable_Unit" @change="unitConfirm" v-if="data.length>0" />
+        <cbh-select v-model="data[23]" label="单位类别：" code="CodeTable_Unit" @change="unitConfirm" v-if="data.length > 0" />
         <!-- 纳税人类别 -->
-        <cbh-select v-model="data[23]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onConfirm" v-if="data.length>0" />
+        <cbh-select v-model="data[26]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onConfirm" v-if="data.length > 0" />
         <!-- 税率 -->
-        <van-field :value="data[27]" label="税率：" placeholder="请输入联系人税率" />
+        <van-field v-model="data[27]" label="税率：" placeholder="请输入联系人税率" />
         <!-- 开户行 -->
-        <van-field :value="data[28]" label="开户行：" placeholder="请输入开户行" />
+        <van-field v-model="data[28]" label="开户行：" placeholder="请输入开户行" />
         <!-- 银行账号 -->
-        <van-field :value="data[29]" label="银行账号：" placeholder="请输入银行账号" />
+        <van-field v-model="data[29]" label="银行账号：" placeholder="请输入银行账号" />
       </van-cell-group>
       <!-- 公司地址 -->
-      <cbh-region :prov="data[58]" :city="data[59]" :district="data[60]" @change="onRegionChange" v-if="data.length>0" />
+      <cbh-region :prov="data[58]" :city="data[59]" :district="data[60]" @change="onRegionChange" v-if="data.length > 0" />
       <!-- 可开票税率 -->
       <van-cell-group>
-        <van-field :value="data[49]" label="可开票税率：" placeholder="请输入可开票税率" />
+        <van-field v-model="data[49]" label="可开票税率：" placeholder="请输入可开票税率" />
         <!-- 详细地址 -->
-        <van-field :value="data[30]" label="详细地址：" placeholder="请输入详细地址" />
-        <van-field :value="data[31]" label="联系人：" placeholder="请输入联系人" />
-        <van-field :value="data[32]" label="固定电话：" placeholder="请输入固定电话" />
-        <van-field :value="data[33]" label="手机：" placeholder="请输入手机" />
-        <van-field :value="data[34]" label="邮箱：" placeholder="请输入邮箱" />
+        <van-field v-model="data[30]" label="详细地址：" placeholder="请输入详细地址" />
+        <van-field v-model="data[31]" label="联系人：" placeholder="请输入联系人" />
+        <van-field v-model="data[32]" label="固定电话：" placeholder="请输入固定电话" />
+        <van-field v-model="data[33]" label="手机：" placeholder="请输入手机" />
+        <van-field v-model="data[34]" label="邮箱：" placeholder="请输入邮箱" />
       </van-cell-group>
       <van-cell-group>
         <van-cell class="padding-vertical" title="证照资料" is-link value="" @click="jumpPage('usersInfoAccessory')" />
@@ -79,19 +79,19 @@ export default {
       const xmlString = xml({
         root: [
           {
-            BC_Company_Supplier: [
+            BC_SC_Supplier: [
               { _attr: { UpdateKind: "ukModify" } },
-              { SC_Company_SupplierOID: this.data[0] }
+              { SC_SupplierOID: this.data[2] }
             ]
           },
           {
-            BC_Company_Supplier: [
+            BC_SC_Supplier: [
               { _attr: { UpdateKind: "" } },
-              { SC_Company_SupplierOID: "null" },
+              { SC_SupplierOID: "null" },
               { SupplierName: this.data[22] || "null" }, //单位名称
+              { TaxpayerType: this.data[23] || "null" }, //纳税人类别
               { TaxpayerNo: this.data[25] || "null" }, //统一社会信用代码
               { SupplierType: this.data[26] || "null" }, //单位类别
-              { TaxpayerType: this.data[23] || "null" }, //纳税人类别
               { Taxrate: this.data[27] || "null" }, //税率
               { BankName: this.data[28] || "null" }, //开户行
               { BankNo: this.data[29] || "null" }, //银行账号

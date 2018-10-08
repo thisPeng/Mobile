@@ -537,7 +537,7 @@ const users = {
       url: "UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_Start_Company_SupplierService",
+        _bpoName: "BPO_SC_Supplier_EditService",
         _methodName: "BusinessSubmit",
         "_parameters[xmlData]": xmlData,
         _paraNames: "xmlData",
