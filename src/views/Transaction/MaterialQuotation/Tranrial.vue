@@ -20,8 +20,8 @@
       <van-field v-model="info[18]" label="业务员：" :disabled="info[15] == '2'" :placeholder="info[15] != '2' ? '请输入业务员' : ''" />
       <van-field v-model="info[25]" label="创建日期：" disabled />
       <van-field v-model="info[21]" label="备注：" type="textarea" :disabled="info[15] == '2'" :placeholder="info[15] != '2' ? '请输入备注' : ''" />
-      <van-cell title="报价单明细" is-link value="详情" @click="jumpPage('tranrialDetail')" />
-      <van-cell title="报价单附件" is-link value="详情" @click="jumpPage('tranrialAnnex')" />
+      <van-cell title="物资列表" is-link value="" @click="jumpPage('tranrialDetail')" />
+      <van-cell title="附件" is-link value="" @click="jumpPage('comfrimAnnex')" />
     </van-cell-group>
     <div class="con-button">
       <van-button type="primary" @click="onSubmit" v-if="info[15] != '2'">提交报价</van-button>

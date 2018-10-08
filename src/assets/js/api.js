@@ -1545,7 +1545,7 @@ const arrival = {
     })
   },
   //签收
-  getSign(BillOID = "") {
+  signOrder(BillOID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",

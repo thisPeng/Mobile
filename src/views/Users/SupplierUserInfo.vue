@@ -36,8 +36,8 @@
         <van-field :value="data[34]" label="邮箱：" placeholder="请输入邮箱" />
       </van-cell-group>
       <van-cell-group>
-        <van-cell class="padding-vertical" title="供应商" is-link value="用户信息" @click="jumpPage('usersInfoAccessory')" />
-        <van-cell class="padding-vertical" title="供应商" is-link value="附件" @click="jumpPage('supplierAnnex')" />
+        <van-cell class="padding-vertical" title="证照资料" is-link value="" @click="jumpPage('usersInfoAccessory')" />
+        <van-cell class="padding-vertical" title="附件" is-link value="" @click="jumpPage('supplierAnnex')" />
       </van-cell-group>
       <div class="pwd-button" @click="saveMessage">
         <van-button type="primary" size="large">保 存</van-button>

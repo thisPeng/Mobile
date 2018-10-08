@@ -28,7 +28,6 @@ export default new Vuex.Store({
     suppParams: {},
     confirmParams: {},
     contractParams: {},
-    infoDetails: {},
     servePath: "",
     tabsShow: true
   },
@@ -49,7 +48,6 @@ export default new Vuex.Store({
         state.suppParams = {};
         state.confirmParams = {};
         state.contractParams = {};
-        state.infoDetails = {};
       }
     },
     isReload: (state, val) => {
@@ -102,9 +100,6 @@ export default new Vuex.Store({
     },
     tabsShow: (state, val) => {
       state.tabsShow = val;
-    },
-    infoDetails: (state, val) => {
-      state.infoDetails = val;
     }
   }
 });

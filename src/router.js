@@ -11,27 +11,25 @@ import GoodsSearch from "./views/Classify/GoodsSearch";
 import Cart from "./views/Cart/Cart";
 import Inquiry from "./views/Inquiry/Inquiry";
 import ProjectList from "./views/Project/ProjectList";
-import ConPrice from "./views/Project/Option/ConPrice/ConPrice";
-import ContractInfo from "./views/Project/Option/ContractInfo/ContractInfo";
-import ArrivalInformation from "./views/Project/Option/Delivery/ArrivalInformation";
-import InfoItem from "./views/Project/Option/InfoItem/InfoItem";
-import PaymentLabel from "./views/Project/Option/Payment/PaymentLabel";
-import application from "./components/Payment/Application"; //支付申请信息
-import preMemory from "./components/Payment/PreMemory"; //预存列表
-import payInfomation from "./components/Payment/PayInfomation"; //支付信息
-import appropriation from "./components/Payment/Appropriation"; //批款信息
-import frozen from "./components/Payment/Frozen"; //冻结信息
-import withholding from "./components/Payment/Withholding"; //扣款信息
-import capitalFlow from "./components/Payment/CapitalFlow"; //资金流水
-import oainformation from "./components/Payment/OAinformation"; //OA批款信息
-import PaymentAddZF from "./views/Project/Option/Payment/PaymentAddZF";
-import PaymentAddYC from "./views/Project/Option/Payment/PaymentAddYC";
-import PriceDetails from "./views/Project/Option/ConPrice/PriceDetails";
-import AnnexContent from "./views/Project/Option/ConPrice/AnnexContent";
-import DeliveryDetails from "./views/Project/Option/Delivery/DeliveryDetails";
-import ArrivalDetails from "./views/Project/Option/Delivery/ArrivalDetails";
-import ArrivaAnnex from "./views/Project/Option/Delivery/ArrivaAnnex";
-import ContractDetails from "./views/Project/Option/ContractInfo/ContractDetails";
+import ConPrice from "./views/Project/ConPrice/ConPrice";
+import ContractInfo from "./views/Project/ContractInfo/ContractInfo";
+import ArrivalInformation from "./views/Project/Delivery/ArrivalInformation";
+import InfoItem from "./views/Project/InfoItem/InfoItem";
+import PaymentLabel from "./views/Project/Payment/PaymentLabel";
+import application from "./views/Project/Payment/List/Application"; //支付申请信息
+import preMemory from "./views/Project/Payment/List/PreMemory"; //预存列表
+import payInfomation from "./views/Project/Payment/List/PayInfomation"; //支付信息
+import appropriation from "./views/Project/Payment/List/Appropriation"; //批款信息
+import frozen from "./views/Project/Payment/List/Frozen"; //冻结信息
+import withholding from "./views/Project/Payment/List/Withholding"; //扣款信息
+import capitalFlow from "./views/Project/Payment/List/CapitalFlow"; //资金流水
+import oainformation from "./views/Project/Payment/List/OAinformation"; //OA批款信息
+import PaymentAddZF from "./views/Project/Payment/PaymentAddZF";
+import PaymentAddYC from "./views/Project/Payment/PaymentAddYC";
+import PriceDetails from "./views/Project/ConPrice/PriceDetails";
+import DeliveryDetails from "./views/Project/Delivery/DeliveryDetails";
+import ArrivalDetails from "./views/Project/Delivery/ArrivalDetails";
+import ContractDetails from "./views/Project/ContractInfo/ContractDetails";
 import MsgList from "./views/Message/MsgList";
 import Message from "./views/Message/Message";
 import Apply from "./views/Apply/Apply";
@@ -66,15 +64,16 @@ import NewInvoice from "./views/Transaction/ShippingInfo/NewInvoice";
 import DeliveryDetail from "./views/Transaction/ShippingInfo/DeliveryDetail";
 import TranPayment from "./views/Transaction/TranPayment/TranPayment";
 import Tranrial from "./views/Transaction/MaterialQuotation/Tranrial";
-import TranrialAnnex from "./views/Transaction/MaterialQuotation/TranrialAnnex";
 import TranContractDetail from "./views/Transaction/MaterialQuotation/TranContractDetail";
 import TranrialAdd from "./views/Transaction/MaterialQuotation/TranrialAdd";
 import Inventory from "./views/Transaction/TranContract/Inventory";
 import Customerlist from "./views/CustomerList/CustomerList";
-import InquiryDetails from "./views/Project/Option/ConPrice/InquiryDetails";
-import ContractWork from "./views/Project/Option/ConPrice/ContractWork";
-import ContractLabor from "./views/Project/Option/ContractInfo/ContractLabor";
+import InquiryDetails from "./views/Project/ConPrice/InquiryDetails";
+import ContractWork from "./views/Project/ConPrice/ContractWork";
+import ContractLabor from "./views/Project/ContractInfo/ContractLabor";
 import SupplierAnnex from "./views/Users/SupplierAnnex";
+import ComfrimAnnex from "./views/Annex/Comfrim";
+
 Vue.use(Router);
 
 export default new Router({
@@ -340,86 +339,72 @@ export default new Router({
         title: "供应商物资"
       }
     }, {
-      path: "/option/conPrice",
+      path: "/conPrice",
       name: "conprice",
       component: ConPrice,
       meta: {
         title: "确认价格"
       }
     }, {
-      path: "/option/contractInfo/contractInfo",
+      path: "/contractInfo/contractInfo",
       name: "contractInfo",
       component: ContractInfo,
       meta: {
         title: "合同信息"
       }
     }, {
-      path: "/option/arrivalinformation",
+      path: "/arrivalinformation",
       name: "arrivalinformation",
       component: ArrivalInformation,
       meta: {
         title: "到货信息"
       }
     }, {
-      path: "/option/infoItem/infoitem",
+      path: "/infoItem/infoitem",
       name: "infoitem",
       component: InfoItem,
       meta: {
         title: "项目信息"
       }
     }, {
-      path: "/option/details/pricedetails",
+      path: "/details/pricedetails",
       name: "pricedetails",
       component: PriceDetails,
       meta: {
         title: "询价单详情"
       }
     }, {
-      path: "/option/details/annexContent/annex",
-      name: "annexContent",
-      component: AnnexContent,
-      meta: {
-        title: "询价单附件"
-      }
-    }, {
-      path: "/option/delivery/deliverydetails",
+      path: "/delivery/deliverydetails",
       name: "deliverydetails",
       component: DeliveryDetails,
       meta: {
         title: "发货单编辑"
       }
     }, {
-      path: "/option/delivery/arrivalDetails/detail",
+      path: "/delivery/arrivalDetails/detail",
       name: "arrivalDetails",
       component: ArrivalDetails,
       meta: {
         title: "发货单明细"
       }
     }, {
-      path: "/option/details/arrivalDetails/annex",
-      name: "arrivaAnnex",
-      component: ArrivaAnnex,
-      meta: {
-        title: "发货单附件"
-      }
-    }, {
-      path: "/option/details/contractdetails",
+      path: "/details/contractdetails",
       name: "contractdetails",
       component: ContractDetails,
       meta: {
         title: "合同清单详情"
       }
     }, {
-      path: "/option/payment/paymentlabel",
+      path: "/payment/paymentlabel",
       name: "paymentlabel",
       component: PaymentLabel,
-      redirect: "/option/payment/paymentlabel/application",
+      redirect: "/payment/paymentlabel/application",
       meta: {
         title: "付款信息列表",
         keepAlive: true
       },
       children: [{
-        path: "/option/payment/paymentlabel/application",
+        path: "/payment/paymentlabel/application",
         name: "application",
         component: application,
         meta: {
@@ -427,7 +412,7 @@ export default new Router({
           keepAlive: true
         }
       }, {
-        path: "/option/payment/paymentlabel/preMemory",
+        path: "/payment/paymentlabel/preMemory",
         name: "preMemory",
         component: preMemory,
         meta: {
@@ -435,7 +420,7 @@ export default new Router({
           keepAlive: true
         }
       }, {
-        path: "/option/payment/paymentlabel/payInfomation",
+        path: "/payment/paymentlabel/payInfomation",
         name: "payInfomation",
         component: payInfomation,
         meta: {
@@ -443,7 +428,7 @@ export default new Router({
           keepAlive: true
         }
       }, {
-        path: "/option/payment/paymentlabel/appropriation",
+        path: "/payment/paymentlabel/appropriation",
         name: "appropriation",
         component: appropriation,
         meta: {
@@ -451,7 +436,7 @@ export default new Router({
           keepAlive: true
         }
       }, {
-        path: "/option/payment/paymentlabel/frozen",
+        path: "/payment/paymentlabel/frozen",
         name: "frozen",
         component: frozen,
         meta: {
@@ -459,7 +444,7 @@ export default new Router({
           keepAlive: true
         }
       }, {
-        path: "/option/payment/paymentlabel/withholding",
+        path: "/payment/paymentlabel/withholding",
         name: "withholding",
         component: withholding,
         meta: {
@@ -467,7 +452,7 @@ export default new Router({
           keepAlive: true
         }
       }, {
-        path: "/option/payment/paymentlabel/capitalFlow",
+        path: "/payment/paymentlabel/capitalFlow",
         name: "capitalFlow",
         component: capitalFlow,
         meta: {
@@ -475,7 +460,7 @@ export default new Router({
           keepAlive: true
         }
       }, {
-        path: "/option/payment/paymentlabel/oainformation",
+        path: "/payment/paymentlabel/oainformation",
         name: "oainformation",
         component: oainformation,
         meta: {
@@ -484,14 +469,14 @@ export default new Router({
         }
       }]
     }, {
-      path: "/option/payment/paymentlabel/PaymentAddZF",
+      path: "/payment/paymentlabel/PaymentAddZF",
       name: "paymentAddZF",
       component: PaymentAddZF,
       meta: {
         title: "新增支付申请单"
       }
     }, {
-      path: "/option/payment/paymentlabel/PaymentAddYC",
+      path: "/payment/paymentlabel/PaymentAddYC",
       name: "paymentAddYC",
       component: PaymentAddYC,
       meta: {
@@ -517,13 +502,6 @@ export default new Router({
       component: TranContractDetail,
       meta: {
         title: "合同编辑"
-      }
-    }, {
-      path: "/materialquotation/tranrialannex/annex",
-      name: "tranrialAnnex",
-      component: TranrialAnnex,
-      meta: {
-        title: "询价单附件"
       }
     }, {
       path: "/customerlist",
@@ -589,25 +567,32 @@ export default new Router({
         title: "清单详情"
       }
     }, {
-      path: "/option/conPrice/inquirydetails/detail",
+      path: "/conPrice/inquirydetails/detail",
       name: "inquirydetails",
       component: InquiryDetails,
       meta: {
         title: "询价单明细编辑"
       }
     }, {
-      path: "/option/conprice/contractwork",
+      path: "/conprice/contractwork",
       name: "contractwork",
       component: ContractWork,
       meta: {
         title: "材料合同编辑"
       }
     }, {
-      path: "/option/details/contractlabor",
+      path: "/details/contractlabor",
       name: "contractlabor",
       component: ContractLabor,
       meta: {
         title: "劳务合同编辑"
+      }
+    }, {
+      path: "/annex/comfrim",
+      name: "comfrimAnnex",
+      component: ComfrimAnnex,
+      meta: {
+        title: "询价单附件"
       }
     }]
   }]

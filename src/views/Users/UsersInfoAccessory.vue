@@ -48,10 +48,10 @@
           <img :src="(servePath+data[25]).replace('~','')" alt="签约单位营业执照" @click="preView(data[25])" />
         </div>
       </div>
-      <div class="title-contract">合作商身份证照</div>
+      <div class="title-contract">合作商身份证</div>
       <div class="taskcontract">
         <div class="taskimage">
-          <img :src="(servePath+data[38]).replace('~','')" alt="合作商身份证照" @click="preView(data[38])" />
+          <img :src="(servePath+data[38]).replace('~','')" alt="合作商身份证" @click="preView(data[38])" />
         </div>
       </div>
     </div>

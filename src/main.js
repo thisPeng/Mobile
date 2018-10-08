@@ -12,7 +12,7 @@ import {
 import 'vant/lib/vant-css/index.css';
 import './assets/css/iconfont.css';
 import "./assets/css/theme.less";
-import cbhUpload from "./components/Home/Upload";
+import cbhUpload from "./components/Upload/Upload";
 import cbhRegion from "./components/Select/Region";
 import cbhSelect from "./components/Select/Select";
 import axios from './assets/js/request';

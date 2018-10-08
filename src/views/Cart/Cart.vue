@@ -22,13 +22,13 @@
                   <div slot="thumb" @click.stop="onShowInfo(item,index)">
                     <img :src="item[32]" class="van-card__img">
                   </div>
-                    <div slot="title" class="van-card__row" @click.stop="onShowInfo(item,index)">
-                      <div class="van-card__title">{{item[14]}}</div>
-                      <div class="van-card__price">{{'￥ '+item[19]}}</div>
-                    </div>
-                    <div slot="footer">
-                      <van-stepper v-model="item[3]" :integer="true" @change="onChangNumber(item)" />
-                    </div>
+                  <div slot="title" class="van-card__row" @click.stop="onShowInfo(item,index)">
+                    <div class="van-card__title">{{item[14]}}</div>
+                    <div class="van-card__price">{{'￥ '+item[19]}}</div>
+                  </div>
+                  <div slot="footer">
+                    <van-stepper v-model="item[3]" :integer="true" @change="onChangNumber(item)" />
+                  </div>
                 </van-card>
               </div>
               <span slot="right" class="right" @click="onDeleteItem(item[0])">删除</span>
