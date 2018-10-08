@@ -1,10 +1,10 @@
 <template>
   <div class="annex">
     <div class="annex-content">
-      <cbh-upload class="annex-item" path="Order" @change="onSave" />
+      <cbh-upload class="annex-item" path="Contract" @change="onSave" />
       <div class="annex-item" v-for="(item, index) in data" :key="index">
         <div class="item-img">
-          <cbh-upload :src="(servePath+item[4]).replace('..','')" :name="item[1]" :index="index" @close="onDelete" />
+          <cbh-upload :src="(servePath+item[3]).replace('..','')" :name="item[1]" :index="index" @close="onDelete" />
         </div>
       </div>
     </div>
@@ -27,14 +27,14 @@ export default {
       const xmlString = xml({
         root: [
           {
-            BC_SC_Order_DOCData: [
+            BC_SC_Partner_DOCData: [
               { _attr: { UpdateKind: "ukInsert" } },
-              { SC_Order_DOCDataOID: uuidv4() }, // 主键
+              { SC_Partner_DOCDataOID: uuidv4() }, // 主键
               { FileName: result.name }, // 文件名
               { FileType: result.type }, // 文件类型
               { DOCDesc: "null" }, // 文件说明
               { FilePath: result.path }, // 文件路径
-              { PurchaseOrderID: this.confirmParams[0] }, // 订单类型
+              { PartnerID: this.userId.UCML_OrganizeOID }, // 合作商ID
               { SYS_Created: new Date().Format("yyyy-MM-dd hh:mm:ss") }, // 创建日期
               { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") }, // 最后修改日期
               { SYS_Deleted: "null" }, // 记录删除标记
@@ -48,7 +48,7 @@ export default {
           }
         ]
       });
-      annex.saveAnnex(xmlString).then(res => {
+      annex.savePartnerAnnex(xmlString).then(res => {
         try {
           if (res.status === 1) location.reload();
           else throw res.text;
@@ -60,19 +60,19 @@ export default {
     // 删除图片
     onDelete(result) {
       const i = result.index;
-      annex.deleteAnnex(this.data[i][4]).then(() => {
+      annex.deleteAnnex(this.data[i][3]).then(() => {
         const xml = require("xml");
         const xmlString = xml({
           root: [
             {
-              BC_SC_Order_DOCData: [
+              BC_SC_Partner_DOCData: [
                 { _attr: { UpdateKind: "ukDelete" } },
-                { SC_Order_DOCDataOID: this.data[i][0] } // 主键
+                { SC_Partner_DOCDataOID: this.data[i][0] } // 主键
               ]
             }
           ]
         });
-        annex.saveAnnex(xmlString).then(res => {
+        annex.savePartnerAnnex(xmlString).then(res => {
           try {
             if (res.status === 1) location.reload();
             else throw res.text;
@@ -83,13 +83,14 @@ export default {
       });
     },
     pageInit() {
-      annex.getAnnex(this.confirmParams[0]).then(res => {
+      annex.getPartnerAnnex(this.userId.UCML_OrganizeOID).then(res => {
         try {
           if (res.status === 1) {
             const sp = res.text.split("[[");
             const dsp = sp[1].split(";");
             const arr = eval("[[" + dsp[0]);
             this.data = arr;
+            // console.log(arr);
           }
         } catch (e) {
           this.data = [];
@@ -98,7 +99,6 @@ export default {
     }
   },
   mounted() {
-    this.$parent.title = this.userType == 3 ? "报价单附件" : "询价单附件";
     this.pageInit();
   }
 };

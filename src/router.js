@@ -9,7 +9,6 @@ import Classify from "./views/Classify/Classify";
 import GoodsList from "./views/Classify/GoodsList";
 import GoodsSearch from "./views/Classify/GoodsSearch";
 import Cart from "./views/Cart/Cart";
-import Inquiry from "./views/Inquiry/Inquiry";
 import ProjectList from "./views/Project/ProjectList";
 import ConPrice from "./views/Project/ConPrice/ConPrice";
 import ContractInfo from "./views/Project/ContractInfo/ContractInfo";
@@ -56,6 +55,7 @@ import TaskJDFrom from "./views/TaskWait/TaskJDFrom";
 import TaskDJFrom from "./views/TaskWait/TaskDJFrom";
 import TaskGYSFrom from "./views/TaskWait/TaskGYSFrom";
 import TaskGYSDetails from "./views/TaskWait/TaskGYSDetails";
+import Inquiry from "./views/Transaction/MaterialQuotation/Inquiry";
 import TranrialDetail from "./views/Transaction/MaterialQuotation/TranrialDetail"
 import TranContract from "./views/Transaction/TranContract/TranContract";
 import ShippingInfo from "./views/Transaction/ShippingInfo/ShippingInfo";
@@ -64,15 +64,17 @@ import NewInvoice from "./views/Transaction/ShippingInfo/NewInvoice";
 import DeliveryDetail from "./views/Transaction/ShippingInfo/DeliveryDetail";
 import TranPayment from "./views/Transaction/TranPayment/TranPayment";
 import Tranrial from "./views/Transaction/MaterialQuotation/Tranrial";
-import TranContractDetail from "./views/Transaction/MaterialQuotation/TranContractDetail";
+import TranContractWork from "./views/Transaction/MaterialQuotation/TranContractWork";
 import TranrialAdd from "./views/Transaction/MaterialQuotation/TranrialAdd";
 import Inventory from "./views/Transaction/TranContract/Inventory";
 import Customerlist from "./views/CustomerList/CustomerList";
 import InquiryDetails from "./views/Project/ConPrice/InquiryDetails";
 import ContractWork from "./views/Project/ConPrice/ContractWork";
 import ContractLabor from "./views/Project/ContractInfo/ContractLabor";
-import SupplierAnnex from "./views/Users/SupplierAnnex";
 import ComfrimAnnex from "./views/Annex/Comfrim";
+import ContractAnnex from "./views/Annex/Contract";
+import PartnerAnnex from "./views/Annex/Partner";
+import SupplierAnnex from "./views/Annex/Supplier";
 
 Vue.use(Router);
 
@@ -497,9 +499,9 @@ export default new Router({
         title: "添加明细物资"
       }
     }, {
-      path: "/materialquotation/tranContractDetail",
-      name: "tranContractDetail",
-      component: TranContractDetail,
+      path: "/materialquotation/tranContractWork",
+      name: "tranContractWork",
+      component: TranContractWork,
       meta: {
         title: "合同编辑"
       }
@@ -593,6 +595,27 @@ export default new Router({
       component: ComfrimAnnex,
       meta: {
         title: "询价单附件"
+      }
+    }, {
+      path: "/annex/contract",
+      name: "contractAnnex",
+      component: ContractAnnex,
+      meta: {
+        title: "合同附件"
+      }
+    }, {
+      path: "/annex/partner",
+      name: "partnerAnnex",
+      component: PartnerAnnex,
+      meta: {
+        title: "资料附件"
+      }
+    }, {
+      path: "/annex/supplier",
+      name: "supplierAnnex",
+      component: SupplierAnnex,
+      meta: {
+        title: "资料附件"
       }
     }]
   }]

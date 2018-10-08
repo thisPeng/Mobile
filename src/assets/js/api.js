@@ -1194,53 +1194,6 @@ const conprice = {
       }
     });
   },
-  // 询价单附件
-  getAnnex(PurchaseOrderID = "") {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_Order_XJ_EditService",
-        _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_SC_Order_DOCData",
-        "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": -1,
-        "_parameters[fieldList]": "",
-        "_parameters[valueList]": "",
-        "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "PurchaseOrderID='" + PurchaseOrderID + "'",
-        "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": "",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
-        _pUrl: ""
-      }
-    });
-  },
-  // 保存确认订单的附件
-  saveAnnex(xml) {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_Order_XJ_EditService",
-        _methodName: "BusinessSubmit",
-        "_parameters[xmlData]": xml,
-        _paraNames: "xmlData",
-        _pUrl: ""
-      }
-    })
-  },
-  // 删除附件
-  deleteAnnex(path = "") {
-    return axios({
-      url: "/OtherSource/UCMLFileUploadNew.aspx",
-      method: "post",
-      data: {
-        Action: "Delete",
-        filePath: path
-      }
-    })
-  },
   // 确认订单
   confrimPrice(PurchaseOrderID = "") {
     return axios({
@@ -2031,28 +1984,6 @@ const offer = {
       }
     });
   },
-  // 供应商附件
-  getSupplierAnnex(SupplierID = "") {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_Start_Company_SupplierService",
-        _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_SC_Supplier_DOCData",
-        "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": -1,
-        "_parameters[fieldList]": "",
-        "_parameters[valueList]": "",
-        "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SupplierID='" + SupplierID + "'",
-        "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": "",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
-        _pUrl: ""
-      }
-    })
-  },
   // 供应商物质报价
   getPriceList(parasm = {}) {
     return axios({
@@ -2105,28 +2036,6 @@ const offer = {
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
         "_parameters[SQLCondi]": "SC_Order_MasterOID='" + PurchaseOrderID + "'",
-        "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": "",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
-        _pUrl: ""
-      }
-    })
-  },
-  // 供应商-报价单附件
-  getTranAnnex(PurchaseOrderID = "") {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_Order_SetPrice_EditService",
-        _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_SC_Order_DOCData",
-        "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": -1,
-        "_parameters[fieldList]": "",
-        "_parameters[valueList]": "",
-        "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "PurchaseOrderID='" + PurchaseOrderID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -2446,6 +2355,173 @@ const offer = {
   }
 };
 
+// 附件模块
+const annex = {
+  // 工程/合作商-询价单附件
+  getAnnex(PurchaseOrderID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_XJ_EditService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Order_DOCData",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "PurchaseOrderID='" + PurchaseOrderID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    });
+  },
+  // 供应商-报价单附件
+  getTranAnnex(PurchaseOrderID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_SetPrice_EditService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Order_DOCData",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "PurchaseOrderID='" + PurchaseOrderID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  // 合同附件
+  getContractAnnex(PurchaseOrderID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_Contract_EditService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Order_DOCData",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "PurchaseOrderID='" + PurchaseOrderID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  // 合作商-资料附件
+  getPartnerAnnex(PartnerID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SC_Partner_EditService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Partner_DOCData",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "PartnerID='" + PartnerID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  // 供应商-资料附件
+  getSupplierAnnex(SupplierID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_Company_SupplierService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Supplier_DOCData",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SupplierID='" + SupplierID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  // 保存确认订单-附件
+  saveAnnex(xml) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_XJ_EditService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xml,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
+  // 保存合作商-资料附件
+  savePartnerAnnex(xml) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SC_Partner_EditService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xml,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
+  // 保存供应商-资料附件
+  saveSupplierAnnex(xml) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SC_Supplier_EditService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xml,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
+  // 删除附件
+  deleteAnnex(path = "") {
+    return axios({
+      url: "/OtherSource/UCMLFileUploadNew.aspx",
+      method: "post",
+      data: {
+        Action: "Delete",
+        filePath: path
+      }
+    })
+  }
+}
+
 export {
   login,
   index,
@@ -2462,5 +2538,6 @@ export {
   contractInfo,
   arrival,
   offer,
-  financial
+  financial,
+  annex
 };

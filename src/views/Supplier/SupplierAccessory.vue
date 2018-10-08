@@ -3,43 +3,43 @@
     <div class="title-contract">法人身份证</div>
     <div class="taskcontract">
       <div class="taskimage">
-        <img :src="(servePath+data[46]).replace('~','')" alt="法人身份证" @click="preView" />
+        <img :src="(servePath+data[46]).replace('~','')" alt="法人身份证" @click="preView(data[46])" />
       </div>
     </div>
     <div class="taskcontract">
       <div class="title-contract">营业许可证</div>
       <div class="taskimage">
-        <img :src="(servePath+data[39]).replace('~','')" alt="营业许可证" @click="preViewtwo" />
+        <img :src="(servePath+data[39]).replace('~','')" alt="营业许可证" @click="preView(data[39])" />
       </div>
     </div>
     <div class="taskcontract">
       <div class="title-contract">开户许可证</div>
       <div class="taskimage">
-        <img :src="(servePath+data[45]).replace('~','')" alt="开户许可证" @click="preViewthree" />
+        <img :src="(servePath+data[45]).replace('~','')" alt="开户许可证" @click="preView(data[45])" />
       </div>
     </div>
     <div class="taskcontract">
       <div class="title-contract">税种核定通知书(国)</div>
       <div class="taskimage">
-        <img :src="(servePath+data[40]).replace('~','')" alt="税种核定通知书(国)" @click="preViewfour" />
+        <img :src="(servePath+data[40]).replace('~','')" alt="税种核定通知书(国)" @click="preView(data[40])" />
       </div>
     </div>
     <div class="taskcontract">
       <div class="title-contract">上月增值税完税证明</div>
       <div class="taskimage">
-        <img :src="(servePath+data[50]).replace('~','')" alt="上月增值税完税证明" @click="preViewfive" />
+        <img :src="(servePath+data[50]).replace('~','')" alt="上月增值税完税证明" @click="preView(data[50])" />
       </div>
     </div>
     <div class="taskcontract">
       <div class="title-contract">上季度企业所得税完税证明</div>
       <div class="taskimage">
-        <img :src="(servePath+data[51]).replace('~','')" alt="上季度企业所得税完税证明" @click="preViewexit" />
+        <img :src="(servePath+data[51]).replace('~','')" alt="上季度企业所得税完税证明" @click="preView(data[51])" />
       </div>
     </div>
     <div class="taskcontract">
       <div class="title-contract">税种核定通知书(地)</div>
       <div class="taskimage">
-        <img :src="(servePath+data[43]).replace('~','')" alt="税种核定通知书(地)" @click="preViewend" />
+        <img :src="(servePath+data[43]).replace('~','')" alt="税种核定通知书(地)" @click="preView(data[43])" />
       </div>
     </div>
   </div>
@@ -51,32 +51,14 @@ import { ImagePreview } from "vant";
 export default {
   data() {
     return {
-      data:[]
+      data: []
     };
   },
   computed,
   methods: {
     //图片预览
-    preView() {
-      ImagePreview([(this.servePath + this.data[46]).replace("~", "")]);
-    },
-    preViewtwo() {
-      ImagePreview([(this.servePath + this.data[39]).replace("~", "")]);
-    },
-    preViewthree() {
-      ImagePreview([(this.servePath + this.data[45]).replace("~", "")]);
-    },
-    preViewfour() {
-      ImagePreview([(this.servePath + this.data[40]).replace("~", "")]);
-    },
-    preViewfive() {
-      ImagePreview([(this.servePath + this.data[50]).replace("~", "")]);
-    },
-    preViewexit() {
-      ImagePreview([(this.servePath + this.data[51]).replace("~", "")]);
-    },
-    preViewend() {
-      ImagePreview([(this.servePath + this.data[43]).replace("~", "")]);
+    preView(path = "") {
+      ImagePreview([(this.servePath + path).replace("~", "")]);
     },
     getData() {
       supplier

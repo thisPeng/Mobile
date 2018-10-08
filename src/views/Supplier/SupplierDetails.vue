@@ -22,8 +22,8 @@
       <van-field :value="data[53]" label="发证机关：" disabled />
       <van-field :value="data[54]" label="专业资质等级：" disabled />
       <van-field :value="data[55]" label="复核时间及有效期：" disabled />
-      <van-cell title="劳务供应商" is-link value="详情" @click="jumpPage" />
-      <van-cell title="劳务供应商" is-link value="附件" @click="jumpInfo" />
+      <van-cell title="证照资料" is-link value="" @click="jumpPage" />
+      <van-cell title="附件" is-link value="" @click="jumpInfo" />
     </van-cell-group>
     <div class="info-button" v-if="data[9] == 'false'">
       <van-button size="large" type="primary" @click="onSubmit">提交供应商审核</van-button>

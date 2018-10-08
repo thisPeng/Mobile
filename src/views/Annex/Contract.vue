@@ -1,7 +1,7 @@
 <template>
   <div class="annex">
     <div class="annex-content">
-      <cbh-upload class="annex-item" path="Order" @change="onSave" />
+      <cbh-upload class="annex-item" path="Contract" @change="onSave" />
       <div class="annex-item" v-for="(item, index) in data" :key="index">
         <div class="item-img">
           <cbh-upload :src="(servePath+item[4]).replace('..','')" :name="item[1]" :index="index" @close="onDelete" />
@@ -34,7 +34,12 @@ export default {
               { FileType: result.type }, // 文件类型
               { DOCDesc: "null" }, // 文件说明
               { FilePath: result.path }, // 文件路径
-              { PurchaseOrderID: this.confirmParams[0] }, // 订单类型
+              {
+                PurchaseOrderID:
+                  this.userType == 3
+                    ? this.confirmParams[23]
+                    : this.confirmParams[4]
+              }, // 订单类型
               { SYS_Created: new Date().Format("yyyy-MM-dd hh:mm:ss") }, // 创建日期
               { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") }, // 最后修改日期
               { SYS_Deleted: "null" }, // 记录删除标记
@@ -83,22 +88,25 @@ export default {
       });
     },
     pageInit() {
-      annex.getAnnex(this.confirmParams[0]).then(res => {
-        try {
-          if (res.status === 1) {
-            const sp = res.text.split("[[");
-            const dsp = sp[1].split(";");
-            const arr = eval("[[" + dsp[0]);
-            this.data = arr;
+      annex
+        .getContractAnnex(
+          this.userType == 3 ? this.confirmParams[23] : this.confirmParams[4]
+        )
+        .then(res => {
+          try {
+            if (res.status === 1) {
+              const sp = res.text.split("[[");
+              const dsp = sp[1].split(";");
+              const arr = eval("[[" + dsp[0]);
+              this.data = arr;
+            }
+          } catch (e) {
+            this.data = [];
           }
-        } catch (e) {
-          this.data = [];
-        }
-      });
+        });
     }
   },
   mounted() {
-    this.$parent.title = this.userType == 3 ? "报价单附件" : "询价单附件";
     this.pageInit();
   }
 };

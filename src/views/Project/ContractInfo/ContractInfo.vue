@@ -3,10 +3,10 @@
   <div class="contractInfo">
     <div class="tran-data">
       <div class="tran-card">
-        <div class="tran-item" v-for="(item,index) in list" :key="index">
+        <div class="tran-item" v-for="(item,index) in list" :key="index" v-if="item[18] !== '审核情况：未审核' && item[18] !== '审核情况：已审核'">
           <div class="item-title">
             <span class="title">{{item[22]}}</span>
-            <span class="option" v-if="item[18] === '发货情况：未发货' || item[18] === '审核情况：未审核'">
+            <span class="option" v-if="item[18] === '发货情况：未发货' || item[18] !== '审核情况：未审核'">
               <van-button type="danger" size="mini" plain @click.stop="onReturn(item)">退回</van-button>
             </span>
           </div>

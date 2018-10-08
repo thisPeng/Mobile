@@ -58,7 +58,8 @@
         <van-field v-model="data[13]" label="备注：" placeholder="请输入备注" />
       </van-cell-group>
       <van-cell-group>
-        <van-cell title="合作商" is-link value="用户信息" @click="jumpPage('usersInfoAccessory')" />
+        <van-cell title="证照资料" is-link value="" @click="jumpPage('usersInfoAccessory')" />
+        <van-cell title="附件" is-link value="" @click="jumpPage('partnerAnnex')" />
       </van-cell-group>
       <div class="pwd-button" @click="saveMessage">
         <van-button type="primary" size="large">保 存</van-button>

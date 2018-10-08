@@ -22,7 +22,7 @@
                 <span class="row-left">{{item[15]}}</span>
               </div>
               <div class="content-row">
-                <span>{{item[16]}}</span>
+                <span :class="item[19] == 1 ? 'text-red' : ''">{{item[16]}}{{item[19] == 1 ? '（已过期）' : ''}}</span>
               </div>
             </div>
           </van-cell>
@@ -43,7 +43,7 @@ export default {
   },
   computed,
   methods: {
-    getList() {
+    pageInit() {
       conprice.getList(this.projectInfo.SC_ProjectOID).then(res => {
         try {
           if (res && res.status === 1) {
@@ -84,7 +84,7 @@ export default {
   mounted() {
     if (this.projectInfo.SC_ProjectOID) {
       this.$parent.title = this.projectInfo.ProjectName;
-      this.getList();
+      this.pageInit();
     } else {
       this.$toast("请先点击屏幕右上角按钮，选择项目");
     }

@@ -92,14 +92,14 @@
       <van-field v-model="cspList[43]" label="乙方地址" disabled />
     </van-cell-group>
     <div class="title-delivery">合同附件</div>
-    <van-cell title="附件" is-link value="" @click="$router.push({name: 'tranrialAnnex'})" />
+    <van-cell title="附件" is-link value="" @click="$router.push({name: 'contractAnnex'})" />
     <div class="button">
       <van-button size="large" type="primary" @click="submitWork">提交合同</van-button>
     </div>
   </div>
 </template>
 <script>
-import computed from "./../../../assets/js/computed.js";
+import computed from "../../../assets/js/computed.js";
 import { conprice, contractInfo } from "../../../assets/js/api.js";
 export default {
   data() {
@@ -283,7 +283,9 @@ export default {
                   cspList[46] != "请选择时间" ? cspList[46] : "null"
               },
               { Supplier_Sign: cspList[45] },
-              { Edit_Flag: this.$util.replacePos(cspList[50], 1, 1) }
+              { Edit_Flag: this.$util.replacePos(cspList[50], 1, 1) },
+              { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") }, // 最后修改日期
+              { SYS_LAST_UPD_BY: this.userInfo.oid } // 最后修改用户
             ]
           }
         ]

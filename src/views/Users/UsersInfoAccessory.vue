@@ -161,6 +161,7 @@ export default {
 <style lang="less" scoped>
 .taskgysDetails {
   width: 100%;
+  padding-bottom: 30px;
   .title-contract {
     font-size: 16px;
     padding: 10px;

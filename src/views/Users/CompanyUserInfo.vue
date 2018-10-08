@@ -39,7 +39,7 @@
         <van-field v-model="data[15]" label="邮箱：" placeholder="请输入邮箱" />
       </van-cell-group>
       <van-cell-group>
-        <van-cell class="padding-vertical" title="工程商" is-link value="用户信息" @click="jumpPage('usersInfoAccessory')" />
+        <van-cell class="padding-vertical" title="证照资料" is-link value="" @click="jumpPage('usersInfoAccessory')" />
       </van-cell-group>
       <div class="pwd-button">
         <van-button type="primary" size="large" @click="saveMessage">保 存</van-button>

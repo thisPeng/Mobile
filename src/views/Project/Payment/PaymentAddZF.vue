@@ -228,7 +228,7 @@ export default {
                 { SC_Pay_ApplyOID: this.edit ? "null" : this.businessKey },
                 { Sheet_NO: result.text },
                 { ProjectID: this.projectInfo.SC_ProjectOID },
-                { PartnerID: this.projectInfo.PartnerID },
+                { PartnerID: this.userId.UCML_OrganizeOID },
                 { DemandID: this.projectInfo.DemandID },
                 { Sheet_Type: "SQ" },
                 { Approve_Flag: 0 },

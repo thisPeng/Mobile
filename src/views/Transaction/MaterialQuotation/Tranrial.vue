@@ -127,7 +127,7 @@ export default {
     // 编辑合同
     jumpInfo() {
       this.$router.push({
-        name: "tranContractDetail"
+        name: "tranContractWork"
       });
     },
     //订货有效期
@@ -153,7 +153,9 @@ export default {
               { SC_Order_MasterOID: "null" },
               { Valid_Date: info[17] },
               { Order_Man: info[18] },
-              { Remark: info[21] }
+              { Remark: info[21] },
+              { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") }, // 最后修改日期
+              { SYS_LAST_UPD_BY: this.userInfo.oid } // 最后修改用户
             ]
           }
         ]
@@ -161,12 +163,9 @@ export default {
       // console.log(xmlString);
       return offer.saveTranDetails(xmlString).then(res => {
         try {
-          if (res.status === 1) {
-            return true;
-          }
-          throw "保存失败，请刷新页面重试";
+          if (res.status === 1) return true;
+          else return false;
         } catch (e) {
-          console.log(e);
           return false;
         }
       });
