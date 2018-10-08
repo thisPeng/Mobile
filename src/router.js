@@ -288,21 +288,14 @@ export default new Router({
       name: "usersInfoAccessory",
       component: UsersInfoAccessory,
       meta: {
-        title: "用户信息"
-      }
-    }, {
-      path: "/users/supplierAnnex",
-      name: "supplierAnnex",
-      component: SupplierAnnex,
-      meta: {
-        title: "供应商附件"
+        title: "证照资料"
       }
     }, {
       path: "/users/supplier",
       name: "supplier",
       component: Supplier,
       meta: {
-        title: "供应商设置",
+        title: "材料供应商",
         keepAlive: true // 需要被缓存
       }
     }, {
@@ -594,7 +587,7 @@ export default new Router({
       name: "comfrimAnnex",
       component: ComfrimAnnex,
       meta: {
-        title: "询价单附件"
+        title: "附件"
       }
     }, {
       path: "/annex/contract",
@@ -608,14 +601,14 @@ export default new Router({
       name: "partnerAnnex",
       component: PartnerAnnex,
       meta: {
-        title: "资料附件"
+        title: "附件"
       }
     }, {
       path: "/annex/supplier",
       name: "supplierAnnex",
       component: SupplierAnnex,
       meta: {
-        title: "资料附件"
+        title: "附件"
       }
     }]
   }]

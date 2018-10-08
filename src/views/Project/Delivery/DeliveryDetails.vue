@@ -23,7 +23,7 @@
       <van-field v-model="info[11]" label="发货金额：" disabled />
       <van-field v-model="info[29]" label="备注：" type="textarea" :disabled="info[25] == '1' || info[20] == '1'" :placeholder="info[25] != '1' && info[20] != '1' ? '请输入备注' : ''" />
       <van-cell title="物资列表" is-link value="" @click="jumpInfo" />
-      <!-- <van-cell title="发货单详情" is-link value="附件" @click="jumpPage('arrivaAnnex')" /> -->
+      <!-- <van-cell title="附件" is-link value="" @click="jumpPage('arrivaAnnex')" /> -->
     </van-cell-group>
     <div class="con-button" v-if="info && info[25] != '1' && info[20] != '1'">
       <van-button type="primary" @click="DeliverySign" v-if="info[47] == '0'">签收</van-button>

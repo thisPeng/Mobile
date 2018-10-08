@@ -20,7 +20,7 @@
       <van-field v-model="data[32]" label="固定电话：" :disabled="edit" />
       <van-field v-model="data[33]" label="手机：" :disabled="edit" />
       <van-field v-model="data[34]" label="邮箱：" :disabled="edit" />
-      <van-cell title="附件" is-link value="详情" @click="jumpPage" />
+      <van-cell title="证照资料" is-link value="" @click="jumpPage" />
     </van-cell-group>
     <van-cell-group v-if="data[3] === '1' && data[9] === 'false'" class="margin-vertical-xl">
       <van-button type="primary" size="large" @click="onSubmit">提交审核</van-button>
