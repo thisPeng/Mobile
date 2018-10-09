@@ -25,7 +25,7 @@ Date.prototype.Format = function (fmt) {
   return fmt;
 };
 
-const formatDate = function (dateStr, formatter = "yyyy-MM-dd") {
+const formatDate = (dateStr, formatter = "yyyy-MM-dd") => {
   if (!dateStr) {
     return "";
   }
@@ -75,7 +75,7 @@ const codeValue = (val, code) => {
 }
 
 // XML转换
-const xmlData = function xmlData(xml, val) {
+const xmlData = (xml, val) => {
   return "<" + xml + ">" + val + "</" + xml + ">"
 };
 

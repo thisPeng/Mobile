@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from '../src/assets/js/store'
-import util from '../src/assets/js/util'
+import store from './assets/js/store'
+import util from './assets/js/util'
 import './registerServiceWorker'
 import "normalize.css";
 import Vant from 'vant';
@@ -21,8 +21,6 @@ import * as custom from './assets/js/filters'
 
 Vue.use(Vant);
 Vue.use(Lazyload);
-Vue.use(cbhRegion);
-Vue.use(cbhSelect);
 Vue.component('cbh-upload', cbhUpload)
 Vue.component('cbh-region', cbhRegion)
 Vue.component('cbh-select', cbhSelect)
@@ -38,7 +36,7 @@ Object.keys(custom).forEach(key => {
 
 // 图片地址
 if (process.env.NODE_ENV === "production") {
-  let strPath = window.document.location.pathname;
+  const strPath = window.document.location.pathname;
   let postPath = strPath.substring(0, strPath.substr(1).indexOf("/") + 1);
   if (postPath === '/Screen' || postPath === '/mobile') postPath = ''
   store.commit('servePath', postPath);

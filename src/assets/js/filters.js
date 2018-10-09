@@ -1,6 +1,6 @@
 import store from "./store.js";
 
-const formatDate = function (dateStr, formatter = "yyyy-MM-dd") {
+const formatDate = (dateStr, formatter = "yyyy-MM-dd") => {
   if (!dateStr || dateStr == "1900-01-01 00:00:00") {
     return "";
   }
