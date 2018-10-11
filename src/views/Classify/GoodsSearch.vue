@@ -153,7 +153,6 @@ export default {
               val.sku_arr = val.sku_item.split(",");
             }
           });
-          // console.log(filterList);
           this.filterList = filterList;
         }
       });
@@ -173,11 +172,9 @@ export default {
         taxAll: item[32]
       };
       this.onBuyClicked();
-      // console.log(item);
     },
     // 显示物资详情
     showInfo(item) {
-      // console.log(item);
       this.goods = {
         id: item[0],
         sid: item[31],
@@ -191,7 +188,6 @@ export default {
         taxAll: item[32]
       };
       this.showBase = true;
-      // console.log(item);
     },
     // 跳转购物车
     jumpCart() {
@@ -256,15 +252,12 @@ export default {
             const sp = res.text.split("]]");
             this.goodsList = eval(sp[0].split("=")[1] + "]]");
             this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
-            // console.log(this.pages);
             this.getGoodsFilter();
-            // console.log(this.goodsList);
           }
         } catch (e) {
           this.filterList = [];
           this.goodsList = [];
           this.pages = {};
-          // console.log(e);
         }
       });
     },

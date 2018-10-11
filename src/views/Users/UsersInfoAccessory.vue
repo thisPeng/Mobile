@@ -137,7 +137,6 @@ export default {
             const sp = res.text.split("[[");
             const csp = sp[1].split(";");
             this.data = eval("[[" + csp[0])[0];
-            // console.log(this.data);
           }
         });
       } else {
@@ -147,7 +146,6 @@ export default {
             const sp = res.text.split("[[");
             const csp = sp[1].split("]]");
             this.data = eval("[[" + csp[0] + "]]")[0];
-            // console.log(this.data);
           }
         });
       }

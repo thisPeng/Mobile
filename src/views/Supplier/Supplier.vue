@@ -135,7 +135,6 @@ export default {
               this.pages = eval(
                 "(" + sp[1].split("=")[1].replace(";", "") + ")"
               );
-              // console.log(this.list);
             }
           } catch (e) {
             this.list = [];
@@ -156,7 +155,6 @@ export default {
               this.allPages = eval(
                 "(" + sp[1].split("=")[1].replace(";", "") + ")"
               );
-              // console.log(this.allList);
             }
           } catch (e) {
             this.allList = [];

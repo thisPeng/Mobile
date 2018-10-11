@@ -61,7 +61,6 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0])[0];
-          // console.log(this.list);
           if (this.list[17]) {
             this.list[17] = this.$util.formatDate(this.list[17]);
           } else {

@@ -182,8 +182,6 @@ export default {
           }
           const i = this.cspList[12];
           this.payment = this.columns[i - 1];
-          // console.log(this.payment);
-          // console.log(this.cspList);
         }
       });
     },
@@ -290,7 +288,7 @@ export default {
           }
         ]
       });
-      // console.log(xmlString);
+
       this.$dialog
         .confirm({
           title: "提交",

@@ -127,7 +127,6 @@ export default {
               this.list = eval("[[" + csp[0]);
               this.pages = eval("(" + csp[1].split("=")[1] + ")");
               return true;
-              // console.log(this.list);
             }
             return false;
           } catch (e) {

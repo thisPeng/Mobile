@@ -79,7 +79,6 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[2].split(";");
           this.dspList = eval("[[" + csp[0]);
-          // console.log(this.dspList);
           return true;
         }
         return false;

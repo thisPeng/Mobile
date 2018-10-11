@@ -27,9 +27,9 @@
         </div>
         <div class="login-form-input login-form-button">
           <div class="login-form-check">
-            <!-- <span class="check-option">
-                  <router-link :to="{ name:'register' }">注册账号</router-link>
-                </span> -->
+            <span class="check-option">
+              <router-link :to="{ name:'register' }">注册账号</router-link>
+            </span>
             <!-- <span class="check-option">
                   <router-link :to="{ name:'index' }">忘记密码</router-link>
                 </span> -->

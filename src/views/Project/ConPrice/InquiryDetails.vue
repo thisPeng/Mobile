@@ -130,9 +130,7 @@ export default {
         reMarks: item[19]
       };
       this.showBase = true;
-      // console.log(item);
     },
-
     //询价单明细删除
     conDetailsDelete(item) {
       this.$dialog

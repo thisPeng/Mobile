@@ -85,7 +85,6 @@ export default {
       if (result && result.status === 1) {
         const sp = result.text.split(";");
         this.data = eval(sp[0].split("=")[1])[0];
-        // console.log(this.data);
       }
     });
   }

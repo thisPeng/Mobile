@@ -184,7 +184,6 @@ export default {
                 ]
               });
               xmlString = "<root>" + xmlString + "</root>";
-              // console.log(xmlString);
               financial.preMemoryConservation(xmlString).then(res => {
                 if (res.status === 1) {
                   this.$store.commit("isReload", true);

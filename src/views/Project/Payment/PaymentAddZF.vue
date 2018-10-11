@@ -373,8 +373,6 @@ export default {
               ]);
             }
             xmlString = "<root>" + xmlString + "</root>";
-            // console.log(xmlString);
-
             financial.payConservation(xmlString).then(res => {
               if (res.status === 1) {
                 this.delTable = [];
@@ -486,7 +484,6 @@ export default {
           const sp = res.text.split(";");
           const supplierList = eval(sp[0].split("=")[1]);
           this.supplierList = supplierList;
-          // console.log(this.supplierList);
         } catch (e) {
           console.log(e);
         }
@@ -511,7 +508,6 @@ export default {
                 }
               });
             }
-            // console.log(this.projectList);
           } catch (e) {
             console.log(e);
           }
@@ -591,7 +587,6 @@ export default {
       try {
         if (res && res.status === 1) {
           this.dataMoney = res.text.split(",");
-          // console.log(this.dataMoney);
         }
       } catch (e) {
         console.log(e);

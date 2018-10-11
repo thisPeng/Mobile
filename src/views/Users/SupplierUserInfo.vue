@@ -71,7 +71,6 @@ export default {
       this.data[62] = res.provStr;
       this.data[63] = res.cityStr;
       this.data[64] = res.districtStr;
-      // console.log(res);
     },
     //保存
     saveMessage() {
@@ -111,7 +110,7 @@ export default {
           }
         ]
       });
-      // console.log(xmlString);
+
       users.saveMessageSupplier(xmlString).then(res => {
         try {
           if (res.status === 1) {
@@ -132,7 +131,7 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split("]]");
           this.data = eval("[[" + csp[0] + "]]")[0];
-          // console.log(this.data);
+
         }
       });
     },

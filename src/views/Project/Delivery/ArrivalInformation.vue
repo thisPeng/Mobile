@@ -75,7 +75,6 @@ export default {
               }
             });
             this.listOrder = listOrder;
-            // console.log(this.listOrder);
           }
         } catch (e) {
           console.log(e);

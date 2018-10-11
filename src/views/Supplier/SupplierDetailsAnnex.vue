@@ -29,13 +29,11 @@ export default {
     },
     pageInit() {
       offer.getSupplierAnnex(this.suppParams[0]).then(res => {
-        console.log(res);
         try {
           if (res.status === 1) {
             const sp = res.text.split("[[");
             const dsp = sp[1].split(";");
             this.data = eval("[[" + dsp[0]);
-            // console.log(this.data);
           }
         } catch (e) {
           console.log(e);

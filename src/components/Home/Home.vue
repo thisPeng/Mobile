@@ -142,7 +142,6 @@ export default {
         index.getConfig(params).then(res => {
           if (res && res.status === 1) {
             this.$store.commit("codeValue", JSON.parse(res.text));
-            // console.log(this.codeValue);
           }
         });
       });

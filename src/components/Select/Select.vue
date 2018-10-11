@@ -45,7 +45,6 @@ export default {
         try {
           if (res.status === 1) {
             this.list = JSON.parse(res.text);
-            // console.log(this.list);
             return true;
           }
           return false;

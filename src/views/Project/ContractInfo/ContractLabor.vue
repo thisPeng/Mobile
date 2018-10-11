@@ -2,14 +2,14 @@
   <div class="contractlabor">
     <van-cell-group>
       <div class="title-delivery">基本合同信息</div>
-      <van-field v-model="item[1]" label="合同编号:" disabled/>
+      <van-field v-model="item[1]" label="合同编号:" disabled />
       <van-field v-model="item[2]" label="合同名称:" />
       <van-field v-model="item[3]" label="工程承包人:" />
       <van-field v-model="item[4]" label="劳务分包人:" />
-      <van-field v-model="item[0]" label="资质证书号码:" disabled/>
-      <van-field v-model="item[0]" label="发证机关:" disabled/>
-      <van-field v-model="item[0]" label="资质专业等级:" disabled/>
-      <van-field v-model="item[0]" label="复审时间及有效期:" disabled/>
+      <van-field v-model="item[0]" label="资质证书号码:" disabled />
+      <van-field v-model="item[0]" label="发证机关:" disabled />
+      <van-field v-model="item[0]" label="资质专业等级:" disabled />
+      <van-field v-model="item[0]" label="复审时间及有效期:" disabled />
       <van-field v-model="item[11]" label="合同金额:" />
       <van-field v-model="item[8]" label="分包范围:" />
       <van-field v-model="item[57]" label="施工承包方式:" />
@@ -84,40 +84,40 @@
       <van-field v-model="item[28]" label="分包人违约千分比:" />
       <van-field v-model="item[25]" label="分包人违约金:" />
       <van-field v-model="item[26]" label="索赔天数期限:" />
-      <van-field v-model="item[30]" label="诉讼法院:" disabled/>
+      <van-field v-model="item[30]" label="诉讼法院:" disabled />
       <van-field v-model="item[22]" label="停止工作期限:" />
       <van-field v-model="item[64]" label="合同订立时间:" />
       <van-field v-model="item[65]" label="合同订立地点:" />
       <van-field v-model="item[66]" label="生效方式:" />
 
       <div class="title-delivery">工程承包商信息</div>
-      <van-field v-model="item[31]" label="工程承包商签名:" disabled/>
-      <van-field v-model="item[32]" label="银行账号:" disabled/>
-      <van-field v-model="item[33]" label="开户行:" disabled/>
-      <van-field v-model="item[34]" label="纳税识别码:" disabled/>
-      <van-field v-model="item[36]" label="电话:" disabled/>
-      <van-field v-model="item[37]" label="法定代表人:" disabled/>
+      <van-field v-model="item[31]" label="工程承包商签名:" disabled />
+      <van-field v-model="item[32]" label="银行账号:" disabled />
+      <van-field v-model="item[33]" label="开户行:" disabled />
+      <van-field v-model="item[34]" label="纳税识别码:" disabled />
+      <van-field v-model="item[36]" label="电话:" disabled />
+      <van-field v-model="item[37]" label="法定代表人:" disabled />
       <div class="con-price">
         <span class="con-label">签订日期:</span>
         <span class="con-select" @click="showDatefour=true">{{paytime}}</span>
       </div>
       <van-datetime-picker v-model="currentDate" v-show="showDatefour" type="date" class="contract-date" @confirm="qiandingDate" @cancel="showDatefour=false" />
-      <van-field v-model="item[35]" label="地址:" disabled/>
+      <van-field v-model="item[35]" label="地址:" disabled />
 
       <div class="title-delivery">劳务分包人信息</div>
-      <van-field v-model="item[39]" label="劳务分包人签名:" disabled/>
-      <van-field v-model="item[40]" label="银行账号:" disabled/>
-      <van-field v-model="item[41]" label="开户行:" disabled/>
-      <van-field v-model="item[42]" label="纳税识别码:" disabled/>
-      <van-field v-model="item[44]" label="电话:" disabled/>
-      <van-field v-model="item[45]" label="法定代表人:" disabled/>
+      <van-field v-model="item[39]" label="劳务分包人签名:" disabled />
+      <van-field v-model="item[40]" label="银行账号:" disabled />
+      <van-field v-model="item[41]" label="开户行:" disabled />
+      <van-field v-model="item[42]" label="纳税识别码:" disabled />
+      <van-field v-model="item[44]" label="电话:" disabled />
+      <van-field v-model="item[45]" label="法定代表人:" disabled />
       <div class="con-price">
         <span class="con-label">签订日期:</span>
         <span class="con-select" @click="showDatefive=true">{{paytime}}</span>
       </div>
       <van-datetime-picker v-model="currentDate" v-show="showDatefive" type="date" class="contract-date" @confirm="fenbaoDate" @cancel="showDatefive=false" />
 
-      <van-field v-model="item[43]" label="地址:" disabled/>
+      <van-field v-model="item[43]" label="地址:" disabled />
     </van-cell-group>
   </div>
 </template>
@@ -181,10 +181,9 @@ export default {
               const sp = res.text.split("[[");
               const tsp = sp[1].split("]]");
               this.item = eval("[[" + tsp[0] + "]]")[0];
-              // console.log(this.item);
             }
           } catch (e) {
-            this.$toast(e);
+            console.log(e);
           }
         });
     }

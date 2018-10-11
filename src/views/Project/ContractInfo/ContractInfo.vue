@@ -71,7 +71,6 @@ export default {
       contractInfo.returnContract(item[0], item[5]).then(res => {
         try {
           if (res.status === 1) {
-            console.log(res);
             this.getList().then(result => {
               if (result) this.$toast.success("合同已退回");
               else location.reload();

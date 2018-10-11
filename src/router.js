@@ -102,7 +102,6 @@ export default new Router({
       component: Index,
       meta: {
         title: "首页" // 页面标题
-
       }
     }, {
       path: "/classify",

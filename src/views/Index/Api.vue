@@ -24,7 +24,7 @@ export default {
       }
     }).then(res => {
       this.access_token = res;
-      console.log("返回这个东东：" + res);
+      console.log(res);
     });
   }
 };

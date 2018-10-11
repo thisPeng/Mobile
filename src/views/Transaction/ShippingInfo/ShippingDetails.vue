@@ -86,7 +86,7 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0])[0];
-          // console.log(this.list);
+
           if (this.list[27] === "1900-01-01") {
             this.list[27] = this.$util.formatDate(this.list[27]);
           } else {

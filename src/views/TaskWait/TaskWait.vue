@@ -82,7 +82,6 @@ export default {
               this.tableData = eval("[[" + sp[0].split("[[")[1]);
               const pages = "(" + sp[1].split("=")[1] + ")";
               this.tablePages = eval(pages);
-              // console.log(this.tablePages);
             } catch (e) {
               console.log(e);
             }

@@ -90,7 +90,6 @@ export default {
             this.taskTabs.InstanceID = this.data[34];
             this.taskTabs.FlowID = this.data[35];
             this.taskTabs.payment = this.payment;
-            // console.log(this.dataTable);
 
             this.taskTabs.params = {
               SC_Pay_ApplyOID: this.data[0],
@@ -146,7 +145,6 @@ export default {
             task.getTaskZFMoney(this.data[2]).then(res => {
               if (res && res.status === 1) {
                 this.dataMoney = res.text.split(",");
-                // console.log(this.dataMoney);
               }
             });
 

@@ -95,7 +95,6 @@ export default {
         } catch (e) {
           this.$toast.fail(e);
         }
-        console.log(res);
       });
     },
     pageInit() {

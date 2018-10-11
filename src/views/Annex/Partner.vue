@@ -90,7 +90,6 @@ export default {
             const dsp = sp[1].split(";");
             const arr = eval("[[" + dsp[0]);
             this.data = arr;
-            // console.log(arr);
           }
         } catch (e) {
           this.data = [];

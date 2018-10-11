@@ -287,7 +287,6 @@ export default {
           this.goodsList = [];
           this.loading = false;
           this.finished = false;
-          // console.log(e);
         }
       });
     },
@@ -308,7 +307,6 @@ export default {
           this.goodsList = [];
           this.typeList = [];
           this.filterList = [];
-          // console.log(e);
         }
       });
     },
@@ -378,7 +376,6 @@ export default {
         taxAll: item[32]
       };
       this.onBuyClicked();
-      // console.log(item);
     },
     // 显示物资详情
     showInfo(item) {
@@ -396,7 +393,6 @@ export default {
         taxAll: item[32]
       };
       this.showBase = true;
-      // console.log(item);
     },
     // 获取供应商详情
     getSuppInfo() {
@@ -410,7 +406,6 @@ export default {
             const sp = res.text.split("[[");
             const tsp = sp[1].split("]]");
             this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
-            // console.log(this.suppInfo);
           }
         });
     }

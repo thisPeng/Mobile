@@ -160,7 +160,7 @@ export default {
           }
         ]
       });
-      // console.log(xmlString);
+
       return offer.saveTranDetails(xmlString).then(res => {
         try {
           if (res.status === 1) return true;

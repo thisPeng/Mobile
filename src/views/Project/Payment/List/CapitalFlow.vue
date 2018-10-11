@@ -88,7 +88,6 @@ export default {
             const sp = res.text.split("=");
             const csp = sp[1].split(";");
             this.data = eval(csp[0])[0];
-            // console.log(this.data);
           }
         } catch (e) {
           console.log(e);
@@ -106,7 +105,6 @@ export default {
               const csp = sp[0].split("=");
               this.pages = eval("(" + sp[1].split("=")[1] + ")");
               this.list = eval(csp[1]);
-              // console.log(this.list);
             }
           } catch (e) {
             console.log(e);

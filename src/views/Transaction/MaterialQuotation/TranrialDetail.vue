@@ -135,7 +135,6 @@ export default {
         reMarks: item[19]
       };
       this.showBase = true;
-      // console.log(item);
     },
     // 保存物资修改
     onSaveGoods() {
@@ -162,7 +161,7 @@ export default {
           }
         ]
       });
-      // console.log(xmlString);
+
       offer.saveTranDetails(xmlString).then(res => {
         try {
           if (res.status === 1) {

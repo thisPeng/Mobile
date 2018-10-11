@@ -95,7 +95,6 @@ export default {
         reMarks: item[19]
       };
       this.showBase = true;
-      // console.log(item);
     },
     getData() {
       return offer.getContractDetail(this.contractParams[0]).then(res => {
@@ -103,7 +102,6 @@ export default {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
           this.list = eval("[[" + csp[0]);
-          // console.log(this.list);
           return true;
         }
         return false;

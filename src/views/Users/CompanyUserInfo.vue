@@ -110,7 +110,7 @@ export default {
           }
         ]
       });
-      // console.log(xmlString);
+
       users.saveMessageCompany(xmlString).then(res => {
         try {
           if (res.status === 1) {

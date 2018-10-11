@@ -186,7 +186,6 @@ export default {
         reMarks: item[21]
       };
       this.showBase = true;
-      // console.log(item);
     }
   },
   mounted() {

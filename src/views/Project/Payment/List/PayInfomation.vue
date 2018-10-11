@@ -59,7 +59,6 @@ export default {
               const csp = sp[1].split(";");
               this.list = eval("[[" + csp[0]);
               this.pages = eval("(" + csp[1].split("=")[1] + ")");
-              // console.log(this.list);
             }
           } catch (e) {
             console.log(e);
