@@ -6,9 +6,6 @@ import util from './assets/js/util'
 import './registerServiceWorker'
 import "normalize.css";
 import Vant from 'vant';
-import {
-  Lazyload
-} from 'vant';
 import 'vant/lib/vant-css/index.css';
 import './assets/css/iconfont.css';
 import "./assets/css/theme.less";
@@ -20,7 +17,6 @@ import echarts from 'echarts'
 import * as custom from './assets/js/filters'
 
 Vue.use(Vant);
-Vue.use(Lazyload);
 Vue.component('cbh-upload', cbhUpload)
 Vue.component('cbh-region', cbhRegion)
 Vue.component('cbh-select', cbhSelect)

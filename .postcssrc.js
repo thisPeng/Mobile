@@ -1,6 +1,5 @@
 module.exports = {
   plugins: {
-    autoprefixer: {},
     "postcss-import": {},
     "postcss-url": {},
     "postcss-aspect-ratio-mini": {},
@@ -17,7 +16,9 @@ module.exports = {
       minPixelValue: 1, // (Number) Set the minimum pixel value to replace.
       mediaQuery: false // (Boolean) Allow px to be converted in media queries.
     },
-    "postcss-viewport-units": {},
+    "postcss-viewport-units": {
+      filterRule: rule => rule.selector.indexOf('::after') === -1 && rule.selector.indexOf('::before') === -1 && rule.selector.indexOf(':after') === -1 && rule.selector.indexOf(':before') === -1
+    },
     cssnano: {
       preset: "advanced",
       autoprefixer: false,

@@ -4,7 +4,7 @@
     <div class="index-banner">
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(image, index) in images" :key="index">
-          <img v-lazy="image" width="100%" />
+          <img :src="image" />
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -179,9 +179,13 @@ export default {
   width: 100%;
   background-color: #fff;
   .index-banner {
+    height: 210px;
+    .van-swipe-item {
+      height: 200px !important;
+    }
     img {
       width: 100%;
-      height: 200px;
+      height: 100%;
     }
   }
   .index-apply {
