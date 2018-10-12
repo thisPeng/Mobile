@@ -161,7 +161,7 @@ export default {
     z-index: 99;
   }
   .app-data {
-    margin-bottom: 40px;
+    margin-bottom: 60px;
     .app-card {
       width: 100%;
       .app-item {
