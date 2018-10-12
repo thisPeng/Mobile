@@ -161,9 +161,9 @@ export default {
     z-index: 99;
   }
   .app-data {
-    margin-bottom: 60px;
     .app-card {
       width: 100%;
+      padding-bottom: 60px;
       .app-item {
         background-color: #fff;
         padding: 10px 15px;
