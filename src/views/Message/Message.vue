@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import taskList from "./../../components/TaskWait/List";
+import taskList from "./../../components/TaskList/List";
 import computed from "./../../assets/js/computed.js";
 import { message } from "./../../assets/js/api.js";
 

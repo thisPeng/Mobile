@@ -10,18 +10,8 @@
         <li v-for="(item,index) in detailedList" :key="index" v-if="item.pid == topList[active].id">
           <div class="class-title"> {{item.name}} </div>
           <div v-for="(ite,idx) in item.list" :key="idx" class="class-item">
-            <!-- <van-collapse v-model="activeNames" v-if="ite.list.length > 0" class="item-list">
-              <van-collapse-item class="text-xs" :title="ite.name" :name="idx">
-                <div class="class-item" v-for="(e,i) in ite.list" :key="i" @click="onItemClick(e.id)">
-                  <div class="item">
-                    <img class="image" :src="e.img" alt="">
-                    <div class="title">{{e.name}}</div>
-                  </div>
-                </div>
-              </van-collapse-item>
-            </van-collapse> -->
             <div class="item" @click="onItemClick(ite.id)">
-              <img class="image" :src="ite.img" alt="">
+              <div class="image"><img :src="ite.img" alt=""></div>
               <div class="title">{{ite.name}}</div>
             </div>
           </div>
@@ -117,7 +107,11 @@ export default {
             .image {
               width: 55px;
               height: 55px;
-              border-radius: 5px;
+              img {
+                width: 100%;
+                height: 100%;
+                border-radius: 10%;
+              }
             }
             .title {
               color: #666;

@@ -43,10 +43,14 @@ export default {
   methods: {
     getData() {
       offer.getPayment(this.userInfo.oid, this.clientInfo[0]).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split("[[");
-          const csp = sp[1].split(";");
-          this.list = eval("[[" + csp[0]);
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split("[[");
+            const csp = sp[1].split(";");
+            this.list = eval("[[" + csp[0]);
+          }
+        } catch (e) {
+          console.log(e);
         }
       });
     },

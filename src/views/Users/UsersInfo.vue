@@ -1,8 +1,9 @@
 <template>
   <div class="usersinfo">
     <div class="mui-head">
-      <!-- <img class="info-img" src="../../../public/img/topbar.jpg" alt=""> -->
-      <img src="../../../public/img/ms_ico5.png" alt="" />
+      <div class="mui-head-img">
+        <img src="../../../public/img/ms_ico5.png" alt="" />
+      </div>
       <div id="nName" class="mui-name">{{userInfo.name}}</div>
     </div>
     <div class="info-users">
@@ -170,22 +171,25 @@ export default {
     height: 200px;
     background-image: url("../../../public/img/topbar.jpg");
     background-repeat: no-repeat;
-    background-size: 100% 50%;
+    background-size: 100% 100%;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
-  .mui-head img {
+  .mui-head .mui-head-img {
     display: block;
     margin-bottom: 10px;
     width: 100px;
     height: 100px;
     border-radius: 80px;
-    -moz-box-shadow: 0px 0px 3px #999;
-    -webkit-box-shadow: 0px 0px 3px #999;
     box-shadow: 0px 0px 3px #999;
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
   }
   .info-users {
     .info-sex {

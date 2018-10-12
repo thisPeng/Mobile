@@ -29,10 +29,7 @@ import PriceDetails from "./views/Project/ConPrice/PriceDetails";
 import DeliveryDetails from "./views/Project/Delivery/DeliveryDetails";
 import ArrivalDetails from "./views/Project/Delivery/ArrivalDetails";
 import ContractDetails from "./views/Project/ContractInfo/ContractDetails";
-import MsgList from "./views/Message/MsgList";
 import Message from "./views/Message/Message";
-import Apply from "./views/Apply/Apply";
-import Contact from "./views/Contact/Contact";
 import Count from "./views/Count/Count";
 import Users from "./views/Users/Users";
 import UsersPwd from "./views/Users/UsersPwd";
@@ -46,15 +43,15 @@ import SupplierList from "./views/Supplier/SupplierList";
 import SupplierAccessory from "./views/Supplier/SupplierAccessory";
 import SupplierDetailsAnnex from "./views/Supplier/SupplierDetailsAnnex";
 import SupplierDetails from "./views/Supplier/SupplierDetails";
-import TaskWait from "./views/TaskWait/TaskWait";
-import TaskYCFrom from "./views/TaskWait/TaskYCFrom";
-import TaskZFFrom from "./views/TaskWait/TaskZFFrom";
-import TaskKKFrom from "./views/TaskWait/TaskKKFrom";
-import TaskPKFrom from "./views/TaskWait/TaskPKFrom";
-import TaskJDFrom from "./views/TaskWait/TaskJDFrom";
-import TaskDJFrom from "./views/TaskWait/TaskDJFrom";
-import TaskGYSFrom from "./views/TaskWait/TaskGYSFrom";
-import TaskGYSDetails from "./views/TaskWait/TaskGYSDetails";
+import TaskList from "./views/TaskList/TaskList";
+import TaskYCFrom from "./views/TaskList/TaskYCFrom";
+import TaskZFFrom from "./views/TaskList/TaskZFFrom";
+import TaskKKFrom from "./views/TaskList/TaskKKFrom";
+import TaskPKFrom from "./views/TaskList/TaskPKFrom";
+import TaskJDFrom from "./views/TaskList/TaskJDFrom";
+import TaskDJFrom from "./views/TaskList/TaskDJFrom";
+import TaskGYSFrom from "./views/TaskList/TaskGYSFrom";
+import TaskGYSDetails from "./views/TaskList/TaskGYSDetails";
 import Inquiry from "./views/Transaction/MaterialQuotation/Inquiry";
 import TranrialDetail from "./views/Transaction/MaterialQuotation/TranrialDetail"
 import TranContract from "./views/Transaction/TranContract/TranContract";
@@ -67,7 +64,7 @@ import Tranrial from "./views/Transaction/MaterialQuotation/Tranrial";
 import TranContractWork from "./views/Transaction/MaterialQuotation/TranContractWork";
 import TranrialAdd from "./views/Transaction/MaterialQuotation/TranrialAdd";
 import Inventory from "./views/Transaction/TranContract/Inventory";
-import Customerlist from "./views/CustomerList/CustomerList";
+import CustomerList from "./views/Transaction/CustomerList";
 import InquiryDetails from "./views/Project/ConPrice/InquiryDetails";
 import ContractWork from "./views/Project/ConPrice/ContractWork";
 import ContractLabor from "./views/Project/ContractInfo/ContractLabor";
@@ -142,9 +139,9 @@ export default new Router({
         // keepAlive: true
       }
     }, {
-      path: "/taskWait",
-      name: "taskWait",
-      component: TaskWait,
+      path: "/taskList",
+      name: "taskList",
+      component: TaskList,
       meta: {
         title: "待办列表"
       }
@@ -156,67 +153,60 @@ export default new Router({
         title: "选择项目"
       }
     }, {
-      path: "/taskWait/taskYCFrom",
+      path: "/taskList/taskYCFrom",
       name: "taskYCFrom",
       component: TaskYCFrom,
       meta: {
         title: "预存单审核"
       }
     }, {
-      path: "/taskWait/taskZFFrom",
+      path: "/taskList/taskZFFrom",
       name: "taskZFFrom",
       component: TaskZFFrom,
       meta: {
         title: "支付申请审核"
       }
     }, {
-      path: "/taskWait/taskKKFrom",
+      path: "/taskList/taskKKFrom",
       name: "taskKKFrom",
       component: TaskKKFrom,
       meta: {
         title: "扣款申请审核"
       }
     }, {
-      path: "/taskWait/taskJDFrom",
+      path: "/taskList/taskJDFrom",
       name: "taskJDFrom",
       component: TaskJDFrom,
       meta: {
         title: "解冻申请审核"
       }
     }, {
-      path: "/taskWait/taskPKFrom",
+      path: "/taskList/taskPKFrom",
       name: "taskPKFrom",
       component: TaskPKFrom,
       meta: {
         title: "批款申请审核"
       }
     }, {
-      path: "/taskWait/taskDJFrom",
+      path: "/taskList/taskDJFrom",
       name: "taskDJFrom",
       component: TaskDJFrom,
       meta: {
         title: "冻结申请审核"
       }
     }, {
-      path: "/taskWait/taskGYSFrom",
+      path: "/taskList/taskGYSFrom",
       name: "taskGYSFrom",
       component: TaskGYSFrom,
       meta: {
         title: "供应商审核"
       }
     }, {
-      path: "/taskWait/taskGYSFrom/taskgysDetails",
+      path: "/taskList/taskGYSFrom/taskgysDetails",
       name: "taskgysDetails",
       component: TaskGYSDetails,
       meta: {
         title: "供应商审核证明"
-      }
-    }, {
-      path: "/msgList",
-      name: "msgList",
-      component: MsgList,
-      meta: {
-        title: "消息列表"
       }
     }, {
       path: "/message",
@@ -224,20 +214,6 @@ export default new Router({
       component: Message,
       meta: {
         title: "我的消息"
-      }
-    }, {
-      path: "/apply",
-      name: "apply",
-      component: Apply,
-      meta: {
-        title: "应用"
-      }
-    }, {
-      path: "/contact",
-      name: "contact",
-      component: Contact,
-      meta: {
-        title: "通讯录"
       }
     }, {
       path: "/count",
@@ -498,9 +474,9 @@ export default new Router({
         title: "合同编辑"
       }
     }, {
-      path: "/customerlist",
-      name: "customerlist",
-      component: Customerlist,
+      path: "/customerList",
+      name: "customerList",
+      component: CustomerList,
       meta: {
         title: "客户列表"
       }

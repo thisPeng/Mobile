@@ -11,13 +11,13 @@
     <!--应用-->
     <div class="index-apply">
       <div class="apply">
-        <div class="apply-item" @click="jumpPage('taskWait','我的待办')">
+        <div class="apply-item" @click="jumpPage('taskList','我的待办')">
           <div class="item-icon bg-red">
             <i class="iconfont icon-daiban" />
           </div>
           <div class="apply-text">我的待办</div>
         </div>
-        <div class="apply-item" @click="jumpPage('taskWait','我的已办')">
+        <div class="apply-item" @click="jumpPage('taskList','我的已办')">
           <div class="item-icon bg-green">
             <i class="iconfont icon-yiban" />
           </div>

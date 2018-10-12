@@ -80,7 +80,7 @@ export default {
       if (this.userType <= 2) {
         this.$router.push({ name: "projectList" });
       } else {
-        this.$router.push({ name: "customerlist" });
+        this.$router.push({ name: "customerList" });
       }
     },
     jumpTabs(name) {

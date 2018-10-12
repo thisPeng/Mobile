@@ -435,8 +435,9 @@ export default {
       .info-img {
         display: flex;
         align-items: center;
+        height: 50px;
         img {
-          height: 50px;
+          height: 100%;
         }
       }
       .info-text {

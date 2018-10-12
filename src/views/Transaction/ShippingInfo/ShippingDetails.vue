@@ -82,19 +82,23 @@ export default {
     //编辑
     getData() {
       return offer.getDeliveryDetail(this.contractParams[0]).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split("[[");
-          const csp = sp[1].split(";");
-          this.list = eval("[[" + csp[0])[0];
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split("[[");
+            const csp = sp[1].split(";");
+            this.list = eval("[[" + csp[0])[0];
 
-          if (this.list[27] === "1900-01-01") {
-            this.list[27] = this.$util.formatDate(this.list[27]);
-          } else {
-            this.list[27] = ""; // 确认时间
+            if (this.list[27] === "1900-01-01") {
+              this.list[27] = this.$util.formatDate(this.list[27]);
+            } else {
+              this.list[27] = ""; // 确认时间
+            }
+            return true;
           }
-          return true;
+          return false;
+        } catch (e) {
+          return false;
         }
-        return false;
       });
     },
     //发货按钮

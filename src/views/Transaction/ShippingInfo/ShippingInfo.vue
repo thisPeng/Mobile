@@ -59,13 +59,17 @@ export default {
         sid: this.userInfo.oid
       };
       return offer.getDelivery(params).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split("[[");
-          const csp = sp[1].split(";");
-          this.list = eval("[[" + csp[0]);
-          return true;
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split("[[");
+            const csp = sp[1].split(";");
+            this.list = eval("[[" + csp[0]);
+            return true;
+          }
+          return false;
+        } catch (e) {
+          return false;
         }
-        return false;
       });
     },
     pageInit() {

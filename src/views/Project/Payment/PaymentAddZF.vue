@@ -10,9 +10,6 @@
         <van-cell-group class="from-payment">
           <span class="from-label">支付类型</span>
           <span :class="edit ? 'text-gray from-select' : 'from-select'" @click="edit ? '' : paymentShow=true">{{payment}}</span>
-          <van-popup v-model="paymentShow" position="bottom">
-            <van-picker show-toolbar title="支付类型" :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
-          </van-popup>
         </van-cell-group>
         <!--退结余额-->
         <van-field v-model="dataChild.Apply_SheetNO" label="支出名称" required v-if="payment === '其它支出申请'" />
@@ -74,6 +71,9 @@
         </div>
       </van-cell-group>
     </div>
+    <van-popup v-model="paymentShow" position="bottom">
+      <van-picker show-toolbar title="支付类型" :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
+    </van-popup>
     <div class="payment-button">
       <van-button @click="onSave">保存</van-button>
       <van-button type="primary" @click="onSubmit">提交</van-button>

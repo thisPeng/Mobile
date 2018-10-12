@@ -2,8 +2,10 @@
   <div class="users">
     <div class="users-admin" @click="jumpInfo">
       <div class="users-head">
-        <img id="m_avatar" src="../../../public/img/ms_ico5.png" alt="">
-        <div id="m_user" class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
+        <div class="users-img">
+          <img src="../../../public/img/ms_ico5.png" alt="">
+        </div>
+        <div class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
       </div>
       <div class="m-code-box">
         <img id="m_barcode" src="../../../public/img/codeico.png" alt="">
@@ -144,15 +146,17 @@ export default {
     font-size: 16px;
     line-height: 25px;
   }
-  .users-head img {
+  .users-head .users-img {
     width: 60px;
     height: 60px;
-    -webkit-border-radius: 60px;
-    -moz-border-radius: 60px;
-    border-radius: 60px;
     position: absolute;
     left: 0;
     top: 0;
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 100%;
+    }
   }
   .m-code-box {
     .users-icon {

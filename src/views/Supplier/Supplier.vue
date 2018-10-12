@@ -221,25 +221,17 @@ export default {
     },
     // 页面初始化
     pageInit() {
-      this.$nextTick().then(() => {
-        if (this.projectInfo.SC_ProjectOID) {
-          this.getList();
-          this.getAllList();
-        } else {
-          this.$toast("请先点击屏幕右上角按钮，选择项目");
-        }
-      });
-    }
-  },
-  computed,
-  created() {
-    this.$nextTick().then(() => {
       if (this.projectInfo.SC_ProjectOID) {
-        this.pageInit();
+        this.getList();
+        this.getAllList();
       } else {
         this.$toast("请先点击屏幕右上角按钮，选择项目");
       }
-    });
+    }
+  },
+  computed,
+  mounted() {
+    this.pageInit();
   }
 };
 </script>

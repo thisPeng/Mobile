@@ -14,22 +14,36 @@
           <van-button slot="button" size="small" type="primary">发送验证码</van-button>
         </van-field>
       </van-cell-group>
+      <div class="register-protocol">
+        <van-checkbox v-model="checked">已阅读并同意
+          <span class="text-blue" @click.stop="onShow">《注册协议》</span>
+        </van-checkbox>
+      </div>
+
       <div class="button-option">
         <van-button type="main">注 册</van-button>
       </div>
     </form>
+    <van-popup v-model="isShow">工程商供应链平台服务协议
+      本协议是您与供应链平台网站（含移动客户端）所有者就供应链平台网站服务等相关事宜订立的契约，请您认真阅读并充分理解本服务协议，本协议构成对双方有约束力的法律文件。
+    </van-popup>
   </section>
 </template>
 <script>
 export default {
   data() {
     return {
-      data: {}
+      data: {},
+      checked: false,
+      isShow: false
     };
   },
   methods: {
     onBack() {
       this.$router.go(-1);
+    },
+    onShow() {
+      this.isShow = true;
     },
     onRegister() {}
   }
@@ -60,6 +74,10 @@ export default {
         margin-top: 30px;
       }
     }
+  }
+  .register-protocol {
+    width: 100%;
+    padding: 15px;
   }
 }
 </style>

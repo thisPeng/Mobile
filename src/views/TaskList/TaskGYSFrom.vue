@@ -35,7 +35,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import taskTabs from "./../../components/TaskWait/Tabs";
+import taskTabs from "./../../components/TaskList/Tabs";
 import { task } from "./../../assets/js/api.js";
 export default {
   data() {
