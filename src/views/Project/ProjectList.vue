@@ -1,7 +1,7 @@
 <template>
   <div class="project">
     <van-tabs v-model="active" @click="switchType" v-if="userType != 2">
-      <van-tab title="合作项目">
+      <van-tab title="自营项目">
         <div class="project-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
           <div class="item-title">
             <span class="title">{{item.ProjectName}}</span>
@@ -15,7 +15,7 @@
           </div>
         </div>
       </van-tab>
-      <van-tab title="自营项目">
+      <van-tab title="合作项目">
         <div class="project-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
           <div class="item-title">
             <span class="title">{{item.ProjectName}}</span>
@@ -66,16 +66,23 @@ export default {
         if (res && res.status === 1) {
           const sp = res.text.split(";");
           this.list = eval(sp[0]);
+          console.log(this.list);
         }
       });
     },
     switchType(res) {
+      console.log(res);
       this.getData(this.userType != 2 ? res : 1);
     },
     jumpPage(item) {
       this.$store.commit("projectInfo", item);
       this.$store.commit("isReload", true);
-      this.$router.go(-1);
+      if (this.backRouter) {
+        this.$router.replace({ name: this.backRouter });
+        this.$store.commit("backRouter", "");
+      } else {
+        this.$router.go(-1);
+      }
     }
   },
   computed,

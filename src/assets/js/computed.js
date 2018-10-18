@@ -26,8 +26,11 @@ export default mapState({
   taskModel: state => {
     return state.taskModel;
   },
-  projectModel: state => {
-    return state.projectModel;
+  backRouter: state => {
+    return state.backRouter;
+  },
+  filterParams: state => {
+    return state.filterParams;
   },
   codeValue: state => {
     return state.codeValue;

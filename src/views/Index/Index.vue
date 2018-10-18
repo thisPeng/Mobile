@@ -8,132 +8,50 @@
         </van-swipe-item>
       </van-swipe>
     </div>
-    <!--应用-->
-    <div class="index-apply">
-      <div class="apply">
-        <div class="apply-item" @click="jumpPage('taskList','我的待办')">
-          <div class="item-icon bg-red">
+    <!--我的待办-->
+    <div class="index-option" v-if="data.table1 && data.table1.length > 0">
+      <div class="option-title">
+        <div class="title">我的待办</div>
+      </div>
+      <div class="option-item">
+        <div class="item" v-for="(item, index) in data.table1" :key="index" @click="jumpWait(item)">
+          <div class="van-info" v-if="item.info > 0">{{item.info}}</div>
+          <div class="item-icon bg-blue">
             <i class="iconfont icon-daiban" />
           </div>
-          <div class="apply-text">我的待办</div>
+          <div class="option-text">{{item.text}}</div>
         </div>
-        <div class="apply-item" @click="jumpPage('taskList','我的已办')">
-          <div class="item-icon bg-green">
-            <i class="iconfont icon-yiban" />
-          </div>
-          <div class="apply-text">我的已办</div>
-        </div>
-        <div class="apply-item" @click="jumpPage('message')">
-          <div class="item-icon bg-orange">
-            <i class="iconfont icon-xiaoxi" />
-          </div>
-          <div class="apply-text">内部消息</div>
-        </div>
-        <div class="apply-item" @click="jumpPage('goodsList','index')">
-          <div class="item-icon bg-blue">
-            <i class="iconfont icon-chaxun" />
-          </div>
-          <div class="apply-text">物资查询</div>
-        </div>
-        <!-- <div class="apply-item" @click="jumpPage('project', '自营项目')">
-          <div class="item-icon bg-orange">
-            <i class="iconfont icon-ziying" />
-          </div>
-          <div class="apply-text">自营项目</div>
-        </div>
-        <div class="apply-item" @click="jumpPage('project', '合作项目')">
-          <div class="item-icon bg-yellow">
-            <i class="iconfont icon-hezuo" />
-          </div>
-          <div class="apply-text">合作项目</div>
-        </div> -->
       </div>
-      <van-swipe class="apply-project" v-if="userType <= 2">
-        <van-swipe-item>
-          <div class="project">
-            <!-- <div class="project-item" @click="jumpPage('material')">
-              <div class="item-icon bg-blue">
-                <i class="iconfont icon-wuzi" />
-              </div>
-              <div class="project-text">物资列表</div>
-            </div> -->
-            <div class="project-item" @click="jumpPage('conprice')">
-              <div class="item-icon bg-mint">
-                <i class="iconfont icon-icon-price" />
-              </div>
-              <div class="project-text">确认价格</div>
-            </div>
-            <div class="project-item" @click="jumpPage('contractInfo')">
-              <div class="item-icon bg-red">
-                <i class="iconfont icon-hetong" />
-              </div>
-              <div class="project-text">合同信息</div>
-            </div>
-            <div class="project-item" @click="jumpPage('arrivalinformation')">
-              <div class="item-icon bg-green">
-                <i class="iconfont icon-daohuofangshi" />
-              </div>
-              <div class="project-text">到货信息</div>
-            </div>
-            <div class="project-item" @click="jumpPage('paymentlabel')">
-              <div class="item-icon bg-orange">
-                <i class="iconfont icon-fukuan" />
-              </div>
-              <div class="project-text">付款信息</div>
-            </div>
-            <div class="project-item" @click="jumpPage('infoitem')">
-              <div class="item-icon bg-blue">
-                <i class="iconfont icon-gongcheng" />
-              </div>
-              <div class="project-text">项目信息</div>
-            </div>
+    </div>
+    <!--发起工作-->
+    <div class="index-option" v-if="data.table2 && data.table2.length > 0">
+      <div class="option-title">
+        <div class="title">发起工作</div>
+      </div>
+      <div class="option-item">
+        <div class="item" v-for="(item, index) in data.table2" :key="index" @click="jumpStart(item)">
+          <div class="van-info" v-if="item.info > 0">{{item.info}}</div>
+          <div class="item-icon bg-blue">
+            <i class="iconfont icon-daiban" />
           </div>
-        </van-swipe-item>
-        <!-- <van-swipe-item>
-          <div class="project">
-            <div class="project-item" @click="jumpPage('infoitem')">
-              <div class="item-icon bg-blue">
-                <i class="iconfont icon-gongcheng" />
-              </div>
-              <div class="project-text">项目信息</div>
-            </div>
-            <div class="project-item"></div>
-            <div class="project-item"></div>
-            <div class="project-item"></div>
-            <div class="project-item"></div>
+          <div class="option-text">{{item.text}}</div>
+        </div>
+      </div>
+    </div>
+    <!--工作知会-->
+    <div class="index-option" v-if="data.table3 && data.table3.length > 0">
+      <div class="option-title">
+        <div class="title">工作知会</div>
+      </div>
+      <div class="option-item">
+        <div class="item" v-for="(item, index) in data.table3" :key="index" @click="jumpNotice(item)">
+          <div class="van-info" v-if="item.info > 0">{{item.info}}</div>
+          <div class="item-icon bg-blue">
+            <i class="iconfont icon-daiban" />
           </div>
-        </van-swipe-item> -->
-      </van-swipe>
-      <van-swipe class="apply-project" v-else-if="userType == 3">
-        <van-swipe-item>
-          <div class="project">
-            <!-- <div class="project-item" @click="jumpPage('quotation')">
-              <div class="item-icon bg-mint">
-                <i class="iconfont icon-icon-price" />
-              </div>
-              <div class="project-text">物质报价</div>
-            </div> -->
-            <div class="project-item" @click="jumpPage('trancontract')">
-              <div class="item-icon bg-red">
-                <i class="iconfont icon-hetong" />
-              </div>
-              <div class="project-text">合同信息</div>
-            </div>
-            <div class="project-item" @click="jumpPage('shippinginfo')">
-              <div class="item-icon bg-green">
-                <i class="iconfont icon-daohuofangshi" />
-              </div>
-              <div class="project-text">发货信息</div>
-            </div>
-            <div class="project-item" @click="jumpPage('tranpayment')">
-              <div class="item-icon bg-orange">
-                <i class="iconfont icon-fukuan" />
-              </div>
-              <div class="project-text">付款信息</div>
-            </div>
-          </div>
-        </van-swipe-item>
-      </van-swipe>
+          <div class="option-text">{{item.text}}</div>
+        </div>
+      </div>
     </div>
     <!--统计数据-->
     <count />
@@ -142,6 +60,7 @@
 <script>
 import computed from "./../../assets/js/computed.js";
 import count from "./../Count/Count";
+import { index } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -151,27 +70,54 @@ export default {
         "banner/baaner2.png",
         "banner/baaner3.png"
       ],
-      data: [],
-      model: true,
-      tableData1: [],
-      tableData2: [],
-      tableData3: []
+      data: []
     };
   },
+  computed,
   components: {
     count
   },
   methods: {
-    jumpPage(name, model = "") {
-      this.$router.push({
-        name,
-        params: {
-          model: model
-        }
-      });
+    // 跳转待办
+    jumpWait(item) {
+      this.$store.commit("taskModel", item.id);
+      this.$router.push({ name: item.action });
+    },
+    // 跳转发起
+    jumpStart(item) {
+      this.$store.commit("taskModel", item.id);
+      this.$store.commit("filterParams", 1);
+      let name = "";
+      if (!this.projectInfo.SC_ProjectOID) {
+        this.$store.commit("backRouter", item.action);
+        name = "projectList";
+      } else if (item.Param && parseInt(item.info) > 0) {
+        name = item.Param;
+      } else {
+        name = item.action;
+      }
+      this.$router.push({ name });
+    },
+    // 跳转知会
+    jumpNotice(item) {
+      this.$store.commit("taskModel", item.id);
+      this.$store.commit("filterParams", 2);
+      if (this.projectInfo.SC_ProjectOID) {
+        this.$router.push({ name: item.action });
+      } else {
+        this.$store.commit("backRouter", item.action);
+        this.$router.push({ name: "projectList" });
+      }
     }
   },
-  computed
+  mounted() {
+    index.getGetWorkSpace(this.userInfo.oid).then(res => {
+      if (res && res.status === 1 && res.text) {
+        this.data = JSON.parse(res.text)[0];
+        console.log(this.data);
+      }
+    });
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -188,67 +134,53 @@ export default {
       height: 100%;
     }
   }
-  .index-apply {
+  .index-option {
     margin-bottom: 10px;
     background-color: #fff;
-    .apply {
+    .option-title {
+      padding: 0 10px;
+      .title {
+        padding: 10px 0;
+        font-size: 16px;
+        font-weight: 800;
+        border-bottom: 1px solid #eee;
+      }
+    }
+    .option-item {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      .apply-item {
-        height: 100px;
-        flex: 1;
+      .item {
+        width: 103.5px;
+        height: 103.5px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        position: relative;
+        .van-info {
+          left: auto;
+          right: 0px;
+          top: 3px;
+          font-size: 16px;
+        }
         .item-icon {
-          width: 50px;
-          height: 50px;
-          border-radius: 100%;
+          width: 60px;
+          height: 60px;
+          border-radius: 15%;
           display: flex;
           align-items: center;
           justify-content: center;
           .iconfont {
             color: #fff;
-            font-size: 30px;
+            font-size: 35px;
           }
         }
-      }
-      .apply-text {
-        font-size: 14px;
-        padding-top: 10px;
       }
     }
-    .apply-project {
-      border-top: 1px solid #eee;
-      .project {
-        display: flex;
-        align-items: center;
-        .project-item {
-          height: 100px;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          .item-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            .iconfont {
-              color: #fff;
-              font-size: 25px;
-            }
-          }
-        }
-        .project-text {
-          padding-top: 5px;
-          font-size: 12px;
-        }
-      }
+    .option-text {
+      font-size: 14px;
+      padding-top: 5px;
     }
   }
 }

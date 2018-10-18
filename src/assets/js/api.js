@@ -41,6 +41,19 @@ const index = {
       }
     });
   },
+  getGetWorkSpace(oid = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Vue_CommonService",
+        _methodName: "GetWorkSpace",
+        "_parameters[LoginUserOID]": oid,
+        _paraNames: "LoginUserOID",
+        _pUrl: ""
+      }
+    });
+  },
   // 获取省市区数据
   getRegional(BCName = "BC_SC_RegionalData_P", SQLCondi = "") {
     return axios({
@@ -821,7 +834,7 @@ const task = {
     });
   },
   // 获取我的待办
-  getWaitData(page) {
+  getWaitData(page, FlowID = '') {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -834,9 +847,9 @@ const task = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "",
+        "_parameters[SQLCondi]": " FlowID='" + FlowID + "'",
         "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": " ORDER BY AssignTask.SYS_Created DESC",
+        "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
         _pUrl: ""
       }
@@ -1042,7 +1055,7 @@ const task = {
 // 购物车
 const cart = {
   // 获取购物车列表
-  getList(ProjectID) {
+  getList(ProjectID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1688,7 +1701,7 @@ const financial = {
     })
   },
   //支付申请列表
-  getPaymentList(ProjectID = "", page = 0) {
+  getPaymentList(ProjectID = "", page = 0, filters = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1701,7 +1714,7 @@ const financial = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Pay_Apply.ProjectID ='" + ProjectID + "'" + " AND Sheet_Type='SQ'",
+        "_parameters[SQLCondi]": "SC_Pay_Apply.ProjectID ='" + ProjectID + "'" + " AND Sheet_Type='SQ' " + filters,
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",

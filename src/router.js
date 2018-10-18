@@ -4,7 +4,7 @@ import Login from "./views/Login/Login";
 import Register from "./views/Login/Register";
 import Home from "./components/Home/Home";
 import Index from "./views/Index/Index";
-import Api from "./views/Index/Api";
+// import Api from "./views/Index/Api";
 import Classify from "./views/Classify/Classify";
 import GoodsList from "./views/Classify/GoodsList";
 import GoodsSearch from "./views/Classify/GoodsSearch";
@@ -13,8 +13,8 @@ import ProjectList from "./views/Project/ProjectList";
 import ConPrice from "./views/Project/ConPrice/ConPrice";
 import ContractInfo from "./views/Project/ContractInfo/ContractInfo";
 import ArrivalInformation from "./views/Project/Delivery/ArrivalInformation";
-import InfoItem from "./views/Project/InfoItem/InfoItem";
-import PaymentLabel from "./views/Project/Payment/PaymentLabel";
+import ProjectInfo from "./views/Project/ProjectInfo/ProjectInfo";
+// import PaymentLabel from "./views/Project/Payment/PaymentLabel";
 import application from "./views/Project/Payment/List/Application"; //支付申请信息
 import preMemory from "./views/Project/Payment/List/PreMemory"; //预存列表
 import payInfomation from "./views/Project/Payment/List/PayInfomation"; //支付信息
@@ -25,6 +25,10 @@ import capitalFlow from "./views/Project/Payment/List/CapitalFlow"; //资金流�
 import oainformation from "./views/Project/Payment/List/OAinformation"; //OA批款信息
 import PaymentAddZF from "./views/Project/Payment/PaymentAddZF";
 import PaymentAddYC from "./views/Project/Payment/PaymentAddYC";
+import PaymentAddDJ from "./views/Project/Payment/PaymentAddDJ";
+import PaymentAddJD from "./views/Project/Payment/PaymentAddJD";
+import PaymentAddPK from "./views/Project/Payment/PaymentAddPK";
+import PaymentAddKK from "./views/Project/Payment/PaymentAddKK";
 import PriceDetails from "./views/Project/ConPrice/PriceDetails";
 import DeliveryDetails from "./views/Project/Delivery/DeliveryDetails";
 import ArrivalDetails from "./views/Project/Delivery/ArrivalDetails";
@@ -44,6 +48,7 @@ import SupplierAccessory from "./views/Supplier/SupplierAccessory";
 import SupplierDetailsAnnex from "./views/Supplier/SupplierDetailsAnnex";
 import SupplierDetails from "./views/Supplier/SupplierDetails";
 import TaskList from "./views/TaskList/TaskList";
+import TaskWait from "./views/TaskList/TaskWait";
 import TaskYCFrom from "./views/TaskList/TaskYCFrom";
 import TaskZFFrom from "./views/TaskList/TaskZFFrom";
 import TaskKKFrom from "./views/TaskList/TaskKKFrom";
@@ -85,10 +90,10 @@ export default new Router({
     path: "/register",
     name: "register",
     component: Register
-  }, {
-    path: "/api",
-    name: "api",
-    component: Api
+    // }, {
+    //   path: "/api",
+    //   name: "api",
+    //   component: Api
   }, {
     path: "/",
     redirect: "/index",
@@ -142,6 +147,13 @@ export default new Router({
       path: "/taskList",
       name: "taskList",
       component: TaskList,
+      meta: {
+        title: "已办列表"
+      }
+    }, {
+      path: "/taskWait",
+      name: "taskWait",
+      component: TaskWait,
       meta: {
         title: "待办列表"
       }
@@ -313,7 +325,7 @@ export default new Router({
       name: "conprice",
       component: ConPrice,
       meta: {
-        title: "确认价格"
+        title: "询价单管理"
       }
     }, {
       path: "/contractInfo/contractInfo",
@@ -330,9 +342,9 @@ export default new Router({
         title: "到货信息"
       }
     }, {
-      path: "/infoItem/infoitem",
-      name: "infoitem",
-      component: InfoItem,
+      path: "/projectInfo/projectInfo",
+      name: "projectInfo",
+      component: ProjectInfo,
       meta: {
         title: "项目信息"
       }
@@ -365,79 +377,79 @@ export default new Router({
         title: "合同清单详情"
       }
     }, {
-      path: "/payment/paymentlabel",
-      name: "paymentlabel",
-      component: PaymentLabel,
-      redirect: "/payment/paymentlabel/application",
+      // path: "/payment/paymentlabel",
+      // name: "paymentlabel",
+      // component: PaymentLabel,
+      // redirect: "/payment/paymentlabel/application",
+      // meta: {
+      //   title: "付款信息列表",
+      //   keepAlive: true
+      // },
+      // children: [{
+      path: "/payment/paymentlabel/application",
+      name: "application",
+      component: application,
       meta: {
-        title: "付款信息列表",
+        title: "支付申请列表",
         keepAlive: true
-      },
-      children: [{
-        path: "/payment/paymentlabel/application",
-        name: "application",
-        component: application,
-        meta: {
-          title: "支付申请信息",
-          keepAlive: true
-        }
-      }, {
-        path: "/payment/paymentlabel/preMemory",
-        name: "preMemory",
-        component: preMemory,
-        meta: {
-          title: "预存列表",
-          keepAlive: true
-        }
-      }, {
-        path: "/payment/paymentlabel/payInfomation",
-        name: "payInfomation",
-        component: payInfomation,
-        meta: {
-          title: "支付信息",
-          keepAlive: true
-        }
-      }, {
-        path: "/payment/paymentlabel/appropriation",
-        name: "appropriation",
-        component: appropriation,
-        meta: {
-          title: "批款信息",
-          keepAlive: true
-        }
-      }, {
-        path: "/payment/paymentlabel/frozen",
-        name: "frozen",
-        component: frozen,
-        meta: {
-          title: "冻结信息",
-          keepAlive: true
-        }
-      }, {
-        path: "/payment/paymentlabel/withholding",
-        name: "withholding",
-        component: withholding,
-        meta: {
-          title: "扣款信息",
-          keepAlive: true
-        }
-      }, {
-        path: "/payment/paymentlabel/capitalFlow",
-        name: "capitalFlow",
-        component: capitalFlow,
-        meta: {
-          title: "资金流水",
-          keepAlive: true
-        }
-      }, {
-        path: "/payment/paymentlabel/oainformation",
-        name: "oainformation",
-        component: oainformation,
-        meta: {
-          title: "OA批款信息",
-          keepAlive: true
-        }
-      }]
+      }
+    }, {
+      path: "/payment/paymentlabel/preMemory",
+      name: "preMemory",
+      component: preMemory,
+      meta: {
+        title: "预存单管理",
+        keepAlive: true
+      }
+    }, {
+      path: "/payment/paymentlabel/payInfomation",
+      name: "payInfomation",
+      component: payInfomation,
+      meta: {
+        title: "支付审管理",
+        keepAlive: true
+      }
+    }, {
+      path: "/payment/paymentlabel/appropriation",
+      name: "appropriation",
+      component: appropriation,
+      meta: {
+        title: "批款单管理",
+        keepAlive: true
+      }
+    }, {
+      path: "/payment/paymentlabel/frozen",
+      name: "frozen",
+      component: frozen,
+      meta: {
+        title: "冻结审管理",
+        keepAlive: true
+      }
+    }, {
+      path: "/payment/paymentlabel/withholding",
+      name: "withholding",
+      component: withholding,
+      meta: {
+        title: "扣款单管理",
+        keepAlive: true
+      }
+    }, {
+      path: "/payment/paymentlabel/capitalFlow",
+      name: "capitalFlow",
+      component: capitalFlow,
+      meta: {
+        title: "费用单管理",
+        keepAlive: true
+      }
+    }, {
+      path: "/payment/paymentlabel/oainformation",
+      name: "oainformation",
+      component: oainformation,
+      meta: {
+        title: "OA批款信息",
+        keepAlive: true
+      }
+      // }]
     }, {
       path: "/payment/paymentlabel/PaymentAddZF",
       name: "paymentAddZF",
@@ -451,6 +463,34 @@ export default new Router({
       component: PaymentAddYC,
       meta: {
         title: "新增预存登记"
+      }
+    }, {
+      path: "/payment/paymentlabel/PaymentAddDJ",
+      name: "paymentAddDJ",
+      component: PaymentAddDJ,
+      meta: {
+        title: "新增冻结单"
+      }
+    }, {
+      path: "/payment/paymentlabel/PaymentAddJD",
+      name: "paymentAddJD",
+      component: PaymentAddJD,
+      meta: {
+        title: "新增解冻单"
+      }
+    }, {
+      path: "/payment/paymentlabel/PaymentAddPK",
+      name: "paymentAddPK",
+      component: PaymentAddPK,
+      meta: {
+        title: "新增批款单"
+      }
+    }, {
+      path: "/payment/paymentlabel/PaymentAddKK",
+      name: "paymentAddKK",
+      component: PaymentAddKK,
+      meta: {
+        title: "新增扣款单"
       }
     }, {
       path: "/materialquotation/tranrialDetail/detail",

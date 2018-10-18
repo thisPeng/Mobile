@@ -116,8 +116,10 @@ export default {
                 });
               }
             });
-          } else {
+          } else if (res && res.text == "0") {
             this.$toast("用户名或密码错误");
+          } else {
+            this.$toast("服务器未响应");
           }
         });
       }

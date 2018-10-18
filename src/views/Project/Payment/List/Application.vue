@@ -32,9 +32,9 @@
             </div>
           </van-cell>
         </div>
-        <div class="margin-top-sm" v-if="projectInfo.SC_ProjectOID">
+        <!-- <div class="margin-top-sm" v-if="projectInfo.SC_ProjectOID">
           <van-button type="primary" size="large" @click="onAdd">新增支付申请</van-button>
-        </div>
+        </div> -->
       </div>
     </div>
     <!--分页组件-->
@@ -115,8 +115,14 @@ export default {
     },
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
+      let filter = "";
+      if (this.filterParams === 1) {
+        filter = "AND Approve_Flag='0'";
+      } else if (this.filterParams === 2) {
+        filter = "AND BusinessState='1'";
+      }
       return financial
-        .getPaymentList(this.projectInfo.SC_ProjectOID, page)
+        .getPaymentList(this.projectInfo.SC_ProjectOID, page, filter)
         .then(res => {
           try {
             if (res && res.status === 1) {

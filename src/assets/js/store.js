@@ -19,10 +19,11 @@ export default new Vuex.Store({
     userType: 0, // 用户身份: 1、工程、合作； 2、供应商
     loginInfo: {},
     taskModel: "",
+    backRouter: "",
     codeValue: [],
     clientInfo: {},
     projectInfo: {},
-    projectModel: "",
+    filterParams: "",
     taskParams: {},
     goodsParams: "",
     suppParams: {},
@@ -41,9 +42,10 @@ export default new Vuex.Store({
         state.userInfo = {};
         state.codeValue = [];
         state.taskModel = "";
+        state.backRouter = "";
         state.clientInfo = {};
         state.projectInfo = {};
-        state.projectModel = "";
+        state.filterParams = "";
         state.taskParams = {};
         state.goodsParams = "";
         state.suppParams = {};
@@ -69,6 +71,9 @@ export default new Vuex.Store({
     taskModel: (state, val) => {
       state.taskModel = val;
     },
+    backRouter: (state, val) => {
+      state.backRouter = val;
+    },
     codeValue: (state, val) => {
       state.codeValue = val;
     },
@@ -78,8 +83,8 @@ export default new Vuex.Store({
     projectInfo: (state, val) => {
       state.projectInfo = val;
     },
-    projectModel: (state, val) => {
-      state.projectModel = val;
+    filterParams: (state, val) => {
+      state.filterParams = val;
     },
     taskParams: (state, val) => {
       state.taskParams = val;

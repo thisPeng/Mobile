@@ -1,6 +1,6 @@
 <template>
   <!-- 项目信息 -->
-  <div class="infoitem">
+  <div class="projectInfo">
     <van-cell-group>
       <van-field :value="info[2]" label="工程编号：" disabled />
       <van-field :value="info[55]" label="项目编号：" disabled />
@@ -70,7 +70,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.infoitem {
+.projectInfo {
   width: 100%;
   .van-cell {
     font-size: 15px;

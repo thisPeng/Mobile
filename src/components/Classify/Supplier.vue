@@ -358,7 +358,8 @@ export default {
           });
         }
       } else {
-        this.$toast("请先点击屏幕右上角按钮，选择项目");
+        this.$store.commit("backRouter", this.$router.name);
+        this.this.$toast("请先点击屏幕右上角按钮，选择项目");
       }
     },
     // 添加物资到购物车
