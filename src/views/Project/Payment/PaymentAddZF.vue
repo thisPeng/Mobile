@@ -378,7 +378,6 @@ export default {
                 this.delTable = [];
                 this.edit = true;
                 this.dataChild.SC_Pay_DetailOID = uuid;
-                this.$store.commit("isReload", true);
                 this.$toast.success("保存成功");
                 return;
               }
@@ -419,7 +418,6 @@ export default {
                     message: "提交成功"
                   });
                   setTimeout(() => {
-                    this.$store.commit("isReload", true);
                     this.$router.go(-1);
                   }, 800);
                   return;

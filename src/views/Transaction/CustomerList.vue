@@ -43,7 +43,6 @@ export default {
     },
     jumpPage(item) {
       this.$store.commit("clientInfo", item);
-      this.$store.commit("isReload", true);
       this.$router.go(-1);
     }
   },

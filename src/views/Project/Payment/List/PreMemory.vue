@@ -36,9 +36,9 @@
           </van-cell>
         </div>
       </div>
-      <div class="margin-top-sm" v-if="projectInfo.SC_ProjectOID">
+      <!-- <div class="margin-top-sm" v-if="projectInfo.SC_ProjectOID">
         <van-button type="primary" size="large" @click="onAdd">新增预存登记</van-button>
-      </div>
+      </div> -->
     </div>
     <!--分页组件-->
     <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getData" />

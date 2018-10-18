@@ -1158,7 +1158,8 @@ const conprice = {
         _bpoName: "BPO_Order_XJService",
         _methodName: "getBCColumnsForJS",
         "_parameters[ProjectID]": ProjectID,
-        _paraNames: "ProjectID",
+        "_parameters[Type]": 0,
+        _paraNames: "ProjectID,Type",
         _pUrl: ""
       }
     });

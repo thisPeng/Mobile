@@ -76,7 +76,6 @@ export default {
     },
     jumpPage(item) {
       this.$store.commit("projectInfo", item);
-      this.$store.commit("isReload", true);
       if (this.backRouter) {
         this.$router.replace({ name: this.backRouter });
         this.$store.commit("backRouter", "");

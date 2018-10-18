@@ -9,12 +9,12 @@
       </van-swipe>
     </div>
     <!--我的待办-->
-    <div class="index-option" v-if="data.table1 && data.table1.length > 0">
+    <div class="index-option" v-if="data.wait && data.wait.data.length > 0">
       <div class="option-title">
-        <div class="title">我的待办</div>
+        <div class="title">{{data.wait.title}}</div>
       </div>
       <div class="option-item">
-        <div class="item" v-for="(item, index) in data.table1" :key="index" @click="jumpWait(item)">
+        <div class="item" v-for="(item, index) in data.wait.data" :key="index" @click="jumpWait(item)">
           <div class="van-info" v-if="item.info > 0">{{item.info}}</div>
           <div class="item-icon bg-blue">
             <i class="iconfont icon-daiban" />
@@ -24,12 +24,12 @@
       </div>
     </div>
     <!--发起工作-->
-    <div class="index-option" v-if="data.table2 && data.table2.length > 0">
+    <div class="index-option" v-if="data.start && data.start.data.length > 0">
       <div class="option-title">
-        <div class="title">发起工作</div>
+        <div class="title">{{data.start.title}}</div>
       </div>
       <div class="option-item">
-        <div class="item" v-for="(item, index) in data.table2" :key="index" @click="jumpStart(item)">
+        <div class="item" v-for="(item, index) in data.start.data" :key="index" @click="jumpStart(item)">
           <div class="van-info" v-if="item.info > 0">{{item.info}}</div>
           <div class="item-icon bg-blue">
             <i class="iconfont icon-daiban" />
@@ -39,12 +39,12 @@
       </div>
     </div>
     <!--工作知会-->
-    <div class="index-option" v-if="data.table3 && data.table3.length > 0">
+    <div class="index-option" v-if="data.notice && data.notice.data.length > 0">
       <div class="option-title">
-        <div class="title">工作知会</div>
+        <div class="title">{{data.notice.title}}</div>
       </div>
       <div class="option-item">
-        <div class="item" v-for="(item, index) in data.table3" :key="index" @click="jumpNotice(item)">
+        <div class="item" v-for="(item, index) in data.notice.data" :key="index" @click="jumpNotice(item)">
           <div class="van-info" v-if="item.info > 0">{{item.info}}</div>
           <div class="item-icon bg-blue">
             <i class="iconfont icon-daiban" />
