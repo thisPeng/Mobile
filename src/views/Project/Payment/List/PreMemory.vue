@@ -3,14 +3,17 @@
   <div class="prememory">
     <div class="pre-data">
       <div class="pre-card">
-        <div class="pre-item" v-for="(item,index) in list" :key="index">
+        <van-cell-group class="pre-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">收款账号：{{item[12]}}</span>
-            <span v-if="item[30] != '1'">
+            <span class="option" v-if="item[30] != '1'">
               <van-button type="danger" size="mini" plain @click="onDelete(item[0])">删除</van-button>
             </span>
           </div>
-          <van-cell is-link class="item-content" @click="jumpPage(item)">
+          <van-cell class="item-content" is-link @click="jumpPage(item)">
+            <div class="content-row">
+              <span>所属项目：{{item[28]}}</span>
+            </div>
             <div class="content-row">
               <span class="row-left">审核日期：{{item[8] | formatDate}}</span>
               <span class="row-right">
@@ -34,11 +37,11 @@
               <span>备注：{{item[16]}}</span>
             </div>
           </van-cell>
+        </van-cell-group>
+        <div class="margin-top-sm" v-if="projectInfo.SC_ProjectOID">
+          <van-button type="primary" size="large" @click="onAdd">新增预存登记</van-button>
         </div>
       </div>
-      <!-- <div class="margin-top-sm" v-if="projectInfo.SC_ProjectOID">
-        <van-button type="primary" size="large" @click="onAdd">新增预存登记</van-button>
-      </div> -->
     </div>
     <!--分页组件-->
     <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="classify-pages" @change="getData" />
@@ -57,6 +60,7 @@ export default {
   },
   computed,
   methods: {
+    // 获取数据
     jumpPage(item) {
       if (item[31] == "true") {
         const params = {
@@ -92,7 +96,7 @@ export default {
       this.$dialog
         .confirm({
           title: "删除",
-          message: "是否删除订单？"
+          message: "是否删除单据？"
         })
         .then(() => {
           financial.deleteStored(id).then(res => {
@@ -118,7 +122,7 @@ export default {
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
       return financial
-        .getPremomey(this.projectInfo.SC_ProjectOID, page)
+        .getPremomey(this.userId.UCML_OrganizeOID, page, this.filter)
         .then(res => {
           try {
             if (res && res.status === 1) {
@@ -136,16 +140,16 @@ export default {
         });
     },
     pageInit() {
+      if (this.filterParams === 1) {
+        this.filter = "AND SC_Money_InOut.StartFlowFlag is null";
+      } else {
+        this.filter = "AND SC_Money_InOut.BusinessState='1'";
+      }
       this.getData();
     }
   },
   mounted() {
-    if (this.projectInfo.SC_ProjectOID) {
-      this.$parent.active = 1;
-      this.pageInit();
-    } else {
-      this.$toast("请先点击屏幕右上角按钮，选择项目");
-    }
+    this.pageInit();
   }
 };
 </script>

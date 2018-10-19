@@ -6,8 +6,8 @@
         <van-cell-group class="app-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">单号：{{item[1]}}</span>
-            <span class="option">
-              <van-button type="danger" size="mini" plain @click.stop="onDelete(item)">删除</van-button>
+            <span class="option" v-if="item[30] != '1'">
+              <van-button type="danger" size="mini" plain @click.stop="onDelete(item[0])">删除</van-button>
             </span>
           </div>
           <van-cell class="item-content" is-link @click="jumpPage(item)">
@@ -115,7 +115,38 @@ export default {
         });
       }
     },
-    onDelete() {},
+    // 删除单据
+    onDelete(id) {
+      this.$dialog
+        .confirm({
+          title: "删除",
+          message: "是否删除单据？"
+        })
+        .then(() => {
+          console.log(id);
+          financial
+            .deleteOrder("BPO_Money_PK_InOutListService", id)
+            .then(res => {
+              console.log(res);
+              if (res && res.status === 1) {
+                if (res.text == "0") {
+                  this.$toast.fail("单据已审核，不能删除！");
+                } else if (res.text == "1") {
+                  this.getData().then(() => {
+                    this.$toast.success("删除数据成功");
+                  });
+                } else {
+                  this.$toast.fail("删除数据失败");
+                }
+              } else if (res && res.text) {
+                this.$toast(res.text);
+              }
+            });
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
     pageInit() {
       if (this.filterParams === 1) {
         this.filter = "AND SC_Money_InOut.StartFlowFlag is null";

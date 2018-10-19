@@ -27,6 +27,20 @@ const index = {
       url: "/ucml_mobile/select_User_Org_Mobile.ashx?type=HOME_MSG"
     });
   },
+  // 获取首页轮播图
+  getBanner() {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_SC_AppImageService",
+        _methodName: "GetMobileImage",
+        "_parameters[DispayType]": 1,
+        _paraNames: "DispayType",
+        _pUrl: ""
+      }
+    });
+  },
   getConfig(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -1752,73 +1766,6 @@ const financial = {
       }
     })
   },
-  // 新增单据-获取项目列表
-  getProject(oid = "") {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_Partner_ProjectService",
-        _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_SC_Project",
-        "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": -1,
-        "_parameters[fieldList]": "",
-        "_parameters[valueList]": "",
-        "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": " (Project_Type = '2' or Project_Type = '4') AND SC_Project.DemandID='" + oid + "'",
-        "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": "",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
-        _pUrl: ""
-      }
-    })
-  },
-  // 保存单据
-  saveOrder(bpoName = "", xmlData = "") {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: bpoName,
-        _methodName: "BusinessSubmit",
-        "_parameters[xmlData]": xmlData,
-        _paraNames: "xmlData",
-        _pUrl: ""
-      }
-    })
-  },
-  // 提交前调用-启动流程
-  startFlow(bpoName = "", sc_oid = "", DemandID = "") {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: bpoName,
-        _methodName: "AuditSheet",
-        "_parameters[sc_oid]": sc_oid,
-        "_parameters[DemandID]": DemandID,
-        _paraNames: "sc_oid",
-        _pUrl: ""
-      }
-    })
-  },
-  // 提交单据
-  submitOrder(bpoName = "", FlowID = "", BusinessKey = "") {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: bpoName,
-        _methodName: "__StartFlow",
-        "_parameters[FlowID]": FlowID,
-        "_parameters[DeltaXml]": "<root></root>",
-        "_parameters[BusinessKey]": BusinessKey,
-        _paraNames: "FlowID,DeltaXml,BusinessKey",
-        _pUrl: ""
-      }
-    })
-  },
   //新增预存单保存
   preMemoryConservation(xmlData) {
     return axios({
@@ -2036,6 +1983,87 @@ const financial = {
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  // 新增单据-获取项目列表
+  getProject(oid = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Partner_ProjectService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Project",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": " (Project_Type = '2' or Project_Type = '4') AND SC_Project.DemandID='" + oid + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  // 保存单据
+  saveOrder(bpoName = "", xmlData = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: bpoName,
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xmlData,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
+  // 提交前调用-启动流程
+  startFlow(bpoName = "", sc_oid = "", DemandID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: bpoName,
+        _methodName: "AuditSheet",
+        "_parameters[sc_oid]": sc_oid,
+        "_parameters[DemandID]": DemandID,
+        _paraNames: "sc_oid",
+        _pUrl: ""
+      }
+    })
+  },
+  // 提交单据
+  submitOrder(bpoName = "", FlowID = "", BusinessKey = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: bpoName,
+        _methodName: "__StartFlow",
+        "_parameters[FlowID]": FlowID,
+        "_parameters[DeltaXml]": "<root></root>",
+        "_parameters[BusinessKey]": BusinessKey,
+        _paraNames: "FlowID,DeltaXml,BusinessKey",
+        _pUrl: ""
+      }
+    })
+  },
+  //删除单据
+  deleteOrder(bpoName = "", sc_id = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: bpoName,
+        _methodName: "DeleteBill",
+        "_parameters[sc_id]": sc_id,
+        _paraNames: "sc_id",
         _pUrl: ""
       }
     })
