@@ -257,8 +257,6 @@ export default {
               this.data = eval(sp[0].split("=")[1])[0];
               this.businessKey = this.data[0];
               this.edit = true;
-              this.image1 = this.data[14].replace("~", this.servePath);
-              this.image2 = this.data[15].replace("~", this.servePath);
             }
             if (!this.data[10] || this.data[10] == "1900-01-01 00:00:00") {
               this.data[10] = new Date().Format("yyyy-MM-dd hh:mm:ss");

@@ -3,11 +3,17 @@
   <div class="frozen">
     <div class="fro-data">
       <div class="fro-card">
-        <div class="fro-item" v-for="(item,index) in list" :key="index">
+        <van-cell-group class="fro-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">单号：{{item[1]}}</span>
+            <span class="option" v-if="item[30] != '1'">
+              <van-button type="danger" size="mini" plain @click.stop="onDelete(item[0])">删除</van-button>
+            </span>
           </div>
-          <div class="item-content">
+          <van-cell is-link class="item-content" @click="jumpPage(item)">
+            <div class="content-row">
+              <span>所属项目：{{item[28]}}</span>
+            </div>
             <div class="content-row">
               <span class="row-left">审核日期：{{item[10] | formatDate}}</span>
               <span class="row-right">
@@ -28,7 +34,10 @@
             <div class="content-row">
               <span>备注：{{item[16]}}</span>
             </div>
-          </div>
+          </van-cell>
+        </van-cell-group>
+        <div class="margin-top-sm" v-if="filterParams === 1">
+          <van-button type="primary" size="large" @click="onAdd">新增冻结单</van-button>
         </div>
       </div>
     </div>
@@ -49,32 +58,99 @@ export default {
   },
   computed,
   methods: {
-    getData() {
-      const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      financial.getFrozen(this.projectInfo.SC_ProjectOID, page).then(res => {
-        try {
-          if (res && res.status === 1) {
-            const sp = res.text.split("[[");
-            const csp = sp[1].split(";");
-            this.pages = eval("(" + csp[1].split("=")[1] + ")");
-            this.list = eval("[[" + csp[0]);
-          }
-        } catch (e) {
-          console.log(e);
-        }
+    // 新增支付申请
+    onAdd() {
+      this.$store.commit("taskParams", "");
+      this.$router.push({
+        name: "paymentAddDJ"
       });
     },
+    // 获取数据
+    getData() {
+      const page = this.curPage > 0 ? this.curPage - 1 : 0;
+      return financial
+        .getFrozen(this.userId.UCML_OrganizeOID, page, this.filter)
+        .then(res => {
+          try {
+            if (res && res.status === 1) {
+              const sp = res.text.split("[[");
+              const csp = sp[1].split(";");
+              this.pages = eval("(" + csp[1].split("=")[1] + ")");
+              this.list = eval("[[" + csp[0]);
+              return true;
+            }
+            return false;
+          } catch (e) {
+            return false;
+            console.log(e);
+          }
+        });
+    },
+    jumpPage(item) {
+      if (item[31] == "true") {
+        const params = {
+          InstanceID: item[32],
+          name: "冻结单详情",
+          bpoName: "SupplyChain/BizFinance/BPO_WF_Apply_Info"
+        };
+        this.$store.commit("taskParams", params);
+        this.$router.push({
+          name: "taskDJFrom"
+        });
+      } else {
+        const params = {
+          InstanceID: item[0],
+          name: "编辑冻结单",
+          bpoName: "SupplyChain/BizFinance/BPO_WF_Apply_Info"
+        };
+        this.$store.commit("taskParams", params);
+        this.$router.push({
+          name: "paymentAddDJ"
+        });
+      }
+    },
+    // 删除单据
+    onDelete(id) {
+      this.$dialog
+        .confirm({
+          title: "删除",
+          message: "是否删除单据？"
+        })
+        .then(() => {
+          console.log(id);
+          financial
+            .deleteOrder("BPO_Money_DJ_InOutListService", id)
+            .then(res => {
+              if (res && res.status === 1) {
+                if (res.text == "0") {
+                  this.$toast.fail("单据已审核，不能删除！");
+                } else if (res.text == "1") {
+                  this.getData().then(() => {
+                    this.$toast.success("删除数据成功");
+                  });
+                } else {
+                  this.$toast.fail("删除数据失败");
+                }
+              } else if (res && res.text) {
+                this.$toast(res.text);
+              }
+            });
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
     pageInit() {
+      if (this.filterParams === 1) {
+        this.filter = "AND SC_Money_InOut.StartFlowFlag is null";
+      } else {
+        this.filter = "AND SC_Money_InOut.BusinessState='1'";
+      }
       this.getData();
     }
   },
   mounted() {
-    if (this.projectInfo.SC_ProjectOID) {
-      this.$parent.active = 4;
-      this.pageInit();
-    } else {
-      this.$toast("请先点击屏幕右上角按钮，选择项目");
-    }
+    this.pageInit();
   }
 };
 </script>

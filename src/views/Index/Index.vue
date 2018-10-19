@@ -3,8 +3,8 @@
     <!--轮播图-->
     <div class="index-banner">
       <van-swipe :autoplay="3000">
-        <van-swipe-item v-for="(image, index) in images" :key="index">
-          <img :src="image" />
+        <van-swipe-item v-for="(item, index) in images" :key="index">
+          <img :src="item.ImagePath.replace('~',servePath)" :alt="item.ImageTitle" />
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -37,11 +37,7 @@ import { index } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      images: [
-        "banner/baaner1.png",
-        "banner/baaner2.png",
-        "banner/baaner3.png"
-      ],
+      images: [],
       data: []
     };
   },
@@ -68,6 +64,13 @@ export default {
       if (res && res.status === 1 && res.text) {
         this.data = JSON.parse(res.text);
         // console.log(this.data);
+      }
+    });
+
+    index.getBanner().then(res => {
+      if (res && res.status === 1 && res.text) {
+        this.images = JSON.parse(res.text);
+        // console.log(this.images);
       }
     });
   }

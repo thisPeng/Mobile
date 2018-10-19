@@ -12,6 +12,9 @@
           </div>
           <van-cell is-link class="item-content" @click="jumpInfo(item)">
             <div class="content-row">
+              <span>所属项目：{{item[30]}}</span>
+            </div>
+            <div class="content-row">
               <span class="row-left">申请日期：{{item[15] | formatDate}}</span>
               <span class="row-right">
                 <van-tag v-if="item[33] == 'false'">单据状态：未提交</van-tag>
@@ -66,7 +69,7 @@ export default {
       this.$dialog
         .confirm({
           title: "删除",
-          message: "是否删除订单？"
+          message: "是否删单据？"
         })
         .then(() => {
           financial.deletePayBill(id).then(res => {
