@@ -22,7 +22,7 @@
 </template>
 <script>
 import computed from "../../../assets/js/computed.js";
-import { task, financial } from "../../../assets/js/api.js";
+import { financial } from "../../../assets/js/api.js";
 
 export default {
   data() {

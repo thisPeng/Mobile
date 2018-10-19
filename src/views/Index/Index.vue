@@ -8,51 +8,23 @@
         </van-swipe-item>
       </van-swipe>
     </div>
-    <!--我的待办-->
-    <div class="index-option" v-if="data.wait && data.wait.data.length > 0">
-      <div class="option-title">
-        <div class="title">{{data.wait.title}}</div>
+
+    <!--工作台-->
+    <div class="index-option" v-for="(item, index) in data" :key="index">
+      <div class="option-title" v-if="item.isShowTitle == 1">
+        <div class="title">{{item.title}}</div>
       </div>
       <div class="option-item">
-        <div class="item" v-for="(item, index) in data.wait.data" :key="index" @click="jumpWait(item)">
-          <div class="van-info" v-if="item.info > 0">{{item.info}}</div>
+        <div class="item" v-for="(ite, idx) in item.data" :key="idx" @click="jumpPage(ite)">
+          <div class="van-info" v-if="ite.info > 0">{{ite.info}}</div>
           <div class="item-icon bg-blue">
             <i class="iconfont icon-daiban" />
           </div>
-          <div class="option-text">{{item.text}}</div>
+          <div class="option-text">{{ite.text}}</div>
         </div>
       </div>
     </div>
-    <!--发起工作-->
-    <div class="index-option" v-if="data.start && data.start.data.length > 0">
-      <div class="option-title">
-        <div class="title">{{data.start.title}}</div>
-      </div>
-      <div class="option-item">
-        <div class="item" v-for="(item, index) in data.start.data" :key="index" @click="jumpStart(item)">
-          <div class="van-info" v-if="item.info > 0">{{item.info}}</div>
-          <div class="item-icon bg-blue">
-            <i class="iconfont icon-daiban" />
-          </div>
-          <div class="option-text">{{item.text}}</div>
-        </div>
-      </div>
-    </div>
-    <!--工作知会-->
-    <div class="index-option" v-if="data.notice && data.notice.data.length > 0">
-      <div class="option-title">
-        <div class="title">{{data.notice.title}}</div>
-      </div>
-      <div class="option-item">
-        <div class="item" v-for="(item, index) in data.notice.data" :key="index" @click="jumpNotice(item)">
-          <div class="van-info" v-if="item.info > 0">{{item.info}}</div>
-          <div class="item-icon bg-blue">
-            <i class="iconfont icon-daiban" />
-          </div>
-          <div class="option-text">{{item.text}}</div>
-        </div>
-      </div>
-    </div>
+
     <!--统计数据-->
     <count />
   </div>
@@ -78,43 +50,24 @@ export default {
     count
   },
   methods: {
-    // 跳转待办
-    jumpWait(item) {
+    jumpPage(item) {
       this.$store.commit("taskModel", item.id);
-      this.$router.push({ name: item.action });
-    },
-    // 跳转发起
-    jumpStart(item) {
-      this.$store.commit("taskModel", item.id);
-      this.$store.commit("filterParams", 1);
+      this.$store.commit("filterParams", item.Param ? 1 : 2);
       let name = "";
-      if (!this.projectInfo.SC_ProjectOID) {
-        this.$store.commit("backRouter", item.action);
-        name = "projectList";
-      } else if (item.Param && parseInt(item.info) > 0) {
+      if (item.Param && parseInt(item.info) > 0) {
         name = item.Param;
       } else {
+        this.$store.commit("taskParams", "");
         name = item.action;
       }
       this.$router.push({ name });
-    },
-    // 跳转知会
-    jumpNotice(item) {
-      this.$store.commit("taskModel", item.id);
-      this.$store.commit("filterParams", 2);
-      if (this.projectInfo.SC_ProjectOID) {
-        this.$router.push({ name: item.action });
-      } else {
-        this.$store.commit("backRouter", item.action);
-        this.$router.push({ name: "projectList" });
-      }
     }
   },
   mounted() {
     index.getGetWorkSpace(this.userInfo.oid).then(res => {
       if (res && res.status === 1 && res.text) {
-        this.data = JSON.parse(res.text)[0];
-        console.log(this.data);
+        this.data = JSON.parse(res.text);
+        // console.log(this.data);
       }
     });
   }

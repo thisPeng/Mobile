@@ -51,7 +51,7 @@ export default {
   },
   computed,
   methods: {
-    getList() {
+    pageInit() {
       arrival.getList(this.projectInfo.SC_ProjectOID).then(res => {
         try {
           if (res && res.status === 1) {
@@ -89,11 +89,11 @@ export default {
     }
   },
   mounted() {
-    if (this.projectInfo.SC_ProjectOID) {
-      this.getList();
-    } else {
-      this.$toast("请先点击屏幕右上角按钮，选择项目");
-    }
+    // if (this.projectInfo.SC_ProjectOID) {
+    this.pageInit();
+    // } else {
+    //   this.$toast("请先点击屏幕右上角按钮，选择项目");
+    // }
   }
 };
 </script>

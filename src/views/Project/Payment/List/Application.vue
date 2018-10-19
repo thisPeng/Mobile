@@ -3,7 +3,7 @@
   <div class="application">
     <div class="app-data">
       <div class="app-card">
-        <div class="app-item" v-for="(item,index) in list" :key="index">
+        <van-cell-group class="app-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">单号：{{item[1]}}</span>
             <span v-if="item[32] != '1'">
@@ -31,10 +31,10 @@
               <span class="row-left">备注：{{item[10]}}</span>
             </div>
           </van-cell>
-        </div>
-        <!-- <div class="margin-top-sm" v-if="projectInfo.SC_ProjectOID">
+        </van-cell-group>
+        <div class="margin-top-sm" v-if="filterParams === 1">
           <van-button type="primary" size="large" @click="onAdd">新增支付申请</van-button>
-        </div> -->
+        </div>
       </div>
     </div>
     <!--分页组件-->

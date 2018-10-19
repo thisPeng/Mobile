@@ -10,7 +10,7 @@
               <van-button type="danger" size="mini" plain @click="onDelete(item[0])">删除</van-button>
             </span>
           </div>
-          <van-cell is-link class="item-content" @click="jumpInfo(item)">
+          <van-cell is-link class="item-content" @click="jumpPage(item)">
             <div class="content-row">
               <span class="row-left">审核日期：{{item[8] | formatDate}}</span>
               <span class="row-right">
@@ -57,7 +57,7 @@ export default {
   },
   computed,
   methods: {
-    jumpInfo(item) {
+    jumpPage(item) {
       if (item[31] == "true") {
         const params = {
           InstanceID: item[32],

@@ -390,64 +390,56 @@ export default new Router({
       name: "application",
       component: application,
       meta: {
-        title: "支付申请列表",
-        keepAlive: true
+        title: "支付申请列表"
       }
     }, {
       path: "/payment/paymentlabel/preMemory",
       name: "preMemory",
       component: preMemory,
       meta: {
-        title: "预存单管理",
-        keepAlive: true
+        title: "预存单管理"
       }
     }, {
       path: "/payment/paymentlabel/payInfomation",
       name: "payInfomation",
       component: payInfomation,
       meta: {
-        title: "支付审管理",
-        keepAlive: true
+        title: "支付审管理"
       }
     }, {
       path: "/payment/paymentlabel/appropriation",
       name: "appropriation",
       component: appropriation,
       meta: {
-        title: "批款单管理",
-        keepAlive: true
+        title: "批款单管理"
       }
     }, {
       path: "/payment/paymentlabel/frozen",
       name: "frozen",
       component: frozen,
       meta: {
-        title: "冻结审管理",
-        keepAlive: true
+        title: "冻结审管理"
       }
     }, {
       path: "/payment/paymentlabel/withholding",
       name: "withholding",
       component: withholding,
       meta: {
-        title: "扣款单管理",
-        keepAlive: true
+        title: "扣款单管理"
       }
     }, {
       path: "/payment/paymentlabel/capitalFlow",
       name: "capitalFlow",
       component: capitalFlow,
       meta: {
-        title: "费用单管理",
-        keepAlive: true
+        title: "费用单管理"
       }
     }, {
       path: "/payment/paymentlabel/oainformation",
       name: "oainformation",
       component: oainformation,
       meta: {
-        title: "OA批款信息",
-        keepAlive: true
+        title: "OA批款信息"
       }
       // }]
     }, {

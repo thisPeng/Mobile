@@ -67,7 +67,7 @@
           </table>
         </div>
         <div class="padding" v-if="payment === '余额转预存'">
-          转预存是由一个项目的余额转给另一个项目的资金池中,供另一个项目使用, 不用通过银行,直接项目间产生资金的转移流水。
+          <span>转预存是由一个项目的余额转给另一个项目的资金池中,供另一个项目使用, 不用通过银行,直接项目间产生资金的转移流水。</span>
         </div>
       </van-cell-group>
     </div>
@@ -487,7 +487,7 @@ export default {
         }
       });
     },
-    // 获取目标项目lieb
+    // 获取目标项目列表
     getProjectList() {
       financial
         .getProjectList(
