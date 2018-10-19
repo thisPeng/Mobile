@@ -11,8 +11,8 @@
             <van-button type="primary" size="mini" @click="projectShow=true">选择</van-button>
           </div>
         </div>
-        <van-field :value="data[10] || '请选择到款日期'" label="到款日期" readonly required @click="showDate" />
-        <van-datetime-picker v-model="currentDate" v-show="dateShow" :min-date="new Date()" type="datetime" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
+        <van-field :value="new Date(data[10]).Format('yyyy-MM-dd') || '请选择到款日期'" label="到款日期" readonly required @click="showDate" />
+        <van-datetime-picker v-model="currentDate" v-show="dateShow" :min-date="new Date()" type="date" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
         <van-field v-model="data[34]" label="到款金额(￥)" required placeholder="请输入到款金额" />
         <van-field v-model="data[12]" label="到款账号" required placeholder="请输入到款账号" />
         <van-field v-model="data[11]" label="开户行" required placeholder="请输入开户行" />
@@ -20,8 +20,8 @@
         <van-field v-model="data[9]" label="批款金额(￥)" required placeholder="请输入批款金额" />
         <van-field v-model="data[16]" label="批款说明" type="textarea" required placeholder="请输入批款说明" />
         <van-field :value="data[29] || userId.PersonName" label="制单人" :disabled="true" />
-        <van-field :value="data[17] || new Date().Format('yyyy-MM-dd')" label="制单日期" :disabled="true" />
-        <van-field :value="data[18]" label="修改日期" :disabled="true" v-if="data[18]" />
+        <van-field :value="new Date(data[17]).Format('yyyy-MM-dd') || new Date().Format('yyyy-MM-dd')" label="制单日期" :disabled="true" />
+        <van-field :value="new Date(data[18]).Format('yyyy-MM-dd')" label="修改日期" :disabled="true" v-if="data[18]" />
       </van-cell-group>
       <div class="payment-button">
         <van-button @click="onSave">保存</van-button>

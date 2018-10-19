@@ -11,15 +11,15 @@
             <van-button type="primary" size="mini" @click="projectShow=true">选择</van-button>
           </div>
         </div>
-        <van-field :value="data[10] || '请选择冻结日期'" label="冻结日期" readonly required @click="showDate" />
-        <van-datetime-picker v-model="currentDate" v-show="dateShow" :min-date="new Date()" type="datetime" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
-        <van-field v-model="data[16]" label="冻结说明" required placeholder="请输入冻结说明" />
+        <van-field :value="new Date(data[10]).Format('yyyy-MM-dd') || '请选择冻结日期'" label="冻结日期" readonly required @click="showDate" />
+        <van-datetime-picker v-model="currentDate" v-show="dateShow" :min-date="new Date()" type="date" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
+        <van-field v-model="data[16]" label="冻结说明" required type="textarea" placeholder="请输入冻结说明" />
         <van-field v-model="data[34]" label="可用资金(￥)" :disabled="true" />
         <van-field v-model="data[9]" label="冻结金额(￥)" required placeholder="请输入冻结金额" />
         <van-field v-model="data[13]" label="经手人" required placeholder="请输入经手人" />
         <van-field :value="data[29] || userId.PersonName" label="制单人" :disabled="true" />
-        <van-field :value="data[17] || new Date().Format('yyyy-MM-dd')" label="制单日期" :disabled="true" />
-        <van-field :value="data[18]" label="修改日期" :disabled="true" v-if="data[18]" />
+        <van-field :value="new Date(data[17]).Format('yyyy-MM-dd')" label="制单日期" :disabled="true" />
+        <van-field :value="new Date(data[18]).Format('yyyy-MM-dd')" label="修改日期" :disabled="true" v-if="data[18]" />
       </van-cell-group>
       <div class="payment-button">
         <van-button @click="onSave">保存</van-button>
@@ -106,7 +106,7 @@ export default {
     },
     // 确认时间
     saveDate(val) {
-      this.data[10] = this.$util.formatDate(val, "yyyy-MM-dd hh:mm:ss");
+      this.data[10] = this.$util.formatDate(val, "yyyy-MM-dd");
       this.dateShow = false;
     },
     //保存先获取单号
@@ -172,10 +172,9 @@ export default {
                 { SYS_ORG: this.userId.UCML_OrganizeOID },
                 { EmployeeName: this.userId.PersonName },
                 {
-                  SYS_Created:
-                    this.data[17] || new Date().Format("yyyy-MM-dd hh:mm:ss")
+                  SYS_Created: this.data[17] || new Date().Format("yyyy-MM-dd")
                 },
-                { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") },
+                { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd") },
                 { SYS_LAST_UPD_BY: this.userInfo.oid }
               ]
             });
@@ -238,7 +237,7 @@ export default {
               this.edit = true;
             }
             if (!this.data[10] || this.data[10] == "1900-01-01 00:00:00") {
-              this.data[10] = new Date().Format("yyyy-MM-dd hh:mm:ss");
+              this.data[10] = new Date().Format("yyyy-MM-dd");
             }
             this.getProject();
           } catch (e) {
