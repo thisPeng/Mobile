@@ -81,8 +81,8 @@ export default {
             }
             return false;
           } catch (e) {
-            return false;
             console.log(e);
+            return false;
           }
         });
     },

@@ -51,7 +51,7 @@ export default {
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
       financial
-        .getPaymentInfo(this.projectInfo.SC_ProjectOID, page)
+        .getPaymentInfo(this.userId.UCML_OrganizeOID, page, this.filter)
         .then(res => {
           try {
             if (res && res.status === 1) {
@@ -66,16 +66,16 @@ export default {
         });
     },
     pageInit() {
+      if (this.filterParams === 1) {
+        this.filter = "AND SC_Money_InOut.StartFlowFlag is null";
+      } else {
+        this.filter = "AND SC_Money_InOut.BusinessState='1'";
+      }
       this.getData();
     }
   },
   mounted() {
-    if (this.projectInfo.SC_ProjectOID) {
-      this.$parent.active = 2;
-      this.pageInit();
-    } else {
-      this.$toast("请先点击屏幕右上角按钮，选择项目");
-    }
+    this.pageInit();
   }
 };
 </script>
