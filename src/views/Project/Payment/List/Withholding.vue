@@ -3,11 +3,17 @@
   <div class="withholding">
     <div class="with-data">
       <div class="with-card">
-        <div class="with-item" v-for="(item,index) in list" :key="index">
+        <van-cell-group class="with-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">单号：{{item[1]}}</span>
+            <span class="option">
+              <van-button type="danger" size="mini" plain @click.stop="onDelete(item)">删除</van-button>
+            </span>
           </div>
-          <div class="item-content">
+          <van-cell class="item-content" is-link @click="jumpPage(item)">
+            <div class="content-row">
+              <span>所属项目：{{item[28]}}</span>
+            </div>
             <div class="content-row">
               <span class="row-left">扣款日期：{{item[10] | formatDate}}</span>
               <span class="row-right">
@@ -26,7 +32,10 @@
             <div class="content-row">
               <span>备注：{{item[16]}}</span>
             </div>
-          </div>
+          </van-cell>
+        </van-cell-group>
+        <div class="margin-top-sm" v-if="filterParams === 1">
+          <van-button type="primary" size="large" @click="onAdd">新增扣款单</van-button>
         </div>
       </div>
     </div>
@@ -48,31 +57,65 @@ export default {
   },
   computed,
   methods: {
-    getData() {
-      financial.getWithInfo(this.projectInfo.SC_ProjectOID).then(res => {
-        try {
-          if (res && res.status === 1) {
-            const sp = res.text.split("[[");
-            const csp = sp[1].split(";");
-            this.pages = eval("(" + csp[1].split("=")[1] + ")");
-            this.list = eval("[[" + csp[0]);
-          }
-        } catch (e) {
-          console.log(e);
-        }
+    // 新增单据
+    onAdd() {
+      this.$store.commit("taskParams", "");
+      this.$router.push({
+        name: "paymentAddKK"
       });
     },
+    getData() {
+      const page = this.currentPage > 0 ? this.currentPage - 1 : 0;
+      financial
+        .getWithInfo(this.userId.UCML_OrganizeOID, page, this.filter)
+        .then(res => {
+          try {
+            if (res && res.status === 1) {
+              const sp = res.text.split("[[");
+              const csp = sp[1].split(";");
+              this.pages = eval("(" + csp[1].split("=")[1] + ")");
+              this.list = eval("[[" + csp[0]);
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        });
+    },
+    jumpPage(item) {
+      if (item[31] == "true") {
+        const params = {
+          InstanceID: item[32],
+          name: "扣款单详情",
+          bpoName: "SupplyChain/BizFinance/BPO_WF_Apply_Info"
+        };
+        this.$store.commit("taskParams", params);
+        this.$router.push({
+          name: "taskKKFrom"
+        });
+      } else {
+        const params = {
+          InstanceID: item[0],
+          name: "编辑扣款单",
+          bpoName: "SupplyChain/BizFinance/BPO_WF_Apply_Info"
+        };
+        this.$store.commit("taskParams", params);
+        this.$router.push({
+          name: "paymentAddKK"
+        });
+      }
+    },
+    onDelete() {},
     pageInit() {
+      if (this.filterParams === 1) {
+        this.filter = "AND SC_Money_InOut.StartFlowFlag is null";
+      } else {
+        this.filter = "AND SC_Money_InOut.BusinessState='1'";
+      }
       this.getData();
     }
   },
   mounted() {
-    if (this.projectInfo.SC_ProjectOID) {
-      this.$parent.active = 5;
-      this.pageInit();
-    } else {
-      this.$toast("请先点击屏幕右上角按钮，选择项目");
-    }
+    this.pageInit();
   }
 };
 </script>

@@ -42,7 +42,7 @@
           </van-cell>
         </van-cell-group>
         <div class="margin-top-sm" v-if="filterParams === 1">
-          <van-button type="primary" size="large" @click="onAdd">新增预存单</van-button>
+          <van-button type="primary" size="large" @click="onAdd">新增批款单</van-button>
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@ export default {
   },
   computed,
   methods: {
-    // 新增支付申请
+    // 新增单据
     onAdd() {
       this.$store.commit("taskParams", "");
       this.$router.push({

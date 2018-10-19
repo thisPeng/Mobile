@@ -1865,7 +1865,7 @@ const financial = {
     })
   },
   //预存列表
-  getPremomey(ProjectID = "", page = 0) {
+  getPremomey(PartnerID = "", page = 0, filter = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1878,7 +1878,7 @@ const financial = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Money_InOut.ProjectID ='" + ProjectID + "'" + " AND Sheet_Type='YC'",
+        "_parameters[SQLCondi]": "SC_Money_InOut.PartnerID ='" + PartnerID + "'" + " AND Sheet_Type='YC'" + filter,
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -1887,7 +1887,7 @@ const financial = {
     })
   },
   //支付信息
-  getPaymentInfo(ProjectID = "", page = 0) {
+  getPaymentInfo(PartnerID = "", page = 0, filter = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1900,7 +1900,7 @@ const financial = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Money_InOut.ProjectID ='" + ProjectID + "'" + " AND SC_Money_InOut.Sheet_Type='FK'",
+        "_parameters[SQLCondi]": "SC_Money_InOut.PartnerID ='" + PartnerID + "'" + " AND SC_Money_InOut.Sheet_Type='FK'" + filter,
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -1922,7 +1922,7 @@ const financial = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Money_InOut.PartnerID='" + PartnerID + "' " + filter,
+        "_parameters[SQLCondi]": "SC_Money_InOut.PartnerID='" + PartnerID + "' AND SC_Money_InOut.Sheet_Type='PK' " + filter,
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": " ORDER BY ProjectName",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -1931,7 +1931,7 @@ const financial = {
     })
   },
   //冻结列表
-  getFrozen(ProjectID = "", page = 0) {
+  getFrozen(PartnerID = "", page = 0, filter = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1944,7 +1944,7 @@ const financial = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Money_InOut.ProjectID ='" + ProjectID + "'" + " AND SC_Money_InOut.Sheet_Type='DJ'",
+        "_parameters[SQLCondi]": "SC_Money_InOut.PartnerID='" + PartnerID + "'  AND SC_Money_InOut.Sheet_Type='DJ' " + filter,
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -1953,7 +1953,7 @@ const financial = {
     })
   },
   //扣款信息
-  getWithInfo(ProjectID = "", page = 0) {
+  getWithInfo(PartnerID = "", page = 0, filter = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1966,7 +1966,7 @@ const financial = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Money_InOut.ProjectID ='" + ProjectID + "'" + " AND SC_Money_InOut.Sheet_Type='KK'",
+        "_parameters[SQLCondi]": "SC_Money_InOut.PartnerID='" + PartnerID + "'  AND SC_Money_InOut.Sheet_Type='KK' " + filter,
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
