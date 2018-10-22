@@ -5,9 +5,9 @@
     </van-nav-bar>
 
     <keep-alive>
-      <router-view class="content" v-if="$route.meta.keepAlive"></router-view>
+      <router-view class="content" v-input v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
-    <router-view class="content" v-if="!$route.meta.keepAlive"></router-view>
+    <router-view class="content" v-input v-if="!$route.meta.keepAlive"></router-view>
 
     <van-tabbar v-model="active" v-show="isTabbar" v-if="userType <= 2">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
