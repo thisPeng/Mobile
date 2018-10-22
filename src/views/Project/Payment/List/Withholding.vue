@@ -6,8 +6,8 @@
         <van-cell-group class="with-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">单号：{{item[1]}}</span>
-            <span class="option">
-              <van-button type="danger" size="mini" plain @click.stop="onDelete(item)">删除</van-button>
+            <span class="option" v-if="item[30] != '1'">
+              <van-button type="danger" size="mini" plain @click.stop="onDelete(item[0])">删除</van-button>
             </span>
           </div>
           <van-cell class="item-content" is-link @click="jumpPage(item)">
@@ -66,7 +66,7 @@ export default {
     },
     getData() {
       const page = this.currentPage > 0 ? this.currentPage - 1 : 0;
-      financial
+      return financial
         .getWithInfo(this.userId.UCML_OrganizeOID, page, this.filter)
         .then(res => {
           try {
@@ -75,9 +75,12 @@ export default {
               const csp = sp[1].split(";");
               this.pages = eval("(" + csp[1].split("=")[1] + ")");
               this.list = eval("[[" + csp[0]);
+              return true;
             }
+            return false;
           } catch (e) {
             console.log(e);
+            return false;
           }
         });
     },
@@ -104,7 +107,37 @@ export default {
         });
       }
     },
-    onDelete() {},
+    onDelete(id) {
+      this.$dialog
+        .confirm({
+          title: "删除",
+          message: "是否删除单据？"
+        })
+        .then(() => {
+          console.log(id);
+          financial
+            .deleteOrder("BPO_Money_KK_InOutListService", id)
+            .then(res => {
+              console.log(res);
+              if (res && res.status === 1) {
+                if (res.text == "0") {
+                  this.$toast.fail("单据已审核，不能删除！");
+                } else if (res.text == "1") {
+                  this.getData().then(() => {
+                    this.$toast.success("删除数据成功");
+                  });
+                } else {
+                  this.$toast.fail("删除数据失败");
+                }
+              } else if (res && res.text) {
+                this.$toast(res.text);
+              }
+            });
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
     pageInit() {
       if (this.filterParams === 1) {
         this.filter = "AND SC_Money_InOut.StartFlowFlag is null";

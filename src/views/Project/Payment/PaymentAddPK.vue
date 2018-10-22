@@ -84,7 +84,7 @@ export default {
     },
     // 获取项目列表
     getProject() {
-      financial.getProject(this.userId.UCML_OrganizeOID).then(res => {
+        financial.getProject(this.userId.UCML_OrganizeOID).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split(";");
