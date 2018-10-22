@@ -1334,7 +1334,7 @@ const conprice = {
 // 获取合同信息
 const contractInfo = {
   // 获取合同列表
-  getList(ProjectID = "") {
+  getList(ProjectID = "", Type = 0) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1342,6 +1342,7 @@ const contractInfo = {
         _bpoName: "BPO_Contract_ListService",
         _methodName: "getBCColumnsForJS",
         "_parameters[ProjectID]": ProjectID,
+        "_parameters[Type]": Type,
         _paraNames: "ProjectID",
         _pUrl: ""
       }
@@ -1431,7 +1432,7 @@ const contractInfo = {
 //获取合作商信息
 const arrival = {
   // 到货信息
-  getList(ProjectID) {
+  getList(ProjectID = "", Type = 1) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1440,7 +1441,8 @@ const arrival = {
         _methodName: "getBCColumnsForJS",
         "_parameters[BCName]": "BC_SC_IntentionSKU",
         "_parameters[ProjectID]": ProjectID,
-        _paraNames: "ProjectID",
+        "_parameters[Type]": Type,
+        _paraNames: "ProjectID,Type",
         _pUrl: ""
       }
     });
@@ -1707,7 +1709,7 @@ const financial = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": " PartnerID='" + PartnerID + "'  and   sc_project.DemandID = (select top 1 DemandID from sc_project where PartnerID='" + PartnerID + "' and SC_ProjectOID  = '" + ProjectID + "') and  (SC_ProjectOID  <> '" + ProjectID + "')",
+        "_parameters[SQLCondi]": " PartnerID='" + PartnerID + "' and sc_project.DemandID = (select top 1 DemandID from sc_project where PartnerID='" + PartnerID + "' and SC_ProjectOID  = '" + ProjectID + "') and  (SC_ProjectOID  <> '" + ProjectID + "')",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -1716,7 +1718,7 @@ const financial = {
     })
   },
   //支付申请列表
-  getPaymentList(ProjectID = "", page = 0, filters = "") {
+  getPaymentList(page = 0, filters = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1729,7 +1731,7 @@ const financial = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Pay_Apply.ProjectID ='" + ProjectID + "'" + " AND Sheet_Type='SQ' " + filters,
+        "_parameters[SQLCondi]": " Sheet_Type='SQ' " + filters,
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -1935,7 +1937,7 @@ const financial = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "ProjectID ='" + ProjectID + "'",
+        "_parameters[SQLCondi]": "ProjectID='" + ProjectID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -2103,7 +2105,8 @@ const offer = {
         _methodName: "getBCColumnsForJS",
         "_parameters[PartnerID]": parasm.pid,
         "_parameters[SupplierID]": parasm.sid,
-        _paraNames: "PartnerID,SupplierID",
+        "_parameters[Type]": parasm.type,
+        _paraNames: "PartnerID,SupplierID,Type",
         _pUrl: ""
       }
     });
@@ -2219,7 +2222,8 @@ const offer = {
         _methodName: "getBCColumnsForJS",
         "_parameters[PartnerID]": parasm.pid,
         "_parameters[SupplierID]": parasm.sid,
-        _paraNames: "PartnerID,SupplierID",
+        "_parameters[Type]": parasm.type,
+        _paraNames: "PartnerID,SupplierID,Type",
         _pUrl: ""
       }
     })
@@ -2312,7 +2316,7 @@ const offer = {
     })
   },
   //付款信息
-  getPayment(SupplierID = "", PartnerID = "") {
+  getPayment(SupplierID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -2325,7 +2329,7 @@ const offer = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Money_InOut.SupplierID='" + SupplierID + "'" + " AND SC_Money_InOut.PartnerID='" + PartnerID + "'",
+        "_parameters[SQLCondi]": "SC_Money_InOut.SupplierID='" + SupplierID + "' AND SC_Money_InOut.Approve_Flag=1",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -2343,7 +2347,8 @@ const offer = {
         _methodName: "getBCColumnsForJS",
         "_parameters[PartnerID]": parasm.pid,
         "_parameters[SupplierID]": parasm.sid,
-        _paraNames: "PartnerID,SupplierID",
+        "_parameters[Type]": parasm.Type,
+        _paraNames: "PartnerID,SupplierID,Type",
         _pUrl: ""
       }
     })

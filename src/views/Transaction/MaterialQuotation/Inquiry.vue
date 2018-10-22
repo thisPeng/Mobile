@@ -41,10 +41,11 @@ export default {
   },
   computed,
   methods: {
-    getClient() {
+    getData() {
       const params = {
-        pid: this.clientInfo[0],
-        sid: this.userInfo.oid
+        pid: this.userInfo.oid,
+        sid: this.userInfo.oid,
+        type: 4
       };
       offer.getPriceList(params).then(res => {
         try {
@@ -82,11 +83,7 @@ export default {
       });
     },
     pageInit() {
-      if (this.clientInfo[0]) {
-        this.getClient();
-      } else {
-        this.$toast("请先点击屏幕右上角按钮，选择客户");
-      }
+      this.getData();
     }
   },
   mounted() {

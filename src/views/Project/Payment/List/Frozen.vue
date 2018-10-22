@@ -58,7 +58,7 @@ export default {
   },
   computed,
   methods: {
-    // 新增支付申请
+    // 新增冻结单
     onAdd() {
       this.$store.commit("taskParams", "");
       this.$router.push({
@@ -145,6 +145,7 @@ export default {
         this.filter = "AND SC_Money_InOut.StartFlowFlag is null";
       } else {
         this.filter = "AND SC_Money_InOut.BusinessState='1'";
+        // AND Orgi.BusinessState=1
       }
       this.getData();
     }

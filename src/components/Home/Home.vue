@@ -17,7 +17,6 @@
     </van-tabbar>
     <van-tabbar v-model="active" v-show="isTabbar" v-else>
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
-      <van-tabbar-item icon="records" @click="jumpTabs('inquiry')" v-if="userType === 3">报价单</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -39,20 +38,19 @@ export default {
   watch: {
     $route(to) {
       try {
-        if (this.projectInfo.SC_ProjectOID) {
-          this.title = this.projectInfo.ProjectName;
-        } else if (this.clientInfo[0]) {
-          this.title = this.clientInfo[2];
-        } else {
-          this.title = to.meta.title;
-        }
+        // if (this.projectInfo.SC_ProjectOID) {
+        //   this.title = this.projectInfo.ProjectName;
+        // } else if (this.clientInfo[0]) {
+        //   this.title = this.clientInfo[2];
+        // } else {
+        this.title = to.meta.title;
+        // }
 
         if (
           to.name !== "index" &&
           to.name !== "classify" &&
           to.name !== "cart" &&
-          to.name !== "users" &&
-          to.name !== "inquiry"
+          to.name !== "users"
         ) {
           this.isBack = true;
           this.isTabbar = false;
@@ -91,20 +89,19 @@ export default {
   created() {
     this.active = this.tabsActive;
     const current = this.$router.history.current;
-    if (this.projectInfo.SC_ProjectOID) {
-      this.title = this.projectInfo.ProjectName;
-    } else if (this.clientInfo[0]) {
-      this.title = this.clientInfo[2];
-    } else {
-      this.title = current.meta.title;
-    }
+    // if (this.projectInfo.SC_ProjectOID) {
+    //   this.title = this.projectInfo.ProjectName;
+    // } else if (this.clientInfo[0]) {
+    //   this.title = this.clientInfo[2];
+    // } else {
+    this.title = current.meta.title;
+    // }
 
     if (
       current.name !== "index" &&
       current.name !== "classify" &&
       current.name !== "cart" &&
-      current.name !== "users" &&
-      current.name !== "inquiry"
+      current.name !== "users"
     ) {
       this.isBack = true;
       this.isTabbar = false;
@@ -119,14 +116,18 @@ export default {
           this.$store.commit("cleanStore", true);
           this.$store.commit("userInfo", result);
           users.userId(result.oid).then(res => {
-            if (res && res.status === 1) {
-              const uId = JSON.parse(res.text)[0];
-              this.$store.commit("userId", uId);
-              users.userType(uId.UCML_OrganizeOID).then(r => {
-                if (r && r.status === 1) {
-                  this.$store.commit("userType", JSON.parse(r.text).UserType);
-                }
-              });
+            try {
+              if (res && res.status === 1) {
+                const uId = JSON.parse(res.text)[0];
+                this.$store.commit("userId", uId);
+                users.userType(uId.UCML_OrganizeOID).then(r => {
+                  if (r && r.status === 1) {
+                    this.$store.commit("userType", JSON.parse(r.text).UserType);
+                  }
+                });
+              }
+            } catch (e) {
+              location.reload();
             }
           });
         }

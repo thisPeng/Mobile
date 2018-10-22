@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <!--轮播图-->
-    <div class="index-banner">
+    <div class="index-banner" v-if="images.length > 0">
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(item, index) in images" :key="index">
           <img :src="item.ImagePath.replace('~',servePath)" :alt="item.ImageTitle" />

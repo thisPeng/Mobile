@@ -1,6 +1,6 @@
 <template>
   <!-- 支付信息 -->
-  <div class="payinfomation">
+  <div class="payInfoMation">
     <div class="pre-data">
       <div class="pre-card">
         <div class="pre-item" v-for="(item,index) in list" :key="index">
@@ -80,7 +80,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.payinfomation {
+.payInfoMation {
   width: 100%;
   padding: 10px;
   .classify-pages {

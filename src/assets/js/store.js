@@ -37,7 +37,7 @@ export default new Vuex.Store({
   mutations: {
     cleanStore: (state, val) => {
       if (val) {
-        state.isReload = true;
+        state.isReload = false;
         state.userId = {};
         state.userInfo = {};
         state.codeValue = [];

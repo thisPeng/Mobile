@@ -25,7 +25,7 @@
         </van-col>
         <van-col span="12">
           <div class="row-title">
-            <i class="iconfont icon-qizi text-green" />冻结资金(￥)
+            <i class="iconfont icon-qizi text-green" /> 冻结资金(￥)
           </div>
           <div class="row-content">{{data[6] | formatMoney}}</div>
         </van-col>

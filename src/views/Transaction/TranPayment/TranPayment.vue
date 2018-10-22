@@ -42,7 +42,7 @@ export default {
   computed,
   methods: {
     getData() {
-      offer.getPayment(this.userInfo.oid, this.clientInfo[0]).then(res => {
+      offer.getPayment(this.userInfo.oid).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");
@@ -55,11 +55,7 @@ export default {
       });
     },
     pageInit() {
-      if (this.clientInfo[0]) {
-        this.getData();
-      } else {
-        this.$toast("请先点击屏幕右上角按钮，选择客户");
-      }
+      this.getData();
     }
   },
   mounted() {

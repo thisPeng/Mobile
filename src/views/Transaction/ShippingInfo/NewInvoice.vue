@@ -26,13 +26,13 @@
                   <div slot="thumb">
                     <img :src="item[29].replace('~', servePath)" class="van-card__img">
                   </div>
-                    <div slot="title" class="van-card__row">
-                      <div class="van-card__title">{{item[4]}}</div>
-                      <div class="van-card__price">{{'￥ '+item[14]}}</div>
-                    </div>
-                    <div slot="footer">
-                      <van-stepper v-model="item[11]" :integer="true" />
-                    </div>
+                  <div slot="title" class="van-card__row">
+                    <div class="van-card__title">{{item[4]}}</div>
+                    <div class="van-card__price">{{'￥ '+item[14]}}</div>
+                  </div>
+                  <div slot="footer">
+                    <van-stepper v-model="item[11]" :integer="true" />
+                  </div>
                 </van-card>
               </div>
             </van-swipe-cell>
@@ -174,8 +174,9 @@ export default {
     // 发货单详情
     getData() {
       const params = {
-        pid: this.clientInfo[0],
-        sid: this.userInfo.oid
+        pid: this.userInfo.oid,
+        sid: this.userInfo.oid,
+        type: 2
       };
       offer.getContract(params).then(res => {
         if (res && res.status === 1) {

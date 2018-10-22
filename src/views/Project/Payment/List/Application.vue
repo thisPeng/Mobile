@@ -118,29 +118,36 @@ export default {
     },
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      let filter = "";
+      let filter =
+        " AND SC_Pay_Apply.PartnerID='" + this.userId.UCML_OrganizeOID + "'";
       if (this.filterParams === 1) {
-        filter = "AND Approve_Flag='0'";
+        if (this.userType === 3) {
+          filter =
+            " AND SC_Pay_Apply.DemandID='" + this.userId.UCML_OrganizeOID + "'";
+        }
+        filter += " AND StartFlowFlag is null";
       } else if (this.filterParams === 2) {
-        filter = "AND BusinessState='1'";
+        if (this.userType === 3) {
+          filter =
+            " AND SC_Pay_Apply.DemandID='" + this.userId.UCML_OrganizeOID + "'";
+        }
+        filter += " AND BusinessState='1'";
       }
-      return financial
-        .getPaymentList(this.projectInfo.SC_ProjectOID, page, filter)
-        .then(res => {
-          try {
-            if (res && res.status === 1) {
-              const sp = res.text.split("[[");
-              const csp = sp[1].split(";");
-              this.pages = eval("(" + csp[1].split("=")[1] + ")");
-              this.list = eval("[[" + csp[0]);
-              return true;
-            }
-            return false;
-          } catch (e) {
-            console.log(e);
-            return false;
+      return financial.getPaymentList(page, filter).then(res => {
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split("[[");
+            const csp = sp[1].split(";");
+            this.pages = eval("(" + csp[1].split("=")[1] + ")");
+            this.list = eval("[[" + csp[0]);
+            return true;
           }
-        });
+          return false;
+        } catch (e) {
+          console.log(e);
+          return false;
+        }
+      });
     },
     pageInit() {
       this.getData();

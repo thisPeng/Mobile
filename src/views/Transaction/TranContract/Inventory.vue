@@ -137,7 +137,7 @@ export default {
           });
           setTimeout(() => {
             this.$router.push({
-              name: "shippinginfo"
+              name: "shippingInfo"
             });
           }, 800);
         }

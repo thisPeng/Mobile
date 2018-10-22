@@ -109,6 +109,7 @@ export default {
           datas.push(val[3]);
         });
       }
+
       let chart1 = this.$echarts.init(document.getElementById("myChart1"));
       chart1.setOption({
         title: {
@@ -330,7 +331,9 @@ export default {
               that.$store.commit("userType", 3);
             }
           }
-          that.drawLine();
+          this.$nextTick().then(() => {
+            that.drawLine();
+          });
         }
       });
     }

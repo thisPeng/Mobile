@@ -4,7 +4,6 @@ import Login from "./views/Login/Login";
 import Register from "./views/Login/Register";
 import Home from "./components/Home/Home";
 import Index from "./views/Index/Index";
-// import Api from "./views/Index/Api";
 import Classify from "./views/Classify/Classify";
 import GoodsList from "./views/Classify/GoodsList";
 import GoodsSearch from "./views/Classify/GoodsSearch";
@@ -14,10 +13,9 @@ import ConPrice from "./views/Project/ConPrice/ConPrice";
 import ContractInfo from "./views/Project/ContractInfo/ContractInfo";
 import ArrivalInformation from "./views/Project/Delivery/ArrivalInformation";
 import ProjectInfo from "./views/Project/ProjectInfo/ProjectInfo";
-// import PaymentLabel from "./views/Project/Payment/PaymentLabel";
 import application from "./views/Project/Payment/List/Application"; //支付申请信息
 import preMemory from "./views/Project/Payment/List/PreMemory"; //预存列表
-import payInfomation from "./views/Project/Payment/List/PayInfomation"; //支付信息
+import PayInfoMation from "./views/Project/Payment/List/PayInfoMation"; //支付信息
 import appropriation from "./views/Project/Payment/List/Appropriation"; //批款信息
 import frozen from "./views/Project/Payment/List/Frozen"; //冻结信息
 import withholding from "./views/Project/Payment/List/Withholding"; //扣款信息
@@ -90,10 +88,6 @@ export default new Router({
     path: "/register",
     name: "register",
     component: Register
-    // }, {
-    //   path: "/api",
-    //   name: "api",
-    //   component: Api
   }, {
     path: "/",
     redirect: "/index",
@@ -240,7 +234,7 @@ export default new Router({
       component: Users,
       meta: {
         title: "用户中心",
-        // keepAlive: true
+        keepAlive: true
       }
     }, {
       path: "/users/usersPwd",
@@ -336,7 +330,7 @@ export default new Router({
       }
     }, {
       path: "/arrivalinformation",
-      name: "arrivalinformation",
+      name: "arrivalInformation",
       component: ArrivalInformation,
       meta: {
         title: "到货信息"
@@ -377,15 +371,6 @@ export default new Router({
         title: "合同清单详情"
       }
     }, {
-      // path: "/payment/paymentlabel",
-      // name: "paymentlabel",
-      // component: PaymentLabel,
-      // redirect: "/payment/paymentlabel/application",
-      // meta: {
-      //   title: "付款信息列表",
-      //   keepAlive: true
-      // },
-      // children: [{
       path: "/payment/paymentlabel/application",
       name: "application",
       component: application,
@@ -400,11 +385,11 @@ export default new Router({
         title: "预存单管理"
       }
     }, {
-      path: "/payment/paymentlabel/payInfomation",
-      name: "payInfomation",
-      component: payInfomation,
+      path: "/payment/paymentlabel/payInfoMation",
+      name: "payInfoMation",
+      component: PayInfoMation,
       meta: {
-        title: "支付审管理"
+        title: "支付信息"
       }
     }, {
       path: "/payment/paymentlabel/appropriation",
@@ -441,7 +426,6 @@ export default new Router({
       meta: {
         title: "OA批款信息"
       }
-      // }]
     }, {
       path: "/payment/paymentlabel/PaymentAddZF",
       name: "paymentAddZF",
@@ -521,7 +505,7 @@ export default new Router({
       }
     }, {
       path: "/shippinginfo",
-      name: "shippinginfo",
+      name: "shippingInfo",
       component: ShippingInfo,
       meta: {
         title: "发货信息"

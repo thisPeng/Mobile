@@ -22,6 +22,9 @@
                 <span class="row-left">{{item[15]}}</span>
               </div>
               <div class="content-row">
+                <span class="row-left">{{item[9]}}</span>
+              </div>
+              <div class="content-row">
                 <span :class="item[19] == 1 ? 'text-red' : ''">{{item[16]}}{{item[19] == 1 ? '（已过期）' : ''}}</span>
               </div>
             </div>
@@ -44,25 +47,25 @@ export default {
   computed,
   methods: {
     pageInit() {
-      conprice.getList(this.projectInfo.SC_ProjectOID).then(res => {
+      const type = this.filterParams === 1 ? 3 : 0;
+      conprice.getList(this.userId.UCML_UserOID, type).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");
             const csp = sp[1].split(";");
             const list = eval("[[" + csp[0]);
-            console.log(list);
             const listOrder = [];
             let tmp = "";
             // 数据分组
             list.forEach(val => {
-              if (val[2] !== tmp) {
+              if (val[3] !== tmp) {
                 listOrder.push({
-                  name: val[9],
+                  name: val[20],
                   checked: true,
                   list: []
                 });
                 listOrder[listOrder.length - 1].list.push(val);
-                tmp = val[2];
+                tmp = val[3];
               } else {
                 listOrder[listOrder.length - 1].list.push(val);
               }
@@ -82,12 +85,7 @@ export default {
     }
   },
   mounted() {
-    if (this.projectInfo.SC_ProjectOID) {
-      this.$parent.title = this.projectInfo.ProjectName;
-      this.pageInit();
-    } else {
-      this.$toast("请先点击屏幕右上角按钮，选择项目");
-    }
+    this.pageInit();
   }
 };
 </script>

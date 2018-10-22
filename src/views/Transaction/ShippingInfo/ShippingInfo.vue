@@ -1,6 +1,6 @@
 <template>
   <!-- 发货信息 -->
-  <div class="shippinginfo">
+  <div class="shippingInfo">
     <div class="info-data">
       <div class="info-card">
         <div class="info-item" v-for="(item,index) in list" :key="index">
@@ -37,7 +37,7 @@
       </div>
     </div>
     <!--新增发货单-->
-    <div class="info-button" v-if="clientInfo.length > 0">
+    <div class="info-button">
       <van-button type="primary" size="large" @click.stop="jumpAdd">新增发货单</van-button>
     </div>
   </div>
@@ -55,8 +55,9 @@ export default {
   methods: {
     getData() {
       const params = {
-        pid: this.clientInfo[0],
-        sid: this.userInfo.oid
+        pid: this.userInfo.oid,
+        sid: this.userInfo.oid,
+        type: 4
       };
       return offer.getDelivery(params).then(res => {
         try {
@@ -118,16 +119,12 @@ export default {
     }
   },
   mounted() {
-    if (this.clientInfo[0]) {
-      this.pageInit();
-    } else {
-      this.$toast("请先点击屏幕右上角按钮，选择项目");
-    }
+    this.pageInit();
   }
 };
 </script>
 <style lang="less" scoped>
-.shippinginfo {
+.shippingInfo {
   width: 100%;
   overflow: hidden !important;
   .info-data {

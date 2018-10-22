@@ -1,6 +1,6 @@
 <template>
   <!-- 到货信息 -->
-  <div class="arrivalinformation">
+  <div class="arrivalInformation">
     <div class="arrival-data">
       <div class="data-item" v-for="(ite,idx) in listOrder" :key="idx">
         <van-cell-group>
@@ -52,8 +52,10 @@ export default {
   computed,
   methods: {
     pageInit() {
-      arrival.getList(this.projectInfo.SC_ProjectOID).then(res => {
+      const type = this.filterParams === 1 ? 3 : 0;
+      arrival.getList(this.userId.UCML_UserOID, type).then(res => {
         try {
+          console.log(res);
           if (res && res.status === 1) {
             const sp = res.text.split("[[");
             const tsp = sp[1].split(";");
@@ -89,16 +91,12 @@ export default {
     }
   },
   mounted() {
-    // if (this.projectInfo.SC_ProjectOID) {
     this.pageInit();
-    // } else {
-    //   this.$toast("请先点击屏幕右上角按钮，选择项目");
-    // }
   }
 };
 </script>
 <style lang="less" scoped>
-.arrivalinformation {
+.arrivalInformation {
   width: 100%;
   .arrival-data {
     .data-item {

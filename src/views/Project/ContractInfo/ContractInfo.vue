@@ -6,7 +6,7 @@
         <div class="tran-item" v-for="(item,index) in list" :key="index" v-if="item[18] !== '审核情况：未审核' && item[18] !== '审核情况：已审核'">
           <div class="item-title">
             <span class="title">{{item[22]}}</span>
-            <span class="option" v-if="item[18] === '发货情况：未发货' || item[18] !== '审核情况：未审核'">
+            <span class="option" v-if="item[6]==1">
               <van-button type="danger" size="mini" plain @click.stop="onReturn(item)">退回</van-button>
             </span>
           </div>
@@ -50,13 +50,14 @@ export default {
   computed,
   methods: {
     getList() {
-      return contractInfo.getList(this.projectInfo.SC_ProjectOID).then(res => {
+      return contractInfo.getList(this.userId.UCML_UserOID, 0).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");
             const tsp = sp[1].split(";");
             const list = eval("[[" + tsp[0]);
             this.list = list;
+            console.log(list);
             return true;
           }
           throw "数据获取失败，请刷新重试";
@@ -96,12 +97,7 @@ export default {
     }
   },
   mounted() {
-    if (this.projectInfo.SC_ProjectOID) {
-      this.$parent.title = this.projectInfo.ProjectName;
-      this.getList();
-    } else {
-      this.$toast("请先点击屏幕右上角按钮，选择项目");
-    }
+    this.getList();
   }
 };
 </script>
