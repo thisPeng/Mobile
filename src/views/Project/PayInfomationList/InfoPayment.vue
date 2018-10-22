@@ -1,20 +1,19 @@
 <template>
-  <!-- 新增预存列表 -->
-  <div class="task">
-    <van-cell-group style="margin-bottom: 70px">
-      <!-- <van-field v-model="data[1]" label="单号" :disabled="true" /> -->
-      <van-field :value="projectInfo.ProjectNo" label="工程编号：" :disabled="true" />
-      <van-field v-model="projectInfo.ProjectName" label="工程名称：" :disabled="true" />
-      <van-field :value="data[10] || new Date().Format('yyyy-MM-dd hh:mm:ss')" label="汇款日期：" required readonly @click="showDate" />
-      <van-datetime-picker v-model="currentDate" title="汇款日期" v-show="dateShow" type="datetime" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
-      <van-field v-model="data[9]" label="汇款金额(￥)：" type="number" required />
-      <van-field v-model="data[12]" label="银行账号：" required />
-      <van-field v-model="data[11]" label="开户行：" required />
-      <van-field v-model="data[13]" label="经手人：" required />
-      <van-field v-model="data[16]" label="汇款说明：" required />
-      <van-field :value="data[29] || userInfo.name" label="制单人：" disabled />
-      <van-field :value="data[17] || new Date().Format('yyyy-MM-dd')" label="制单日期：" disabled />
-      <!-- <van-field :value="data[18] || new Date().Format('yyyy-MM-dd')" label="修改日期" disabled /> -->
+  <div class="infoPayment">
+    <van-cell-group>
+      <van-field v-model="data[1]" label="单号" />
+      <van-field v-model="data[38]" label="收款单位" />
+      <van-field v-model="data[42]" label="联系人" />
+      <van-field v-model="data[43]" label="联系电话" />
+      <van-field v-model="data[40]" label="申请单号" />
+      <van-field v-model="data[10]" label="汇款日期" />
+      <van-field v-model="data[9]" label="支付金额" />
+      <van-field v-model="data[12]" label="银行账号" />
+      <van-field v-model="data[11]" label="开户行" />
+      <van-field v-model="data[13]" label="经手人" />
+      <van-field v-model="data[16]" label="汇款说明" />
+      <van-field v-model="data[29]" label="制单人" />
+      <van-field v-model="data[8]" label="制单日期" />
       <van-cell-group class="task-upload">
         <div class="task-title">
           <span>资金凭证：</span>
@@ -39,21 +38,17 @@
     </van-cell-group>
     <div class="payment-button">
       <van-button @click="onSave">保存</van-button>
-      <van-button type="primary" @click="onSubmit">提交</van-button>
+      <van-button type="primary" @click="onSumbit">审核</van-button>
     </div>
   </div>
 </template>
 <script>
 import computed from "../../../assets/js/computed.js";
-import { ImagePreview } from "vant";
 import { financial } from "../../../assets/js/api.js";
-
+import { ImagePreview } from "vant";
 export default {
   data() {
     return {
-      edit: false,
-      dateShow: false,
-      currentDate: new Date(),
       data: [],
       names: [],
       image1: "",
@@ -80,49 +75,13 @@ export default {
         (this.servePath + this.data[15]).replace("~", "")
       ]);
     },
-    // 显示时间选择
-    showDate() {
-      this.currentDate = this.data[10] || new Date();
-      this.dateShow = true;
+    pageInit() {
+      this.data = this.contractParams;
     },
-    // 确认时间
-    saveDate(val) {
-      this.data[10] = this.$util.formatDate(val, "yyyy-MM-dd hh:mm:ss");
-      this.dateShow = false;
-    },
-    //保存先获取单号
     onSave() {
-      if (!this.data[10] || this.data[10] == "1900-01-01 00:00:00") {
-        this.$toast.fail("请选择汇款日期");
-        return;
-      }
-      if (isNaN(parseInt(this.data[9]))) {
-        this.$toast.fail("请输入正确汇款金额");
-        return;
-      }
-      if (!this.data[12]) {
-        this.$toast.fail("请输入银行账号");
-        return;
-      }
-      if (!this.data[11]) {
-        this.$toast.fail("请输入开户行");
-        return;
-      }
-      if (!this.data[13]) {
-        this.$toast.fail("请输入经手人");
-        return;
-      }
-      if (!this.data[16]) {
-        this.$toast.fail("请输入汇款说明");
-        return;
-      }
-      if (!this.image1 && !this.image2) {
-        this.$toast.fail("请上传支付凭证");
-        return;
-      }
       let img = [];
       const params = {
-        bpoName: "BPO_Start_YC_InOutFormService",
+        bpoName: "BPO_Pay_Info_EditService",
         UserPhoto: this.images.join(","),
         PhotoName: this.names.join(",")
       };
@@ -135,7 +94,7 @@ export default {
               img[0] = "null";
             }
           }
-          financial.getMemorySheetNo("YC").then(ress => {
+          financial.getMemorySheetNo("FK").then(ress => {
             if (ress && ress.status === 1) {
               const xml = require("xml");
               if (this.businessKey == "") {
@@ -145,14 +104,14 @@ export default {
               let xmlString = "";
               if (this.edit) {
                 xmlString = xml({
-                  BC_SC_Money_InOut: [
+                  BC_FK_Money_InOut: [
                     { _attr: { UpdateKind: "ukModify" } },
                     { SC_Money_InOutOID: this.businessKey }
                   ]
                 });
               }
               xmlString += xml({
-                BC_SC_Money_InOut: [
+                BC_FK_Money_InOut: [
                   { _attr: { UpdateKind: this.edit ? "" : "ukInsert" } },
                   {
                     SC_Money_InOutOID: this.edit ? "null" : this.businessKey
@@ -161,7 +120,7 @@ export default {
                   { ProjectID: this.projectInfo.SC_ProjectOID },
                   { PartnerID: this.projectInfo.PartnerID },
                   { DemandID: this.projectInfo.DemandID },
-                  { Sheet_Type: "YC" },
+                  { Sheet_Type: "FK" },
                   { Approve_Flag: 0 },
                   { InOut_Date: this.data[10] },
                   { InOut_Amt: this.data[9] },
@@ -185,13 +144,15 @@ export default {
                 ]
               });
               xmlString = "<root>" + xmlString + "</root>";
-              financial.preMemoryConservation(xmlString).then(res => {
-                if (res.status === 1) {
-                  this.$toast.success("保存成功");
-                  return;
-                }
-                throw res.text;
-              });
+              financial
+                .saveOrder("BPO_Pay_Info_EditService", xmlString)
+                .then(res => {
+                  if (res.status === 1) {
+                    this.$toast.success("保存成功");
+                    return;
+                  }
+                  throw res.text;
+                });
             } else {
               throw ress.text;
             }
@@ -201,51 +162,18 @@ export default {
         }
       });
     },
-    onSubmit() {
-      try {
-        financial
-          .submitPremomery(this.businessKey, this.projectInfo.DemandID)
-          .then(result => {
-            if (result.status === 1) {
-              financial.conservationSubmit(this.businessKey).then(res => {
-                if (res.status === 1) {
-                  this.$toast.success({
-                    forbidClick: true, // 禁用背景点击
-                    message: "提交成功"
-                  });
-                  setTimeout(() => {
-                    this.$router.go(-1);
-                  }, 800);
-                } else {
-                  this.$toast.fail(res.text);
-                }
-              });
-            } else {
-              this.$toast.fail("提交失败，请先保存内容再提交");
-            }
+    onSumbit() {
+      financial.PaymentExamine(this.contractParams[0]).then(res => {
+        if (res.status === 1) {
+          this.$toast.success({
+            forbidClick: true, // 禁用背景点击
+            message: "审核成功"
           });
-      } catch (e) {
-        this.$toast.fail(e);
-        console.log(e);
-      }
-    },
-    pageInit() {
-      // 获取数据
-      financial.getTaskYCInfo(this.taskParams).then(result => {
-        try {
-          if (result && result.status === 1) {
-            let sp = result.text.split(";");
-            this.data = eval(sp[0].split("=")[1])[0];
-            this.businessKey = this.data[0];
-            this.edit = true;
-            this.image1 = this.data[14].replace("~", this.servePath);
-            this.image2 = this.data[15].replace("~", this.servePath);
-          }
-          if (!this.data[10] || this.data[10] == "1900-01-01 00:00:00") {
-            this.data[10] = new Date().Format("yyyy-MM-dd hh:mm:ss");
-          }
-        } catch (e) {
-          console.log(e);
+          setTimeout(() => {
+            this.$router.go(-1);
+          }, 800);
+        } else {
+          this.$toast.fail(res.text);
         }
       });
     }
@@ -257,7 +185,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.task {
+.infoPayment {
   width: 100%;
   .payment-button {
     width: 100%;
@@ -322,19 +250,6 @@ export default {
         }
       }
     }
-  }
-  .task-date {
-    width: 100%;
-    position: fixed;
-    z-index: 9999;
-    bottom: 0;
-  }
-}
-</style>
-<style lang="less">
-.task {
-  .van-field .van-cell__title {
-    max-width: 100px;
   }
 }
 </style>
