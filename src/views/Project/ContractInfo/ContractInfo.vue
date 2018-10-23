@@ -57,7 +57,6 @@ export default {
             const tsp = sp[1].split(";");
             const list = eval("[[" + tsp[0]);
             this.list = list;
-            console.log(list);
             return true;
           }
           throw "数据获取失败，请刷新重试";

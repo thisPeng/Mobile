@@ -1343,7 +1343,7 @@ const contractInfo = {
         _methodName: "getBCColumnsForJS",
         "_parameters[ProjectID]": ProjectID,
         "_parameters[Type]": Type,
-        _paraNames: "ProjectID",
+        _paraNames: "ProjectID,Type",
         _pUrl: ""
       }
     });
@@ -1709,7 +1709,7 @@ const financial = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": " PartnerID='" + PartnerID + "' and sc_project.DemandID = (select top 1 DemandID from sc_project where PartnerID='" + PartnerID + "' and SC_ProjectOID  = '" + ProjectID + "') and  (SC_ProjectOID  <> '" + ProjectID + "')",
+        "_parameters[SQLCondi]": " PartnerID='" + PartnerID + "' and sc_project.DemandID = (select top 1 DemandID from sc_project where PartnerID='" + PartnerID + "' and SC_ProjectOID= '" + ProjectID + "') and (SC_ProjectOID<>'" + ProjectID + "')",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -2003,7 +2003,7 @@ const financial = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": " (Project_Type = '2' or Project_Type = '4') AND SC_Project.DemandID='" + oid + "'",
+        "_parameters[SQLCondi]": " (Project_Type = '2' or Project_Type = '4') AND (SC_Project.DemandID='" + oid + "' or SC_Project.PartnerID='" + oid + "')",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -2347,7 +2347,7 @@ const offer = {
         _methodName: "getBCColumnsForJS",
         "_parameters[PartnerID]": parasm.pid,
         "_parameters[SupplierID]": parasm.sid,
-        "_parameters[Type]": parasm.Type,
+        "_parameters[Type]": parasm.type,
         _paraNames: "PartnerID,SupplierID,Type",
         _pUrl: ""
       }
@@ -2387,6 +2387,20 @@ const offer = {
         "_parameters[PartnerID]": params.paid,
         "_parameters[ProjectID]": params.prid,
         _paraNames: "PartnerID,ProjectID,SupplierID",
+        _pUrl: ""
+      }
+    })
+  },
+  // 是否存在发货单
+  checkContractList(ContractList = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Order_Contract_DetailService",
+        _methodName: "CheckContractList",
+        "_parameters[ContractList]": ContractList,
+        _paraNames: "ContractList",
         _pUrl: ""
       }
     })

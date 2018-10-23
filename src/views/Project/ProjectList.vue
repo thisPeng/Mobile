@@ -66,12 +66,10 @@ export default {
         if (res && res.status === 1) {
           const sp = res.text.split(";");
           this.list = eval(sp[0]);
-          console.log(this.list);
         }
       });
     },
     switchType(res) {
-      console.log(res);
       this.getData(this.userType != 2 ? res : 1);
     },
     jumpPage(item) {

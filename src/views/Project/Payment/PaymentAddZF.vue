@@ -2,30 +2,42 @@
   <div class="task">
     <div class="task-content">
       <van-cell-group>
-        <van-field :value="projectInfo.ProjectNo" label="工程编号" disabled />
-        <van-field :value="projectInfo.ProjectName" label="工程名称" disabled />
+        <van-field :value="data.id || '系统生成'" label="单号" :disabled="true" />
+        <van-field :value="data.Project_No" label="工程编号" :disabled="true" />
+        <div class="van-cell van-cell--required van-field">
+          <div class="van-cell__title">工程名称</div>
+          <div class="van-cell__value flex-between">
+            <span :class="edit ? 'text-truncate text-left text-gray' : 'text-truncate text-left'">{{data.Project_Name || '请选择工程项目'}}</span>
+            <van-button type="primary" size="mini" @click="projectShow=true" v-if="!edit">选择</van-button>
+          </div>
+        </div>
         <van-field v-model="data.Partner_memo" label="申请说明" required />
         <van-field v-model="dataMoney[3]" label="可用资金(￥)" disabled />
         <van-field v-model="data.Sheet_Amt" label="单据金额(￥)" disabled v-if="payment === '支付供应商'" />
-        <van-cell-group class="from-payment">
-          <span class="from-label">支付类型</span>
-          <span :class="edit ? 'text-gray from-select' : 'from-select'" @click="edit ? '' : paymentShow=true">{{payment}}</span>
-        </van-cell-group>
+        <div class="van-cell van-cell--required van-field">
+          <div class="van-cell__title">支付类型</div>
+          <div class="van-cell__value flex-between">
+            <span :class="edit ? 'text-gray from-select' : 'from-select'" @click="edit ? '' : paymentShow=true">{{payment}}</span>
+          </div>
+        </div>
+
         <!--退结余额-->
         <van-field v-model="dataChild.Apply_SheetNO" label="支出名称" required v-if="payment === '其它支出申请'" />
         <van-field v-model="dataChild.Supplier_Amt" label="申请金额(￥)" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
         <van-field v-model="dataChild.Bank_Account" label="收款账号" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
         <van-field v-model="dataChild.Bank_Name" label="开户行" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
         <van-field v-model="dataChild.Remark" label="收款人" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
+
         <!--余额转预存-->
         <van-cell-group class="from-payment" v-if="payment === '余额转预存'">
           <span class="from-label">目标项目</span>
           <span class="from-select">{{dataChild.SupplierName}}
-            <van-button type="primary" size="mini" @click="projectShow=true">选择</van-button>
+            <van-button type="primary" size="mini" @click="onShowForProject">选择</van-button>
           </span>
         </van-cell-group>
         <van-field v-model="dataChild.Supplier_Amt" label="转存金额(￥)" required v-if="payment === '余额转预存'" />
         <van-field v-model="dataChild.Remark" label="转预存说明" required v-if="payment === '余额转预存'" />
+
         <!--员工姓名、创建时间-->
         <van-field :value="userInfo.name" label="制单人" disabled />
         <van-field :value="new Date().Format('yyyy-MM-dd')" label="制单日期" disabled />
@@ -57,7 +69,7 @@
               <!--选择-->
               <tr>
                 <td>
-                  <van-button size="mini" type="primary" plain @click="supplierShow=true">选择</van-button>
+                  <van-button size="mini" type="primary" plain @click="onShowSuppList">选择</van-button>
                 </td>
                 <td></td>
                 <td></td>
@@ -124,15 +136,40 @@
       </div>
     </van-popup>
 
-    <!--目标项目-->
+    <!--项目列表-->
     <van-popup v-model="projectShow" position="right">
       <div class="supplier">
         <div class="supplier-item" v-for="(item,index) in projectList" :key="index" @click="currProject=item">
           <!--标题-->
           <div class="item-title">
+            <span class="title">{{item.ProjectName}}</span>
+            <span class="icon">
+              <van-icon name="success" color="#00A0E9" v-if="item.SC_ProjectOID === currProject.SC_ProjectOID" />
+            </span>
+          </div>
+          <!--内容-->
+          <div class="item-content">
+            <div class="content-row">
+              <span class="row-left">联系人：{{item.Contact}}</span>
+              <span class="row-right text-right">联系电话：{{item.Telephone}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="screen-button">
+          <van-button type="primary" size="large" @click.stop="onConfrimProItem">确 定</van-button>
+        </div>
+      </div>
+    </van-popup>
+
+    <!--目标项目-->
+    <van-popup v-model="projectForShow" position="right">
+      <div class="supplier">
+        <div class="supplier-item" v-for="(item,index) in projectForList" :key="index" @click="currForProject=item">
+          <!--标题-->
+          <div class="item-title">
             <span class="title">{{item[1]}}</span>
             <span class="icon">
-              <van-icon name="success" color="#00A0E9" v-if="item[0] === currProject[0]" />
+              <van-icon name="success" color="#00A0E9" v-if="item[0] === currForProject[0]" />
             </span>
           </div>
           <!--内容-->
@@ -147,7 +184,7 @@
           </div>
         </div>
         <div class="screen-button">
-          <van-button type="primary" size="large" @click.stop="onConfrimProItem">确 定</van-button>
+          <van-button type="primary" size="large" @click.stop="onConfrimProForItem">确 定</van-button>
         </div>
       </div>
     </van-popup>
@@ -155,7 +192,7 @@
 </template>
 <script>
 import computed from "../../../assets/js/computed.js";
-import { task, financial } from "../../../assets/js/api.js";
+import { task, project, financial } from "../../../assets/js/api.js";
 
 export default {
   data() {
@@ -189,8 +226,11 @@ export default {
       paymentIndex: "",
       businessKey: "",
       projectShow: false,
+      projectForShow: false,
       projectList: [],
+      projectForList: [],
       currProject: [],
+      currForProject: [],
       edit: false
     };
   },
@@ -206,6 +246,10 @@ export default {
               this.businessKey = uuidv1();
             }
 
+            if (!this.data.SC_ProjectOID) {
+              this.$toast.fail("请选择工程项目");
+              return;
+            }
             if (!this.data.Partner_memo.trim()) {
               this.$toast.fail("请输入申请说明");
               return;
@@ -227,9 +271,9 @@ export default {
                 { _attr: { UpdateKind: this.edit ? "" : "ukInsert" } },
                 { SC_Pay_ApplyOID: this.edit ? "null" : this.businessKey },
                 { Sheet_NO: result.text },
-                { ProjectID: this.projectInfo.SC_ProjectOID },
+                { ProjectID: this.currProject.SC_ProjectOID },
                 { PartnerID: this.userId.UCML_OrganizeOID },
-                { DemandID: this.projectInfo.DemandID },
+                { DemandID: this.currProject.DemandID },
                 { Sheet_Type: "SQ" },
                 { Approve_Flag: 0 },
                 { Pay_Type: this.paymentIndex },
@@ -430,7 +474,6 @@ export default {
             }
           } catch (e) {
             this.$toast.fail(e);
-            console.log(e);
           }
         });
     },
@@ -441,7 +484,6 @@ export default {
           this.dataTable.forEach(val => {
             if (val.sid == this.currSupp.value[0]) {
               // this.supplierList.splice(this.currSupp.key, 1);
-              this.$toast.fail("列表已存在供应商");
               throw "列表已存在供应商";
             }
           });
@@ -466,18 +508,46 @@ export default {
         };
         this.supplierShow = false;
       } catch (e) {
-        console.log(e);
+        this.$toast.fail(e);
+      }
+    },
+    // 确认项目选择
+    onConfrimProItem() {
+      this.data.SC_ProjectOID = this.currProject.SC_ProjectOID;
+      this.data.Project_No = this.currProject.ProjectNo;
+      this.data.Project_Name = this.currProject.ProjectName;
+      this.projectShow = false;
+      this.dataChild.SupplierID = "";
+      this.dataChild.SupplierName = "";
+      this.dataTable = [];
+      this.getSupplierList();
+      this.getProjectMoney();
+      this.getProjectForList();
+    },
+    // 显示选择目标项目
+    onShowForProject() {
+      if (this.data.SC_ProjectOID) {
+        this.projectForShow = true;
+      } else {
+        this.$toast.fail("请先选择工程项目");
       }
     },
     // 确认目标项目
-    onConfrimProItem() {
-      this.dataChild.SupplierID = this.currProject[0];
-      this.dataChild.SupplierName = this.currProject[1];
-      this.projectShow = false;
+    onConfrimProForItem() {
+      this.dataChild.SupplierID = this.currForProject[0];
+      this.dataChild.SupplierName = this.currForProject[1];
+      this.projectForShow = false;
+    },
+    onShowSuppList() {
+      if (this.data.SC_ProjectOID) {
+        this.supplierShow = true;
+      } else {
+        this.$toast.fail("请先选择工程项目");
+      }
     },
     // 获取供应商列表
     getSupplierList() {
-      financial.getSupplierList(this.projectInfo.SC_ProjectOID).then(res => {
+      financial.getSupplierList(this.data.SC_ProjectOID).then(res => {
         try {
           const sp = res.text.split(";");
           const supplierList = eval(sp[0].split("=")[1]);
@@ -487,20 +557,47 @@ export default {
         }
       });
     },
-    // 获取目标项目列表
+    // 获取项目资金
+    getProjectMoney() {
+      // 获取数据
+      return task.getTaskZFMoney(this.data.SC_ProjectOID).then(res => {
+        try {
+          if (res && res.status === 1) {
+            this.dataMoney = res.text.split(",");
+            return true;
+          }
+          return false;
+        } catch (e) {
+          console.log(e);
+          return false;
+        }
+      });
+    },
+    // 获取项目列表
     getProjectList() {
+      const params = {
+        oid: this.userInfo.oid,
+        type: 1
+      };
+      project.getProjectList(params).then(res => {
+        if (res.status) {
+          const sp = res.text.split(";");
+          this.projectList = eval(sp[0]);
+          this.getProjectMoney();
+        }
+      });
+    },
+    // 获取目标项目
+    getProjectForList() {
       financial
-        .getProjectList(
-          this.projectInfo.PartnerID,
-          this.projectInfo.SC_ProjectOID
-        )
+        .getProjectList(this.userId.UCML_OrganizeOID, this.data.SC_ProjectOID)
         .then(res => {
           try {
             const sp = res.text.split(";");
-            const projectList = eval(sp[0].split("=")[1]);
-            this.projectList = projectList;
+            const projectForList = eval(sp[0].split("=")[1]);
+            this.projectForList = projectForList;
             if (this.edit) {
-              projectList.forEach(val => {
+              projectForList.forEach(val => {
                 if (val[0] == this.dataChild.SupplierID) {
                   this.dataChild.SupplierName = val[1];
                 }
@@ -515,82 +612,79 @@ export default {
     onConfirm(value, index) {
       this.payment = value;
       this.paymentIndex = index + 1;
-      if (index == 2) {
-        this.getProjectList();
-      }
       this.paymentShow = false;
+    },
+    // 页面初始化
+    pageInit() {
+      if (this.taskParams.InstanceID) {
+        this.edit = true;
+        this.$parent.title = this.taskParams.name;
+        this.businessKey = this.taskParams.InstanceID;
+        financial.getPayInfo(this.taskParams).then(result => {
+          try {
+            if (result && result.status === 1) {
+              let sp = result.text.split(";");
+              const data = eval(sp[0].split("=")[1])[0];
+              const dataTable = eval(sp[2].split("=")[1]);
+
+              this.payment = this.columns[data[9] - 1];
+              this.paymentIndex = parseInt(data[9]);
+              this.data = {
+                id: data[1],
+                SC_ProjectOID: data[2],
+                Project_No: data[25],
+                Project_Name: data[24],
+                Sheet_Amt: data[12],
+                Partner_memo: data[10]
+              };
+              this.currProject.SC_ProjectOID = data[2];
+              if (this.paymentIndex == 1) {
+                // 1.支付供应商
+                dataTable.forEach(val => {
+                  this.dataTable.push({
+                    id: val[0],
+                    sid: val[3],
+                    name: val[8],
+                    bName: val[6],
+                    bAcount: val[4],
+                    time: val[9],
+                    money: val[4],
+                    remark: val[5],
+                    isEdit: true
+                  });
+                });
+                this.getSupplierList();
+              } else {
+                // 2.退结余额、3.余额转预存、4.其它支出申请
+                dataTable.forEach(val => {
+                  this.dataChild = {
+                    SC_Pay_DetailOID: val[0],
+                    Supplier_Amt: val[4],
+                    Apply_SheetNO: val[2],
+                    Bank_Account: val[7],
+                    Bank_Name: val[6],
+                    Remark: val[5],
+                    SupplierID: val[3],
+                    SupplierName: val[8]
+                  };
+                });
+              }
+              if (this.paymentIndex == 3) {
+                // 获取目标项目
+                this.getProjectForList();
+              }
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        });
+      }
+      this.getProjectList();
     }
   },
   computed,
   mounted() {
-    if (this.taskParams.InstanceID) {
-      this.edit = true;
-      this.$parent.title = this.taskParams.name;
-      this.businessKey = this.taskParams.InstanceID;
-      financial.getPayInfo(this.taskParams).then(result => {
-        try {
-          if (result && result.status === 1) {
-            let sp = result.text.split(";");
-            const data = eval(sp[0].split("=")[1])[0];
-            const dataTable = eval(sp[2].split("=")[1]);
-
-            this.payment = this.columns[data[9] - 1];
-            this.paymentIndex = parseInt(data[9]);
-            this.data = {
-              Sheet_Amt: data[12],
-              Partner_memo: data[10]
-            };
-            if (this.paymentIndex == 1) {
-              // 1.支付供应商
-              dataTable.forEach(val => {
-                this.dataTable.push({
-                  id: val[0],
-                  sid: val[3],
-                  name: val[8],
-                  bName: val[6],
-                  bAcount: val[4],
-                  time: val[9],
-                  money: val[4],
-                  remark: val[5],
-                  isEdit: true
-                });
-              });
-            } else {
-              // 2.退结余额、3.余额转预存、4.其它支出申请
-              dataTable.forEach(val => {
-                this.dataChild = {
-                  SC_Pay_DetailOID: val[0],
-                  Supplier_Amt: val[4],
-                  Apply_SheetNO: val[2],
-                  Bank_Account: val[7],
-                  Bank_Name: val[6],
-                  Remark: val[5],
-                  SupplierID: val[3],
-                  SupplierName: val[8]
-                };
-              });
-
-              if (this.paymentIndex == 3) {
-                this.getProjectList();
-              }
-            }
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      });
-    }
-    // 获取数据
-    task.getTaskZFMoney(this.projectInfo.SC_ProjectOID).then(res => {
-      try {
-        if (res && res.status === 1) {
-          this.dataMoney = res.text.split(",");
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    });
-    this.getSupplierList();
+    this.pageInit();
   }
 };
 </script>

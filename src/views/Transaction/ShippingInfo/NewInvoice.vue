@@ -41,7 +41,7 @@
       </div>
     </div>
     <!--操作-->
-    <div class="invoice-button" v-if="clientInfo.length > 0">
+    <div class="invoice-button">
       <van-button type="primary" size="large" @click="onSave">生成发货单</van-button>
     </div>
   </div>
@@ -109,11 +109,30 @@ export default {
       DetailIDList = DetailIDList.join(",");
       const params = {
         SupplierID: this.userInfo.oid,
-        PartnerID: this.clientInfo[0],
+        PartnerID: this.userInfo.oid,
         ProjectID: pid,
         ContractList,
         DetailIDList
       };
+      offer.checkContractList(ContractList).then(result => {
+        if (result.status && result.text == "1") {
+          this.$dialog
+            .confirm({
+              title: "提示",
+              message: "选择的合同存在未签收单据，是否继续生成发货单？"
+            })
+            .then(() => {
+              this.saveOrder(params);
+            })
+            .catch(() => {
+              // on cancel
+            });
+        } else {
+          this.saveOrder(params);
+        }
+      });
+    },
+    saveOrder(params) {
       offer.saveDeliverBill(params).then(res => {
         if (res.status === 1 && res.text == "1") {
           this.$toast.success({
@@ -122,7 +141,6 @@ export default {
           });
           setTimeout(() => {
             this.$router.go(-1);
-            this.getInfo(pid);
           }, 800);
         } else {
           this.$toast.fail("生成发货单失败，请勾选发货物资");
@@ -153,30 +171,34 @@ export default {
     // 显示合同
     onSwitechSupp(i) {
       if (this.listOrder[i].list.length === 0) {
-        this.getDataItem(this.list[i][0]).then(res => {
-          this.listOrder[i].list = res;
-          this.listOrder[i].checkArr = [];
-          res.forEach(val => {
-            this.listOrder[i].checkArr.push(val[0]);
+        this.getNotShippded(this.listOrder[i].pid).then(() => {
+          this.getDataItem(this.list[i][0]).then(res => {
+            this.listOrder[i].list = res;
+            this.listOrder[i].checkArr = [];
+            res.forEach(val => {
+              this.listOrder[i].checkArr.push(val[0]);
+            });
           });
         });
       }
     },
     // 刷新未发货的数据
-    getInfo(prid = "") {
+    getNotShippded(prid = "") {
       const params = {
         suid: this.userInfo.oid,
-        paid: this.clientInfo[0],
+        paid: this.userInfo.oid,
         prid
       };
-      offer.getNotShippded(params);
+      return offer.getNotShippded(params).then(res => {
+        return res;
+      });
     },
     // 发货单详情
     getData() {
       const params = {
         pid: this.userInfo.oid,
         sid: this.userInfo.oid,
-        type: 2
+        type: 4
       };
       offer.getContract(params).then(res => {
         if (res && res.status === 1) {
@@ -185,6 +207,7 @@ export default {
           const list = eval("[[" + csp[0]);
           const listOrder = [];
           let tmp = "";
+
           // 数据分组
           list.forEach(val => {
             if (val[0] !== tmp && val[20] != "发货情况：全部发货") {

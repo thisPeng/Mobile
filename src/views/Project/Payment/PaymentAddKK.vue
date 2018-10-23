@@ -4,7 +4,7 @@
       <van-cell-group :style="tabsShow ? 'padding-bottom: 280px;' : 'padding-bottom: 30px;'">
         <van-field :value="data[1] || '系统生成'" label="单号" :disabled="true" />
         <van-field v-model="data[27]" label="工程编号" :disabled="true" />
-        <div class="van-cell van-cell--required van-hairline van-field">
+        <div class="van-cell van-cell--required van-field">
           <div class="van-cell__title">工程名称</div>
           <div class="van-cell__value flex-between">
             <span class="text-truncate text-left">{{data[28] || '请选择工程项目'}}</span>
@@ -73,7 +73,7 @@ export default {
     };
   },
   methods: {
-    // 确认目标项目
+    // 确认项目
     onConfrimProItem() {
       this.data[28] = this.currProject[1];
       this.data[27] = this.currProject[2];
@@ -222,7 +222,6 @@ export default {
           });
       } catch (e) {
         this.$toast.fail(e);
-        console.log(e);
       }
     },
     pageInit() {

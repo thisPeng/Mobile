@@ -4,7 +4,7 @@
       <van-cell-group>
         <van-field :value="data[1] || '系统生成'" label="单号" :disabled="true" />
         <van-field :value="data[27]" label="工程编号" :disabled="true" />
-        <div class="van-cell van-cell--required van-hairline van-field">
+        <div class="van-cell van-cell--required van-field">
           <div class="van-cell__title">工程名称</div>
           <div class="van-cell__value flex-between">
             <span class="text-truncate text-left">{{data[28] || '请选择工程项目'}}</span>
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <!--目标项目-->
+    <!--项目列表-->
     <van-popup v-model="projectShow" position="right">
       <div class="supplier">
         <div class="supplier-item" v-for="(item,index) in projectList" :key="index" @click="currProject=item">
@@ -76,7 +76,7 @@ export default {
     };
   },
   methods: {
-    // 确认目标项目
+    // 确认项目
     onConfrimProItem() {
       this.data[28] = this.currProject[1];
       this.data[27] = this.currProject[2];
@@ -84,7 +84,7 @@ export default {
     },
     // 获取项目列表
     getProject() {
-        financial.getProject(this.userId.UCML_OrganizeOID).then(res => {
+      financial.getProject(this.userId.UCML_OrganizeOID).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split(";");

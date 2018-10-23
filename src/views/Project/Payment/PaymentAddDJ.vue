@@ -4,7 +4,7 @@
       <van-cell-group :style="tabsShow ? 'padding-bottom: 280px;' : 'padding-bottom: 30px;'">
         <van-field :value="data[1] || '系统生成'" label="单号" :disabled="true" />
         <van-field v-model="data[27]" label="工程编号" :disabled="true" />
-        <div class="van-cell van-cell--required van-hairline van-field">
+        <div class="van-cell van-cell--required van-field">
           <div class="van-cell__title">工程名称</div>
           <div class="van-cell__value flex-between">
             <span class="text-truncate text-left">{{data[28] || '请选择工程项目'}}</span>
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <!--目标项目-->
+    <!--项目列表-->
     <van-popup v-model="projectShow" position="right">
       <div class="supplier">
         <div class="supplier-item" v-for="(item,index) in projectList" :key="index" @click="currProject=item">

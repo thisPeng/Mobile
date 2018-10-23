@@ -48,7 +48,7 @@ export default {
   methods: {
     getData() {
       const params = {
-        pid: this.clientInfo[0],
+        pid: this.userInfo.oid,
         sid: this.userInfo.oid
       };
       offer.getContract(params).then(res => {
@@ -77,11 +77,7 @@ export default {
       });
     },
     pageInit() {
-      if (this.clientInfo[0]) {
-        this.getData();
-      } else {
-        this.$toast("请先点击屏幕右上角按钮，选择客户");
-      }
+      this.getData();
     },
     jumpPage(item) {
       this.$store.commit("contractParams", item);

@@ -38,13 +38,7 @@ export default {
   watch: {
     $route(to) {
       try {
-        // if (this.projectInfo.SC_ProjectOID) {
-        //   this.title = this.projectInfo.ProjectName;
-        // } else if (this.clientInfo[0]) {
-        //   this.title = this.clientInfo[2];
-        // } else {
         this.title = to.meta.title;
-        // }
 
         if (
           to.name !== "index" &&
