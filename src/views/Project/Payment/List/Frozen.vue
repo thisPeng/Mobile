@@ -9,6 +9,9 @@
             <span class="option" v-if="item[30] != '1'">
               <van-button type="danger" size="mini" plain @click.stop="onDelete(item[0])">删除</van-button>
             </span>
+            <span class="option" v-else-if="item[30]=='1' && item[38]=='false'">
+              <van-button type="primary" size="mini" plain @click.stop="onUnlock(item)">解冻</van-button>
+            </span>
           </div>
           <van-cell is-link class="item-content" @click="jumpPage(item)">
             <div class="content-row">
@@ -63,6 +66,19 @@ export default {
       this.$store.commit("taskParams", "");
       this.$router.push({
         name: "paymentAddDJ"
+      });
+    },
+    // 解冻单据
+    onUnlock(item) {
+      const params = {
+        InstanceID: item[35],
+        name: "资金冻结单",
+        bpoName: "SupplyChain/BizFinance/BPO_WF_Apply_Info",
+        params: item
+      };
+      this.$store.commit("taskParams", params);
+      this.$router.push({
+        name: "paymentAddJD"
       });
     },
     // 获取数据
@@ -145,9 +161,12 @@ export default {
         this.filter = "AND SC_Money_InOut.StartFlowFlag is null";
       } else {
         this.filter = "AND SC_Money_InOut.BusinessState='1'";
-        // AND Orgi.BusinessState=1
       }
-      this.getData();
+      this.getData().then(res => {
+        if (!res && this.list.length === 0) {
+          this.$router.go(-1);
+        }
+      });
     }
   },
   mounted() {

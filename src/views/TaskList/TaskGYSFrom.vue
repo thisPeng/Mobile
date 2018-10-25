@@ -98,7 +98,6 @@ export default {
       });
     },
     pageInit() {
-      this.$parent.title = this.taskParams.name;
       task.getInquiry(this.taskParams.TaskGYSID).then(res => {
         try {
           if (res && res.status === 1) {
@@ -164,7 +163,7 @@ export default {
                   this.taskTabs.ActivityID = tmp[5];
                   if (tmp[13]) {
                     this.taskTabs.codeJson = JSON.parse(tmp[13]);
-                  } else if (this.taskModel === "我的待办") {
+                  } else {
                     this.edit = false;
                   }
                 }

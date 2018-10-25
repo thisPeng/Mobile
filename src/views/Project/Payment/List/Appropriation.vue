@@ -17,11 +17,11 @@
             <div class="content-row">
               <span class="row-left">批款日期：{{item[10] | formatDate}}</span>
               <span class="row-right">
-                <van-tag type="danger" v-if="item[6] == '0'">单据状态：未审核</van-tag>
+                <van-tag v-if="item[31] == 'false'">单据状态：未提交</van-tag>
+                <van-tag type="danger" v-else-if="item[6] == '0'">单据状态：未审核</van-tag>
                 <van-tag type="success" v-else-if="item[30] == '1'">单据状态：已审批</van-tag>
                 <van-tag type="primary" v-else-if="item[31] == 'true'">单据状态：审批中</van-tag>
                 <van-tag v-else-if="item[6] == '1'">单据状态：待审批</van-tag>
-                <van-tag v-else>单据状态：关闭</van-tag>
               </span>
             </div>
             <div class="content-row">
@@ -153,7 +153,11 @@ export default {
       } else {
         this.filter = "AND SC_Money_InOut.BusinessState='1'";
       }
-      this.getData();
+      this.getData().then(res => {
+        if (!res && this.list.length === 0) {
+          this.$router.go(-1);
+        }
+      });
     }
   },
   mounted() {

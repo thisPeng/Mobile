@@ -55,7 +55,6 @@ export default {
       const type = this.filterParams === 1 ? 3 : 0;
       arrival.getList(this.userId.UCML_UserOID, type).then(res => {
         try {
-          console.log(res);
           if (res && res.status === 1) {
             const sp = res.text.split("[[");
             const tsp = sp[1].split(";");

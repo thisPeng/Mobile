@@ -2,11 +2,11 @@
   <div class="task">
     <van-cell-group :style="tabsShow ? 'padding-bottom: 280px;' : 'padding-bottom: 30px;'">
       <div class="task-title">基础信息</div>
-      <van-field v-model="data[1]" label="单号" :disabled="true" />
-      <van-field v-model="data[27]" label="工程编号" :disabled="true" />
-      <van-field v-model="data[28]" label="工程名称" :disabled="true" />
-      <van-field v-model="data[10]" label="到款日期" :disabled="edit" readonly @click="showDate" />
-      <van-datetime-picker v-model="currentDate" v-show="dateShow" type="datetime" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
+      <van-field :value="data[1]" label="单号" :disabled="true" />
+      <van-field :value="data[27]" label="工程编号" :disabled="true" />
+      <van-field :value="data[28]" label="工程名称" :disabled="true" />
+      <van-field :value="$util.formatDate(data[10])" label="到款日期" :disabled="edit" readonly @click="showDate" />
+      <van-datetime-picker v-model="currentDate" v-show="dateShow" type="date" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
       <van-field v-model="data[34]" label="到款金额(￥)" :disabled="edit" />
       <van-field v-model="data[12]" label="到款账号" :disabled="edit" />
       <van-field v-model="data[11]" label="开户行" :disabled="edit" />
@@ -14,9 +14,9 @@
       <van-field v-model="data[9]" label="批款金额(￥)" :disabled="edit" />
       <van-field v-model="data[16]" label="批款说明" type="textarea" :disabled="edit" />
       <div class="task-title">制单信息</div>
-      <van-field v-model="data[29]" label="制单人" :disabled="true" />
-      <van-field v-model="data[17]" label="制单日期" :disabled="true" />
-      <van-field v-model="data[18]" label="修改日期" :disabled="true" />
+      <van-field :value="data[29]" label="制单人" :disabled="true" />
+      <van-field :value="$util.formatDate(data[17])" label="制单日期" :disabled="true" />
+      <van-field :value="$util.formatDate(data[18])" label="修改日期" :disabled="true" />
     </van-cell-group>
     <van-cell-group v-if="taskTabs.codeJson">
       <taskTabs :data="taskTabs" />
@@ -60,7 +60,6 @@ export default {
     taskTabs
   },
   mounted() {
-    this.$parent.title = this.taskParams.name;
     // 获取数据
     task.getTaskYCInfo(this.taskParams).then(result => {
       try {
@@ -96,7 +95,7 @@ export default {
                 this.taskTabs.ActivityID = tmp[5];
                 if (tmp[13]) {
                   this.taskTabs.codeJson = JSON.parse(tmp[13]);
-                } else if (this.taskModel === "我的待办") {
+                } else {
                   this.edit = false;
                 }
               }
@@ -106,7 +105,6 @@ export default {
           });
         }
       } catch (e) {
-        this.$router.go(-1);
         console.log(e);
       }
     });

@@ -3,11 +3,11 @@
   <div class="payInfoMation">
     <div class="pre-data">
       <div class="pre-card">
-        <div class="pre-item" v-for="(item,index) in list" :key="index">
+        <van-cell-group class="pre-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">银行账号：{{item[12]}}</span>
           </div>
-          <div class="item-content">
+          <van-cell class="item-content" is-link @click="jumpPage(item)">
             <div class="content-row">
               <span class="row-left">支付日期：{{item[10] | formatDate}}</span>
               <span class="row-right">
@@ -27,8 +27,8 @@
             <div class="content-row">
               <span>收款单位：{{item[38]}}</span>
             </div>
-          </div>
-        </div>
+          </van-cell>
+        </van-cell-group>
       </div>
     </div>
     <!--分页组件-->
@@ -50,7 +50,7 @@ export default {
   methods: {
     getData() {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
-      financial
+      return financial
         .getPaymentInfo(this.userId.UCML_OrganizeOID, page, this.filter)
         .then(res => {
           try {
@@ -59,19 +59,32 @@ export default {
               const csp = sp[1].split(";");
               this.list = eval("[[" + csp[0]);
               this.pages = eval("(" + csp[1].split("=")[1] + ")");
+              return true;
             }
+            return false;
           } catch (e) {
             console.log(e);
+            return false;
           }
         });
     },
+    jumpPage(item) {
+      this.$store.commit("taskParams", item);
+      this.$router.push({
+        name: "paymentAddFK"
+      });
+    },
     pageInit() {
       if (this.filterParams === 1) {
-        this.filter = "AND SC_Money_InOut.StartFlowFlag is null";
+        this.filter = "AND SC_Money_InOut.Approve_Flag='1'";
       } else {
-        this.filter = "AND SC_Money_InOut.BusinessState='1'";
+        this.filter = "AND SC_Money_InOut.Approve_Flag='0'";
       }
-      this.getData();
+      this.getData().then(res => {
+        if (!res && this.list.length === 0) {
+          this.$router.go(-1);
+        }
+      });
     }
   },
   mounted() {

@@ -1,12 +1,12 @@
 <template>
   <div class="task">
     <van-cell-group :style="tabsShow ? 'padding-bottom: 280px;' : 'padding-bottom: 30px;'">
-      <van-field v-model="data[1]" label="单号" :disabled="true" />
-      <van-field v-model="data[25]" label="工程编号" :disabled="true" />
-      <van-field v-model="data[24]" label="工程名称" :disabled="true" />
+      <van-field :value="data[1]" label="单号" :disabled="true" />
+      <van-field :value="data[25]" label="工程编号" :disabled="true" />
+      <van-field :value="data[24]" label="工程名称" :disabled="true" />
       <van-field v-model="data[10]" label="申请方说明" :disabled="edit" />
-      <van-field v-model="dataMoney[3]" label="可用资金(￥)" :disabled="true" />
-      <van-field v-model="payment" label="支付类型" :disabled="true" />
+      <van-field :value="dataMoney[3]" label="可用资金(￥)" :disabled="true" />
+      <van-field :value="payment" label="支付类型" :disabled="true" />
       <!--退结余额-->
       <van-field v-model="dataTable[0][2]" label="支出名称" :required="!edit" :disabled="edit" v-if="payment === '其它支出申请'" />
       <van-field v-model="dataTable[0][4]" label="申请金额(￥)" :required="!edit" :disabled="edit" v-if="payment === '退结余额' || payment === '其它支出申请'" />
@@ -19,8 +19,8 @@
       <van-field v-model="dataTable[0][5]" label="转预存说明" :disabled="edit" v-if="payment === '余额转预存'" />
       <!--员工姓名、创建时间-->
       <van-field v-model="data[31]" label="制单人" :disabled="true" />
-      <van-field v-model="data[15]" label="制单日期" :disabled="true" />
-      <van-field v-model="data[16]" label="修改日期" :disabled="true" />
+      <van-field :value="$util.formatDate(data[15])" label="制单日期" :disabled="true" />
+      <van-field :value="$util.formatDate(data[16])" label="修改日期" :disabled="true" />
       <div class="task-table" v-if="payment === '支付供应商'">
         <table>
           <thead>
@@ -79,7 +79,6 @@ export default {
     },
     pageInit() {
       // 获取数据
-      this.$parent.title = this.taskParams.name;
       task.getTaskZFInfo(this.taskParams).then(result => {
         try {
           if (result && result.status === 1) {
@@ -158,7 +157,7 @@ export default {
                     this.taskTabs.ActivityID = tmp[5];
                     if (tmp[13]) {
                       this.taskTabs.codeJson = JSON.parse(tmp[13]);
-                    } else if (this.taskModel === "我的待办") {
+                    } else {
                       this.edit = false;
                     }
                   }
@@ -170,7 +169,6 @@ export default {
           }
         } catch (e) {
           console.log(e);
-          this.$router.go(-1);
         }
       });
     }

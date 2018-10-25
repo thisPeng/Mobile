@@ -82,15 +82,18 @@ export default {
   computed,
   methods: {
     getData() {
-      financial.getClahFlow(this.projectInfo.SC_ProjectOID).then(res => {
+      return financial.getClahFlow(this.projectInfo.SC_ProjectOID).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("=");
             const csp = sp[1].split(";");
             this.data = eval(csp[0])[0];
+            return true;
           }
+          return false;
         } catch (e) {
           console.log(e);
+          return false;
         }
       });
     },
@@ -105,9 +108,12 @@ export default {
               const csp = sp[0].split("=");
               this.pages = eval("(" + sp[1].split("=")[1] + ")");
               this.list = eval(csp[1]);
+              return true;
             }
+            return false;
           } catch (e) {
             console.log(e);
+            return false;
           }
         });
     },

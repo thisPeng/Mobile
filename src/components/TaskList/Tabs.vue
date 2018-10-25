@@ -1,5 +1,5 @@
 <template>
-  <section class="task" v-if="taskModel === '我的待办'">
+  <section class="task">
     <div class="task-in" @click="showTabs">
       <i class="iconfont icon-icon_down" v-show="tabsShow"></i>
       <i class="iconfont icon-icon_up" v-show="!tabsShow"></i>
@@ -74,12 +74,7 @@ export default {
       }
     },
     getView(index) {
-      if (index === 0) {
-        setTimeout(() => {
-          const obj = document.getElementById("viewText");
-          if (obj) obj.focus();
-        }, 10);
-      } else if (index === 1) {
+      if (index === 1) {
         task.getViewList(this.data.InstanceID).then(res => {
           if (res && res.status === 1) {
             const sp = res.text.split(";");
@@ -90,12 +85,6 @@ export default {
     },
     showTabs() {
       this.$store.commit("tabsShow", !this.tabsShow);
-      if (this.tabsShow) {
-        this.$nextTick(() => {
-          const obj = document.getElementById("viewText");
-          if (obj) obj.focus();
-        });
-      }
     },
     // 重新发起
     onReset() {
@@ -316,11 +305,9 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      if (this.taskModel !== "我的待办") this.$store.commit("tabsShow", false);
-      const obj = document.getElementById("viewText");
-      if (obj) obj.focus();
-    });
+    if (typeof this.tabsShow !== "boolean") {
+      this.$store.commit("tabsShow", true);
+    }
   }
 };
 </script>

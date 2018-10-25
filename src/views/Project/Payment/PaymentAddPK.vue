@@ -7,11 +7,11 @@
         <div class="van-cell van-cell--required van-field">
           <div class="van-cell__title">工程名称</div>
           <div class="van-cell__value flex-between">
-            <span class="text-truncate text-left">{{data[28] || '请选择工程项目'}}</span>
-            <van-button type="primary" size="mini" @click="projectShow=true">选择</van-button>
+            <span :class="edit ? 'text-truncate text-left text-gray' : 'text-truncate text-left'">{{data[28] || '请选择工程项目'}}</span>
+            <van-button type="primary" size="mini" @click="projectShow=true" v-if="!edit">选择</van-button>
           </div>
         </div>
-        <van-field :value="new Date(data[10]).Format('yyyy-MM-dd') || '请选择到款日期'" label="到款日期" readonly required @click="showDate" />
+        <van-field :value="$util.formatDate(data[10]) || '请选择到款日期'" label="到款日期" readonly required @click="showDate" />
         <van-datetime-picker v-model="currentDate" v-show="dateShow" :min-date="new Date()" type="date" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
         <van-field v-model="data[34]" label="到款金额(￥)" required placeholder="请输入到款金额" />
         <van-field v-model="data[12]" label="到款账号" required placeholder="请输入到款账号" />
@@ -20,8 +20,8 @@
         <van-field v-model="data[9]" label="批款金额(￥)" required placeholder="请输入批款金额" />
         <van-field v-model="data[16]" label="批款说明" type="textarea" required placeholder="请输入批款说明" />
         <van-field :value="data[29] || userId.PersonName" label="制单人" :disabled="true" />
-        <van-field :value="new Date(data[17]).Format('yyyy-MM-dd') || new Date().Format('yyyy-MM-dd')" label="制单日期" :disabled="true" />
-        <van-field :value="new Date(data[18]).Format('yyyy-MM-dd')" label="修改日期" :disabled="true" v-if="data[18]" />
+        <van-field :value="$util.formatDate(data[17]) || new Date().Format('yyyy-MM-dd')" label="制单日期" :disabled="true" />
+        <van-field :value="$util.formatDate(data[18])" label="修改日期" :disabled="true" v-if="data[18]" />
       </van-cell-group>
       <div class="payment-button">
         <van-button @click="onSave">保存</van-button>
@@ -121,7 +121,7 @@ export default {
         this.$toast("请选择到款日期");
         return;
       }
-      if (isNaN(parseInt(this.data[34]))) {
+      if (!this.data[9] || isNaN(this.data[34])) {
         this.$toast("请输入正确的到款金额");
         return;
       }
@@ -137,11 +137,11 @@ export default {
         this.$toast("请输入经手人");
         return;
       }
-      if (isNaN(parseInt(this.data[9]))) {
+      if (isNaN(this.data[9])) {
         this.$toast("请输入正确的批款金额");
         return;
       }
-      if (parseInt(this.data[9]) > parseInt(this.data[34])) {
+      if (this.data[9] > this.data[34]) {
         this.$toast("批款金额不得大于到款金额");
         return;
       }
@@ -169,9 +169,7 @@ export default {
             xmlString += xml({
               BC_SC_Money_InOut: [
                 { _attr: { UpdateKind: this.edit ? "" : "ukInsert" } },
-                {
-                  SC_Money_InOutOID: this.edit ? "null" : this.businessKey
-                },
+                { SC_Money_InOutOID: this.edit ? "null" : this.businessKey },
                 { InOut_SheetNO: result.text },
                 { ProjectID: this.currProject[0] },
                 { ProjectNo: this.currProject[2] },
@@ -203,6 +201,7 @@ export default {
             xmlString = "<root>" + xmlString + "</root>";
             financial.saveOrder(this.bpoName, xmlString).then(res => {
               if (res.status === 1) {
+                this.edit = true;
                 this.$toast.success("保存成功");
                 return;
               }
@@ -230,9 +229,7 @@ export default {
                       message: "提交成功"
                     });
                     setTimeout(() => {
-                      this.$router.replace({
-                        name: "index"
-                      });
+                      this.$router.go(-1);
                     }, 800);
                   } else {
                     this.$toast.fail(res.text);
@@ -247,9 +244,9 @@ export default {
         console.log(e);
       }
     },
+    // 获取数据
     pageInit() {
       if (this.taskParams) {
-        // 获取数据
         financial.getTaskYCInfo(this.taskParams).then(result => {
           try {
             if (result && result.status === 1) {
@@ -261,14 +258,12 @@ export default {
             if (!this.data[10] || this.data[10] == "1900-01-01 00:00:00") {
               this.data[10] = new Date().Format("yyyy-MM-dd hh:mm:ss");
             }
-            this.getProject();
           } catch (e) {
             console.log(e);
           }
         });
-      } else {
-        this.getProject();
       }
+      this.getProject();
     }
   },
   computed,
@@ -341,10 +336,6 @@ export default {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          word-wrap: normal;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
           .title {
             font-weight: 600;
             font-size: 16px;

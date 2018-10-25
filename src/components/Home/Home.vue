@@ -55,6 +55,8 @@ export default {
         if (this.isReload) {
           this.$store.commit("isReload", false);
           location.reload();
+        } else if (to.meta.keepAlive && this.$children[1].pageInit) {
+          this.$children[1].pageInit();
         }
       } catch (e) {
         console.log(e);
@@ -83,13 +85,7 @@ export default {
   created() {
     this.active = this.tabsActive;
     const current = this.$router.history.current;
-    // if (this.projectInfo.SC_ProjectOID) {
-    //   this.title = this.projectInfo.ProjectName;
-    // } else if (this.clientInfo[0]) {
-    //   this.title = this.clientInfo[2];
-    // } else {
     this.title = current.meta.title;
-    // }
 
     if (
       current.name !== "index" &&

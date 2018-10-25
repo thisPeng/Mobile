@@ -27,6 +27,7 @@ import PaymentAddDJ from "./views/Project/Payment/PaymentAddDJ";
 import PaymentAddJD from "./views/Project/Payment/PaymentAddJD";
 import PaymentAddPK from "./views/Project/Payment/PaymentAddPK";
 import PaymentAddKK from "./views/Project/Payment/PaymentAddKK";
+import PaymentAddFK from "./views/Project/Payment/PaymentAddFK";
 import PriceDetails from "./views/Project/ConPrice/PriceDetails";
 import DeliveryDetails from "./views/Project/Delivery/DeliveryDetails";
 import ArrivalDetails from "./views/Project/Delivery/ArrivalDetails";
@@ -97,7 +98,8 @@ export default new Router({
       name: "index",
       component: Index,
       meta: {
-        title: "首页" // 页面标题
+        title: "首页", // 页面标题
+        keepAlive: true // 是否缓存
       }
     }, {
       path: "/classify",
@@ -452,7 +454,7 @@ export default new Router({
       name: "paymentAddJD",
       component: PaymentAddJD,
       meta: {
-        title: "新增解冻单"
+        title: "资金解冻单"
       }
     }, {
       path: "/payment/paymentlabel/PaymentAddPK",
@@ -467,6 +469,13 @@ export default new Router({
       component: PaymentAddKK,
       meta: {
         title: "新增扣款单"
+      }
+    }, {
+      path: "/payment/paymentlabel/PaymentAddFK",
+      name: "paymentAddFK",
+      component: PaymentAddFK,
+      meta: {
+        title: "付款登记"
       }
     }, {
       path: "/materialquotation/tranrialDetail/detail",

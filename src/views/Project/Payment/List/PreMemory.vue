@@ -38,7 +38,7 @@
             </div>
           </van-cell>
         </van-cell-group>
-        <div class="margin-top-sm" v-if="projectInfo.SC_ProjectOID">
+        <div class="margin-top-sm">
           <van-button type="primary" size="large" @click="onAdd">新增预存登记</van-button>
         </div>
       </div>
@@ -145,7 +145,11 @@ export default {
       } else {
         this.filter = "AND SC_Money_InOut.BusinessState='1'";
       }
-      this.getData();
+      this.getData().then(res => {
+        if (!res && this.list.length === 0) {
+          this.$router.go(-1);
+        }
+      });
     }
   },
   mounted() {

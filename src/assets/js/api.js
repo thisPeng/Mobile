@@ -1753,13 +1753,13 @@ const financial = {
       }
     })
   },
-  // 上传预存图片
+  // 上传图片
   uploadImage(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_Start_YC_InOutFormService",
+        _bpoName: params.bpoName,
         _methodName: "UploadImageByBase64",
         "_parameters[UserPhoto]": params.UserPhoto,
         "_parameters[PhotoName]": params.PhotoName,
@@ -1778,6 +1778,21 @@ const financial = {
         _methodName: "BusinessSubmit",
         "_parameters[xmlData]": xmlData,
         _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
+  // 解冻单-保存调用
+  updateOrigID(OrigID = "", parentOID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Start_JD_InOutFormService",
+        _methodName: "UpdateOrigID",
+        "_parameters[OrigID]": OrigID,
+        "_parameters[parentOID]": parentOID,
+        _paraNames: "OrigID,parentOID",
         _pUrl: ""
       }
     })
@@ -1853,6 +1868,19 @@ const financial = {
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    })
+  },
+  PaymentExamine(sc_oid = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Pay_Info_EditService",
+        _methodName: "AuditSheet",
+        "_parameters[sc_oid]": sc_oid,
+        _paraNames: "sc_oid",
         _pUrl: ""
       }
     })

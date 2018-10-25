@@ -57,22 +57,25 @@ export default {
         name = item.action;
       }
       this.$router.push({ name });
+      this.$parent.title = item.text;
+    },
+    pageInit() {
+      index.getGetWorkSpace(this.userInfo.oid).then(res => {
+        if (res && res.status === 1 && res.text) {
+          this.data = JSON.parse(res.text);
+          // console.log(this.data);
+        }
+      });
     }
   },
   mounted() {
-    index.getGetWorkSpace(this.userInfo.oid).then(res => {
-      if (res && res.status === 1 && res.text) {
-        this.data = JSON.parse(res.text);
-        // console.log(this.data);
-      }
-    });
-
     index.getBanner().then(res => {
       if (res && res.status === 1 && res.text) {
         this.images = JSON.parse(res.text);
         // console.log(this.images);
       }
     });
+    this.pageInit();
   }
 };
 </script>

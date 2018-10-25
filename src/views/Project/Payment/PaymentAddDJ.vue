@@ -7,19 +7,19 @@
         <div class="van-cell van-cell--required van-field">
           <div class="van-cell__title">工程名称</div>
           <div class="van-cell__value flex-between">
-            <span class="text-truncate text-left">{{data[28] || '请选择工程项目'}}</span>
-            <van-button type="primary" size="mini" @click="projectShow=true">选择</van-button>
+            <span :class="edit ? 'text-truncate text-left text-gray' : 'text-truncate text-left'">{{data[28] || '请选择工程项目'}}</span>
+            <van-button type="primary" size="mini" @click="projectShow=true" v-if="!edit">选择</van-button>
           </div>
         </div>
-        <van-field :value="new Date(data[10]).Format('yyyy-MM-dd') || '请选择冻结日期'" label="冻结日期" readonly required @click="showDate" />
+        <van-field :value="$util.formatDate(data[10]) || '请选择冻结日期'" label="冻结日期" readonly required @click="showDate" />
         <van-datetime-picker v-model="currentDate" v-show="dateShow" :min-date="new Date()" type="date" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
         <van-field v-model="data[16]" label="冻结说明" required type="textarea" placeholder="请输入冻结说明" />
-        <van-field v-model="data[34]" label="可用资金(￥)" :disabled="true" />
+        <van-field :value="dataMoney[3]" label="可用资金(￥)" disabled />
         <van-field v-model="data[9]" label="冻结金额(￥)" required placeholder="请输入冻结金额" />
         <van-field v-model="data[13]" label="经手人" required placeholder="请输入经手人" />
         <van-field :value="data[29] || userId.PersonName" label="制单人" :disabled="true" />
-        <van-field :value="new Date(data[17]).Format('yyyy-MM-dd')" label="制单日期" :disabled="true" />
-        <van-field :value="new Date(data[18]).Format('yyyy-MM-dd')" label="修改日期" :disabled="true" v-if="data[18]" />
+        <van-field :value="$util.formatDate(data[17])" label="制单日期" :disabled="true" />
+        <van-field :value="$util.formatDate(data[18])" label="修改日期" :disabled="true" v-if="data[18]" />
       </van-cell-group>
       <div class="payment-button">
         <van-button @click="onSave">保存</van-button>
@@ -58,7 +58,7 @@
 </template>
 <script>
 import computed from "../../../assets/js/computed.js";
-import { financial } from "../../../assets/js/api.js";
+import { financial, task } from "../../../assets/js/api.js";
 
 export default {
   data() {
@@ -70,7 +70,8 @@ export default {
       data: [],
       projectShow: false,
       projectList: [],
-      currProject: []
+      currProject: [],
+      dataMoney: []
     };
   },
   methods: {
@@ -79,6 +80,7 @@ export default {
       this.data[28] = this.currProject[1];
       this.data[27] = this.currProject[2];
       this.projectShow = false;
+      this.getProjectMoney();
     },
     // 获取项目列表
     getProject() {
@@ -123,7 +125,11 @@ export default {
         this.$toast("请输入经手人");
         return;
       }
-      if (isNaN(parseInt(this.data[9]))) {
+      if (
+        !this.data[9] ||
+        isNaN(this.data[9]) ||
+        this.data[9] > this.dataMoney[3]
+      ) {
         this.$toast("请输入正确的冻结金额");
         return;
       }
@@ -154,7 +160,7 @@ export default {
                 {
                   SC_Money_InOutOID: this.edit ? "null" : this.businessKey
                 },
-                { InOut_SheetNO: result.text },
+                { InOut_SheetNO: this.data[1] || result.text },
                 { ProjectID: this.currProject[0] },
                 { ProjectNo: this.currProject[2] },
                 { PartnerID: this.currProject[53] },
@@ -181,6 +187,7 @@ export default {
             xmlString = "<root>" + xmlString + "</root>";
             financial.saveOrder(this.bpoName, xmlString).then(res => {
               if (res.status === 1) {
+                this.edit = true;
                 this.$toast.success("保存成功");
                 return;
               }
@@ -208,9 +215,7 @@ export default {
                       message: "提交成功"
                     });
                     setTimeout(() => {
-                      this.$router.replace({
-                        name: "index"
-                      });
+                      this.$router.go(-1);
                     }, 800);
                   } else {
                     this.$toast.fail(res.text);
@@ -225,6 +230,22 @@ export default {
         console.log(e);
       }
     },
+    // 获取项目资金
+    getProjectMoney() {
+      // 获取数据
+      return task.getTaskZFMoney(this.currProject[0]).then(res => {
+        try {
+          if (res && res.status === 1) {
+            this.dataMoney = res.text.split(",");
+            return true;
+          }
+          return false;
+        } catch (e) {
+          console.log(e);
+          return false;
+        }
+      });
+    },
     pageInit() {
       if (this.taskParams) {
         // 获取数据
@@ -234,19 +255,19 @@ export default {
               let sp = result.text.split(";");
               this.data = eval(sp[0].split("=")[1])[0];
               this.businessKey = this.data[0];
+              this.currProject[0] = this.data[2];
               this.edit = true;
+              this.getProjectMoney();
             }
             if (!this.data[10] || this.data[10] == "1900-01-01 00:00:00") {
               this.data[10] = new Date().Format("yyyy-MM-dd");
             }
-            this.getProject();
           } catch (e) {
             console.log(e);
           }
         });
-      } else {
-        this.getProject();
       }
+      this.getProject();
     }
   },
   computed,
@@ -319,10 +340,6 @@ export default {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          word-wrap: normal;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
           .title {
             font-weight: 600;
             font-size: 16px;

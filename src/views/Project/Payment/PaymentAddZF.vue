@@ -11,8 +11,8 @@
             <van-button type="primary" size="mini" @click="projectShow=true" v-if="!edit">选择</van-button>
           </div>
         </div>
-        <van-field v-model="data.Partner_memo" label="申请说明" required />
-        <van-field v-model="dataMoney[3]" label="可用资金(￥)" disabled />
+        <van-field v-model="data.Partner_memo" label="申请说明" required placeholder="请输入申请说明" />
+        <van-field :value="dataMoney[3]" label="可用资金(￥)" disabled />
         <van-field v-model="data.Sheet_Amt" label="单据金额(￥)" disabled v-if="payment === '支付供应商'" />
         <div class="van-cell van-cell--required van-field">
           <div class="van-cell__title">支付类型</div>
@@ -22,11 +22,11 @@
         </div>
 
         <!--退结余额-->
-        <van-field v-model="dataChild.Apply_SheetNO" label="支出名称" required v-if="payment === '其它支出申请'" />
-        <van-field v-model="dataChild.Supplier_Amt" label="申请金额(￥)" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
-        <van-field v-model="dataChild.Bank_Account" label="收款账号" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
-        <van-field v-model="dataChild.Bank_Name" label="开户行" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
-        <van-field v-model="dataChild.Remark" label="收款人" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
+        <van-field v-model="dataChild.Apply_SheetNO" label="支出名称" placeholder="请输入支出名称" required v-if="payment === '其它支出申请'" />
+        <van-field v-model="dataChild.Supplier_Amt" label="申请金额(￥)" placeholder="请输入申请金额" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
+        <van-field v-model="dataChild.Bank_Account" label="收款账号" placeholder="请输入收款账号" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
+        <van-field v-model="dataChild.Bank_Name" label="开户行" placeholder="请输入开户行" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
+        <van-field v-model="dataChild.Remark" label="收款人" placeholder="请输入收款人" required v-if="payment === '退结余额' || payment === '其它支出申请'" />
 
         <!--余额转预存-->
         <van-cell-group class="from-payment" v-if="payment === '余额转预存'">
@@ -35,8 +35,8 @@
             <van-button type="primary" size="mini" @click="onShowForProject">选择</van-button>
           </span>
         </van-cell-group>
-        <van-field v-model="dataChild.Supplier_Amt" label="转存金额(￥)" required v-if="payment === '余额转预存'" />
-        <van-field v-model="dataChild.Remark" label="转预存说明" required v-if="payment === '余额转预存'" />
+        <van-field v-model="dataChild.Supplier_Amt" label="转存金额(￥)" placeholder="请输入转存金额" required v-if="payment === '余额转预存'" />
+        <van-field v-model="dataChild.Remark" label="转预存说明" placeholder="请输入转预存说明" required v-if="payment === '余额转预存'" />
 
         <!--员工姓名、创建时间-->
         <van-field :value="userInfo.name" label="制单人" disabled />
@@ -298,7 +298,7 @@ export default {
                 return;
               }
               this.dataTable.forEach(val => {
-                if (isNaN(parseInt(val.money))) {
+                if (!val.money || isNaN(val.money)) {
                   this.$toast.fail("请输入正确的分配金额");
                   throw "请输入正确的分配金额";
                 } else if (!val.remark.trim()) {
@@ -451,7 +451,7 @@ export default {
     // 提交流程
     onSubmit() {
       task
-        .submitAuditSheet(this.businessKey, this.projectInfo.DemandID)
+        .submitAuditSheet(this.businessKey, this.userInfo.oid)
         .then(result => {
           try {
             if (result.status === 1) {
@@ -483,7 +483,6 @@ export default {
         if (this.edit) {
           this.dataTable.forEach(val => {
             if (val.sid == this.currSupp.value[0]) {
-              // this.supplierList.splice(this.currSupp.key, 1);
               throw "列表已存在供应商";
             }
           });
@@ -501,7 +500,6 @@ export default {
           isEdit: false,
           info: this.currSupp
         });
-        // this.supplierList.splice(this.currSupp.key, 1);
         this.currSupp = {
           key: 0,
           value: ""
@@ -520,8 +518,8 @@ export default {
       this.dataChild.SupplierID = "";
       this.dataChild.SupplierName = "";
       this.dataTable = [];
-      this.getSupplierList();
       this.getProjectMoney();
+      this.getSupplierList();
       this.getProjectForList();
     },
     // 显示选择目标项目
@@ -583,7 +581,6 @@ export default {
         if (res.status) {
           const sp = res.text.split(";");
           this.projectList = eval(sp[0]);
-          this.getProjectMoney();
         }
       });
     },
@@ -618,7 +615,6 @@ export default {
     pageInit() {
       if (this.taskParams.InstanceID) {
         this.edit = true;
-        this.$parent.title = this.taskParams.name;
         this.businessKey = this.taskParams.InstanceID;
         financial.getPayInfo(this.taskParams).then(result => {
           try {
@@ -638,6 +634,7 @@ export default {
                 Partner_memo: data[10]
               };
               this.currProject.SC_ProjectOID = data[2];
+              this.getProjectMoney();
               if (this.paymentIndex == 1) {
                 // 1.支付供应商
                 dataTable.forEach(val => {
@@ -733,10 +730,6 @@ export default {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          word-wrap: normal;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
           .title {
             font-weight: 600;
             font-size: 16px;
