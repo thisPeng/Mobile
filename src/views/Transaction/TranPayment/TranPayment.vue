@@ -3,11 +3,11 @@
   <div class="tranpayment">
     <div class="pay-data">
       <div class="pay-card">
-        <div class="pay-item" v-for="(item,index) in list" :key="index">
+        <van-cell-group class="pay-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">收款单位：{{item[38]}}</span>
           </div>
-          <div class="item-content">
+          <van-cell is-link class="item-content" @click="jumpPage(item)">
             <div class="content-row">
               <span class="row-left">申请单号：{{item[40]}}</span>
             </div>
@@ -24,8 +24,8 @@
             <div class="content-row">
               <span class="row-left">银行账号：{{item[12]}}</span>
             </div>
-          </div>
-        </div>
+          </van-cell>
+        </van-cell-group>
       </div>
     </div>
   </div>
@@ -52,6 +52,13 @@ export default {
         } catch (e) {
           console.log(e);
         }
+      });
+    },
+    // 跳转详情
+    jumpPage(item) {
+      this.$store.commit("taskParams", item);
+      this.$router.push({
+        name: "paymentAddFK"
       });
     },
     pageInit() {

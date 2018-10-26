@@ -1,8 +1,8 @@
 <template>
   <!-- 到货信息-发货单 -->
   <div class="deliverydetails">
-    <div class="title-delivery">发货单</div>
     <van-cell-group>
+      <div class="task-title">基础信息</div>
       <van-field v-model="info[2]" label="发货单号：" disabled />
       <van-field v-model="info[39]" label="工程名称：" disabled />
       <van-field :value="info[8]" label="发货时间：" disabled />
@@ -22,6 +22,9 @@
       <van-field :value="info[28] || userInfo.name" label="签收人：" disabled />
       <van-field v-model="info[11]" label="发货金额：" disabled />
       <van-field v-model="info[29]" label="备注：" type="textarea" :disabled="info[25] == '1' || info[20] == '1'" :placeholder="info[25] != '1' && info[20] != '1' ? '请输入备注' : ''" />
+
+      <!--附加信息-->
+      <div class="task-title">附加信息</div>
       <van-cell title="物资列表" is-link value="" @click="jumpInfo" />
       <!-- <van-cell title="附件" is-link value="" @click="jumpPage('arrivaAnnex')" /> -->
     </van-cell-group>
@@ -233,7 +236,7 @@ export default {
       }
     }
   }
-  .title-delivery {
+  .task-title {
     font-size: 16px;
     padding: 10px;
     color: #00a0e9;
@@ -247,7 +250,8 @@ export default {
     width: 100%;
     flex-direction: row;
     justify-content: space-around;
-    margin: 10px 0;
+    padding-top: 30px;
+    padding-bottom: 10px;
     button {
       width: 48%;
       padding: 0;

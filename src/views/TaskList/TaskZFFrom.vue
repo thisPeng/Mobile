@@ -1,26 +1,30 @@
 <template>
   <div class="task">
-    <van-cell-group :style="tabsShow ? 'padding-bottom: 280px;' : 'padding-bottom: 30px;'">
+    <van-cell-group :style="tabsShow ? 'padding-bottom: 300px;' : 'padding-bottom: 30px;'">
+      <div class="task-title">基础信息</div>
       <van-field :value="data[1]" label="单号" :disabled="true" />
       <van-field :value="data[25]" label="工程编号" :disabled="true" />
       <van-field :value="data[24]" label="工程名称" :disabled="true" />
-      <van-field v-model="data[10]" label="申请方说明" :disabled="edit" />
       <van-field :value="dataMoney[3]" label="可用资金(￥)" :disabled="true" />
       <van-field :value="payment" label="支付类型" :disabled="true" />
+      <van-field v-model="data[10]" label="申请方说明" type="textarea" :disabled="edit" />
+
       <!--退结余额-->
+      <div class="task-title" v-if="payment === '退结余额' || payment === '其它支出申请'">{{payment}}</div>
       <van-field v-model="dataTable[0][2]" label="支出名称" :required="!edit" :disabled="edit" v-if="payment === '其它支出申请'" />
       <van-field v-model="dataTable[0][4]" label="申请金额(￥)" :required="!edit" :disabled="edit" v-if="payment === '退结余额' || payment === '其它支出申请'" />
       <van-field v-model="dataTable[0][7]" label="收款账号" :required="!edit" :disabled="edit" v-if="payment === '退结余额' || payment === '其它支出申请'" />
       <van-field v-model="dataTable[0][6]" label="开户行" :required="!edit" :disabled="edit" v-if="payment === '退结余额' || payment === '其它支出申请'" />
       <van-field v-model="dataTable[0][5]" label="收款人" :required="!edit" :disabled="edit" v-if="payment === '退结余额' || payment === '其它支出申请'" />
+
       <!--余额转预存-->
       <van-field v-model="dataMoney[2]" label="目标项目" :disabled="true" v-if="payment === '余额转预存'" />
       <van-field v-model="dataTable[0][4]" label="转存金额(￥)" :disabled="edit" v-if="payment === '余额转预存'" />
-      <van-field v-model="dataTable[0][5]" label="转预存说明" :disabled="edit" v-if="payment === '余额转预存'" />
-      <!--员工姓名、创建时间-->
-      <van-field v-model="data[31]" label="制单人" :disabled="true" />
-      <van-field :value="$util.formatDate(data[15])" label="制单日期" :disabled="true" />
-      <van-field :value="$util.formatDate(data[16])" label="修改日期" :disabled="true" />
+      <van-field v-model="dataTable[0][5]" label="转预存说明" type="textarea" :disabled="edit" v-if="payment === '余额转预存'" />
+      <span class="padding-sm" v-if="payment === '余额转预存'">转预存是由一个项目的余额转给另一个项目的资金池中,供另一个项目使用, 不用通过银行,直接项目间产生资金的转移流水。</span>
+
+      <!--资金详情-->
+      <div class="task-title" v-if="payment === '支付供应商'">资金详情</div>
       <div class="task-table" v-if="payment === '支付供应商'">
         <table>
           <thead>
@@ -45,10 +49,14 @@
           </tbody>
         </table>
       </div>
-      <b class="padding-left-sm" v-if="payment === '余额转预存'">
-        说明：转预存是由一个项目的余额转给另一个项目的资金池中,供另一个项目使用, 不用通过银行,直接项目间产生资金的转移流水。</b>
+
+      <!--制单信息-->
+      <div class="task-title">制单信息</div>
+      <van-field v-model="data[31]" label="制单人" :disabled="true" />
+      <van-field :value="$util.formatDate(data[15])" label="制单日期" :disabled="true" />
+      <van-field :value="$util.formatDate(data[16])" label="修改日期" :disabled="true" />
     </van-cell-group>
-    <van-cell-group v-if="taskTabs.codeJson">
+    <van-cell-group v-if="taskTabs.codeJson && data[32] === 0">
       <taskTabs :data="taskTabs" />
     </van-cell-group>
   </div>
@@ -186,18 +194,10 @@ export default {
 .task {
   width: 100%;
   .task-title {
-    display: flex;
-    padding: 10px 15px;
-    box-sizing: border-box;
-    line-height: 24px;
-    position: relative;
-    background-color: #fff;
-    color: #333;
-    font-size: 14px;
-    overflow: hidden;
-    .center {
-      margin: 0 auto;
-    }
+    font-size: 16px;
+    padding: 10px;
+    color: #00a0e9;
+    background-color: #f7f7f7;
   }
   .task-button {
     padding: 10px 0;
@@ -241,10 +241,8 @@ export default {
         }
       }
       tbody {
-        tr:nth-child(2n) {
-          background-color: #e9f8ff;
-        }
         td {
+          background-color: #fff;
           height: 50px;
         }
         .visited {

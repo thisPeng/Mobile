@@ -1,20 +1,24 @@
 <template>
   <div class="task">
-    <van-cell-group :style="tabsShow ? 'padding-bottom: 280px;' : 'padding-bottom: 30px;'">
+    <van-cell-group :style="tabsShow ? 'padding-bottom: 300px;' : 'padding-bottom: 30px;'">
+      <div class="task-title">基础信息</div>
       <van-field :value="data[1]" label="单号" :disabled="true" />
       <van-field :value="data[27]" label="工程编号" :disabled="true" />
       <van-field :value="data[28]" label="工程名称" :disabled="true" />
       <van-field :value="$util.formatDate(data[10])" label="冻结日期" :disabled="edit" readonly @click="showDate" />
       <van-datetime-picker v-model="currentDate" v-show="dataShow" type="date" class="task-date" @confirm="saveDate" @cancel="dataShow=false" />
-      <van-field v-model="data[16]" label="冻结说明" :disabled="edit" />
       <van-field :value="data[34]" label="可用资金(￥)" :disabled="true" />
       <van-field v-model="data[9]" label="冻结金额(￥)" :disabled="edit" />
       <van-field v-model="data[13]" label="经手人" :disabled="edit" />
+      <van-field v-model="data[16]" label="冻结说明" type="textarea" :disabled="edit" />
+
+      <!--制单信息-->
+      <div class="task-title">制单信息</div>
       <van-field :value="data[29]" label="制单人" :disabled="true" />
       <van-field :value="$util.formatDate(data[17])" label="制单日期" :disabled="true" />
       <van-field :value="$util.formatDate(data[18])" label="修改日期" :disabled="true" />
     </van-cell-group>
-    <van-cell-group v-if="taskTabs.codeJson">
+    <van-cell-group v-if="taskTabs.codeJson && data[30] === 0">
       <taskTabs :data="taskTabs" />
     </van-cell-group>
   </div>
@@ -103,18 +107,10 @@ export default {
 .task {
   width: 100%;
   .task-title {
-    display: flex;
-    padding: 10px 15px;
-    box-sizing: border-box;
-    line-height: 24px;
-    position: relative;
-    background-color: #fff;
-    color: #333;
-    font-size: 14px;
-    overflow: hidden;
-    .center {
-      margin: 0 auto;
-    }
+    font-size: 16px;
+    padding: 10px;
+    color: #00a0e9;
+    background-color: #f7f7f7;
   }
   .task-date {
     width: 100%;

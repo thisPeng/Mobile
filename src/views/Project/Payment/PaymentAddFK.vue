@@ -1,27 +1,24 @@
 <template>
-  <div class="task">
+  <div class="task" :style="edit ? 'padding-bottom: 65px' : ''">
     <div class="task-data">
       <van-cell-group>
+        <div class="task-title">基础信息</div>
         <van-field v-model="data[1]" label="单号" disabled />
         <van-field v-model="data[38]" label="收款单位" disabled />
         <van-field v-model="data[42]" label="联系人" disabled />
         <van-field v-model="data[43]" label="联系电话" disabled />
         <van-field v-model="data[40]" label="申请单号" disabled />
-        <van-field :value="$util.formatDate(data[10]) || '请选择汇款日期'" label="汇款日期：" required readonly @click="showDate" />
+        <van-field :value="$util.formatDate(data[10]) || '请选择汇款日期'" label="汇款日期：" required readonly @click="edit ? showDate : ''" />
         <van-datetime-picker v-model="currentDate" title="汇款日期" v-show="dateShow" :min-date="new Date(new Date().Format('yyyy'))" type="date" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
         <van-field v-model="data[9]" label="支付金额" disabled />
-        <van-field v-model="data[12]" label="银行账号" required placeholder="请输入银行账号"  />
-        <van-field v-model="data[11]" label="开户行" required placeholder="请输入开户行"  />
-        <van-field v-model="data[13]" label="经手人" required placeholder="请输入经手人"  />
-        <van-field v-model="data[16]" label="汇款说明" type="textarea" required />
-        <van-field :value="data[29] || userInfo.name" label="制单人" disabled />
-        <van-field :value="$util.formatDate(data[17]) || new Date().Format('yyyy-MM-dd')" label="制单日期：" disabled />
-        <van-field :value="$util.formatDate(data[18]) || new Date().Format('yyyy-MM-dd')" label="修改日期" disabled v-if="data[18]" />
+        <van-field v-model="data[12]" label="银行账号" required placeholder="请输入银行账号" :disabled="!edit" />
+        <van-field v-model="data[11]" label="开户行" required placeholder="请输入开户行" :disabled="!edit" />
+        <van-field v-model="data[13]" label="经手人" required placeholder="请输入经手人" :disabled="!edit" />
+        <van-field v-model="data[16]" label="汇款说明" type="textarea" required :disabled="!edit" />
+        <!--资金凭证-->
+        <div class="task-title">资金凭证</div>
         <van-cell-group class="task-upload">
-          <div class="task-title">
-            <span>资金凭证：</span>
-          </div>
-          <div class="task-content">
+          <div class="task-content" v-if="edit">
             <van-uploader class="task-imgage" :after-read="onReadFile1" accept="image/jpeg, image/png" :max-size="2097152" @oversize="$toast.fail('图片大小不能超过2M')">
               <img :src="image1" alt="资金凭证1" v-if="image1">
               <div class="content-upload" v-else>
@@ -37,10 +34,22 @@
               </div>
             </van-uploader>
           </div>
+          <div class="task-content" v-else>
+            <div class="task-imgage">
+              <img :src="image1" alt="资金凭证1">
+            </div>
+            <div class="task-imgage">
+              <img :src="image2" alt="资金凭证2">
+            </div>
+          </div>
         </van-cell-group>
+        <!--制单信息-->
+        <div class="task-title">制单信息</div>
+        <van-field :value="data[29] || userInfo.name" label="制单人" disabled />
+        <van-field :value="$util.formatDate(data[17]) || new Date().Format('yyyy-MM-dd')" label="制单日期：" disabled />
+        <van-field :value="$util.formatDate(data[18]) || new Date().Format('yyyy-MM-dd')" label="修改日期" disabled v-if="data[18]" />
       </van-cell-group>
-
-      <div class="payment-button">
+      <div class="payment-button" v-if="edit">
         <van-button @click="onSave">保存</van-button>
         <van-button type="primary" @click="onSumbit">审核</van-button>
       </div>
@@ -53,6 +62,7 @@ import { financial } from "../../../assets/js/api.js";
 export default {
   data() {
     return {
+      edit: false,
       data: [],
       dateShow: false,
       currentDate: new Date(),
@@ -91,6 +101,9 @@ export default {
         this.image2 = this.taskParams[15].replace("~", this.servePath);
         if (!this.data[10] || this.data[10] == "1900-01-01 00:00:00") {
           this.data[10] = new Date().Format("yyyy-MM-dd hh:mm:ss");
+        }
+        if (this.userType === 1) {
+          this.edit = true;
         }
       }
     },
@@ -178,13 +191,18 @@ export default {
 <style lang="less" scoped>
 .task {
   width: 100%;
-  padding-bottom: 65px;
   overflow: hidden !important;
   .task-data {
     width: 100%;
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
+    .task-title {
+      font-size: 16px;
+      padding: 10px;
+      color: #00a0e9;
+      background-color: #f7f7f7;
+    }
     .payment-button {
       width: 100%;
       padding: 10px;
@@ -200,25 +218,7 @@ export default {
     }
 
     .task-upload {
-      padding-bottom: 15px;
-      .task-title {
-        display: flex;
-        padding: 10px 15px;
-        box-sizing: border-box;
-        line-height: 24px;
-        position: relative;
-        background-color: #fff;
-        color: #333;
-        font-size: 14px;
-        overflow: hidden;
-        &::before {
-          content: "*";
-          position: absolute;
-          left: 7px;
-          font-size: 14px;
-          color: #f44;
-        }
-      }
+      padding: 15px 0;
       .task-content {
         display: flex;
         justify-content: space-around;

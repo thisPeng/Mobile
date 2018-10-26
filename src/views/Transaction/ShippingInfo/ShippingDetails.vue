@@ -2,6 +2,7 @@
   <!-- 发货单编辑 -->
   <div class="shippingDetails">
     <van-cell-group>
+      <div class="task-title">基础信息</div>
       <van-field :value="list[2]" label="发货单号：" disabled />
       <van-field :value="list[39]" label="工程名称：" disabled />
       <van-field :value="list[8]" label="发货时间：" disabled v-if="list[41] == '已发货'" />
@@ -21,6 +22,8 @@
       <van-field :value="list[28]" label="签收人：" disabled v-if="list[42] == '已签收'" />
       <van-field :value="list[11]" label="发货金额：" disabled />
       <van-field v-model="list[29]" label="备注：" type="textarea" :disabled="list[41] == '已发货'" :placeholder="confirmParams[41] == '已发货' ? '' : '请输入备注'" />
+
+      <div class="task-title">附加信息</div>
       <van-cell title="发货单明细" is-link value="详情" @click="jumpPage(list)" />
     </van-cell-group>
     <div class="con-button" v-if="list[41] != '已发货'">
@@ -187,9 +190,16 @@ export default {
 <style lang="less" scoped>
 .shippingDetails {
   width: 100%;
+  .task-title {
+    font-size: 16px;
+    padding: 10px;
+    color: #00a0e9;
+    background-color: #f7f7f7;
+  }
   .con-button {
     width: 100%;
     padding: 10px;
+    padding-top: 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;

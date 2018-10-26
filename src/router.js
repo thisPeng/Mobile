@@ -165,56 +165,56 @@ export default new Router({
       name: "taskYCFrom",
       component: TaskYCFrom,
       meta: {
-        title: "预存单审核"
+        title: "预存单详情"
       }
     }, {
       path: "/taskList/taskZFFrom",
       name: "taskZFFrom",
       component: TaskZFFrom,
       meta: {
-        title: "支付申请审核"
+        title: "支付申请详情"
       }
     }, {
       path: "/taskList/taskKKFrom",
       name: "taskKKFrom",
       component: TaskKKFrom,
       meta: {
-        title: "扣款申请审核"
+        title: "扣款申请详情"
       }
     }, {
       path: "/taskList/taskJDFrom",
       name: "taskJDFrom",
       component: TaskJDFrom,
       meta: {
-        title: "解冻申请审核"
+        title: "解冻申请详情"
       }
     }, {
       path: "/taskList/taskPKFrom",
       name: "taskPKFrom",
       component: TaskPKFrom,
       meta: {
-        title: "批款申请审核"
+        title: "批款申请详情"
       }
     }, {
       path: "/taskList/taskDJFrom",
       name: "taskDJFrom",
       component: TaskDJFrom,
       meta: {
-        title: "冻结申请审核"
+        title: "冻结申请详情"
       }
     }, {
       path: "/taskList/taskGYSFrom",
       name: "taskGYSFrom",
       component: TaskGYSFrom,
       meta: {
-        title: "供应商审核"
+        title: "供应商详情"
       }
     }, {
       path: "/taskList/taskGYSFrom/taskgysDetails",
       name: "taskgysDetails",
       component: TaskGYSDetails,
       meta: {
-        title: "供应商审核证明"
+        title: "供应商证照资料"
       }
     }, {
       path: "/message",
@@ -356,7 +356,7 @@ export default new Router({
       name: "deliverydetails",
       component: DeliveryDetails,
       meta: {
-        title: "发货单编辑"
+        title: "发货单详情"
       }
     }, {
       path: "/delivery/arrivalDetails/detail",
@@ -391,7 +391,7 @@ export default new Router({
       name: "payInfoMation",
       component: PayInfoMation,
       meta: {
-        title: "支付信息"
+        title: "付款信息"
       }
     }, {
       path: "/payment/paymentlabel/appropriation",
@@ -419,7 +419,7 @@ export default new Router({
       name: "capitalFlow",
       component: capitalFlow,
       meta: {
-        title: "费用单管理"
+        title: "资金流水"
       }
     }, {
       path: "/payment/paymentlabel/oainformation",
@@ -496,7 +496,7 @@ export default new Router({
       name: "tranContractWork",
       component: TranContractWork,
       meta: {
-        title: "合同编辑"
+        title: "合同详情"
       }
     }, {
       path: "/customerList",
@@ -524,14 +524,14 @@ export default new Router({
       name: "shippingDetails",
       component: ShippingDetails,
       meta: {
-        title: "发货单编辑"
+        title: "发货单详情"
       }
     }, {
       path: "/shippinginfo/newInvoice",
       name: "newInvoice",
       component: NewInvoice,
       meta: {
-        title: "发货单编辑"
+        title: "发货单详情"
       }
     }, {
       path: "/shippinginfo/deliveryDetail/detail",
@@ -566,21 +566,21 @@ export default new Router({
       name: "inquirydetails",
       component: InquiryDetails,
       meta: {
-        title: "询价单明细编辑"
+        title: "询价单明细详情"
       }
     }, {
       path: "/conprice/contractwork",
       name: "contractwork",
       component: ContractWork,
       meta: {
-        title: "材料合同编辑"
+        title: "材料合同详情"
       }
     }, {
       path: "/details/contractlabor",
       name: "contractlabor",
       component: ContractLabor,
       meta: {
-        title: "劳务合同编辑"
+        title: "劳务合同详情"
       }
     }, {
       path: "/annex/comfrim",

@@ -1,8 +1,8 @@
 <template>
   <!--报价单编辑 -->
   <div class="tranrial">
-    <div class="title-delivery">发货单</div>
     <van-cell-group>
+      <div class="task-title">基础信息</div>
       <van-field v-model="info[2]" label="单据编号：" disabled />
       <van-field v-model="info[33]" label="工程名称：" disabled />
       <van-field v-model="info[5]" label="联系人：" disabled />
@@ -20,6 +20,7 @@
       <van-field v-model="info[18]" label="业务员：" :disabled="info[15] == '2'" :placeholder="info[15] != '2' ? '请输入业务员' : ''" />
       <van-field v-model="info[25]" label="创建日期：" disabled />
       <van-field v-model="info[21]" label="备注：" type="textarea" :disabled="info[15] == '2'" :placeholder="info[15] != '2' ? '请输入备注' : ''" />
+      <div class="task-title">附加信息</div>
       <van-cell title="物资列表" is-link value="" @click="jumpPage('tranrialDetail')" />
       <van-cell title="附件" is-link value="" @click="jumpPage('comfrimAnnex')" />
     </van-cell-group>
@@ -208,7 +209,7 @@ export default {
   .van-cell {
     font-size: 15px;
   }
-  .title-delivery {
+  .task-title {
     font-size: 16px;
     padding: 10px;
     color: #00a0e9;
@@ -220,6 +221,7 @@ export default {
   .con-button {
     width: 100%;
     padding: 10px;
+    padding-top: 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;

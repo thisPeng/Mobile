@@ -26,7 +26,6 @@
               <div class="item-desc">{{item[28] + ' | 单位：' + item[23]}}</div>
               <div class="item-brand">
                 <van-tag plain type="success">品牌：{{item[24]}}</van-tag>
-                <!-- <van-tag plain type="danger" class="margin-left-xs">{{item[29]}}</van-tag> -->
               </div>
             </div>
           </van-card>
@@ -72,7 +71,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { classify, cart } from "./../../assets/js/api.js";
+import { classify } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -157,22 +156,6 @@ export default {
         }
       });
     },
-    // 添加物资到购物车
-    addCart(item) {
-      this.goods = {
-        id: item[0],
-        sid: item[31],
-        title: item[22],
-        picture: item[41].replace("~", this.servePath),
-        brand: item[24],
-        info: item[28],
-        unit: item[23],
-        shop: item[36],
-        taxRate: item[20],
-        taxAll: item[32]
-      };
-      this.onBuyClicked();
-    },
     // 显示物资详情
     showInfo(item) {
       this.goods = {
@@ -188,58 +171,6 @@ export default {
         taxAll: item[32]
       };
       this.showBase = true;
-    },
-    // 跳转购物车
-    jumpCart() {
-      this.$router.replace({
-        name: "cart"
-      });
-    },
-    // 添加购物车
-    onBuyClicked() {
-      if (this.projectInfo.SC_ProjectOID) {
-        const params = {
-          OIDCheckList: this.goods.id + "|" + this.goods.sid,
-          PartnerID: this.userId.UCML_OrganizeOID,
-          ProjectID: this.projectInfo.SC_ProjectOID,
-          DemandID: this.projectInfo.DemandID
-        };
-        classify.addCart(params).then(res => {
-          try {
-            if (res.status === 1 && res.text == "1") {
-              this.getCartList();
-              this.$nextTick().then(() => {
-                setTimeout(() => {
-                  this.$toast.success("添加物资成功");
-                }, 300);
-              });
-              return;
-            } else if (res.status === 1 && res.text == "-1") {
-              throw "供应商未通过审核，添加物资失败";
-            }
-            throw "添加失败，请刷新页面后重试";
-          } catch (e) {
-            this.$toast.fail(e);
-          }
-        });
-      } else {
-        this.$toast("请先点击屏幕右上角按钮，选择项目");
-      }
-    },
-    // 获取购物车列表
-    getCartList() {
-      if (this.projectInfo.SC_ProjectOID) {
-        cart.getList(this.projectInfo.SC_ProjectOID).then(res => {
-          try {
-            if (res && res.status === 1) {
-              const sp = res.text.split(";");
-              this.goodsPages = eval("(" + sp[1].split("=")[1] + ")");
-            }
-          } catch (e) {
-            console.log(e);
-          }
-        });
-      }
     },
     // 获取物资列表
     getGoodsList() {
@@ -315,7 +246,6 @@ export default {
           SQLFix: ""
         };
       }
-
       this.getGoodsList();
     }
   },
@@ -338,11 +268,6 @@ export default {
       this.keyword = this.goodsParams.keyword;
     }
     this.getGoodsList();
-    this.$nextTick().then(() => {
-      if (this.projectInfo.SC_ProjectOID) {
-        this.getCartList();
-      }
-    });
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="task">
-    <van-cell-group :style="tabsShow ? 'padding-bottom: 280px;' : 'padding-bottom: 30px;'">
+    <van-cell-group :style="tabsShow ? 'padding-bottom: 300px;' : 'padding-bottom: 30px;'">
       <van-field :value="data[1]" label="单号" :disabled="true" />
       <van-field :value="data[27]" label="工程编号" :disabled="true" />
       <van-field :value="data[28]" label="工程名称" :disabled="true" />
@@ -14,7 +14,7 @@
       <van-field :value="$util.formatDate(data[17])" label="制单日期" :disabled="true" />
       <van-field :value="$util.formatDate(data[18])" label="修改日期" :disabled="true" />
     </van-cell-group>
-    <van-cell-group v-if="taskTabs.codeJson">
+    <van-cell-group v-if="taskTabs.codeJson && data[30] === 0">
       <taskTabs :data="taskTabs" />
     </van-cell-group>
   </div>

@@ -55,8 +55,12 @@ export default {
         if (this.isReload) {
           this.$store.commit("isReload", false);
           location.reload();
-        } else if (to.meta.keepAlive && this.$children[1].pageInit) {
-          this.$children[1].pageInit();
+        } else if (to.meta.keepAlive) {
+          this.$children.forEach(val => {
+            if (val.$router.history.current.name == to.name && val.pageInit) {
+              val.pageInit();
+            }
+          });
         }
       } catch (e) {
         console.log(e);

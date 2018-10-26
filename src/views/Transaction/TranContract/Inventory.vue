@@ -129,6 +129,25 @@ export default {
         ContractList: this.contractParams[0],
         DetailIDList
       };
+      offer.checkContractList(this.contractParams[0]).then(result => {
+        if (result.status && result.text == "1") {
+          this.$dialog
+            .confirm({
+              title: "提示",
+              message: "选择的合同存在未签收单据，是否继续生成发货单？"
+            })
+            .then(() => {
+              this.saveOrder(params);
+            })
+            .catch(() => {
+              // on cancel
+            });
+        } else {
+          this.saveOrder(params);
+        }
+      });
+    },
+    saveOrder(params) {
       offer.saveDeliverBill(params).then(res => {
         if (res.status === 1 && res.text == "1") {
           this.$toast.success({

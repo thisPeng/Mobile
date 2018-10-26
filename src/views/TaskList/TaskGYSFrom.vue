@@ -1,6 +1,7 @@
 <template>
   <div class="taskgysFrom">
-    <van-cell-group :style="tabsShow ? 'padding-bottom: 280px;' : 'padding-bottom: 30px;'">
+    <van-cell-group :style="tabsShow ? 'padding-bottom: 300px;' : 'padding-bottom: 30px;'">
+      <div class="task-title">基础信息</div>
       <van-field v-model="data[35]" label="供应商编号：" :disabled="true" />
       <van-field v-model="data[22]" label="单位名称：" :disabled="true" />
       <van-field v-model="data[25]" label="统一社会信用码：" :disabled="edit" />
@@ -12,7 +13,9 @@
       <van-field v-model="data[28]" label="开户行：" :disabled="edit" />
       <van-field v-model="data[29]" label="银行账号：" :disabled="edit" />
       <van-field v-model="data[49]" label="可开票税率：" :disabled="edit" />
-      <!--省市区组件-->
+
+      <!--联系方式-->
+      <div class="task-title">联系方式</div>
       <van-field :value="data[62]+data[63]+data[64]" label="公司地址：" :disabled="edit" v-if="edit" />
       <cbh-region :prov="data[58]" :city="data[59]" :district="data[60]" @change="onRegionChange" v-else-if="data.length > 0" />
       <van-field v-model="data[30]" label="详细地址：" :disabled="edit" />
@@ -20,6 +23,9 @@
       <van-field v-model="data[32]" label="固定电话：" :disabled="edit" />
       <van-field v-model="data[33]" label="手机：" :disabled="edit" />
       <van-field v-model="data[34]" label="邮箱：" :disabled="edit" />
+
+      <!--证照资料-->
+      <div class="task-title">附加信息</div>
       <van-cell title="证照资料" is-link value="" @click="jumpPage" />
     </van-cell-group>
     <van-cell-group v-if="data[3] === '1' && data[9] === 'false'" class="margin-vertical-xl">
@@ -186,6 +192,12 @@ export default {
 <style lang="less" scoped>
 .taskgysFrom {
   width: 100%;
+  .task-title {
+    font-size: 16px;
+    padding: 10px;
+    color: #00a0e9;
+    background-color: #f7f7f7;
+  }
 }
 </style>
 <style lang="less">

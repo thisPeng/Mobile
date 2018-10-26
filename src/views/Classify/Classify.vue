@@ -152,5 +152,12 @@ export default {
   }
 }
 </style>
+<style lang="less">
+.classify {
+  .van-tabs__wrap {
+    z-index: 1;
+  }
+}
+</style>
 
 

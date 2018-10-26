@@ -1,8 +1,8 @@
 <template>
   <!-- 确认价格-询价单 -->
   <div class="pricedetails">
-    <div class="title-price">询价单</div>
     <van-cell-group>
+      <div class="task-title">基础信息</div>
       <van-field v-model="list[2]" label="单据编号：" disabled />
       <van-field v-model="list[3]" label="供应商名称：" disabled />
       <van-field v-model="list[5]" label="联系人：" disabled />
@@ -20,6 +20,7 @@
       <van-field v-model="list[18]" label="业务员：" :placeholder="list[39] === '待报价' || list[39] === '待确认' ? '' : '请输入业务员'" :disabled="list[39] === '待报价' || list[39] === '待确认'" :autofocus="true" />
       <van-field v-model="list[26]" label="员工姓名：" disabled />
       <van-field v-model="list[21]" label="备注：" type="textarea" :placeholder="list[39] === '待报价' || list[39] === '待确认' ? '' : '请输入备注'" :disabled="list[39] === '待报价' || list[39] === '待确认'" />
+      <div class="task-title">附加信息</div>
       <van-cell title="物资列表" is-link value="" @click="jumpPage('inquirydetails')" />
       <van-cell title="附件" is-link value="" @click="jumpPage('comfrimAnnex')" />
     </van-cell-group>
@@ -356,18 +357,13 @@ export default {
       }
     }
   }
-  .title-price {
-    font-size: 16px;
-    padding: 10px;
-    color: #00a0e9;
-    background-color: #f7f7f7;
-  }
   .van-button--normal {
     padding: 0px 30px;
   }
   .con-button {
     width: 100%;
     padding: 10px;
+    padding-top: 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -379,6 +375,12 @@ export default {
   }
   .con-data {
     margin-bottom: 12px;
+  }
+  .task-title {
+    font-size: 16px;
+    padding: 10px;
+    color: #00a0e9;
+    background-color: #f7f7f7;
   }
 }
 </style>

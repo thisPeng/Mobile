@@ -49,7 +49,8 @@ export default {
     getData() {
       const params = {
         pid: this.userInfo.oid,
-        sid: this.userInfo.oid
+        sid: this.userInfo.oid,
+        type: 4
       };
       offer.getContract(params).then(res => {
         if (res && res.status === 1) {

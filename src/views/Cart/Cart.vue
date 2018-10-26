@@ -1,6 +1,9 @@
 <template>
   <div class="cart">
     <div class="cart-list">
+      <div class="cart-project" v-if="!projectInfo.SC_ProjectOID">
+        <span>未选择项目，请 <router-link :to="{ name: 'projectList' }">[点击这里]</router-link> 选择项目</span>
+      </div>
       <!--列表-->
       <van-checkbox-group v-model="checkedArr">
         <div class="list-item" v-for="(ite, idx) in listOrder" :key="idx">
@@ -356,15 +359,7 @@ export default {
     },
     // 页面初始化
     pageInit() {
-      this.$nextTick().then(() => {
-        if (this.projectInfo.SC_ProjectOID) {
-          setTimeout(() => {
-            this.getCart();
-          }, 200);
-        } else {
-          this.$toast("请先点击屏幕右上角按钮，选择项目");
-        }
-      });
+      this.getCart();
     },
     // 保存购物车选择
     saveCart() {
@@ -398,6 +393,11 @@ export default {
     height: 100%;
     overflow-y: auto;
     padding-bottom: 100px;
+    .cart-project {
+      width: 100%;
+      margin: 30px 0;
+      text-align: center;
+    }
     .list-item {
       border-bottom: 5px solid #f6f6f6;
     }

@@ -3,6 +3,7 @@
   <div class="task">
     <div class="task-data">
       <van-cell-group>
+        <div class="task-title">基础信息</div>
         <van-field :value="data[1] || '系统生成'" label="单号" :disabled="true" />
         <van-field :value="data[27]" label="工程编号" :disabled="true" />
         <div class="van-cell van-cell--required van-field">
@@ -19,13 +20,10 @@
         <van-field v-model="data[11]" label="开户行：" required placeholder="请输入开户行" />
         <van-field v-model="data[13]" label="经手人：" required placeholder="请输入经手人" />
         <van-field v-model="data[16]" label="汇款说明：" required placeholder="请输入汇款说明" />
-        <van-field :value="data[29] || userInfo.name" label="制单人：" disabled />
-        <van-field :value="$util.formatDate(data[17]) || new Date().Format('yyyy-MM-dd')" label="制单日期：" disabled />
-        <van-field :value="$util.formatDate(data[18]) || new Date().Format('yyyy-MM-dd')" label="修改日期" disabled v-if="data[18]" />
+
+        <!--资金凭证-->
+        <div class="task-title">资金凭证</div>
         <van-cell-group class="task-upload">
-          <div class="task-title">
-            <span>资金凭证：</span>
-          </div>
           <div class="task-content">
             <van-uploader class="task-imgage" :after-read="onReadFile1" accept="image/jpeg, image/png" :max-size="2097152" @oversize="$toast.fail('图片大小不能超过2M')">
               <img :src="image1" alt="资金凭证1" v-if="image1">
@@ -43,6 +41,12 @@
             </van-uploader>
           </div>
         </van-cell-group>
+
+        <!--制单信息-->
+        <div class="task-title">制单信息</div>
+        <van-field :value="data[29] || userInfo.name" label="制单人：" disabled />
+        <van-field :value="$util.formatDate(data[17]) || new Date().Format('yyyy-MM-dd')" label="制单日期：" disabled />
+        <van-field :value="$util.formatDate(data[18]) || new Date().Format('yyyy-MM-dd')" label="修改日期" disabled v-if="data[18]" />
       </van-cell-group>
       <div class="payment-button">
         <van-button @click="onSave">保存</van-button>
@@ -329,26 +333,15 @@ export default {
       }
     }
 
+    .task-title {
+      font-size: 16px;
+      padding: 10px;
+      color: #00a0e9;
+      background-color: #f7f7f7;
+    }
+
     .task-upload {
-      padding-bottom: 15px;
-      .task-title {
-        display: flex;
-        padding: 10px 15px;
-        box-sizing: border-box;
-        line-height: 24px;
-        position: relative;
-        background-color: #fff;
-        color: #333;
-        font-size: 14px;
-        overflow: hidden;
-        &::before {
-          content: "*";
-          position: absolute;
-          left: 7px;
-          font-size: 14px;
-          color: #f44;
-        }
-      }
+      padding: 15px 0;
       .task-content {
         display: flex;
         justify-content: space-around;

@@ -59,7 +59,9 @@ axios.interceptors.response.use(
     if (typeof result === 'string') {
       res = result.substr(result.indexOf("("), result.length);
       if (res !== "()") {
-        return eval(res);
+        res = eval(res);
+        if (res.status === -1) outLogin();
+        return res;
       }
     }
     return res || result;
@@ -86,14 +88,8 @@ axios.interceptors.response.use(
           break;
         case 500:
           // error.message = '服务器内部错误';
-          window.localStorage.clear();
-          window.sessionStorage.clear();
-          window.vm.$store.commit("cleanStore", true);
-          error.message = "登录过期，请重新登录";
-          window.vm.$router.replace({
-            name: "login"
-          });
-          break;
+          outLogin();
+          return;
         case 501:
           error.message = "服务未实现";
           break;
@@ -120,6 +116,16 @@ axios.interceptors.response.use(
 function checkCode(message) {
   // 弹出错误信息
   window.vm.$toast(message);
+}
+
+function outLogin() {
+  window.localStorage.clear();
+  window.sessionStorage.clear();
+  window.vm.$store.commit("cleanStore", true);
+  checkCode("登录过期，请重新登录");
+  window.vm.$router.replace({
+    name: "login"
+  });
 }
 
 export default axios;
