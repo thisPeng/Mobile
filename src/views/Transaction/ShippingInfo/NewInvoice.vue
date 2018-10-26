@@ -54,6 +54,7 @@ export default {
     return {
       list: [],
       listOrder: [],
+      currData: [],
       pages: {},
       sku: {
         tree: [],
@@ -97,6 +98,7 @@ export default {
           DetailIDList = DetailIDList.concat(val.checkArr);
         }
       });
+
       if (isTow) {
         this.$toast.fail("存在不同项目的合同，不得合并生成发货单");
         return;
@@ -109,7 +111,7 @@ export default {
       DetailIDList = DetailIDList.join(",");
       const params = {
         SupplierID: this.userInfo.oid,
-        PartnerID: this.userInfo.oid,
+        PartnerID: this.currData.paid,
         ProjectID: pid,
         ContractList,
         DetailIDList
@@ -175,6 +177,7 @@ export default {
           this.getDataItem(this.list[i][0]).then(res => {
             this.listOrder[i].list = res;
             this.listOrder[i].checkArr = [];
+            this.currData = this.listOrder[i];
             res.forEach(val => {
               this.listOrder[i].checkArr.push(val[0]);
             });
@@ -186,7 +189,7 @@ export default {
     getNotShippded(prid = "") {
       const params = {
         suid: this.userInfo.oid,
-        paid: this.userInfo.oid,
+        paid: this.currData.paid,
         prid
       };
       return offer.getNotShippded(params).then(res => {
@@ -214,6 +217,7 @@ export default {
               listOrder.push({
                 id: val[0],
                 pid: val[4],
+                paid: val[2],
                 pname: val[11],
                 name: val[15],
                 checked: false,

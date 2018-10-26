@@ -108,7 +108,7 @@ export default {
     pageInit() {
       const params = {
         suid: this.userInfo.oid,
-        paid: this.userInfo.oid,
+        paid: this.contractParams[2],
         prid: this.contractParams[4]
       };
       offer.getNotShippded(params);
@@ -124,7 +124,7 @@ export default {
       DetailIDList = DetailIDList.join(",");
       const params = {
         SupplierID: this.userInfo.oid,
-        PartnerID: this.userInfo.oid,
+        PartnerID: this.contractParams[2],
         ProjectID: this.contractParams[4],
         ContractList: this.contractParams[0],
         DetailIDList
