@@ -102,7 +102,7 @@ export default {
         if (!this.data[10] || this.data[10] == "1900-01-01 00:00:00") {
           this.data[10] = new Date().Format("yyyy-MM-dd hh:mm:ss");
         }
-        if (this.userType === 1) {
+        if (this.userType === 1 && this.data[30] === 0) {
           this.edit = true;
         }
       }
