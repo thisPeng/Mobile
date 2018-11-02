@@ -68,18 +68,28 @@ export default {
     },
     // 合同退回
     onReturn(item) {
-      contractInfo.returnContract(item[0], item[5]).then(res => {
-        try {
-          if (res.status === 1) {
-            this.getList().then(result => {
-              if (result) this.$toast.success("合同已退回");
-              else location.reload();
-            });
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      });
+      this.$dialog
+        .confirm({
+          title: "提示",
+          message: "确定要退回合同？"
+        })
+        .then(() => {
+          contractInfo.returnContract(item[0], item[5]).then(res => {
+            try {
+              if (res.status === 1) {
+                this.getList().then(result => {
+                  if (result) this.$toast.success("合同已退回");
+                  else location.reload();
+                });
+              }
+            } catch (e) {
+              console.log(e);
+            }
+          });
+        })
+        .catch(() => {
+          // on cancel
+        });
     },
     // 跳转详情
     jumpInfo(item) {
