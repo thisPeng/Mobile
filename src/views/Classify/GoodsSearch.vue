@@ -1,7 +1,7 @@
 <template>
   <div class="classify">
     <div class="classify-search">
-      <van-search placeholder="请输入商品名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
+      <van-search placeholder="请输入物资名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
       <div class="flex-span">
         <div class="flex-1" @click="orderList('price')">单价
           <i class="iconfont icon-paixu" v-show="priceDesc === ''" />
@@ -50,7 +50,7 @@
       </div>
     </van-popup>
     <!--商品详情-->
-    <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
+    <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock">
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
           <van-cell :title="'品牌： ' + goods.brand" :label="goods.info + '| 单位：' + goods.unit" />

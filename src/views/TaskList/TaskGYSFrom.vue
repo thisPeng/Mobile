@@ -1,6 +1,6 @@
 <template>
   <div class="taskgysFrom">
-    <van-cell-group :style="tabsShow ? 'padding-bottom: 300px;' : 'padding-bottom: 30px;'">
+    <van-cell-group :style="tabsShow ? 'margin-bottom: 300px;' : 'margin-bottom: 30px;'">
       <div class="task-title">基础信息</div>
       <van-field v-model="data[35]" label="供应商编号：" :disabled="true" />
       <van-field v-model="data[22]" label="单位名称：" :disabled="true" />

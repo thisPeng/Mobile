@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <van-nav-bar :title="title" :left-arrow="isBack" @click-left="onBack" @click-right="onMenu">
-      <i slot="right" class="iconfont icon-qiehuan home-icon" v-if="isMenu && userType <= 3" />
+      <!-- <i slot="right" class="iconfont icon-qiehuan home-icon" v-if="isMenu && userType <= 3" /> -->
     </van-nav-bar>
 
     <keep-alive>
@@ -11,7 +11,8 @@
 
     <van-tabbar v-model="active" v-show="isTabbar" v-if="userType <= 2">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
-      <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item>
+      <van-tabbar-item icon="records" @click="jumpTabs('working')">工作台</van-tabbar-item>
+      <!-- <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item> -->
       <van-tabbar-item icon="cart" @click="jumpTabs('cart')">购物车</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
@@ -42,7 +43,8 @@ export default {
 
         if (
           to.name !== "index" &&
-          to.name !== "classify" &&
+          to.name !== "working" &&
+          // to.name !== "classify" &&
           to.name !== "cart" &&
           to.name !== "users"
         ) {
@@ -93,7 +95,8 @@ export default {
 
     if (
       current.name !== "index" &&
-      current.name !== "classify" &&
+      current.name !== "working" &&
+      // current.name !== "classify" &&
       current.name !== "cart" &&
       current.name !== "users"
     ) {

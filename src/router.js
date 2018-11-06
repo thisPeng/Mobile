@@ -4,6 +4,7 @@ import Login from "./views/Login/Login";
 import Register from "./views/Login/Register";
 import Home from "./components/Home/Home";
 import Index from "./views/Index/Index";
+import Working from "./views/Working/Working";
 import Classify from "./views/Classify/Classify";
 import GoodsList from "./views/Classify/GoodsList";
 import GoodsSearch from "./views/Classify/GoodsSearch";
@@ -102,6 +103,14 @@ export default new Router({
         keepAlive: true // 是否缓存
       }
     }, {
+      path: "/working",
+      name: "working",
+      component: Working,
+      meta: {
+        title: "工作台", // 页面标题
+        keepAlive: true // 是否缓存
+      }
+    }, {
       path: "/classify",
       name: "classify",
       component: Classify,
@@ -128,7 +137,7 @@ export default new Router({
       name: "cart",
       component: Cart,
       meta: {
-        title: "购物车",
+        title: "已选物资",
         // keepAlive: true
       }
     }, {
@@ -278,7 +287,7 @@ export default new Router({
       name: "supplier",
       component: Supplier,
       meta: {
-        title: "材料供应商",
+        title: "供应商列表",
         keepAlive: true // 需要被缓存
       }
     }, {
@@ -314,7 +323,8 @@ export default new Router({
       name: "supplierType",
       component: SupplierType,
       meta: {
-        title: "供应商物资"
+        title: "供应商物资",
+        keepAlive: true
       }
     }, {
       path: "/conPrice",

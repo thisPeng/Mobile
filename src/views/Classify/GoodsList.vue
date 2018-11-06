@@ -1,7 +1,14 @@
 <template>
   <div class="classify">
+    <div class="van-cell van-cell--borderless van-field">
+      <div class="van-cell__title">工程名称：</div>
+      <div class="van-cell__value flex-between">
+        <span class="text-truncate text-left text-gray">{{projectInfo.ProjectName || '请选择工程项目'}}</span>
+        <van-button type="primary" size="mini" @click="$router.push({ name: 'projectList' })">选择</van-button>
+      </div>
+    </div>
     <div class="classify-search">
-      <van-search placeholder="请输入商品名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
+      <van-search placeholder="请输入物资名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
       <div class="flex-span">
         <div class="flex-1" @click="orderList('price')">单价
           <i class="iconfont icon-paixu" v-show="priceDesc === ''" />
@@ -235,7 +242,7 @@ export default {
           }
         });
       } else {
-        this.$toast("请先点击屏幕右上角按钮，选择项目");
+        this.$toast.fail("请选择项目");
       }
     },
     // 获取购物车列表
@@ -368,7 +375,7 @@ export default {
   }
   .classify-data {
     position: absolute;
-    top: 75px;
+    top: 85px;
     left: 0;
     right: 0;
     bottom: 0;

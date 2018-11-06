@@ -64,7 +64,7 @@ export default {
     if (this.projectInfo.SC_ProjectOID) {
       this.getData();
     } else {
-      this.$toast("请先点击屏幕右上角按钮，选择项目");
+      this.$toast.fail("请选择项目");
     }
   }
 };

@@ -41,6 +41,7 @@ const index = {
       }
     });
   },
+  // 获取字典配置
   getConfig(params = {}) {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
@@ -55,6 +56,20 @@ const index = {
       }
     });
   },
+  // 获取首页版块
+  getHomePageInfo() {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Vue_NotValidationService",
+        _methodName: "GetHomePageInfo",
+        _paraNames: "",
+        _pUrl: ""
+      }
+    });
+  },
+  // 获取工作台
   getGetWorkSpace(oid = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",

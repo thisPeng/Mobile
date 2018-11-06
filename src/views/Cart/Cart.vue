@@ -1,9 +1,16 @@
 <template>
   <div class="cart">
     <div class="cart-list">
-      <div class="cart-project" v-if="!projectInfo.SC_ProjectOID">
-        <span>未选择项目，请 <router-link :to="{ name: 'projectList' }">[点击这里]</router-link> 选择项目</span>
+      <div class="van-cell van-cell--borderless van-field">
+        <div class="van-cell__title">工程名称：</div>
+        <div class="van-cell__value flex-between">
+          <span class="text-truncate text-left text-gray">{{projectInfo.ProjectName || '请选择工程项目'}}</span>
+          <van-button type="primary" size="mini" @click="$router.push({ name: 'projectList' })">选择</van-button>
+        </div>
       </div>
+      <!-- <div class="cart-project" v-else>
+        <span>未选择项目，请 <router-link :to="{ name: 'projectList' }">[点击这里]</router-link> 选择项目</span>
+      </div> -->
       <!--列表-->
       <van-checkbox-group v-model="checkedArr">
         <div class="list-item" v-for="(ite, idx) in listOrder" :key="idx">
@@ -61,13 +68,26 @@
     </van-sku>
 
     <!--订单提交栏-->
-    <van-submit-bar :button-text="checkedArr.length > 999 ? '询价(999+)' : '询价('+checkedArr.length+')'" @submit="onSubmit">
+    <!-- <van-submit-bar :button-text="" @submit="onSubmit">
       <van-checkbox v-model="checkedAll" ref="checkedAll" @change="onSelectAll">全选</van-checkbox>
       <div class="cart-delete" @click="onCartDelete">
         <i class="iconfont icon-qingkong1"></i>
         <span class="delete-text">删除</span>
       </div>
-    </van-submit-bar>
+    </van-submit-bar> -->
+
+    <div class="van-submit-bar">
+      <div class="van-submit-bar__bar">
+        <div class="van-checkbox">
+          <div class="van-checkbox__icon van-checkbox__icon--round"><i class="van-icon van-icon-success" /></div>
+          <span class="van-checkbox__label">全选</span>
+        </div>
+        <div class="cart-delete"><i class="iconfont icon-qingkong1"></i><span class="delete-text">删除</span></div>
+        <div class="van-submit-bar__text"></div>
+        <van-button type="primary" @click="jumpPage">添加物资</van-button>
+        <van-button type="danger" class="margin-right-xs">{{checkedArr.length > 999 ? '询价(999+)' : '询价('+checkedArr.length+')'}}</van-button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -154,6 +174,13 @@ export default {
           this.checkedArr = [];
         }
       });
+    },
+    jumpPage() {
+      if (this.projectInfo.SC_ProjectOID) {
+        this.$router.push({ name: "classify" });
+      } else {
+        this.$toast.fail("请选择项目");
+      }
     },
     jumpSupp(item) {
       this.$store.commit("suppParams", { id: item.id });
@@ -393,6 +420,12 @@ export default {
     height: 100%;
     overflow-y: auto;
     padding-bottom: 100px;
+    .project {
+      width: 100%;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
     .cart-project {
       width: 100%;
       margin: 30px 0;

@@ -61,13 +61,14 @@ export default {
   .left {
     width: 25%;
     position: absolute;
-    top: 45px;
+    top: 40px;
     left: 0;
     right: 0;
     bottom: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     z-index: 101;
+    background-color: #f6f6f6;
     .van-badge--select {
       border-color: #00a0e9;
     }
@@ -77,7 +78,7 @@ export default {
   }
   .right {
     position: absolute;
-    top: 45px;
+    top: 40px;
     left: 25%;
     right: 0;
     bottom: 0;

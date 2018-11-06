@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="users-wrap">
-      <van-cell-group class="margin-bottom-sm" v-if="userType <= 2">
+      <!-- <van-cell-group class="margin-bottom-sm" v-if="userType <= 2">
         <van-cell title="材料供应商" is-link @click="jumpPage('supplier')">
           <template slot="icon">
             <div class="icon">
@@ -21,14 +21,14 @@
             </div>
           </template>
         </van-cell>
-        <!-- <van-cell title="劳务供应商" is-link @click="jumpPage('supplierList')">
+        <van-cell title="劳务供应商" is-link @click="jumpPage('supplierList')">
           <template slot="icon">
             <div class="icon">
               <i class="iconfont icon-laowuhetong"></i>
             </div>
           </template>
-        </van-cell> -->
-      </van-cell-group>
+        </van-cell>
+      </van-cell-group> -->
       <van-cell-group>
         <van-cell title="修改密码" is-link @click="jumpPage('usersPwd')">
           <template slot="icon">

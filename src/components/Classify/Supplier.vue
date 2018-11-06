@@ -1,7 +1,7 @@
 <template>
   <div class="supplie-type">
-    <van-search placeholder="请输入商品名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action v-if="!isSearch" />
-    <div class="supplie-info" v-if="suppInfo.length > 0" @click="jumpInfo">
+    <van-search placeholder="请输入物资名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action v-if="!isSearch" />
+    <!-- <div class="supplie-info" v-if="suppInfo.length > 0" @click="jumpInfo">
       <div class="info-left">
         <div class="info-img">
           <img src="img/icons/android-chrome-512x512.png" alt="" />
@@ -18,8 +18,22 @@
         <van-tag v-else>未审核</van-tag>
         <van-icon class="padding-left-xs" name="arrow" size="20px" />
       </div>
+    </div> -->
+    <div class="supplie-select">
+      <div class="van-cell van-cell--borderless van-field">
+        <div class="van-cell__title" v-if="suppInfo.length > 0">
+          <van-tag type="danger" v-if="suppInfo[3] === '1'">待审核</van-tag>
+          <van-tag type="primary" v-else-if="suppInfo[3] === '2'">审核中</van-tag>
+          <van-tag type="success" v-else-if="suppInfo[3] === '3'">已审核</van-tag>
+          <van-tag v-else>未审核</van-tag>
+        </div>
+        <div class="van-cell__value flex-between">
+          <span class="text-truncate text-left text-gray">{{suppInfo[22] || '请选择供应商'}}</span>
+          <!-- <van-icon name="exchange-record" @click="$router.push({ name: 'supplier' })" size="30px" /> -->
+          <van-button type="primary" size="mini" @click="$router.push({ name: 'supplier' })">选择</van-button>
+        </div>
+      </div>
     </div>
-
     <div class="left">
       <div class="van-hairline--top-bottom van-badge-group">
         <div :class="activeKey === index ? 'van-badge van-hairline van-badge--select' : 'van-badge van-hairline'" v-for="(item, index) in typeList" :key="index" @click="selectKey(index)">
@@ -79,11 +93,11 @@
       <div class="screen">
         <div class="screen-filter">
           <van-collapse v-model="activeNames">
-            <van-collapse-item title="供应商" name="1" v-if="isSearch">
+            <!-- <van-collapse-item title="供应商" name="1" v-if="isSearch">
               <span class="filter-item" v-for="(item, index) in suppList" :key="index">
                 <van-button @click="filterSupp(item, index)" :disabled="suppActive === index ? true : false">{{item[5]}}</van-button>
               </span>
-            </van-collapse-item>
+            </van-collapse-item> -->
             <van-collapse-item title="分类" name="2">
               <span class="filter-item" v-for="(item, index) in filterList" :key="index">
                 <van-button @click="filterGoods(item, index)" :disabled="filterActive === index ? true : false">{{item.MaterialName}}</van-button>
@@ -247,8 +261,8 @@ export default {
     filterSupp(item, index) {
       this.suppActive = index;
       this.$store.commit("suppParams", { id: item[2] });
-      this.getSuppType();
       this.getSuppInfo();
+      this.getSuppType();
       this.screenShow = false;
     },
     // 过滤分类
@@ -359,7 +373,7 @@ export default {
         }
       } else {
         this.$store.commit("backRouter", this.$router.name);
-        this.this.$toast("请先点击屏幕右上角按钮，选择项目");
+        this.$toast.fail("请选择项目");
       }
     },
     // 添加物资到购物车
@@ -409,13 +423,16 @@ export default {
             this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
           }
         });
+    },
+    pageInit() {
+      this.isSearch = this.$parent.index ? true : false;
+      this.getSuppInfo();
+      this.getSuppType();
     }
   },
   computed,
   mounted() {
-    this.isSearch = this.$parent.index ? true : false;
-    this.getSuppType();
-    this.getSuppInfo();
+    this.pageInit();
   }
 };
 </script>
@@ -468,13 +485,15 @@ export default {
   .left {
     width: 25%;
     position: absolute;
-    top: 125px;
+    top: 75px;
     left: 0;
     right: 0;
     bottom: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     z-index: 101;
+    border-right: 1px solid #eee;
+    background-color: #f6f6f6;
     .van-badge--select {
       border-color: #00a0e9;
     }
@@ -484,7 +503,7 @@ export default {
   }
   .right {
     position: absolute;
-    top: 125px;
+    top: 75px;
     left: 25%;
     right: 0;
     bottom: 0;
@@ -492,11 +511,12 @@ export default {
     z-index: 102;
     .flex-span {
       width: 100%;
-      height: 30px;
+      height: 40px;
       font-size: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
+      background-color: #f6f6f6;
       .flex-1 {
         text-align: center;
         .iconfont {
@@ -516,6 +536,7 @@ export default {
       z-index: 103;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      background-color: #f6f6f6;
       .list-item {
         width: 100%;
         .van-card {
@@ -568,6 +589,9 @@ export default {
         text-align: center;
       }
     }
+  }
+  .van-cell__title {
+    text-align: center;
   }
 }
 </style>

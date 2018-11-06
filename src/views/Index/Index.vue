@@ -9,72 +9,103 @@
       </van-swipe>
     </div>
 
-    <!--工作台-->
-    <div class="index-option" v-for="(item, index) in data" :key="index">
-      <div class="option-title" v-if="item.isShowTitle == 1">
-        <div class="title">{{item.title}}</div>
+    <!--动态-->
+    <div class="index-marquee">
+      <div class="marquee-title">
+        <span>最新动态</span>
       </div>
-      <div class="option-item">
-        <div class="item" v-for="(ite, idx) in item.data" :key="idx" @click="jumpPage(ite)">
-          <div class="van-info" v-if="ite.info > 0">{{ite.info}}</div>
-          <div class="item-icon bg-blue">
-            <i class="iconfont icon-daiban" />
-          </div>
-          <div class="option-text">{{ite.text}}</div>
-        </div>
+      <div class="marquee-list">
+        <ul :class="{animate}">
+          <li v-for="(item, index) in marqueeList" :key="index">
+            {{item}}
+          </li>
+        </ul>
       </div>
     </div>
 
-    <!--统计数据-->
-    <count />
+    <!--搜索框-->
+    <van-search placeholder="请输入物资名称" v-model="keyword" @search="onSearch" @cancel="filterReset" />
+
+    <!--页面版块-->
+    <div class="index-pages">
+      <div class="pages-row" v-for="(item,index) in pages" :key="index" v-if="item.isShowTitle == 1">
+        <div class="pages-title">{{item.title}}</div>
+        <div class="pages-content">
+          <div :class="item.RowNum == 2 ? 'content-item-2' : 'content-item-4'" v-for="(ite,idx) in item.data" :key="idx" @click="jumpPage(ite.action)">
+            <div class="content-image">
+              <img :src="(ite.icon).replace('~',servePath)" :alt="ite.text">
+            </div>
+            <div class="content-text">{{ite.text}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import count from "./../Count/Count";
 import { index } from "./../../assets/js/api.js";
 
 export default {
   data() {
     return {
       images: [],
-      data: []
+      pages: [],
+      keyword: "",
+      animate: false,
+      marqueeList: [
+        "1111111111111111111111111111111111111111111111111111111111111",
+        "2222222222222222222222",
+        "33333333333333333333333333333333333333333333333333",
+        "444444444444444444",
+        "555555555555555555555555555555"
+      ]
     };
   },
   computed,
-  components: {
-    count
-  },
   methods: {
-    jumpPage(item) {
-      this.$store.commit("taskModel", item.id);
-      this.$store.commit("filterParams", item.Param ? 1 : 2);
-      let name = "";
-      if (item.Param && parseInt(item.info) > 0) {
-        name = item.Param;
-      } else {
-        this.$store.commit("taskParams", "");
-        name = item.action;
-      }
-      this.$router.push({ name });
-      this.$parent.title = item.text;
+    jumpPage(name) {
+      this.$router.push({
+        name
+      });
+    },
+    onSearch() {
+      this.$store.commit("goodsParams", { keyword: this.keyword });
+      this.$router.push({
+        name: "goodsList"
+      });
+    },
+    filterReset() {
+      this.keyword = "";
+      this.$store.commit("goodsParams", "");
     },
     pageInit() {
-      index.getGetWorkSpace(this.userInfo.oid).then(res => {
+      index.getBanner().then(res => {
         if (res && res.status === 1 && res.text) {
-          this.data = JSON.parse(res.text);
-          // console.log(this.data);
+          this.images = JSON.parse(res.text);
+          // console.log(this.images);
         }
       });
+      index.getHomePageInfo().then(res => {
+        if (res && res.status === 1 && res.text) {
+          this.pages = JSON.parse(res.text);
+          console.log(this.pages);
+        }
+      });
+    },
+    showMarquee() {
+      this.animate = true;
+      setTimeout(() => {
+        this.marqueeList.push(this.marqueeList[0]);
+        this.marqueeList.shift();
+        this.animate = false;
+      }, 500);
     }
   },
+  created: function() {
+    setInterval(this.showMarquee, 2000);
+  },
   mounted() {
-    index.getBanner().then(res => {
-      if (res && res.status === 1 && res.text) {
-        this.images = JSON.parse(res.text);
-        // console.log(this.images);
-      }
-    });
     this.pageInit();
   }
 };
@@ -83,8 +114,9 @@ export default {
 .index {
   width: 100%;
   background-color: #fff;
+  padding-bottom: 60px;
   .index-banner {
-    height: 210px;
+    height: 200px;
     .van-swipe-item {
       height: 200px !important;
     }
@@ -93,53 +125,109 @@ export default {
       height: 100%;
     }
   }
-  .index-option {
-    margin-bottom: 10px;
-    background-color: #fff;
-    .option-title {
-      padding: 0 10px;
-      .title {
-        padding: 10px 0;
-        font-size: 16px;
-        font-weight: 800;
-        border-bottom: 1px solid #eee;
+
+  .index-marquee {
+    width: 100%;
+    align-items: center;
+    color: #fff;
+    background-color: #49b1e0;
+    display: flex;
+    .marquee-title {
+      padding: 0 20px;
+      height: 20px;
+      font-size: 14px;
+      border-right: 1px solid #fff;
+      align-items: center;
+    }
+
+    .marquee-list {
+      width: 70%;
+      height: 30px;
+      overflow: hidden;
+      .animate {
+        transition: all 0.5s;
+        margin-top: -30px;
+      }
+      li {
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        padding-left: 20px;
+        word-wrap: normal;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        span {
+          padding: 0 2px;
+        }
       }
     }
-    .option-item {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      .item {
-        width: 103.5px;
-        height: 103.5px;
+  }
+
+  // 搜索框
+  .van-search {
+    // margin: 10px 0;
+    padding: 15px 5px !important;
+    background: #fff !important;
+  }
+
+  // 版块
+  .index-pages {
+    .pages-row {
+      padding: 0 10px;
+      width: 100%;
+      margin-top: 10px;
+      background-color: #fff;
+      .pages-title {
+        color: #49b1e0;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+      }
+      .pages-content {
+        width: 100%;
+        padding: 5px 0;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        .van-info {
-          left: auto;
-          right: 0px;
-          top: 3px;
-          font-size: 16px;
-        }
-        .item-icon {
-          width: 60px;
-          height: 60px;
-          border-radius: 15%;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        .content-item-2 {
+          width: 180px;
+          height: 130px;
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
-          .iconfont {
-            color: #fff;
-            font-size: 35px;
+          .content-image {
+            width: 175px;
+            height: 85px;
+            > img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .content-text {
+            padding-top: 10px;
+          }
+        }
+        .content-item-4 {
+          width: 90px;
+          height: 130px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          .content-image {
+            width: 85px;
+            height: 85px;
+            > img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .content-text {
+            padding-top: 10px;
           }
         }
       }
-    }
-    .option-text {
-      font-size: 14px;
-      padding-top: 5px;
     }
   }
 }

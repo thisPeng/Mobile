@@ -1,7 +1,14 @@
 <template>
   <div class="supplier">
+    <div class="van-cell van-cell--borderless van-field">
+      <div class="van-cell__title">工程名称：</div>
+      <div class="van-cell__value flex-between">
+        <span class="text-truncate text-left text-gray">{{projectInfo.ProjectName || '请选择工程项目'}}</span>
+        <van-button type="primary" size="mini" @click="$router.push({ name: 'projectList' })">选择</van-button>
+      </div>
+    </div>
     <van-tabs v-model="active">
-      <van-tab title="常用供应商">
+      <van-tab title="收藏的">
         <div class="supplier-option">
           <van-search v-model="keyword" placeholder="请输入供应商名称" @search="searchList" @cancel="cleanSearch" show-action></van-search>
         </div>
@@ -15,7 +22,7 @@
               <div class="item-content">
                 <div class="content-row">
                   <span class="row-left">联系人：{{item[10]}}</span>
-                  <span class="row-right text-right">
+                  <span class="row-right">状态：
                     <van-tag type="danger" v-if="item[26] === '1'">待审批</van-tag>
                     <van-tag type="primary" v-else-if="item[26] === '2'">审批中</van-tag>
                     <van-tag type="success" v-else-if="item[26] === '3'">已审批</van-tag>
@@ -39,7 +46,7 @@
         </div>
         <van-pagination v-model="curPage" :total-items="pages.RecordCount" :items-per-page="10" mode="simple" class="supplier-pages" @change="getList" />
       </van-tab>
-      <van-tab title="全部供应商">
+      <van-tab title="全部">
         <div class="supplier-option">
           <van-search v-model="allKeyword" placeholder="请输入供应商名称" @search="searchAllList" @cancel="cleanAllSearch" show-action></van-search>
         </div>
@@ -53,7 +60,7 @@
               <div class="item-content">
                 <div class="content-row">
                   <span class="row-left">联系人：{{item[13]}}</span>
-                  <span class="row-right text-right">
+                  <span class="row-right">状态：
                     <van-tag type="danger" v-if="item[44] === '1'">待审批</van-tag>
                     <van-tag type="primary" v-else-if="item[44] === '2'">审批中</van-tag>
                     <van-tag type="success" v-else-if="item[44] === '3'">已审批</van-tag>
@@ -213,11 +220,16 @@ export default {
       });
     },
     // 跳转供应商分类商品
+    // jumpPage(item, type) {
+    //   this.$store.commit("suppParams", { id: type ? item[0] : item[2] });
+    //   this.$router.push({
+    //     name: "supplierType"
+    //   });
+    // },
+    // 选择供应商分类商品
     jumpPage(item, type) {
       this.$store.commit("suppParams", { id: type ? item[0] : item[2] });
-      this.$router.push({
-        name: "supplierType"
-      });
+      this.$router.go(-1);
     },
     // 页面初始化
     pageInit() {
@@ -225,7 +237,7 @@ export default {
         this.getList();
         this.getAllList();
       } else {
-        this.$toast("请先点击屏幕右上角按钮，选择项目");
+        this.$toast.fail("请选择项目");
       }
     }
   },

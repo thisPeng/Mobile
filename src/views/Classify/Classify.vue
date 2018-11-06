@@ -1,12 +1,23 @@
 <template>
   <div class="classify">
-    <van-tabs v-model="activeTabs" @change="onSwitech">
-      <van-tab title="所有分类">
+    <div class="van-cell van-cell--borderless van-field">
+      <div class="van-cell__title">工程名称：</div>
+      <div class="van-cell__value flex-between">
+        <span class="text-truncate text-left text-gray">{{projectInfo.ProjectName || '请选择工程项目'}}</span>
+        <van-button type="primary" size="mini" @click="$router.push({ name: 'projectList' })">选择</van-button>
+      </div>
+    </div>
+    <van-tabs v-model="activeTabs" @change="onSwitech" type="card">
+      <van-tab title="系统分类">
         <cly :topList="topList" :detailedList="detailedList"></cly>
       </van-tab>
-      <van-tab title="常用供应商">
-        <stp :suppList="list" />
+      <van-tab title="供应商">
+        <stp :suppList="list" ref="suppTabs" />
       </van-tab>
+      <div class="classify-icon" v-show="activeTabs === 1">
+        <!-- <van-icon name="like-o" /> -->
+        <van-icon name="info-o" color="#fa7815" @click="jumpInfo" />
+      </div>
     </van-tabs>
   </div>
 </template>
@@ -31,11 +42,34 @@ export default {
     stp
   },
   methods: {
+    jumpInfo() {
+      supplier
+        .getSuppTaskId(
+          this.projectInfo.DemandID || this.confirmParams[24],
+          this.suppParams.id
+        )
+        .then(res => {
+          try {
+            if (res.status === 1) {
+              const params = {
+                name: "供应商详情",
+                TaskGYSID: "SC_Company_SupplierOID='" + res.text + "'"
+              };
+              this.$store.commit("taskParams", params);
+              this.$router.push({
+                name: "taskGYSFrom"
+              });
+            }
+          } catch (e) {
+            this.$toast.fail(e);
+          }
+        });
+    },
     onSwitech(i) {
       if (i === 1) {
         this.$nextTick().then(() => {
           if (!this.projectInfo.SC_ProjectOID) {
-            this.$toast("请先点击屏幕右上角按钮，选择项目");
+            this.$toast.fail("请选择项目");
           }
         });
       }
@@ -68,7 +102,9 @@ export default {
     },
     // 页面初始化
     pageInit() {
-      this.getClassifyList();
+      if (this.activeTabs === 1) {
+        this.$refs["suppTabs"].pageInit();
+      }
     }
   },
   computed,
@@ -138,24 +174,46 @@ export default {
     });
   },
   mounted() {
-    this.pageInit();
+    // this.getClassifyList();
   }
 };
 </script>
 <style lang="less" scoped>
 .classify {
   width: 100%;
-  bottom: 50px !important;
   overflow: hidden !important;
   .van-tabs {
     height: 100%;
+    background-color: #fff;
+    position: relative;
+    .classify-icon {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      .van-icon {
+        margin: 0 5px;
+        font-size: 22px;
+      }
+    }
   }
 }
 </style>
 <style lang="less">
 .classify {
   .van-tabs__wrap {
+    width: 180px;
     z-index: 1;
+    .van-tabs__nav {
+      // margin: 0;
+      border-color: #fa7815;
+      .van-tab--active {
+        color: #fff !important;
+        background-color: #fa7815 !important;
+      }
+      .van-tab {
+        color: #fa7815;
+      }
+    }
   }
 }
 </style>
