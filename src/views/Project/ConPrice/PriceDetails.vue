@@ -77,7 +77,7 @@ export default {
         oid: this.list[0]
       });
       this.$router.push({
-        name: "supplierType"
+        name: "supplierInfo"
       });
     },
     //确认按钮

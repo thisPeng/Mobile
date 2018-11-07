@@ -61,15 +61,13 @@ export default {
       ImagePreview([(this.servePath + path).replace("~", "")]);
     },
     getData() {
-      supplier
-        .getSuppInfo(this.projectInfo.DemandID, this.suppParams[0])
-        .then(res => {
-          if (res && res.status === 1) {
-            const sp = res.text.split("[[");
-            const csp = sp[1].split("]]");
-            this.data = eval("[[" + csp[0] + "]]")[0];
-          }
-        });
+      supplier.getSuppInfo(this.suppParams[0]).then(res => {
+        if (res && res.status === 1) {
+          const sp = res.text.split("[[");
+          const csp = sp[1].split("]]");
+          this.data = eval("[[" + csp[0] + "]]")[0];
+        }
+      });
     }
   },
   mounted() {

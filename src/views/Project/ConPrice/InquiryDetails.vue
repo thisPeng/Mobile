@@ -82,7 +82,7 @@ export default {
         oid: this.confirmParams[0]
       });
       this.$router.push({
-        name: "supplierType"
+        name: "supplierInfo"
       });
     },
     // 计算物资总价

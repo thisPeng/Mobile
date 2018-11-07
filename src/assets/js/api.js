@@ -299,7 +299,7 @@ const classify = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": params.SQLCondi + " AND smt.SPUName LIKE '%" + params.keyword + "%' AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') ",
+        "_parameters[SQLCondi]": params.SQLCondi + " AND (smt.SPUName LIKE '%" + params.keyword + "%' OR BrandName LIKE '%" + params.keyword + "%') AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') ",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": params.SQLFix,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -348,7 +348,7 @@ const classify = {
           SC_SMaterialType_FK +
           "') OR SC_SMaterialType_FK = '" +
           SC_SMaterialType_FK +
-          "' )" + " AND smt.SPUName LIKE '%" + keyword + "%' AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') ",
+          "' )" + " AND (smt.SPUName LIKE '%" + keyword + "%' OR BrandName LIKE '%" + keyword + "%') AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') ",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": SQLFix,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -662,28 +662,6 @@ const supplier = {
       }
     });
   },
-  // 所有常用供应商列表
-  getSuppList(DemandID = "") {
-    return axios({
-      url: "/UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_Partner_SupplierService",
-        _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_SC_Partner_Supplier",
-        "_parameters[nStartPos]": 0,
-        "_parameters[nRecords]": -1,
-        "_parameters[fieldList]": "",
-        "_parameters[valueList]": "",
-        "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "ComSupplier.Organize_ID='" + DemandID + "'",
-        "_parameters[SQLCondiType]": 0,
-        "_parameters[SQLFix]": "",
-        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
-        _pUrl: ""
-      }
-    });
-  },
   //获取劳务供应商列表
   getSupplierDetails(DemandID = "", keyword = "", page = 0) {
     return axios({
@@ -752,8 +730,23 @@ const supplier = {
       }
     });
   },
+  // 获取供应商收藏状态
+  getColectStatus(params = {}) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Partner_SupplierService",
+        _methodName: "GetColectStatus",
+        "_parameters[PartnerID]": params.pid,
+        "_parameters[SupplierID]": params.sid,
+        _paraNames: "PartnerID,SupplierID",
+        _pUrl: ""
+      }
+    });
+  },
   // 获取供应商详情
-  getSuppInfo(DemandID = "", SupplierID = "") {
+  getSuppInfo(SupplierID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -766,7 +759,7 @@ const supplier = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "Organize_ID='" + DemandID + "' AND SupplierID='" + SupplierID + "'",
+        "_parameters[SQLCondi]": "SupplierID='" + SupplierID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",

@@ -1,6 +1,6 @@
 <template>
   <div class="supplie-type">
-    <van-search placeholder="请输入物资名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action v-if="!isSearch" />
+    <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action v-if="!isSearch" />
     <!-- <div class="supplie-info" v-if="suppInfo.length > 0" @click="jumpInfo">
       <div class="info-left">
         <div class="info-img">
@@ -19,21 +19,18 @@
         <van-icon class="padding-left-xs" name="arrow" size="20px" />
       </div>
     </div> -->
-    <div class="supplie-select">
-      <div class="van-cell van-cell--borderless van-field">
-        <div class="van-cell__title" v-if="suppInfo.length > 0">
+    <van-cell-group class="supplie-select">
+      <van-cell is-link @click="$router.push({ name: 'supplier' })">
+        <template slot="title">
           <van-tag type="danger" v-if="suppInfo[3] === '1'">待审核</van-tag>
           <van-tag type="primary" v-else-if="suppInfo[3] === '2'">审核中</van-tag>
           <van-tag type="success" v-else-if="suppInfo[3] === '3'">已审核</van-tag>
           <van-tag v-else>未审核</van-tag>
-        </div>
-        <div class="van-cell__value flex-between">
-          <span class="text-truncate text-left text-gray">{{suppInfo[22] || '请选择供应商'}}</span>
-          <!-- <van-icon name="exchange-record" @click="$router.push({ name: 'supplier' })" size="30px" /> -->
-          <van-button type="primary" size="mini" @click="$router.push({ name: 'supplier' })">选择</van-button>
-        </div>
-      </div>
-    </div>
+          <span class="van-cell-text padding-left">{{suppInfo[22] || '请选择供应商'}}</span>
+        </template>
+      </van-cell>
+    </van-cell-group>
+
     <div class="left">
       <div class="van-hairline--top-bottom van-badge-group">
         <div :class="activeKey === index ? 'van-badge van-hairline van-badge--select' : 'van-badge van-hairline'" v-for="(item, index) in typeList" :key="index" @click="selectKey(index)">
@@ -93,12 +90,7 @@
       <div class="screen">
         <div class="screen-filter">
           <van-collapse v-model="activeNames">
-            <!-- <van-collapse-item title="供应商" name="1" v-if="isSearch">
-              <span class="filter-item" v-for="(item, index) in suppList" :key="index">
-                <van-button @click="filterSupp(item, index)" :disabled="suppActive === index ? true : false">{{item[5]}}</van-button>
-              </span>
-            </van-collapse-item> -->
-            <van-collapse-item title="分类" name="2">
+            <van-collapse-item title="分类" name="1">
               <span class="filter-item" v-for="(item, index) in filterList" :key="index">
                 <van-button @click="filterGoods(item, index)" :disabled="filterActive === index ? true : false">{{item.MaterialName}}</van-button>
               </span>
@@ -119,7 +111,7 @@ import { classify, supplier } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      activeNames: ["1", "2"],
+      activeNames: ["1"],
       priceDesc: "",
       screenShow: false,
       isSearch: false,
@@ -158,12 +150,6 @@ export default {
         taxAll: ""
       }
     };
-  },
-  props: {
-    suppList: {
-      type: Array,
-      default: () => []
-    }
   },
   methods: {
     jumpInfo() {
@@ -261,8 +247,11 @@ export default {
     filterSupp(item, index) {
       this.suppActive = index;
       this.$store.commit("suppParams", { id: item[2] });
-      this.getSuppInfo();
-      this.getSuppType();
+      this.getSuppInfo().then(res => {
+        if (res) {
+          this.getSuppType();
+        }
+      });
       this.screenShow = false;
     },
     // 过滤分类
@@ -411,23 +400,25 @@ export default {
     },
     // 获取供应商详情
     getSuppInfo() {
-      supplier
-        .getSuppInfo(
-          this.projectInfo.DemandID || this.confirmParams[24],
-          this.suppParams.id
-        )
-        .then(res => {
-          if (res.status === 1) {
-            const sp = res.text.split("[[");
-            const tsp = sp[1].split("]]");
-            this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
-          }
-        });
+      return supplier.getSuppInfo(this.suppParams.id).then(res => {
+        try {
+          const sp = res.text.split("[[");
+          const tsp = sp[1].split("]]");
+          this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
+          return true;
+        } catch (e) {
+          this.suppInfo = [];
+          return false;
+        }
+      });
     },
     pageInit() {
       this.isSearch = this.$parent.index ? true : false;
-      this.getSuppInfo();
-      this.getSuppType();
+      this.getSuppInfo().then(res => {
+        if (res) {
+          this.getSuppType();
+        }
+      });
     }
   },
   computed,
@@ -488,7 +479,7 @@ export default {
     top: 75px;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 45px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     z-index: 101;
@@ -506,7 +497,7 @@ export default {
     top: 75px;
     left: 25%;
     right: 0;
-    bottom: 0;
+    bottom: 45px;
     // overflow-y: auto;
     z-index: 102;
     .flex-span {

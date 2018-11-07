@@ -7,16 +7,17 @@
         <van-button type="primary" size="mini" @click="$router.push({ name: 'projectList' })">选择</van-button>
       </div>
     </div>
-    <van-tabs v-model="activeTabs" @change="onSwitech" type="card">
+    <van-tabs v-model="activeTabs" type="card">
       <van-tab title="系统分类">
         <cly :topList="topList" :detailedList="detailedList"></cly>
       </van-tab>
       <van-tab title="供应商">
-        <stp :suppList="list" ref="suppTabs" />
+        <stp ref="suppTabs" />
       </van-tab>
       <div class="classify-icon" v-show="activeTabs === 1">
-        <!-- <van-icon name="like-o" /> -->
-        <van-icon name="info-o" color="#fa7815" @click="jumpInfo" />
+        <van-icon name="like" color="#fa7815" @click="onUnCollect" v-if="isColect" />
+        <van-icon name="like-o" color="#fa7815" @click="onCollect" v-else />
+        <van-icon name="warn" color="#fa7815" @click="jumpInfo" />
       </div>
     </van-tabs>
   </div>
@@ -31,7 +32,7 @@ export default {
   data() {
     return {
       activeTabs: 0,
-      list: [],
+      isColect: false,
       pages: [],
       topList: [],
       detailedList: []
@@ -65,14 +66,65 @@ export default {
           }
         });
     },
-    onSwitech(i) {
-      if (i === 1) {
-        this.$nextTick().then(() => {
-          if (!this.projectInfo.SC_ProjectOID) {
-            this.$toast.fail("请选择项目");
+    // 获取收藏状态
+    getColectStatus() {
+      const params = {
+        pid: this.userId.UCML_OrganizeOID,
+        sid: this.suppParams.id
+      };
+      supplier.getColectStatus(params).then(res => {
+        if (res.status && res.text === "True") {
+          this.isColect = true;
+        } else {
+          this.isColect = false;
+        }
+      });
+    },
+    // 添加收藏
+    onCollect() {
+      const params = {
+        pid: this.userId.UCML_OrganizeOID,
+        sid: this.suppParams.id
+      };
+      supplier.addCollect(params).then(res => {
+        if (res && res.status === 1) {
+          if (res.text == "1") {
+            this.$toast.fail("已收藏供应商");
+            this.isColect = true;
+          } else if (res.text == "2") {
+            this.$toast.success("添加收藏成功");
+            this.isColect = true;
+          } else {
+            this.$toast.fail("添加收藏失败，请重试");
+            this.isColect = false;
           }
-        });
-      }
+        } else if (res && res.text) {
+          this.$toast(res.text);
+        }
+      });
+    },
+    // 取消收藏
+    onUnCollect() {
+      const params = {
+        pid: this.userId.UCML_OrganizeOID,
+        sid: this.suppParams.id
+      };
+      supplier.cancelCollect(params).then(res => {
+        if (res && res.status === 1) {
+          if (res.text === "1") {
+            this.$toast.fail("该供应商未收藏");
+            this.isColect = false;
+          } else if (res.text === "2") {
+            this.$toast.success("取消收藏成功");
+            this.isColect = false;
+          } else {
+            this.$toast.fail("取消收藏失败，请重试");
+            this.isColect = true;
+          }
+        } else if (res && res.text) {
+          this.$toast(res.text);
+        }
+      });
     },
     // 选择分类
     onNavClick(index) {
@@ -85,26 +137,14 @@ export default {
         name: "goodsList"
       });
     },
-    // 获取分类列表
-    getClassifyList() {
-      supplier.getSuppList(this.projectInfo.DemandID).then(res => {
-        try {
-          if (res && res.status === 1) {
-            const sp = res.text.split("]]");
-            this.list = eval(sp[0].split("=")[1] + "]]");
-            this.$store.commit("suppParams", { id: this.list[0][2] });
-            // this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      });
-    },
     // 页面初始化
     pageInit() {
-      if (this.activeTabs === 1) {
+      this.$nextTick(() => {
         this.$refs["suppTabs"].pageInit();
-      }
+        if (this.suppParams.id) {
+          this.getColectStatus();
+        }
+      });
     }
   },
   computed,
@@ -172,9 +212,6 @@ export default {
         });
       }
     });
-  },
-  mounted() {
-    // this.getClassifyList();
   }
 };
 </script>
@@ -191,7 +228,7 @@ export default {
       top: 8px;
       right: 10px;
       .van-icon {
-        margin: 0 5px;
+        margin: 0 15px;
         font-size: 22px;
       }
     }

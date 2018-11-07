@@ -1,6 +1,6 @@
 <template>
   <div class="supplie-type">
-    <van-search placeholder="请输入物资名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action v-if="!isSearch" />
+    <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action v-if="!isSearch" />
     <div class="supplie-info" v-if="suppInfo.length > 0" @click="jumpInfo">
       <div class="info-left">
         <div class="info-img">
@@ -247,8 +247,11 @@ export default {
     filterSupp(item, index) {
       this.suppActive = index;
       this.$store.commit("suppParams", { id: item[2] });
-      this.getSuppType();
-      this.getSuppInfo();
+      this.getSuppInfo().then(res => {
+        if (res) {
+          this.getSuppType();
+        }
+      });
       this.screenShow = false;
     },
     // 过滤分类
@@ -397,23 +400,25 @@ export default {
     },
     // 获取供应商详情
     getSuppInfo() {
-      supplier
-        .getSuppInfo(
-          this.projectInfo.DemandID || this.confirmParams[24],
-          this.suppParams.id
-        )
-        .then(res => {
-          if (res.status === 1) {
-            const sp = res.text.split("[[");
-            const tsp = sp[1].split("]]");
-            this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
-          }
-        });
+      return supplier.getSuppInfo(this.suppParams.id).then(res => {
+        try {
+          const sp = res.text.split("[[");
+          const tsp = sp[1].split("]]");
+          this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
+          return true;
+        } catch (e) {
+          this.suppInfo = [];
+          return false;
+        }
+      });
     },
     pageInit() {
       // this.isSearch = this.$parent.index ? true : false;
-      this.getSuppType();
-      this.getSuppInfo();
+      this.getSuppInfo().then(res => {
+        if (res) {
+          this.getSuppType();
+        }
+      });
     }
   },
   computed,

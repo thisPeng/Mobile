@@ -5,7 +5,7 @@
     </van-nav-bar>
 
     <keep-alive>
-      <router-view class="content" v-input v-if="$route.meta.keepAlive"></router-view>
+      <router-view class="content" v-input v-if="$route.meta.keepAlive" ref="route"></router-view>
     </keep-alive>
     <router-view class="content" v-input v-if="!$route.meta.keepAlive"></router-view>
 
@@ -40,7 +40,6 @@ export default {
     $route(to) {
       try {
         this.title = to.meta.title;
-
         if (
           to.name !== "index" &&
           to.name !== "working" &&
@@ -58,9 +57,9 @@ export default {
           this.$store.commit("isReload", false);
           location.reload();
         } else if (to.meta.keepAlive) {
-          this.$children.forEach(val => {
-            if (val.$router.history.current.name == to.name && val.pageInit) {
-              val.pageInit();
+          this.$nextTick(() => {
+            if (this.$refs.route.pageInit) {
+              this.$refs.route.pageInit();
             }
           });
         }

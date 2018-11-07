@@ -43,20 +43,18 @@ export default {
   computed,
   methods: {
     getData() {
-      supplier
-        .getSuppInfo(this.projectInfo.DemandID, this.suppParams[0])
-        .then(res => {
-          if (res && res.status === 1) {
-            const sp = res.text.split("[[");
-            const csp = sp[1].split("]]");
-            this.data = eval("[[" + csp[0] + "]]")[0];
-            if (this.data[55] && this.data[55] != "1900-01-01 00:00:00") {
-              this.data[55] = this.$util.formatDate(this.data[55]);
-            } else {
-              this.data[55] = "";
-            }
+      supplier.getSuppInfo(this.suppParams[0]).then(res => {
+        if (res && res.status === 1) {
+          const sp = res.text.split("[[");
+          const csp = sp[1].split("]]");
+          this.data = eval("[[" + csp[0] + "]]")[0];
+          if (this.data[55] && this.data[55] != "1900-01-01 00:00:00") {
+            this.data[55] = this.$util.formatDate(this.data[55]);
+          } else {
+            this.data[55] = "";
           }
-        });
+        }
+      });
     },
     pageInit() {
       this.getData();

@@ -42,7 +42,7 @@ import CompanyUserInfo from "./views/Users/CompanyUserInfo";
 import SupplierUserInfo from "./views/Users/SupplierUserInfo";
 import UsersInfoAccessory from "./views/Users/UsersInfoAccessory";
 import Supplier from "./views/Supplier/Supplier";
-import SupplierType from "./views/Supplier/SupplierType";
+import SupplierInfo from "./views/Supplier/SupplierInfo";
 import SupplierList from "./views/Supplier/SupplierList";
 import SupplierAccessory from "./views/Supplier/SupplierAccessory";
 import SupplierDetailsAnnex from "./views/Supplier/SupplierDetailsAnnex";
@@ -138,7 +138,7 @@ export default new Router({
       component: Cart,
       meta: {
         title: "已选物资",
-        // keepAlive: true
+        keepAlive: true
       }
     }, {
       path: "/inquiry",
@@ -319,9 +319,9 @@ export default new Router({
         title: "劳务供应商详情"
       }
     }, {
-      path: "/users/supplier/type",
-      name: "supplierType",
-      component: SupplierType,
+      path: "/users/supplier/info",
+      name: "supplierInfo",
+      component: SupplierInfo,
       meta: {
         title: "供应商物资",
         keepAlive: true

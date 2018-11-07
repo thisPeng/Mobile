@@ -8,17 +8,19 @@
       </div>
     </div>
     <van-tabs v-model="active">
-      <van-tab title="收藏的">
+      <van-tab title="收藏">
         <div class="supplier-option">
           <van-search v-model="keyword" placeholder="请输入供应商名称" @search="searchList" @cancel="cleanSearch" show-action></van-search>
         </div>
         <div class="supplier-list">
-          <div class="supplier-item" v-for="(item,index) in list" :key="index">
+          <div class="supplier-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item[2])">
             <div class="item-title">
               <span class="title">{{item[5]}}</span>
-              <span class="option" @click.stop="onUnCollect(item)">取消收藏</span>
+              <span class="icon">
+                <van-icon name="success" color="#00A0E9" v-if="item[2] === suppParams.id" />
+              </span>
             </div>
-            <van-cell is-link @click="jumpPage(item, 0)">
+            <van-cell>
               <div class="item-content">
                 <div class="content-row">
                   <span class="row-left">联系人：{{item[10]}}</span>
@@ -51,12 +53,14 @@
           <van-search v-model="allKeyword" placeholder="请输入供应商名称" @search="searchAllList" @cancel="cleanAllSearch" show-action></van-search>
         </div>
         <div class="supplier-list">
-          <div class="supplier-item" v-for="(item,index) in allList" :key="index">
+          <div class="supplier-item" v-for="(item,index) in allList" :key="index" @click="jumpPage(item[0])">
             <div class="item-title">
               <span class="title">{{item[2]}}</span>
-              <span class="option" @click.stop="onCollect(item)">添加收藏</span>
+              <span class="icon">
+                <van-icon name="success" color="#00A0E9" v-if="item[0] === suppParams.id" />
+              </span>
             </div>
-            <van-cell is-link @click="jumpPage(item, 1)">
+            <van-cell>
               <div class="item-content">
                 <div class="content-row">
                   <span class="row-left">联系人：{{item[13]}}</span>
@@ -136,13 +140,9 @@ export default {
         .getList(page, this.keyword, this.projectInfo.DemandID)
         .then(res => {
           try {
-            if (res && res.status === 1) {
-              const sp = res.text.split("]]");
-              this.list = eval(sp[0].split("=")[1] + "]]");
-              this.pages = eval(
-                "(" + sp[1].split("=")[1].replace(";", "") + ")"
-              );
-            }
+            const sp = res.text.split("]]");
+            this.list = eval(sp[0].split("=")[1] + "]]");
+            this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
           } catch (e) {
             this.list = [];
             this.pages = {};
@@ -156,79 +156,20 @@ export default {
         .getAllList(page, this.allKeyword, this.projectInfo.DemandID)
         .then(res => {
           try {
-            if (res && res.status === 1) {
-              const sp = res.text.split("]]");
-              this.allList = eval(sp[0].split("=")[1] + "]]");
-              this.allPages = eval(
-                "(" + sp[1].split("=")[1].replace(";", "") + ")"
-              );
-            }
+            const sp = res.text.split("]]");
+            this.allList = eval(sp[0].split("=")[1] + "]]");
+            this.allPages = eval(
+              "(" + sp[1].split("=")[1].replace(";", "") + ")"
+            );
           } catch (e) {
             this.allList = [];
             this.allPages = {};
           }
         });
     },
-    // 添加收藏
-    onCollect(item) {
-      const params = {
-        pid: this.userId.UCML_OrganizeOID,
-        sid: item[0]
-      };
-      supplier.addCollect(params).then(res => {
-        if (res && res.status === 1) {
-          if (res.text == "1") {
-            this.$toast.fail("供应商已经是常用供应商");
-          } else if (res.text == "2") {
-            this.getList();
-            this.$nextTick().then(() => {
-              setTimeout(() => {
-                this.$toast.success("添加收藏成功");
-              }, 300);
-            });
-          } else {
-            this.$toast.fail("添加收藏失败，请刷新页面重试");
-          }
-        } else if (res && res.text) {
-          this.$toast(res.text);
-        }
-      });
-    },
-    // 取消收藏
-    onUnCollect(item) {
-      const params = {
-        pid: this.userId.UCML_OrganizeOID,
-        sid: item[2]
-      };
-      supplier.cancelCollect(params).then(res => {
-        if (res && res.status === 1) {
-          if (res.text === "1") {
-            this.$toast.fail("该供应商未收藏");
-          } else if (res.text === "2") {
-            this.getList();
-            this.$nextTick().then(() => {
-              setTimeout(() => {
-                this.$toast.success("取消收藏成功");
-              }, 300);
-            });
-          } else {
-            this.$toast.fail("供应商ID或合作商ID不存在");
-          }
-        } else if (res && res.text) {
-          this.$toast(res.text);
-        }
-      });
-    },
-    // 跳转供应商分类商品
-    // jumpPage(item, type) {
-    //   this.$store.commit("suppParams", { id: type ? item[0] : item[2] });
-    //   this.$router.push({
-    //     name: "supplierType"
-    //   });
-    // },
     // 选择供应商分类商品
-    jumpPage(item, type) {
-      this.$store.commit("suppParams", { id: type ? item[0] : item[2] });
+    jumpPage(id) {
+      this.$store.commit("suppParams", { id });
       this.$router.go(-1);
     },
     // 页面初始化
@@ -264,7 +205,7 @@ export default {
       border-radius: 5px;
       margin-bottom: 10px;
       .item-title {
-        // padding: 10px 0;
+        padding: 10px 0;
         border-bottom: 1px solid #f6f6f6;
         display: flex;
         align-items: center;

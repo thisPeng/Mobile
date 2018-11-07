@@ -1,7 +1,7 @@
 <template>
   <div class="classify">
     <div class="classify-search">
-      <van-search placeholder="请输入物资名称" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
+      <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
       <div class="flex-span">
         <div class="flex-1" @click="orderList('price')">单价
           <i class="iconfont icon-paixu" v-show="priceDesc === ''" />

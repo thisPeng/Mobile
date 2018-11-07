@@ -78,11 +78,11 @@
 
     <div class="van-submit-bar">
       <div class="van-submit-bar__bar">
-        <div class="van-checkbox">
-          <div class="van-checkbox__icon van-checkbox__icon--round"><i class="van-icon van-icon-success" /></div>
-          <span class="van-checkbox__label">全选</span>
+        <van-checkbox v-model="checkedAll" ref="checkedAll" @change="onSelectAll">全选</van-checkbox>
+        <div class="cart-delete" @click="onCartDelete">
+          <i class="iconfont icon-qingkong1"></i>
+          <span class="delete-text">删除</span>
         </div>
-        <div class="cart-delete"><i class="iconfont icon-qingkong1"></i><span class="delete-text">删除</span></div>
         <div class="van-submit-bar__text"></div>
         <van-button type="primary" @click="jumpPage">添加物资</van-button>
         <van-button type="danger" class="margin-right-xs">{{checkedArr.length > 999 ? '询价(999+)' : '询价('+checkedArr.length+')'}}</van-button>
@@ -130,44 +130,41 @@ export default {
     getCart() {
       cart.getList(this.projectInfo.SC_ProjectOID).then(res => {
         try {
-          if (res && res.status === 1) {
-            const sp = res.text.split(";");
-            const list = eval(sp[0].split("=")[1]);
-            const arr = [];
-            const listOrder = [];
-            let tmp = "";
-            // 供应商分组
-            list.forEach(val => {
-              if (val[17] !== tmp) {
-                listOrder.push({
-                  id: val[17],
-                  name: val[18],
-                  checked: false,
-                  list: []
-                });
-                listOrder[listOrder.length - 1].list.push(val);
-                tmp = val[17];
-              } else {
-                listOrder[listOrder.length - 1].list.push(val);
-              }
-              // 默认图片路径
-              if (val[32]) {
-                val[32] = val[32].replace("~", this.servePath);
-              } else {
-                val[32] =
-                  this.servePath +
-                  "/SupplyChain/Images/MaterialType/default.jpg";
-              }
-              if (val[23] == "1") {
-                arr.push(val);
-                listOrder[listOrder.length - 1].checked = true;
-              }
-            });
-            this.list = list;
-            this.listOrder = listOrder;
-            this.checkedArr = arr;
-            this.pages = eval("(" + sp[1].split("=")[1] + ")");
-          }
+          const sp = res.text.split(";");
+          const list = eval(sp[0].split("=")[1]);
+          const arr = [];
+          const listOrder = [];
+          let tmp = "";
+          // 供应商分组
+          list.forEach(val => {
+            if (val[17] !== tmp) {
+              listOrder.push({
+                id: val[17],
+                name: val[18],
+                checked: false,
+                list: []
+              });
+              listOrder[listOrder.length - 1].list.push(val);
+              tmp = val[17];
+            } else {
+              listOrder[listOrder.length - 1].list.push(val);
+            }
+            // 默认图片路径
+            if (val[32]) {
+              val[32] = val[32].replace("~", this.servePath);
+            } else {
+              val[32] =
+                this.servePath + "/SupplyChain/Images/MaterialType/default.jpg";
+            }
+            if (val[23] == "1") {
+              arr.push(val);
+              listOrder[listOrder.length - 1].checked = true;
+            }
+          });
+          this.list = list;
+          this.listOrder = listOrder;
+          this.checkedArr = arr;
+          this.pages = eval("(" + sp[1].split("=")[1] + ")");
         } catch (e) {
           this.list = [];
           this.listOrder = [];
@@ -185,7 +182,7 @@ export default {
     jumpSupp(item) {
       this.$store.commit("suppParams", { id: item.id });
       this.$router.push({
-        name: "supplierType"
+        name: "supplierInfo"
       });
     },
     // 供应商开关

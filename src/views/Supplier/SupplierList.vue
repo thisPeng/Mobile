@@ -1,4 +1,5 @@
 <template>
+  <!--劳务供应商-->
   <div class="supplierList">
     <van-search placeholder="请输入搜索关键词" v-model="keyword" @change="searchData" @cancel="onCancel" show-action />
     <div class="info-data">

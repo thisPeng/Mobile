@@ -64,7 +64,7 @@ export default {
     top: 40px;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 45px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     z-index: 101;
@@ -81,7 +81,7 @@ export default {
     top: 40px;
     left: 25%;
     right: 0;
-    bottom: 0;
+    bottom: 45px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     z-index: 102;

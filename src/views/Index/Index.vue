@@ -11,27 +11,27 @@
 
     <!--动态-->
     <div class="index-marquee">
-      <div class="marquee-title">
-        <span>最新动态</span>
+      <div class="marquee-title" v-if="marqueeList.isShowTitle == 1">
+        <span>{{marqueeList.title}}</span>
       </div>
       <div class="marquee-list">
         <ul :class="{animate}">
-          <li v-for="(item, index) in marqueeList" :key="index">
-            {{item}}
+          <li v-for="(item, index) in marqueeList.data" :key="index">
+            {{item.Describe}}
           </li>
         </ul>
       </div>
     </div>
 
     <!--搜索框-->
-    <van-search placeholder="请输入物资名称" v-model="keyword" @search="onSearch" @cancel="filterReset" />
+    <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" />
 
     <!--页面版块-->
     <div class="index-pages">
       <div class="pages-row" v-for="(item,index) in pages" :key="index" v-if="item.isShowTitle == 1">
         <div class="pages-title">{{item.title}}</div>
         <div class="pages-content">
-          <div :class="item.RowNum == 2 ? 'content-item-2' : 'content-item-4'" v-for="(ite,idx) in item.data" :key="idx" @click="jumpPage(ite.action)">
+          <div :class="item.RowNum == 2 ? 'content-item-2' : 'content-item-4'" v-for="(ite,idx) in item.data" :key="idx" @click="jumpPage(ite)">
             <div class="content-image">
               <img :src="(ite.icon).replace('~',servePath)" :alt="ite.text">
             </div>
@@ -53,20 +53,16 @@ export default {
       pages: [],
       keyword: "",
       animate: false,
-      marqueeList: [
-        "1111111111111111111111111111111111111111111111111111111111111",
-        "2222222222222222222222",
-        "33333333333333333333333333333333333333333333333333",
-        "444444444444444444",
-        "555555555555555555555555555555"
-      ]
+      marqueeList: []
     };
   },
   computed,
   methods: {
-    jumpPage(name) {
+    jumpPage(item) {
+      this.$store.commit("goodsParams", { keyword: item.Param });
+      this.$store.commit("suppParams", { id: item.Param });
       this.$router.push({
-        name
+        name: item.action
       });
     },
     onSearch() {
@@ -79,34 +75,37 @@ export default {
       this.keyword = "";
       this.$store.commit("goodsParams", "");
     },
-    pageInit() {
-      index.getBanner().then(res => {
-        if (res && res.status === 1 && res.text) {
-          this.images = JSON.parse(res.text);
-          // console.log(this.images);
-        }
-      });
-      index.getHomePageInfo().then(res => {
-        if (res && res.status === 1 && res.text) {
-          this.pages = JSON.parse(res.text);
-          console.log(this.pages);
-        }
-      });
-    },
     showMarquee() {
       this.animate = true;
       setTimeout(() => {
-        this.marqueeList.push(this.marqueeList[0]);
-        this.marqueeList.shift();
+        this.marqueeList.data.push(this.marqueeList.data[0]);
+        this.marqueeList.data.shift();
         this.animate = false;
       }, 500);
     }
   },
-  created: function() {
-    setInterval(this.showMarquee, 2000);
-  },
   mounted() {
-    this.pageInit();
+    index.getBanner().then(res => {
+      if (res && res.status === 1 && res.text) {
+        this.images = JSON.parse(res.text);
+        // console.log(this.images);
+      }
+    });
+    index.getHomePageInfo().then(res => {
+      if (res && res.status === 1 && res.text) {
+        const arr = JSON.parse(res.text);
+        // console.log(arr);
+        this.pages = [];
+        arr.forEach(val => {
+          if (val.ActionType == 1) {
+            this.marqueeList = val;
+          } else {
+            this.pages.push(val);
+          }
+        });
+        setInterval(this.showMarquee, 2000);
+      }
+    });
   }
 };
 </script>
@@ -139,7 +138,6 @@ export default {
       border-right: 1px solid #fff;
       align-items: center;
     }
-
     .marquee-list {
       width: 70%;
       height: 30px;
@@ -167,7 +165,7 @@ export default {
   // 搜索框
   .van-search {
     // margin: 10px 0;
-    padding: 15px 5px !important;
+    padding: 15px 10px !important;
     background: #fff !important;
   }
 
@@ -206,6 +204,7 @@ export default {
           }
           .content-text {
             padding-top: 10px;
+            text-align: center;
           }
         }
         .content-item-4 {
@@ -225,9 +224,19 @@ export default {
           }
           .content-text {
             padding-top: 10px;
+            text-align: center;
           }
         }
       }
+    }
+  }
+}
+</style>
+<style lang="less">
+.index {
+  .van-search {
+    .van-cell {
+      border: 1px solid #eee;
     }
   }
 }
