@@ -8,9 +8,7 @@
       <div class="option-item">
         <div class="item" v-for="(ite, idx) in item.data" :key="idx" @click="jumpPage(ite)">
           <div class="van-info" v-if="ite.info > 0">{{ite.info}}</div>
-          <div class="item-icon bg-blue">
-            <i class="iconfont icon-daiban" />
-          </div>
+          <img class="item-icon" :src="ite.icon" />
           <div class="option-text">{{ite.text}}</div>
         </div>
       </div>
@@ -53,7 +51,7 @@ export default {
       index.getGetWorkSpace(this.userInfo.oid).then(res => {
         if (res && res.status === 1 && res.text) {
           this.data = JSON.parse(res.text);
-          // console.log(this.data);
+          console.log(this.data);
         }
       });
     }
