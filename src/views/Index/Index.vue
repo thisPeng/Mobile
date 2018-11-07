@@ -10,7 +10,7 @@
     </div>
 
     <!--动态-->
-    <div class="index-marquee">
+    <div class="index-marquee" v-if="marqueeList.length>0">
       <div class="marquee-title" v-if="marqueeList.isShowTitle == 1">
         <span>{{marqueeList.title}}</span>
       </div>
@@ -92,9 +92,8 @@ export default {
       }
     });
     index.getHomePageInfo().then(res => {
-      if (res && res.status === 1 && res.text) {
+      try {
         const arr = JSON.parse(res.text);
-        // console.log(arr);
         this.pages = [];
         arr.forEach(val => {
           if (val.ActionType == 1) {
@@ -104,6 +103,9 @@ export default {
           }
         });
         setInterval(this.showMarquee, 2000);
+      } catch (e) {
+        this.pages = [];
+        this.marqueeList = [];
       }
     });
   }

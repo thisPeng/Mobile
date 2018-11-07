@@ -1,25 +1,7 @@
 <template>
   <div class="supplie-type">
     <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action v-if="!isSearch" />
-    <!-- <div class="supplie-info" v-if="suppInfo.length > 0" @click="jumpInfo">
-      <div class="info-left">
-        <div class="info-img">
-          <img src="img/icons/android-chrome-512x512.png" alt="" />
-        </div>
-        <div class="info-text">
-          <div class="text-name">{{suppInfo[22]}}</div>
-          <div class="text-address">{{suppInfo[30]}}</div>
-        </div>
-      </div>
-      <div class="info-right">
-        <van-tag type="danger" v-if="suppInfo[3] === '1'">待审核</van-tag>
-        <van-tag type="primary" v-else-if="suppInfo[3] === '2'">审核中</van-tag>
-        <van-tag type="success" v-else-if="suppInfo[3] === '3'">已审核</van-tag>
-        <van-tag v-else>未审核</van-tag>
-        <van-icon class="padding-left-xs" name="arrow" size="20px" />
-      </div>
-    </div> -->
-    <van-cell-group class="supplie-select">
+    <div class="supplie-select">
       <van-cell is-link @click="$router.push({ name: 'supplier' })">
         <template slot="title">
           <van-tag type="danger" v-if="suppInfo[3] === '1'">待审核</van-tag>
@@ -29,7 +11,7 @@
           <span class="van-cell-text padding-left">{{suppInfo[22] || '请选择供应商'}}</span>
         </template>
       </van-cell>
-    </van-cell-group>
+    </div>
 
     <div class="left">
       <div class="van-hairline--top-bottom van-badge-group">

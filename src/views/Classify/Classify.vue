@@ -140,9 +140,11 @@ export default {
     // 页面初始化
     pageInit() {
       this.$nextTick(() => {
-        this.$refs["suppTabs"].pageInit();
-        if (this.suppParams.id) {
-          this.getColectStatus();
+        if (this.activeTabs) {
+          this.$refs["suppTabs"].pageInit();
+          if (this.suppParams.id) {
+            this.getColectStatus();
+          }
         }
       });
     }
