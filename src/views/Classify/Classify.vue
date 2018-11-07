@@ -14,7 +14,7 @@
       <van-tab title="供应商">
         <stp ref="suppTabs" />
       </van-tab>
-      <div class="classify-icon" v-show="activeTabs === 1">
+      <div class="classify-icon" v-show="activeTabs === 1 && suppParams.id">
         <van-icon name="like" color="#fa7815" @click="onUnCollect" v-if="isColect" />
         <van-icon name="like-o" color="#fa7815" @click="onCollect" v-else />
         <van-icon name="warn" color="#fa7815" @click="jumpInfo" />
