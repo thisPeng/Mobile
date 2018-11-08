@@ -33,7 +33,7 @@ const index = {
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_SC_AppImageService",
+        _bpoName: "BPO_Vue_NotValidationService",
         _methodName: "GetMobileImage",
         "_parameters[DispayType]": 1,
         _paraNames: "DispayType",

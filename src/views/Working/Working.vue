@@ -54,7 +54,7 @@ export default {
       index.getGetWorkSpace(this.userInfo.oid).then(res => {
         if (res && res.status === 1 && res.text) {
           this.data = JSON.parse(res.text);
-          console.log(this.data);
+          // console.log(this.data);
         }
       });
     }

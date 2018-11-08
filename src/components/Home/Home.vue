@@ -106,7 +106,7 @@ export default {
       this.isTabbar = true;
     }
 
-    if (current.name !== "goodsSearch") {
+    if (current.name !== "index" && current.name !== "goodsSearch") {
       users.userInfo().then(result => {
         if (result && this.userInfo.oid !== result.oid) {
           this.$store.commit("cleanStore", true);

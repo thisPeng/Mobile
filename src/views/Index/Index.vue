@@ -17,7 +17,7 @@
       <div class="marquee-list">
         <ul :class="{animate}">
           <li v-for="(item, index) in marqueeList.data" :key="index">
-            {{item.Describe}}
+            <span class="marquee-text">{{item.Describe}}</span>
           </li>
         </ul>
       </div>
@@ -139,7 +139,9 @@ export default {
       height: 20px;
       font-size: 14px;
       border-right: 1px solid #fff;
+      display: flex;
       align-items: center;
+      justify-content: center;
     }
     .marquee-list {
       width: 70%;
@@ -158,8 +160,8 @@ export default {
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
-        span {
-          padding: 0 2px;
+        .marquee-text {
+          font-size: 12px;
         }
       }
     }
@@ -206,6 +208,7 @@ export default {
             }
           }
           .content-text {
+            font-size: 13px;
             padding-top: 10px;
             text-align: center;
           }
@@ -226,6 +229,7 @@ export default {
             }
           }
           .content-text {
+            font-size: 13px;
             padding-top: 10px;
             text-align: center;
           }
