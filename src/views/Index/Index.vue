@@ -10,7 +10,7 @@
     </div>
 
     <!--动态-->
-    <div class="index-marquee" v-if="marqueeList.length>0">
+    <div class="index-marquee">
       <div class="marquee-title" v-if="marqueeList.isShowTitle == 1">
         <span>{{marqueeList.title}}</span>
       </div>
@@ -28,14 +28,14 @@
 
     <!--页面版块-->
     <div class="index-pages">
-      <div class="pages-row" v-for="(item,index) in pages" :key="index" v-if="item.isShowTitle == 1">
-        <div class="pages-title">{{item.title}}</div>
+      <div class="pages-row" v-for="(item,index) in pages" :key="index">
+        <div class="pages-title" v-if="item.isShowTitle == 1">{{item.title}}</div>
         <div class="pages-content">
           <div :class="item.RowNum == 2 ? 'content-item-2' : 'content-item-4'" v-for="(ite,idx) in item.data" :key="idx" @click="jumpPage(ite)">
             <div class="content-image">
               <img :src="(ite.icon).replace('~',servePath)" :alt="ite.text">
             </div>
-            <div class="content-text">{{ite.text}}</div>
+            <div class="content-text" v-if="ite.isShowTitle == 1">{{ite.text}}</div>
           </div>
         </div>
       </div>
@@ -102,6 +102,7 @@ export default {
             this.pages.push(val);
           }
         });
+        // console.log(this.pages);
         setInterval(this.showMarquee, 2000);
       } catch (e) {
         this.pages = [];

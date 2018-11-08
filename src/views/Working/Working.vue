@@ -8,7 +8,10 @@
       <div class="option-item">
         <div class="item" v-for="(ite, idx) in item.data" :key="idx" @click="jumpPage(ite)">
           <div class="van-info" v-if="ite.info > 0">{{ite.info}}</div>
-          <img class="item-icon" :src="ite.icon" />
+          <img class="item-icon" :src="ite.icon" v-if="ite.icon">
+          <div class="item-icon bg-blue" v-else>
+            <i class="iconfont icon-daiban" />
+          </div>
           <div class="option-text">{{ite.text}}</div>
         </div>
       </div>

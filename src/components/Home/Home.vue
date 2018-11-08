@@ -12,12 +12,12 @@
     <van-tabbar v-model="active" v-show="isTabbar" v-if="userType <= 2">
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
       <van-tabbar-item icon="records" @click="jumpTabs('working')">工作台</van-tabbar-item>
-      <!-- <van-tabbar-item icon="tosend" @click="jumpTabs('classify')">物资</van-tabbar-item> -->
       <van-tabbar-item icon="cart" @click="jumpTabs('cart')">购物车</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
     <van-tabbar v-model="active" v-show="isTabbar" v-else>
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
+      <van-tabbar-item icon="records" @click="jumpTabs('working')">工作台</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
