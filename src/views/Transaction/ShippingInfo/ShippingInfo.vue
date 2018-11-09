@@ -142,7 +142,6 @@ export default {
         border-radius: 5px;
         margin-bottom: 10px;
         .item-title {
-          padding: 10px 0;
           border-bottom: 1px solid #f6f6f6;
           display: flex;
           align-items: center;

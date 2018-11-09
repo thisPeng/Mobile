@@ -38,7 +38,7 @@
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
-import { offer } from "./../../../assets/js/api.js";
+import { offer, financial } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -154,11 +154,18 @@ export default {
             forbidClick: true,
             message: "生成发货单成功"
           });
-          setTimeout(() => {
-            this.$router.push({
-              name: "shippingInfo"
+          financial
+            .updateReadInfo({
+              BPOName: this.taskModel,
+              key_value: this.contractParams[0]
+            })
+            .then(res => {
+              if (res.status && res.text == "True") {
+                this.$router.go(-1);
+              } else {
+                this.$toast.fail("获取数据失败，请重试");
+              }
             });
-          }, 800);
         }
       });
     }

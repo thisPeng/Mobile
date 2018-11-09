@@ -56,7 +56,7 @@
 
 <script>
 import computed from "./../../assets/js/computed.js";
-import { login, users } from "./../../assets/js/api.js";
+import { login, users, index } from "./../../assets/js/api.js";
 
 export default {
   name: "login",
@@ -114,6 +114,22 @@ export default {
                         }
                       });
                     }
+
+                    // 获取系统配置
+                    const params = {
+                      id: this.userInfo.oid,
+                      code:
+                        "OrderType|CodeTable_Unit|CodeTable_TaxClass|CodeTable_Status|CodeTable_CalArea|CodeTable_CalType|" +
+                        "CodeTable_ProjectType|CodeTable_BusinessType|CodeTable_opening|CodeTable_YesNo|CodeTable_SkuStatus|" +
+                        "CodeTable_Taxrate_Can|CodeTable_Labor_Pay|CodeTable_CoType|CodeTable_Pay_Info|CodeTable_Approve|" +
+                        "CodeTable_Deliver_Type"
+                    };
+                    // 获取配置表数据
+                    index.getConfig(params).then(res => {
+                      if (res && res.status === 1) {
+                        this.$store.commit("codeValue", JSON.parse(res.text));
+                      }
+                    });
                   } catch (e) {
                     this.$store.commit("userType", "");
                     this.$router.replace({

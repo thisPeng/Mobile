@@ -162,8 +162,6 @@ export default {
             "<br>" +
             this.list[i][16] +
             "<br>" +
-            this.list[i][19] +
-            "<br>" +
             this.list[i][20]
         })
         .then(() => {
@@ -173,14 +171,18 @@ export default {
     // 显示合同
     onSwitechSupp(i) {
       if (this.listOrder[i].list.length === 0) {
+        this.currData = this.listOrder[i];
         this.getNotShippded(this.listOrder[i].pid).then(() => {
           this.getDataItem(this.list[i][0]).then(res => {
-            this.listOrder[i].list = res;
-            this.listOrder[i].checkArr = [];
-            this.currData = this.listOrder[i];
-            res.forEach(val => {
-              this.listOrder[i].checkArr.push(val[0]);
-            });
+            try {
+              this.listOrder[i].list = res;
+              this.listOrder[i].checkArr = [];
+              res.forEach(val => {
+                this.listOrder[i].checkArr.push(val[0]);
+              });
+            } catch (e) {
+              console.log(e);
+            }
           });
         });
       }

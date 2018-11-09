@@ -24,7 +24,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { index, users } from "./../../assets/js/api.js";
+// import { index, users } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -106,6 +106,7 @@ export default {
       this.isTabbar = true;
     }
 
+    /*
     if (current.name !== "index" && current.name !== "goodsSearch") {
       users.userInfo().then(result => {
         if (result && this.userInfo.oid !== result.oid) {
@@ -119,6 +120,8 @@ export default {
                 users.userType(uId.UCML_OrganizeOID).then(r => {
                   if (r && r.status === 1) {
                     this.$store.commit("userType", JSON.parse(r.text).UserType);
+                  } else {
+                    this.$store.commit("userType", "");
                   }
                 });
               }
@@ -148,6 +151,7 @@ export default {
       this.isTabbar = false;
       this.isMenu = false;
     }
+    */
   }
 };
 </script>

@@ -3,12 +3,19 @@
     <div class="users-admin" @click="jumpInfo">
       <div class="users-head">
         <div class="users-img">
-          <img src="../../../public/img/ms_ico5.png" alt="">
+          <img src="../../../public/img/ms_ico5.png" v-if="userInfo.oid" />
+          <img src="../../../public/img/tourists.jpg" v-else />
         </div>
-        <div class="member-info">{{userInfo.name}}<br>账号: {{userInfo.loginid}}</div>
+        <div class="member-info" v-if="userInfo.oid">
+          <div>{{userInfo.name}}</div>
+          <div>账号: {{userInfo.loginid}}</div>
+        </div>
+        <div class="member-" v-else>
+          <div>{{userInfo.name}}</div>
+        </div>
       </div>
       <div class="m-code-box">
-        <img id="m_barcode" src="../../../public/img/codeico.png" alt="">
+        <img id="m_barcode" src="../../../public/img/codeico.png" />
         <van-icon class="users-icon" name="arrow" />
       </div>
     </div>
@@ -122,7 +129,14 @@ export default {
       }
     }
   },
-  computed
+  computed,
+  mounted() {
+    users.userInfo().then(result => {
+      if (result) {
+        this.$store.commit("userInfo", result);
+      }
+    });
+  }
 };
 </script>
 <style lang="less" scoped>

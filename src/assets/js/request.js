@@ -88,7 +88,9 @@ axios.interceptors.response.use(
           break;
         case 500:
           // error.message = '服务器内部错误';
-          outLogin();
+          window.localStorage.clear();
+          window.sessionStorage.clear();
+          window.vm.$store.commit("cleanStore", true);
           return;
         case 501:
           error.message = "服务未实现";
