@@ -70,13 +70,28 @@ export default {
     },
     jumpPage(item) {
       this.$store.commit("taskParams", item);
-      this.$router.push({
-        name: "paymentAddFK"
-      });
+      financial
+        .updateReadInfo({
+          BPOName: this.taskModel,
+          key_value: item[0]
+        })
+        .then(res => {
+          if (res.status && res.text == "True") {
+            this.$router.push({
+              name: "paymentAddFK"
+            });
+          } else {
+            this.$toast.fail("获取数据失败，请重试");
+          }
+        });
     },
     pageInit() {
       if (this.filterParams === 1) {
         this.filter = "AND SC_Money_InOut.Approve_Flag='1'";
+        this.filter +=
+          " AND SC_Money_InOutOID not in (SELECT Key_Value FROM SC_ReadBill_Info WHERE UserOID='" +
+          this.userId.UCML_UserOID +
+          "' AND Table_Name='SC_Money_InOut' AND Read_Flag='1')";
       } else {
         this.filter = "AND SC_Money_InOut.Approve_Flag='0'";
       }

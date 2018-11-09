@@ -32,7 +32,7 @@
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
-import { offer } from "./../../../assets/js/api.js";
+import { offer, financial } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -57,9 +57,20 @@ export default {
     // 跳转详情
     jumpPage(item) {
       this.$store.commit("taskParams", item);
-      this.$router.push({
-        name: "paymentAddFK"
-      });
+      financial
+        .updateReadInfo({
+          BPOName: this.taskModel,
+          key_value: item[0]
+        })
+        .then(res => {
+          if (res.status && res.text == "True") {
+            this.$router.push({
+              name: "paymentAddFK"
+            });
+          } else {
+            this.$toast.fail("获取数据失败，请重试");
+          }
+        });
     },
     pageInit() {
       this.getData();

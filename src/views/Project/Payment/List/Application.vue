@@ -101,9 +101,20 @@ export default {
           bpoName: "SupplyChain/BizFinance/BPO_WF_Apply_Info"
         };
         this.$store.commit("taskParams", params);
-        this.$router.push({
-          name: "taskZFFrom"
-        });
+        financial
+          .updateReadInfo({
+            BPOName: this.taskModel,
+            key_value: item[0]
+          })
+          .then(res => {
+            if (res.status && res.text == "True") {
+              this.$router.push({
+                name: "taskZFFrom"
+              });
+            } else {
+              this.$toast.fail("获取数据失败，请重试");
+            }
+          });
       } else {
         const params = {
           InstanceID: item[0],
@@ -132,6 +143,10 @@ export default {
             " AND SC_Pay_Apply.DemandID='" + this.userId.UCML_OrganizeOID + "'";
         }
         filter += " AND BusinessState='1'";
+        filter +=
+          " AND SC_Pay_ApplyOID not in (select Key_Value from SC_ReadBill_Info where UserOID='" +
+          this.userId.UCML_UserOID +
+          "' and Table_Name='SC_Pay_Apply' AND Read_Flag='1')";
       }
       return financial.getPaymentList(page, filter).then(res => {
         try {

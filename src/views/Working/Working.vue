@@ -8,7 +8,9 @@
       <div class="option-item">
         <div class="item" v-for="(ite, idx) in item.data" :key="idx" @click="jumpPage(ite)">
           <div class="van-info" v-if="ite.info > 0">{{ite.info}}</div>
-          <img class="item-icon" :src="ite.icon" v-if="ite.icon">
+          <div class="item-icon" v-if="ite.icon">
+            <img :src="ite.icon">
+          </div>
           <div class="item-icon bg-blue" v-else>
             <i class="iconfont icon-daiban" />
           </div>
@@ -105,6 +107,10 @@ export default {
           display: flex;
           align-items: center;
           justify-content: center;
+          img {
+            width: 100%;
+            height: 100%;
+          }
           .iconfont {
             color: #fff;
             font-size: 35px;

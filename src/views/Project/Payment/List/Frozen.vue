@@ -110,9 +110,20 @@ export default {
           bpoName: "SupplyChain/BizFinance/BPO_WF_Apply_Info"
         };
         this.$store.commit("taskParams", params);
-        this.$router.push({
-          name: "taskDJFrom"
-        });
+        financial
+          .updateReadInfo({
+            BPOName: this.taskModel,
+            key_value: item[0]
+          })
+          .then(res => {
+            if (res.status && res.text == "True") {
+              this.$router.push({
+                name: "taskDJFrom"
+              });
+            } else {
+              this.$toast.fail("获取数据失败，请重试");
+            }
+          });
       } else {
         const params = {
           InstanceID: item[0],
@@ -161,6 +172,10 @@ export default {
         this.filter = "AND SC_Money_InOut.StartFlowFlag is null";
       } else {
         this.filter = "AND SC_Money_InOut.BusinessState='1'";
+        this.filter +=
+          " AND SC_Money_InOut.SC_Money_InOutOID NOT IN (SELECT Key_Value FROM SC_ReadBill_Info WHERE UserOID='" +
+          this.userId.UCML_UserOID +
+          "' AND Table_Name='SC_Money_InOut' AND Read_Flag='1')";
       }
       this.getData().then(res => {
         if (!res && this.list.length === 0) {

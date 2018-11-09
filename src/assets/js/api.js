@@ -1581,6 +1581,21 @@ const arrival = {
 };
 //付款信息模块
 const financial = {
+  // 工作台知会-已读
+  updateReadInfo(params = {}) {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Vue_CommonService",
+        _methodName: "UpdateReadInfo",
+        "_parameters[BPOName]": params.BPOName,
+        "_parameters[key_value]": params.key_value,
+        _paraNames: "BPOName,key_value",
+        _pUrl: ""
+      }
+    })
+  },
   // 获取支付详情
   getPayInfo(params = {}) {
     return axios({
@@ -2365,7 +2380,9 @@ const offer = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Money_InOut.SupplierID='" + SupplierID + "' AND SC_Money_InOut.Approve_Flag=1",
+        "_parameters[SQLCondi]": "SC_Money_InOut.SupplierID='" + SupplierID + "' AND SC_Money_InOut.Approve_Flag=1" +
+          " AND SC_Money_InOutOID not in (SELECT Key_Value FROM SC_ReadBill_Info WHERE UserOID='" + SupplierID +
+          "' AND Table_Name='SC_Money_InOut' AND Read_Flag='1')",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": "",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",

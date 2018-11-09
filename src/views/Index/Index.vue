@@ -61,9 +61,13 @@ export default {
     jumpPage(item) {
       this.$store.commit("goodsParams", { keyword: item.Param });
       this.$store.commit("suppParams", { id: item.Param });
-      this.$router.push({
-        name: item.action
-      });
+      if (item.action.indexOf(".") >= 0) {
+        window.location.href = item.action;
+      } else {
+        this.$router.push({
+          name: item.action
+        });
+      }
     },
     onSearch() {
       this.$store.commit("goodsParams", { keyword: this.keyword });
