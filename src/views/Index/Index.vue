@@ -181,13 +181,14 @@ export default {
   // 版块
   .index-pages {
     .pages-row {
-      padding: 0 10px;
+      padding: 5px 10px;
       width: 100%;
       margin-top: 10px;
       background-color: #fff;
       .pages-title {
+        font-size: 14px;
         color: #49b1e0;
-        padding: 10px 0;
+        padding: 7.5px 0;
         border-bottom: 1px solid #eee;
       }
       .pages-content {
@@ -198,7 +199,6 @@ export default {
         justify-content: space-between;
         .content-item-2 {
           width: 180px;
-          height: 130px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -212,14 +212,13 @@ export default {
             }
           }
           .content-text {
-            font-size: 13px;
-            padding-top: 10px;
+            font-size: 12px;
+            padding: 5px 0;
             text-align: center;
           }
         }
         .content-item-4 {
           width: 90px;
-          height: 130px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -233,8 +232,8 @@ export default {
             }
           }
           .content-text {
-            font-size: 13px;
-            padding-top: 10px;
+            font-size: 12px;
+            padding: 5px 0;
             text-align: center;
           }
         }

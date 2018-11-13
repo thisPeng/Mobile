@@ -10,8 +10,9 @@
           <div>{{userInfo.name}}</div>
           <div>账号: {{userInfo.loginid}}</div>
         </div>
-        <div class="member-" v-else>
-          <div>{{userInfo.name}}</div>
+        <div class="member-info" v-else>
+          <div>未登录账号</div>
+          <div>点击登录</div>
         </div>
       </div>
       <div class="m-code-box">
@@ -37,7 +38,7 @@
         </van-cell>
       </van-cell-group> -->
       <van-cell-group>
-        <van-cell title="修改密码" is-link @click="jumpPage('usersPwd')">
+        <van-cell title="修改密码" is-link @click="jumpPage('usersPwd')" v-if="userInfo.oid">
           <template slot="icon">
             <div class="icon">
               <i class="iconfont icon-mima"></i>
@@ -53,7 +54,7 @@
         </van-cell>
       </van-cell-group>
     </div>
-    <div class="users-button">
+    <div class="users-button" v-if="userInfo.oid">
       <van-button type="danger" size="large" @click="exit">退出</van-button>
     </div>
   </div>
@@ -75,9 +76,9 @@ export default {
           message: "确认退出系统吗？"
         })
         .then(() => {
-          users.exit();
-          this.$router.replace({
-            name: "login"
+          users.exit().then(() => {
+            this.$store.commit("tabsActive", 1);
+            location.reload();
           });
         })
         .catch(() => {
@@ -114,17 +115,23 @@ export default {
       });
     },
     jumpInfo() {
-      if (this.userType == 1) {
+      if (this.userInfo.oid) {
+        if (this.userType == 1) {
+          this.$router.push({
+            name: "companyUserInfo"
+          });
+        } else if (this.userType == 2) {
+          this.$router.push({
+            name: "usersInfo"
+          });
+        } else if (this.userType == 3) {
+          this.$router.push({
+            name: "supplierUserInfo"
+          });
+        }
+      } else {
         this.$router.push({
-          name: "companyUserInfo"
-        });
-      } else if (this.userType == 2) {
-        this.$router.push({
-          name: "usersInfo"
-        });
-      } else if (this.userType == 3) {
-        this.$router.push({
-          name: "supplierUserInfo"
+          name: "login"
         });
       }
     }
