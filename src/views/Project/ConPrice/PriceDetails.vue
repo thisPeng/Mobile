@@ -26,26 +26,28 @@
     </van-cell-group>
     <!--功能操作-->
     <div class="con-button">
-      <van-button type="primary" @click="confrimPrice" v-if="list[39] === '已报价' && list[16] !== '1'">确认</van-button>
-      <van-button type="primary" @click="sendOrder" v-if="list[39] === '初始状态'">发送</van-button>
-      <!-- <van-button type="default" @click="saveOrder" v-if="list[39] !== '待报价' && list[39] !== '待确认' && list[39] !== '初始状态'">保存</van-button> -->
-      <van-button type="warning" @click="conProposal" v-if="list[39] === '已报价'">提议</van-button>
-      <van-button type="main" @click="jumpPage('contractwork')" v-if="list[39] !== '待报价' && list[39] !== '待确认'">编辑合同</van-button>
-      <van-button type="default" @click="conAddGoods" v-if="list[39] !== '待报价' && list[39] !== '待确认'">添加物资</van-button>
-      <van-button type="danger" @click="confirmDelete">删除</van-button>
+      <div class="button-value" v-for="(item,index) in buttonValue" :key="index" v-if="item.Allowvisible === '1'">
+        <van-button type="primary" @click="confrimPrice" v-if="list[39] === '已报价' && list[16] !== '1' && item.text === '确认'" :disabled="item.Enabled !== '1'">确认</van-button>
+        <van-button type="primary" @click="sendOrder" v-if="list[39] === '初始状态' && item.text === '发送'" :disabled="item.Enabled !== '1'">发送</van-button>
+        <van-button type="warning" @click="conProposal" v-if="list[39] === '已报价' && item.text === '提议'" :disabled="item.Enabled !== '1'">提议</van-button>
+        <van-button type="main" @click="jumpPage('contractwork')" v-if="list[39] !== '待报价' && list[39] !== '待确认' && item.text === '编辑'" :disabled="item.Enabled !== '1'">编辑合同</van-button>
+        <van-button type="default" @click="conAddGoods" v-if="list[39] !== '待报价' && list[39] !== '待确认' && item.text === '添加物资'" :disabled="item.Enabled !== '1'">添加物资</van-button>
+        <van-button type="danger" @click="confirmDelete" v-if="item.text === '删除'" :disabled="item.Enabled !== '1'">删除</van-button>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import computed from "../../../assets/js/computed.js";
-import { conprice, contractInfo } from "../../../assets/js/api.js";
+import { index, conprice, contractInfo } from "../../../assets/js/api.js";
 
 export default {
   data() {
     return {
       list: [],
       currentDate: new Date().Format("yyyy-MM-dd"),
-      showData: false
+      showData: false,
+      buttonValue: []
     };
   },
   computed,
@@ -286,10 +288,20 @@ export default {
           return false;
         }
       });
+    },
+    pageInit() {
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_Order_XJ")
+        .then(res => {
+          if (res.status) {
+            this.buttonValue = JSON.parse(res.text);
+          }
+        });
+      this.getInfo();
     }
   },
   mounted() {
-    this.getInfo();
+    this.pageInit();
   }
 };
 </script>
@@ -362,15 +374,14 @@ export default {
   }
   .con-button {
     width: 100%;
-    padding: 10px;
-    padding-top: 30px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    button {
-      width: 32%;
-      padding: 0;
-      margin-bottom: 10px;
+    padding: 20px 0;
+    .button-value {
+      display: inline-block;
+      button {
+        width: 127.5px;
+        padding: 0;
+        margin: 5px;
+      }
     }
   }
   .con-data {

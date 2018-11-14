@@ -137,7 +137,7 @@ export default new Router({
       name: "cart",
       component: Cart,
       meta: {
-        title: "已选物资",
+        title: "购物车",
         keepAlive: true
       }
     }, {

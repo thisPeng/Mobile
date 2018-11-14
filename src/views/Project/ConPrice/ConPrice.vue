@@ -112,7 +112,7 @@ export default {
               justify-content: space-between;
               padding: 2px 0;
               .row-right {
-                width: 75px;
+                width: 80px;
                 text-align: right;
               }
             }

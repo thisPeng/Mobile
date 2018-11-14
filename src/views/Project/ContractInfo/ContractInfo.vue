@@ -6,8 +6,8 @@
         <div class="tran-item" v-for="(item,index) in list" :key="index" v-if="item[18] !== '审核情况：未审核' && item[18] !== '审核情况：已审核'">
           <div class="item-title">
             <span class="title">{{item[22]}}</span>
-            <span class="option" v-if="item[6]==1">
-              <van-button type="danger" size="mini" plain @click.stop="onReturn(item)">退回</van-button>
+            <span class="option" v-for="(ite,idx) in buttonValue" :key="idx" v-if="item[6]==1 && ite.text === '合同退回' && ite.Allowvisible === '1'">
+              <van-button type="danger" size="mini" plain @click.stop="onReturn(item)" :disabled="ite.Enabled !== '1'">退回</van-button>
             </span>
           </div>
           <van-cell :is-link="item[5]==0" class="item-content" @click="item[5]==0 ? jumpInfo(item) : ''">
@@ -39,12 +39,13 @@
 </template>
 <script>
 import computed from "../../../assets/js/computed.js";
-import { contractInfo } from "../../../assets/js/api.js";
+import { index, contractInfo } from "../../../assets/js/api.js";
 export default {
   data() {
     return {
       list: [],
-      listOrder: []
+      listOrder: [],
+      buttonValue: []
     };
   },
   computed,
@@ -103,10 +104,20 @@ export default {
       this.$router.push({
         name: "contractlabor"
       });
+    },
+    pageInit() {
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_Contract_List")
+        .then(res => {
+          if (res.status) {
+            this.buttonValue = JSON.parse(res.text);
+          }
+        });
+      this.getList();
     }
   },
   mounted() {
-    this.getList();
+    this.pageInit();
   }
 };
 </script>

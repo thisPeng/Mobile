@@ -26,24 +26,25 @@
       <!--附加信息-->
       <div class="task-title">附加信息</div>
       <van-cell title="物资列表" is-link value="" @click="jumpInfo" />
-      <!-- <van-cell title="附件" is-link value="" @click="jumpPage('arrivaAnnex')" /> -->
     </van-cell-group>
     <div class="con-button" v-if="info && info[25] != '1' && info[20] != '1'">
-      <van-button type="primary" @click="DeliverySign" v-if="info[47] == '0'">签收</van-button>
-      <!-- <van-button type="default" @click="saveDelivery" v-if="info[25] != '1' && info[20] != '1'">保存</van-button> -->
-      <van-button type="danger" @click="DeliveryOffer">提议</van-button>
+      <div class="button-value" v-for="(item,index) in buttonValue" :key="index" v-if="item.Allowvisible === '1'">
+        <van-button type="primary" @click="DeliverySign" v-if="info[47] == '0' && item.text === '签收'" :disabled="item.Enabled !== '1'">签收</van-button>
+        <van-button type="danger" @click="DeliveryOffer" v-if="item.text === '提议'" :disabled="item.Enabled !== '1'">提议</van-button>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import computed from "../../../assets/js/computed.js";
-import { arrival } from "../../../assets/js/api.js"; //index
+import { index, arrival } from "../../../assets/js/api.js"; //index
 export default {
   data() {
     return {
       info: [],
       currentDate: "",
-      showDateone: false //交货时间,
+      showDateone: false, //交货时间
+      buttonValue: []
     };
   },
   computed,
@@ -142,6 +143,14 @@ export default {
           }
         }
       });
+
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_Purchase_Deliver_List")
+        .then(res => {
+          if (res.status) {
+            this.buttonValue = JSON.parse(res.text);
+          }
+        });
     },
     // 跳转页面
     jumpPage(name) {
@@ -199,6 +208,7 @@ export default {
 <style lang="less" scoped>
 .deliverydetails {
   width: 100%;
+  padding-bottom: 75px;
   .delivery-data {
     .delivery-card {
       width: 100%;
@@ -246,16 +256,17 @@ export default {
     padding: 0px 30px;
   }
   .con-button {
-    display: flex;
     width: 100%;
-    flex-direction: row;
-    justify-content: space-around;
-    padding-top: 30px;
-    padding-bottom: 10px;
-    button {
-      width: 48%;
-      padding: 0;
-      // flex: 1;
+    padding: 5px;
+    position: fixed;
+    bottom: 0;
+    background-color: #fff;
+    .button-value {
+      display: inline-block;
+      button {
+        width: 191.5px;
+        margin: 5px;
+      }
     }
   }
   .con-price {

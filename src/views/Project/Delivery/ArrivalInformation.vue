@@ -7,7 +7,7 @@
           <van-switch-cell v-model="ite.checked" :title="ite.name" class="item-title " />
         </van-cell-group>
         <div class="arrival-card" v-show="ite.checked">
-          <van-cell is-link class="arrival-item" v-for="(item,index) in ite.list" :key="index" @click="jumpPage(item)">
+          <van-cell class="arrival-item" v-for="(item,index) in ite.list" :key="index" :is-link="buttonValue.show" @click="buttonValue.show && !buttonValue.disabled ? jumpPage(item) : ''">
             <div class="item-content">
               <div class="content-row">
                 <span class="row-left">{{item[9]}}</span>
@@ -42,16 +42,35 @@
 </template>
 <script>
 import computed from "../../../assets/js/computed.js";
-import { arrival, financial } from "../../../assets/js/api.js";
+import { index, arrival, financial } from "../../../assets/js/api.js";
 export default {
   data() {
     return {
-      listOrder: []
+      listOrder: [],
+      buttonValue: {
+        show: false,
+        disabled: true
+      }
     };
   },
   computed,
   methods: {
     pageInit() {
+      // 获取查看权限
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_Purchase_Deliver_List")
+        .then(res => {
+          if (res.status) {
+            const arr = JSON.parse(res.text);
+            arr.forEach(val => {
+              if (val.text === "查看" && val.Allowvisible === "1") {
+                this.buttonValue.show = true;
+                this.buttonValue.disabled = val.Enabled !== "1";
+              }
+            });
+          }
+        });
+
       const type = this.filterParams === 1 ? 3 : 0;
       arrival.getList(this.userId.UCML_UserOID, type).then(res => {
         try {

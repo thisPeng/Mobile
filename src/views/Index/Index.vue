@@ -31,7 +31,7 @@
       <div class="pages-row" v-for="(item,index) in pages" :key="index">
         <div class="pages-title" v-if="item.isShowTitle == 1">{{item.title}}</div>
         <div class="pages-content">
-          <div :class="item.RowNum == 2 ? 'content-item-2' : 'content-item-4'" v-for="(ite,idx) in item.data" :key="idx" @click="jumpPage(ite)">
+          <div :class="'content-item content-item-'+item.RowNum" v-for="(ite,idx) in item.data" :key="idx" @click="jumpPage(ite)">
             <div class="content-image">
               <img :src="(ite.icon).replace('~',servePath)" :alt="ite.text">
             </div>
@@ -197,15 +197,15 @@ export default {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        .content-item-2 {
-          width: 180px;
+        .content-item {
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
+          padding: 2.5px;
           .content-image {
-            width: 175px;
-            height: 85px;
+            width: 100%;
+            height: 100%;
             > img {
               width: 100%;
               height: 100%;
@@ -217,25 +217,29 @@ export default {
             text-align: center;
           }
         }
+        .content-item-1 {
+          width: 100%;
+        }
+        .content-item-2 {
+          width: 180px;
+        }
+        .content-item-3 {
+          width: 130px;
+        }
         .content-item-4 {
           width: 90px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          .content-image {
-            width: 85px;
-            height: 85px;
-            > img {
-              width: 100%;
-              height: 100%;
-            }
-          }
-          .content-text {
-            font-size: 12px;
-            padding: 5px 0;
-            text-align: center;
-          }
+        }
+        .content-item-5 {
+          width: 70px;
+        }
+        .content-item-6 {
+          width: 60px;
+        }
+        .content-item-7 {
+          width: 50px;
+        }
+        .content-item-8 {
+          width: 30px;
         }
       }
     }

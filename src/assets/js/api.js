@@ -41,6 +41,21 @@ const index = {
       }
     });
   },
+  // 获取按钮权限
+  getAppletButton(LoginUserOID = "", BPOID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Vue_CommonService",
+        _methodName: "GetAppletButton",
+        "_parameters[LoginUserOID]": LoginUserOID,
+        "_parameters[BPOID]": BPOID,
+        _paraNames: "LoginUserOID,BPOID",
+        _pUrl: ""
+      }
+    });
+  },
   // 获取字典配置
   getConfig(params = {}) {
     return axios({
