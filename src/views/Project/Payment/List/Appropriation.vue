@@ -7,10 +7,10 @@
           <div class="item-title">
             <span class="title">单号：{{item[1]}}</span>
             <span class="option" v-if="item[30] != '1'">
-              <van-button type="danger" size="mini" plain @click.stop="onDelete(item[0])">删除</van-button>
+              <van-button type="danger" size="mini" plain @click.stop="onDelete(item[0])" v-if="buttonValue.delete.show" :disabled="buttonValue.delete.disabled">删除</van-button>
             </span>
           </div>
-          <van-cell class="item-content" is-link @click="jumpPage(item)">
+          <van-cell class="item-content" :is-link="buttonValue.edit.show" @click="buttonValue.edit.show && !buttonValue.edit.disabled ? jumpPage(item) : ''">
             <div class="content-row">
               <span>所属项目：{{item[28]}}</span>
             </div>
@@ -42,7 +42,7 @@
           </van-cell>
         </van-cell-group>
         <div class="margin-top-sm" v-if="filterParams === 1">
-          <van-button type="primary" size="large" @click="onAdd">新增批款单</van-button>
+          <van-button type="primary" size="large" @click="onAdd" v-if="buttonValue.add.show" :disabled="buttonValue.add.disabled">新增批款单</van-button>
         </div>
       </div>
     </div>
@@ -52,14 +52,28 @@
 </template>
 <script>
 import computed from "../../../../assets/js/computed.js";
-import { financial } from "../../../../assets/js/api.js";
+import { index, financial } from "../../../../assets/js/api.js";
 export default {
   data() {
     return {
       list: [],
       currentPage: 1,
       pages: {},
-      filter: ""
+      filter: "",
+      buttonValue: {
+        add: {
+          show: false,
+          disabled: true
+        },
+        edit: {
+          show: false,
+          disabled: true
+        },
+        delete: {
+          show: false,
+          disabled: true
+        }
+      }
     };
   },
   computed,
@@ -171,6 +185,32 @@ export default {
       this.getData().then(res => {
         if (!res && this.list.length === 0) {
           this.$router.go(-1);
+        } else {
+          index
+            .getAppletButton(this.userId.UCML_UserOID, "BPO_Money_PK_InOutList")
+            .then(res => {
+              if (res.status) {
+                const arr = JSON.parse(res.text);
+                arr.forEach(val => {
+                  if (val.Allowvisible === "1") {
+                    switch (val.text) {
+                      case "新增":
+                        this.buttonValue.add.show = true;
+                        this.buttonValue.add.disabled = val.Enabled !== "1";
+                        break;
+                      case "删除":
+                        this.buttonValue.delete.show = true;
+                        this.buttonValue.delete.disabled = val.Enabled !== "1";
+                        break;
+                      case "编辑":
+                        this.buttonValue.edit.show = true;
+                        this.buttonValue.edit.disabled = val.Enabled !== "1";
+                        break;
+                    }
+                  }
+                });
+              }
+            });
         }
       });
     }

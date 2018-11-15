@@ -1,5 +1,5 @@
 <template>
-  <div class="task" :style="edit ? 'padding-bottom: 65px' : ''">
+  <div class="task" :style="edit ? 'padding-bottom: 75px' : ''">
     <div class="task-data">
       <van-cell-group>
         <div class="task-title">基础信息</div>
@@ -50,15 +50,17 @@
         <van-field :value="$util.formatDate(data[18]) || new Date().Format('yyyy-MM-dd')" label="修改日期" disabled v-if="data[18]" />
       </van-cell-group>
       <div class="payment-button" v-if="edit">
-        <van-button @click="onSave">保存</van-button>
-        <van-button type="primary" @click="onSumbit">审核</van-button>
+        <div class="button-value" v-for="(item,index) in buttonValue" :key="index" v-if="item.Allowvisible === '1'">
+          <van-button @click="onSave" v-if="item.text === '保存'" :disabled="item.Enabled !== '1'">保存</van-button>
+          <van-button type="primary" @click="onSumbit" v-if="item.text === '审核'" :disabled="item.Enabled !== '1'">审核</van-button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import computed from "../../../assets/js/computed.js";
-import { financial } from "../../../assets/js/api.js";
+import { index, financial } from "../../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -70,7 +72,8 @@ export default {
       image1: "",
       image2: "",
       images: [],
-      businessKey: ""
+      businessKey: "",
+      buttonValue: []
     };
   },
   methods: {
@@ -93,19 +96,6 @@ export default {
       this.names[1] = file.file.name;
       this.image2 = file.content;
       this.images[1] = file.content.split(",")[1];
-    },
-    pageInit() {
-      if (this.taskParams) {
-        this.data = this.taskParams;
-        this.image1 = this.taskParams[14].replace("~", this.servePath);
-        this.image2 = this.taskParams[15].replace("~", this.servePath);
-        if (!this.data[10] || this.data[10] == "1900-01-01 00:00:00") {
-          this.data[10] = new Date().Format("yyyy-MM-dd hh:mm:ss");
-        }
-        if (this.userType === 1 && this.data[30] === 0) {
-          this.edit = true;
-        }
-      }
     },
     onSave() {
       let img = [];
@@ -180,6 +170,28 @@ export default {
           this.$toast.fail(res.text);
         }
       });
+    },
+    pageInit() {
+      if (this.taskParams) {
+        this.data = this.taskParams;
+        this.image1 = this.taskParams[14].replace("~", this.servePath);
+        this.image2 = this.taskParams[15].replace("~", this.servePath);
+        if (!this.data[10] || this.data[10] == "1900-01-01 00:00:00") {
+          this.data[10] = new Date().Format("yyyy-MM-dd hh:mm:ss");
+        }
+        if (this.userType === 1 && this.data[30] === 0) {
+          this.edit = true;
+        }
+      }
+
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_SC_OAPay_Add")
+        .then(res => {
+          if (res.status) {
+            this.buttonValue = JSON.parse(res.text);
+            // console.log(this.buttonValue);
+          }
+        });
     }
   },
   computed,
@@ -191,6 +203,7 @@ export default {
 <style lang="less" scoped>
 .task {
   width: 100%;
+  padding-bottom: 75px;
   overflow: hidden !important;
   .task-data {
     width: 100%;
@@ -205,15 +218,16 @@ export default {
     }
     .payment-button {
       width: 100%;
-      padding: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+      padding: 5px;
       position: fixed;
       bottom: 0;
       background-color: #fff;
-      button {
-        width: 49%;
+      .button-value {
+        display: inline-block;
+        button {
+          width: 191.5px;
+          margin: 5px;
+        }
       }
     }
 

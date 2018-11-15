@@ -16,15 +16,17 @@
         <van-field :value="$util.formatDate(data[18])" label="修改日期" :disabled="true" v-if="data[18]" />
       </van-cell-group>
       <div class="payment-button">
-        <van-button @click="onSave">保存</van-button>
-        <van-button type="primary" @click="onSubmit">提交</van-button>
+        <div class="button-value" v-for="(item,index) in buttonValue" :key="index" v-if="item.Allowvisible === '1'">
+          <van-button @click="onSave" v-if="item.text === '保存'" :disabled="item.Enabled !== '1'">保存</van-button>
+          <van-button type="main" @click="onSubmit" v-if="item.text === '提交'" :disabled="item.Enabled !== '1'">提交</van-button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import computed from "../../../assets/js/computed.js";
-import { financial } from "../../../assets/js/api.js";
+import { index, financial } from "../../../assets/js/api.js";
 
 export default {
   data() {
@@ -36,7 +38,8 @@ export default {
       data: [],
       projectShow: false,
       projectList: [],
-      currProject: []
+      currProject: [],
+      buttonValue: []
     };
   },
   methods: {
@@ -189,6 +192,15 @@ export default {
           }
         });
       }
+
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_Start_JD_InOutForm")
+        .then(res => {
+          if (res.status) {
+            this.buttonValue = JSON.parse(res.text);
+            // console.log(this.buttonValue);
+          }
+        });
     }
   },
   computed,
@@ -229,15 +241,16 @@ export default {
     }
     .payment-button {
       width: 100%;
-      padding: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+      padding: 5px;
       position: fixed;
       bottom: 0;
       background-color: #fff;
-      button {
-        width: 49%;
+      .button-value {
+        display: inline-block;
+        button {
+          width: 191.5px;
+          margin: 5px;
+        }
       }
     }
   }
