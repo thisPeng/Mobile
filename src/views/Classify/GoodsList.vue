@@ -1,12 +1,14 @@
 <template>
   <div class="classify">
-    <div class="van-cell van-cell--borderless van-field">
+    <div class="van-cell van-cell--borderless van-field" v-if="userInfo.oid">
       <div class="van-cell__title">工程名称：</div>
       <div class="van-cell__value flex-between">
         <span class="text-truncate text-left text-gray">{{projectInfo.ProjectName || '请选择工程项目'}}</span>
         <van-button type="primary" size="mini" @click="$router.push({ name: 'projectList' })">选择</van-button>
       </div>
     </div>
+    <van-cell v-else title="未登录账号" value="" @click="$router.push({ name: 'login' })" icon="setting" is-link />
+
     <div class="classify-search">
       <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
       <div class="flex-span">
@@ -348,6 +350,8 @@ export default {
           "(SC_Supp_ProductSKU.SC_MaterialType_FK = '" +
           this.goodsParams.id +
           "' or SC_Supp_ProductSKU.Parent_MaterialType = '" +
+          this.goodsParams.id +
+          "' or SC_Supp_ProductSKU.SC_Brand_FK = '" +
           this.goodsParams.id +
           "')",
         SQLFix: ""

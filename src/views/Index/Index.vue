@@ -31,7 +31,7 @@
       <div class="pages-row" v-for="(item,index) in pages" :key="index">
         <div class="pages-title" v-if="item.isShowTitle == 1">{{item.title}}</div>
         <div class="pages-content">
-          <div :class="'content-item content-item-'+item.RowNum" v-for="(ite,idx) in item.data" :key="idx" @click="jumpPage(ite)">
+          <div :class="'content-item content-item-'+item.RowNum" v-for="(ite,idx) in item.data" :key="idx" @click="jumpPage(ite,item.ActionType)">
             <div class="content-image">
               <img :src="(ite.icon).replace('~',servePath)" :alt="ite.text">
             </div>
@@ -58,15 +58,34 @@ export default {
   },
   computed,
   methods: {
-    jumpPage(item) {
-      this.$store.commit("goodsParams", { keyword: item.Param });
-      this.$store.commit("suppParams", { id: item.Param });
-      if (item.action.indexOf(".") >= 0) {
-        window.location.href = item.action;
-      } else {
-        this.$router.push({
-          name: item.action
-        });
+    jumpPage(item, type) {
+      switch (type) {
+        case "2":
+          this.$store.commit("goodsParams", { id: item.id });
+          this.$router.push({
+            name: this.userInfo.oid ? "goodsList" : "goodsSearch"
+          });
+          break;
+        case "4":
+          this.$store.commit("suppParams", { id: item.id });
+          this.$router.push({
+            name: "supplierInfo"
+          });
+          break;
+        case "5":
+          this.$store.commit("goodsParams", { id: item.id });
+          this.$router.push({
+            name: this.userInfo.oid ? "goodsList" : "goodsSearch"
+          });
+          break;
+        default:
+          if (item.action.indexOf(".") >= 0) {
+            window.location.href = item.action;
+          } else {
+            this.$router.push({
+              name: item.action
+            });
+          }
       }
     },
     onSearch() {

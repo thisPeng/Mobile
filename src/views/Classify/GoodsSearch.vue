@@ -260,6 +260,8 @@ export default {
           this.goodsParams.id +
           "' or SC_Supp_ProductSKU.Parent_MaterialType = '" +
           this.goodsParams.id +
+          "' or SC_Supp_ProductSKU.SC_Brand_FK = '" +
+          this.goodsParams.id +
           "')",
         SQLFix: ""
       };

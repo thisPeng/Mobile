@@ -1,16 +1,15 @@
 <template>
   <div class="cart">
     <div class="cart-list">
-      <div class="van-cell van-cell--borderless van-field">
+      <div class="van-cell van-cell--borderless van-field" v-if="userInfo.oid">
         <div class="van-cell__title">工程名称：</div>
         <div class="van-cell__value flex-between">
           <span class="text-truncate text-left text-gray">{{projectInfo.ProjectName || '请选择工程项目'}}</span>
           <van-button type="primary" size="mini" @click="$router.push({ name: 'projectList' })">选择</van-button>
         </div>
       </div>
-      <!-- <div class="cart-project" v-else>
-        <span>未选择项目，请 <router-link :to="{ name: 'projectList' }">[点击这里]</router-link> 选择项目</span>
-      </div> -->
+      <van-cell v-else title="未登录账号" value="" @click="$router.push({ name: 'login' })" icon="setting" is-link />
+
       <!--列表-->
       <van-checkbox-group v-model="checkedArr">
         <div class="list-item" v-for="(ite, idx) in listOrder" :key="idx">
