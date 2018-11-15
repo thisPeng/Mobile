@@ -124,9 +124,10 @@ function outLogin() {
   window.localStorage.clear();
   window.sessionStorage.clear();
   window.vm.$store.commit("cleanStore", true);
+  window.vm.$store.commit("tabsActive", 1);
   checkCode("登录过期，请重新登录");
   window.vm.$router.replace({
-    name: "login"
+    name: "users"
   });
 }
 
