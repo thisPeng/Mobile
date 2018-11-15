@@ -196,7 +196,7 @@ export default {
         padding: 5px 0;
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        // justify-content: space-between;
         .content-item {
           display: flex;
           flex-direction: column;
@@ -221,25 +221,28 @@ export default {
           width: 100%;
         }
         .content-item-2 {
-          width: 180px;
+          width: 197px;
         }
         .content-item-3 {
-          width: 130px;
+          width: 130.5px;
         }
         .content-item-4 {
-          width: 90px;
+          width: 98.5px;
         }
         .content-item-5 {
-          width: 70px;
+          width: 78.5px;
         }
         .content-item-6 {
-          width: 60px;
+          width: 65.5px;
         }
         .content-item-7 {
-          width: 50px;
+          width: 55.5px;
         }
         .content-item-8 {
-          width: 30px;
+          width: 47.5px;
+        }
+        .content-item-9 {
+          width: 42.5px;
         }
       }
     }
