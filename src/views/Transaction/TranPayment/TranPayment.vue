@@ -42,7 +42,7 @@ export default {
   computed,
   methods: {
     getData() {
-      offer.getPayment(this.userInfo.oid).then(res => {
+      offer.getPayment(this.userId.UCML_UserOID).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("[[");

@@ -7,7 +7,7 @@
           <van-switch-cell v-model="ite.checked" :title="ite.name" class="item-title" />
         </van-cell-group>
         <div class="con-card" v-show="ite.checked">
-          <van-cell is-link class="con-item" v-for="(item,index) in ite.list" :key="index" @click="jumpPage(item)">
+          <van-cell class="con-item" v-for="(item,index) in ite.list" :key="index" :is-link="buttonValue.show" @click="buttonValue.show && !buttonValue.disabled ? jumpPage(item) : ''">
             <div class="item-content">
               <div class="content-row">
                 <span class="row-left">{{item[14]}}</span>
@@ -32,19 +32,23 @@
 </template>
 <script>
 import computed from "../../../assets/js/computed.js";
-import { offer } from "../../../assets/js/api.js";
+import { index, offer } from "../../../assets/js/api.js";
 export default {
   data() {
     return {
-      listOrder: []
+      listOrder: [],
+      buttonValue: {
+        show: false,
+        disabled: true
+      }
     };
   },
   computed,
   methods: {
     getData() {
       const params = {
-        pid: this.userInfo.oid,
-        sid: this.userInfo.oid,
+        pid: this.userId.UCML_OrganizeOID,
+        sid: this.userId.UCML_UserOID,
         type: 4
       };
       offer.getPriceList(params).then(res => {
@@ -84,6 +88,20 @@ export default {
     },
     pageInit() {
       this.getData();
+
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_Order_SetPrice")
+        .then(res => {
+          if (res.status) {
+            const arr = JSON.parse(res.text);
+            arr.forEach(val => {
+              if (val.Allowvisible === "1" && val.text === "编辑单据") {
+                this.buttonValue.show = true;
+                this.buttonValue.disabled = val.Enabled !== "1";
+              }
+            });
+          }
+        });
     }
   },
   mounted() {

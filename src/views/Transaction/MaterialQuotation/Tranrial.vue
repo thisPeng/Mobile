@@ -25,22 +25,36 @@
       <van-cell title="附件" is-link value="" @click="jumpPage('comfrimAnnex')" />
     </van-cell-group>
     <div class="con-button">
-      <van-button type="primary" @click="onSubmit" v-if="info[15] != '2'">提交报价</van-button>
+      <van-button type="primary" @click="onSubmit" v-if="info[15] != '2' && buttonValue.submit.show" :disabled="buttonValue.submit.disabled">提交报价</van-button>
       <!-- <van-button type="primary" @click="saveTranDetails" v-if="info[15] != '2'">保存</van-button> -->
-      <van-button type="main" @click="jumpInfo" v-if="info[15] != '3'">编辑合同</van-button>
-      <van-button type="default" @click="onAddItem" v-if="info[15] != '2'">添加物资</van-button>
+      <van-button type="main" @click="jumpInfo" v-if="info[15] != '3' && buttonValue.edit.show" :disabled="buttonValue.edit.disabled">编辑合同</van-button>
+      <van-button type="default" @click="onAddItem" v-if="info[15] != '2' && buttonValue.add.show" :disabled="buttonValue.add.disabled">添加物资</van-button>
     </div>
   </div>
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
-import { offer } from "./../../../assets/js/api.js";
+import { index, offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
       info: [],
       showDate: false, //交货时间
-      currentDate: new Date()
+      currentDate: new Date(),
+      buttonValue: {
+        add: {
+          show: false,
+          disabled: true
+        },
+        edit: {
+          show: false,
+          disabled: true
+        },
+        submit: {
+          show: false,
+          disabled: true
+        }
+      }
     };
   },
   computed,
@@ -118,6 +132,32 @@ export default {
     // 页面初始化
     pageInit() {
       this.getOffer();
+
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_Order_SetPrice_Edit")
+        .then(res => {
+          if (res.status) {
+            const arr = JSON.parse(res.text);
+            arr.forEach(val => {
+              if (val.Allowvisible === "1") {
+                switch (val.text) {
+                  case "添加物资":
+                    this.buttonValue.add.show = true;
+                    this.buttonValue.add.disabled = val.Enabled !== "1";
+                    break;
+                  case "提交报价":
+                    this.buttonValue.submit.show = true;
+                    this.buttonValue.submit.disabled = val.Enabled !== "1";
+                    break;
+                  case "合同编辑":
+                    this.buttonValue.edit.show = true;
+                    this.buttonValue.edit.disabled = val.Enabled !== "1";
+                    break;
+                }
+              }
+            });
+          }
+        });
     },
     // 跳转页面
     jumpPage(name) {

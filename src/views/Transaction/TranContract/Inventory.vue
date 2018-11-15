@@ -31,14 +31,14 @@
         </div>
       </template>
     </van-sku>
-    <div class="invoice-button" v-if="contractParams[20] != '发货情况：全部发货'">
-      <van-button type="primary" size="large" @click="onSave">生成发货单</van-button>
+    <div class="invoice-button" v-if="contractParams[20] != '发货情况：全部发货' && buttonValue.add.show">
+      <van-button type="primary" size="large" :disabled="buttonValue.add.disabled" @click="onSave">生成发货单</van-button>
     </div>
   </div>
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
-import { offer, financial } from "./../../../assets/js/api.js";
+import { index, offer, financial } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -69,6 +69,24 @@ export default {
         howMoney: "",
         taxRadio: "",
         reMarks: ""
+      },
+      buttonValue: {
+        add: {
+          show: false,
+          disabled: true
+        },
+        edit: {
+          show: false,
+          disabled: true
+        },
+        submit: {
+          show: false,
+          disabled: true
+        },
+        delete: {
+          show: false,
+          disabled: true
+        }
       }
     };
   },
@@ -113,6 +131,32 @@ export default {
       };
       offer.getNotShippded(params);
       this.getData();
+
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_Deliver_List")
+        .then(res => {
+          if (res.status) {
+            const arr = JSON.parse(res.text);
+            arr.forEach(val => {
+              if (val.Allowvisible === "1") {
+                switch (val.text) {
+                  case "新增":
+                    this.buttonValue.add.show = true;
+                    this.buttonValue.add.disabled = val.Enabled !== "1";
+                    break;
+                  case "发货":
+                    this.buttonValue.submit.show = true;
+                    this.buttonValue.submit.disabled = val.Enabled !== "1";
+                    break;
+                  case "编辑":
+                    this.buttonValue.edit.show = true;
+                    this.buttonValue.edit.disabled = val.Enabled !== "1";
+                    break;
+                }
+              }
+            });
+          }
+        });
     },
     // 生成发货单
     onSave() {

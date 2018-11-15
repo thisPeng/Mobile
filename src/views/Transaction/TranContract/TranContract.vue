@@ -48,32 +48,36 @@ export default {
   methods: {
     getData() {
       const params = {
-        pid: this.userInfo.oid,
-        sid: this.userInfo.oid,
+        pid: this.userId.UCML_OrganizeOID,
+        sid: this.userId.UCML_UserOID,
         type: 4
       };
       offer.getContract(params).then(res => {
-        if (res && res.status === 1) {
-          const sp = res.text.split("[[");
-          const csp = sp[1].split(";");
-          const list = eval("[[" + csp[0]);
-          const listOrder = [];
-          let tmp = "";
-          // 数据分组
-          list.forEach(val => {
-            if (val[2] !== tmp) {
-              listOrder.push({
-                name: val[11],
-                checked: true,
-                list: []
-              });
-              listOrder[listOrder.length - 1].list.push(val);
-              tmp = val[2];
-            } else {
-              listOrder[listOrder.length - 1].list.push(val);
-            }
-          });
-          this.listOrder = listOrder;
+        try {
+          if (res && res.status === 1) {
+            const sp = res.text.split("[[");
+            const csp = sp[1].split(";");
+            const list = eval("[[" + csp[0]);
+            const listOrder = [];
+            let tmp = "";
+            // 数据分组
+            list.forEach(val => {
+              if (val[2] !== tmp) {
+                listOrder.push({
+                  name: val[11],
+                  checked: true,
+                  list: []
+                });
+                listOrder[listOrder.length - 1].list.push(val);
+                tmp = val[2];
+              } else {
+                listOrder[listOrder.length - 1].list.push(val);
+              }
+            });
+            this.listOrder = listOrder;
+          }
+        } catch (e) {
+          console.log(e);
         }
       });
     },

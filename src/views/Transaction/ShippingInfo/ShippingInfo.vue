@@ -6,11 +6,11 @@
         <div class="info-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">{{item[8]}}</span>
-            <span class="option">
-              <van-button type="danger" size="mini" plain @click="onDelete(item)">删除</van-button>
+            <span class="option" v-if="buttonValue.delete.show">
+              <van-button type="danger" size="mini" plain :disabled="buttonValue.delete.disabled" @click="onDelete(item)">删除</van-button>
             </span>
           </div>
-          <van-cell is-link class="item-content" @click="jumpInfo(item)">
+          <van-cell class="item-content" :is-link="buttonValue.edit.show" @click="buttonValue.edit.show && !buttonValue.edit.disabled ? jumpInfo(item) : ''">
             <div class="content-row">
               <span class="row-left">{{item[10]}}</span>
             </div>
@@ -37,26 +37,44 @@
       </div>
     </div>
     <!--新增发货单-->
-    <div class="info-button">
-      <van-button type="primary" size="large" @click.stop="jumpAdd">新增发货单</van-button>
+    <div class="info-button" v-if="buttonValue.add.show">
+      <van-button type="primary" size="large" :disabled="buttonValue.add.disabled" @click.stop="jumpAdd">新增发货单</van-button>
     </div>
   </div>
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
-import { offer } from "./../../../assets/js/api.js";
+import { index, offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      buttonValue: {
+        add: {
+          show: false,
+          disabled: true
+        },
+        edit: {
+          show: false,
+          disabled: true
+        },
+        submit: {
+          show: false,
+          disabled: true
+        },
+        delete: {
+          show: false,
+          disabled: true
+        }
+      }
     };
   },
   computed,
   methods: {
     getData() {
       const params = {
-        pid: this.userInfo.oid,
-        sid: this.userInfo.oid,
+        pid: this.userId.UCML_OrganizeOID,
+        sid: this.userId.UCML_UserOID,
         type: 4
       };
       return offer.getDelivery(params).then(res => {
@@ -72,9 +90,6 @@ export default {
           return false;
         }
       });
-    },
-    pageInit() {
-      this.getData();
     },
     jumpInfo(item) {
       this.$store.commit("contractParams", item);
@@ -116,6 +131,40 @@ export default {
       this.$router.push({
         name: "newInvoice"
       });
+    },
+    pageInit() {
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_Deliver_List")
+        .then(res => {
+          if (res.status) {
+            const arr = JSON.parse(res.text);
+            arr.forEach(val => {
+              if (val.Allowvisible === "1") {
+                switch (val.text) {
+                  case "新增":
+                    this.buttonValue.add.show = true;
+                    this.buttonValue.add.disabled = val.Enabled !== "1";
+                    break;
+                  case "发货":
+                    this.buttonValue.submit.show = true;
+                    this.buttonValue.submit.disabled = val.Enabled !== "1";
+                    break;
+                  case "编辑":
+                    this.buttonValue.edit.show = true;
+                    this.buttonValue.edit.disabled = val.Enabled !== "1";
+                    break;
+                  case "删除":
+                    this.buttonValue.delete.show = true;
+                    this.buttonValue.delete.disabled = val.Enabled !== "1";
+                    break;
+                }
+              }
+            });
+            // console.log(this.buttonValue);
+          }
+        });
+
+      this.getData();
     }
   },
   mounted() {

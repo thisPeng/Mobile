@@ -27,21 +27,39 @@
       <van-cell title="发货单明细" is-link value="详情" @click="jumpPage(list)" />
     </van-cell-group>
     <div class="con-button" v-if="list[41] != '已发货'">
-      <van-button type="primary" @click="sendShipping">发货</van-button>
+      <van-button type="primary" @click="sendShipping" v-if="buttonValue.submit.show" :disabled="buttonValue.submit.disabled">发货</van-button>
       <!-- <van-button type="default" @click="saveOrder">保存</van-button> -->
-      <van-button type="danger" @click="deleteOrder">删除</van-button>
+      <van-button type="danger" @click="deleteOrder" v-if="buttonValue.delete.show" :disabled="buttonValue.delete.disabled">删除</van-button>
     </div>
   </div>
 </template>
 <script>
 import computed from "./../../../assets/js/computed.js";
-import { offer } from "./../../../assets/js/api.js";
+import { index, offer } from "./../../../assets/js/api.js";
 export default {
   data() {
     return {
       list: [],
       showDate: false, //交货时间
-      currentDate: new Date()
+      currentDate: new Date(),
+      buttonValue: {
+        add: {
+          show: false,
+          disabled: true
+        },
+        edit: {
+          show: false,
+          disabled: true
+        },
+        submit: {
+          show: false,
+          disabled: true
+        },
+        delete: {
+          show: false,
+          disabled: true
+        }
+      }
     };
   },
   computed,
@@ -174,6 +192,36 @@ export default {
     },
     pageInit() {
       this.getData();
+
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_Deliver_List")
+        .then(res => {
+          if (res.status) {
+            const arr = JSON.parse(res.text);
+            arr.forEach(val => {
+              if (val.Allowvisible === "1") {
+                switch (val.text) {
+                  case "新增":
+                    this.buttonValue.add.show = true;
+                    this.buttonValue.add.disabled = val.Enabled !== "1";
+                    break;
+                  case "发货":
+                    this.buttonValue.submit.show = true;
+                    this.buttonValue.submit.disabled = val.Enabled !== "1";
+                    break;
+                  case "编辑":
+                    this.buttonValue.edit.show = true;
+                    this.buttonValue.edit.disabled = val.Enabled !== "1";
+                    break;
+                  case "删除":
+                    this.buttonValue.delete.show = true;
+                    this.buttonValue.delete.disabled = val.Enabled !== "1";
+                    break;
+                }
+              }
+            });
+          }
+        });
     },
     jumpPage(list) {
       this.$store.commit("confirmParams", list);
