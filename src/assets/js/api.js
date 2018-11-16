@@ -479,6 +479,20 @@ const users = {
       }
     });
   },
+  //自营项目新增保存
+  keepSelf(xmlData = "") {
+    return axios({
+      url: "UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Project_EditService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xmlData,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
   //获取工程商用户信息
   getCompanyUserInfo(SC_CompanyOID = "") {
     return axios({
