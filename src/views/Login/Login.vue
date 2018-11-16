@@ -31,14 +31,17 @@
               <router-link :to="{ name:'register' }">注册账号</router-link>
             </span> -->
             <!-- <span class="check-option">
-                  <router-link :to="{ name:'index' }">忘记密码</router-link>
-                </span> -->
+              <router-link :to="{ name:'index' }">忘记密码</router-link>
+            </span> -->
           </div>
           <div class="button-option">
             <van-button type="main" native-type="submit">登 录</van-button>
           </div>
         </div>
       </form>
+      <div class="margin-top-xxl text-center">
+        <a href="javascript:;" @click="showMessage">快速注册</a>
+      </div>
       <!-- <div class="login-oauth">
           <div class="oauth-text">第三方登录</div>
           <div class="oauth-icon">
@@ -70,6 +73,17 @@ export default {
   },
   computed,
   methods: {
+    showMessage() {
+      this.$dialog
+        .alert({
+          title: "注册提示",
+          message:
+            "移动端暂未开放注册，请使用电脑登录 https://173cbh.com 进行注册。"
+        })
+        .then(() => {
+          // on close
+        });
+    },
     // 登录
     userLogin() {
       if (this.loginName.length > 0 && this.password.length > 0) {

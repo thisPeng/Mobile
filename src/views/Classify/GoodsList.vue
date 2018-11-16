@@ -30,16 +30,20 @@
     <div class="classify-data">
       <div class="classify-list">
         <div class="list-item" v-for="(item, index) in goodsList" :key="index" @click="showInfo(item)">
-          <van-card :title="item[22]" :desc="item[28] + ' | 单位：' + item[23]" :price="item[5] || '-'" :thumb="item[41].replace('~',servePath)">
-            <!-- <div slot="desc">
+          <van-card :title="item[22]" :desc="item[28] + ' | 单位：' + item[23]" :thumb="item[41].replace('~',servePath)">
+            <div slot="title" class="van-card__title">
+              <div class="title">{{item[22]}}</div>
+              <div class="price">{{item[5] ? '￥ ' + item[5] : '工程价'}}</div>
+            </div>
+            <div slot="desc">
+              <div class="item-desc">{{item[28] + ' | 单位：' + item[23]}}</div>
               <div class="item-brand">
-                <van-tag plain type="success">品牌： {{item[24]}}</van-tag>
+                <van-tag plain type="success">品牌：{{item[24]}}</van-tag>
               </div>
-              <div class="item-price">￥ {{item[5]}}</div>
-            </div> -->
+            </div>
             <div slot="footer" v-if="userType != 3">
               <!-- <i class="iconfont icon-xiangqing" @click="showInfo(item)"></i> -->
-              <i class="iconfont icon-add" @click.stop="addCart(item)"></i>
+              <i class="iconfont icon-add" @click.stop="addCart(item)" v-if="projectInfo.SC_ProjectOID"></i>
             </div>
           </van-card>
         </div>
@@ -69,6 +73,12 @@
     </div>
     <!--商品详情-->
     <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
+      <template slot="sku-header-price" slot-scope="props">
+        <div class="van-sku__goods-price">
+          <span class="van-sku__price-symbol" v-if="props.price > 0">￥</span>
+          <span class="van-sku__price-num">{{props.price > 0 ? props.price : '工程价'}}</span>
+        </div>
+      </template>
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
           <van-cell :title="'品牌： ' + goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
@@ -82,7 +92,7 @@
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
           <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')" v-if="userType != 3">加入购物车</van-button>
+          <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')" v-if="userType != 3 && projectInfo.SC_ProjectOID">加入购物车</van-button>
         </div>
       </template>
     </van-sku>
@@ -394,6 +404,24 @@ export default {
           border: 1px solid #eee;
           border-radius: 5px;
           margin-bottom: 10px;
+          .van-card__title {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            .title {
+              width: 0;
+              font-size: 14px;
+              flex: 9;
+              word-wrap: normal;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+            .price {
+              color: #ff4257;
+              flex: 1;
+            }
+          }
           .item-brand {
             padding: 5px 0;
           }

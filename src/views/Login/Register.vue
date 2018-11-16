@@ -1,9 +1,5 @@
 <template>
   <section class="register">
-    <div class="register-nav">
-      <van-nav-bar title="账号注册" left-arrow @click-left="onBack"></van-nav-bar>
-    </div>
-
     <form class="register-form" @submit.prevent="onRegister">
       <van-cell-group>
         <van-field v-model="data.username" clearable label="用户名" placeholder="请输入用户名" required />
@@ -57,7 +53,7 @@ export default {
     position: absolute;
     left: 0;
     right: 0;
-    top: 46px;
+    top: 0px;
     bottom: 0;
     overflow-x: hidden;
     overflow-y: auto;

@@ -207,7 +207,6 @@ export default {
       }
     }
   }
-
   .van-cell {
     padding: 10px 15px;
     display: flex;

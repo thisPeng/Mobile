@@ -21,7 +21,11 @@
     <div class="classify-data">
       <div class="classify-list">
         <div class="list-item" v-for="(item, index) in goodsList" :key="index" @click="showInfo(item)">
-          <van-card :title="item[22]" :price="item[5] || '-'" :thumb="item[41].replace('~',servePath)">
+          <van-card :thumb="item[41].replace('~',servePath)">
+            <div slot="title" class="van-card__title">
+              <div class="title">{{item[22]}}</div>
+              <div class="price">{{item[5] ? '￥ ' + item[5] : '工程价'}}</div>
+            </div>
             <div slot="desc">
               <div class="item-desc">{{item[28] + ' | 单位：' + item[23]}}</div>
               <div class="item-brand">
@@ -51,6 +55,12 @@
     </van-popup>
     <!--商品详情-->
     <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock">
+      <template slot="sku-header-price" slot-scope="props">
+        <div class="van-sku__goods-price">
+          <span class="van-sku__price-symbol" v-if="props.price > 0">￥</span>
+          <span class="van-sku__price-num">{{props.price > 0 ? props.price : '工程价'}}</span>
+        </div>
+      </template>
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
           <van-cell :title="'品牌： ' + goods.brand" :label="goods.info + '| 单位：' + goods.unit" />
@@ -298,6 +308,24 @@ export default {
           border: 1px solid #eee;
           border-radius: 5px;
           margin-bottom: 10px;
+          .van-card__title {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            .title {
+              width: 0;
+              font-size: 14px;
+              flex: 9;
+              word-wrap: normal;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+            .price {
+              color: #ff4257;
+              flex: 1;
+            }
+          }
           .item-brand {
             padding: 5px 0;
           }

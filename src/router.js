@@ -79,7 +79,6 @@ import ContractAnnex from "./views/Annex/Contract";
 import PartnerAnnex from "./views/Annex/Partner";
 import SupplierAnnex from "./views/Annex/Supplier";
 import ProjectSelf from "./views/Project/ProjectSelf";
-import ProjectCooperation from "./views/Project/ProjectCooperation";
 
 Vue.use(Router);
 
@@ -185,14 +184,6 @@ export default new Router({
         component: ProjectSelf,
         meta: {
           title: "自营项目"
-        }
-      },
-      {
-        path: "/projectCooperation",
-        name: "projectCooperation",
-        component: ProjectCooperation,
-        meta: {
-          title: "合作项目"
         }
       },
       {

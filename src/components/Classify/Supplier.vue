@@ -39,7 +39,7 @@
                 <div class="item-brand">
                   <van-tag plain type="success">品牌： {{item[24]}}</van-tag>
                 </div>
-                <div class="item-price">￥ {{item[5]}}</div>
+                <div class="item-price">{{item[5] ? '￥' + item[5] : '工程价'}}</div>
               </div>
               <div slot="footer">
                 <i class="iconfont icon-add" @click.stop="addCart(item)"></i>
@@ -50,6 +50,12 @@
       </div>
       <!--商品详情-->
       <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
+        <template slot="sku-header-price" slot-scope="props">
+          <div class="van-sku__goods-price">
+            <span class="van-sku__price-symbol" v-if="props.price > 0">￥</span>
+            <span class="van-sku__price-num">{{props.price > 0 ? props.price : '工程价'}}</span>
+          </div>
+        </template>
         <template slot="sku-body-top" slot-scope="props">
           <van-cell-group>
             <van-cell :title="'品牌： '+ goods.brand" :label="goods.info + '| 单位：' + goods.unit" />

@@ -59,45 +59,53 @@ export default {
   computed,
   methods: {
     jumpPage(item, type) {
-      switch (type) {
-        case "2":
-          this.$store.commit("goodsParams", { id: item.id });
-          this.$router.push({
-            name: this.userInfo.oid ? "goodsList" : "goodsSearch"
-          });
-          break;
-        case "4":
-          this.$store.commit("suppParams", {
-            id: item.id,
-            icon: item.icon,
-            action: item.action,
-            param: item.Param
-          });
-          this.$router.push({
-            name: "supplierInfo"
-          });
-          break;
-        case "5":
-          this.$store.commit("goodsParams", { id: item.id });
-          this.$router.push({
-            name: this.userInfo.oid ? "goodsList" : "goodsSearch"
-          });
-          break;
-        default:
-          if (item.action.indexOf(".") >= 0) {
-            window.location.href = item.action;
-          } else {
+      if (this.userInfo.oid) {
+        switch (type) {
+          case "2":
+            this.$store.commit("goodsParams", { id: item.id });
             this.$router.push({
-              name: item.action
+              name: this.userInfo.oid ? "goodsList" : "goodsSearch"
             });
-          }
+            break;
+          case "4":
+            this.$store.commit("suppParams", {
+              id: item.id,
+              icon: item.icon,
+              action: item.action,
+              param: item.Param
+            });
+            this.$router.push({
+              name: "supplierInfo"
+            });
+            break;
+          case "5":
+            this.$store.commit("goodsParams", { id: item.id });
+            this.$router.push({
+              name: this.userInfo.oid ? "goodsList" : "goodsSearch"
+            });
+            break;
+          default:
+            if (item.action.indexOf(".") >= 0) {
+              window.location.href = item.action;
+            } else {
+              this.$router.push({
+                name: item.action
+              });
+            }
+        }
+      } else {
+        this.$toast.fail("请先登录账号");
       }
     },
     onSearch() {
-      this.$store.commit("goodsParams", { keyword: this.keyword });
-      this.$router.push({
-        name: "goodsList"
-      });
+      if (this.userInfo.oid) {
+        this.$store.commit("goodsParams", { keyword: this.keyword });
+        this.$router.push({
+          name: "goodsList"
+        });
+      } else {
+        this.$toast.fail("请先登录账号");
+      }
     },
     filterReset() {
       this.keyword = "";

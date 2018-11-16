@@ -172,6 +172,48 @@ const project = {
         _pUrl: ""
       }
     });
+  },
+  // 新增项目-生成项目编号
+  getProjectNO(OrgID = "") {
+    return axios({
+      url: "UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Project_EditService",
+        _methodName: "GetProjectNO",
+        "_parameters[OrgID]": OrgID,
+        _paraNames: "OrgID",
+        _pUrl: ""
+      }
+    })
+  },
+  //自营项目新增保存
+  saveProjectSelf(xmlData = "") {
+    return axios({
+      url: "UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Project_EditService",
+        _methodName: "BusinessSubmit",
+        "_parameters[xmlData]": xmlData,
+        _paraNames: "xmlData",
+        _pUrl: ""
+      }
+    })
+  },
+  //自营项目新增保存
+  deleteProjectSelf(ProjectID = "") {
+    return axios({
+      url: "UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Self_ProjectService",
+        _methodName: "IsExistsQuote",
+        "_parameters[ProjectID]": ProjectID,
+        _paraNames: "ProjectID",
+        _pUrl: ""
+      }
+    })
   }
 };
 
@@ -478,20 +520,6 @@ const users = {
         _pUrl: ""
       }
     });
-  },
-  //自营项目新增保存
-  keepSelf(xmlData = "") {
-    return axios({
-      url: "UCMLWebServiceEntryForJs.aspx",
-      method: "post",
-      data: {
-        _bpoName: "BPO_Project_EditService",
-        _methodName: "BusinessSubmit",
-        "_parameters[xmlData]": xmlData,
-        _paraNames: "xmlData",
-        _pUrl: ""
-      }
-    })
   },
   //获取工程商用户信息
   getCompanyUserInfo(SC_CompanyOID = "") {

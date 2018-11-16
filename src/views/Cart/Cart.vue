@@ -33,7 +33,7 @@
                   </div>
                   <div slot="title" class="van-card__row" @click.stop="onShowInfo(item,index)">
                     <div class="van-card__title">{{item[14]}}</div>
-                    <div class="van-card__price">{{'￥ '+item[19]}}</div>
+                    <div class="van-card__price">{{item[19] ? '￥ '+item[19] : '工程价'}}</div>
                   </div>
                   <div slot="footer">
                     <van-stepper v-model="item[3]" :integer="true" @change="onChangNumber(item)" />
@@ -49,6 +49,12 @@
 
     <!--商品详情-->
     <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onSearchSame(goods.title)">
+      <template slot="sku-header-price" slot-scope="props">
+        <div class="van-sku__goods-price">
+          <span class="van-sku__price-symbol" v-if="props.price > 0">￥</span>
+          <span class="van-sku__price-num">{{props.price > 0 ? props.price : '工程价'}}</span>
+        </div>
+      </template>
       <template slot="sku-body-top" slot-scope="props">
         <van-cell-group>
           <van-cell :title="'品牌： '+ goods.brand" :label="goods.info + '| 单位：' + goods.unit" />

@@ -6,28 +6,19 @@
       <van-field v-model="cspList[1]" label="合同编号" disabled />
       <van-field v-model="cspList[2]" label="合同名称" disabled />
       <van-field v-model="cspList[11]" label="合同金额" type="number" disabled />
-      <van-cell-group class="tact-price">
-        <span class="tact-label">税率(%)</span>
-        <span class="tact-select">
-          <van-stepper v-model="cspList[19]" />
-        </span>
-      </van-cell-group>
+      <van-field v-model="cspList[19]" label="税率(%)" type="number" disabled />
       <van-field v-model="cspList[18]" label="合同含税金额" type="number" disabled />
       <van-field v-model="cspList[3]" label="甲方" disabled />
       <van-field v-model="cspList[4]" label="乙方" disabled />
       <van-field v-model="cspList[10]" label="验收限期(天)" disabled />
       <van-cell-group class="con-price">
         <span class="con-label">交货时间</span>
-        <span class="con-select" @click="showDateone=true">{{cspList[9]}}</span>
+        <span class="con-select">{{cspList[9]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDateone" :min-date="new Date()" type="date" class="contract-date" @confirm="jiaohuoDate" @cancel="showDateone=false" />
       <van-field v-model="cspList[8]" label="交货地点" disabled />
       <van-cell-group class="con-price">
         <span class="con-label">付款方式</span>
-        <span class="con-select" @click="paymentShow=true">{{payment}}</span>
-        <van-popup v-model="paymentShow" position="bottom">
-          <van-picker show-toolbar :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
-        </van-popup>
+        <span class="con-select">{{payment}}</span>
       </van-cell-group>
       <van-cell-group>
         <div class="padding-vertical-sm text-xs">
@@ -51,14 +42,14 @@
       <van-field v-model="cspList[22]" label="保质期（天）" type="number" disabled />
       <van-cell-group class="con-price">
         <span class="con-label">保质开始时间</span>
-        <span class="con-select" @click="showDate=true">{{cspList[23]}}</span>
+        <span class="con-select">{{cspList[23]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDate" :min-date="new Date()" type="date" class="contract-date" @confirm="saveDate" @cancel="showDate=false" />
+      <van-datetime-picker v-model="currentDate" v-show="showDate" :min-date="new Date()" type="date" class="contract-date" />
       <van-cell-group class="con-price">
         <span class="con-label">保质结束时间</span>
-        <span class="con-select" @click="showDatatwo=true">{{cspList[24]}}</span>
+        <span class="con-select">{{cspList[24]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDatatwo" :min-date="new Date()" type="date" class="contract-date" @confirm="jieshuDate" @cancel="showDatetwo=false" />
+      <van-datetime-picker v-model="currentDate" v-show="showDatatwo" :min-date="new Date()" type="date" class="contract-date" />
       <van-field v-model="cspList[25]" label="保证金比例(%)" disabled />
       <van-field v-model="cspList[26]" label="保质期处理期限(天)" disabled />
       <van-field v-model="cspList[27]" label="保质期处理备注" disabled />
@@ -73,9 +64,8 @@
       <van-field v-model="cspList[37]" label="甲方代表人" />
       <van-cell-group class="con-price">
         <span class="con-label">甲方签订日期</span>
-        <span class="con-select" @click="showDatathree=true">{{cspList[38]}}</span>
+        <span class="con-select">{{cspList[38]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDatathree" :min-date="new Date()" type="date" class="contract-date" @confirm="jiafangDate" @cancel="showDatathree=false" />
       <van-field v-model="cspList[35]" label="甲方地址" disabled />
       <div class="title-delivery">乙方信息</div>
       <van-field v-model="cspList[39]" label="乙方(盖章签名处)" disabled />
@@ -86,9 +76,8 @@
       <van-field v-model="cspList[45]" label="乙方代表人" disabled />
       <van-cell-group class="con-price">
         <span class="con-label">乙方签订日期</span>
-        <span class="con-select" @click="showDatafour=true">{{cspList[46]}}</span>
+        <span class="con-select">{{cspList[46]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDatafour" :min-date="new Date()" type="date" class="contract-date" @confirm="yifangDate" @cancel="showDatafour=false" />
       <van-field v-model="cspList[43]" label="乙方地址" disabled />
     </van-cell-group>
     <div class="title-delivery">合同附件</div>
@@ -122,38 +111,7 @@ export default {
   },
   computed,
   methods: {
-    //付款方式
-    onConfirm(res) {
-      this.payment = res;
-      this.paymentShow = false;
-    },
-    // 保质开始时间
-    saveDate(val) {
-      this.cspList[23] = this.$util.formatDate(val);
-      this.showDate = false;
-    },
-    //交货时间
-    jiaohuoDate(val) {
-      this.cspList[9] = this.$util.formatDate(val);
-      this.showDateone = false;
-    },
-    //保质结束时间
-    jieshuDate(val) {
-      this.cspList[24] = this.$util.formatDate(val);
-      this.showDatatwo = false;
-    },
-    //甲方
-    jiafangDate(val) {
-      this.cspList[38] = this.$util.formatDate(val);
-      this.showDatathree = false;
-    },
-    //乙方
-    yifangDate(val) {
-      this.cspList[46] = this.$util.formatDate(val);
-      this.showDatafour = false;
-    },
     conContract() {
-      // console.log(this.confirmParams);
       conprice.conContract(this.contractParams[0]).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
@@ -163,27 +121,27 @@ export default {
           if (this.cspList[9] && this.cspList[9] != "1900-01-01 00:00:00") {
             this.cspList[9] = this.$util.formatDate(this.cspList[9]);
           } else {
-            this.cspList[9] = "请选择时间"; // 确认时间
+            this.cspList[9] = ""; // 确认时间
           }
           if (this.cspList[23] && this.cspList[23] != "1900-01-01 00:00:00") {
             this.cspList[23] = this.$util.formatDate(this.cspList[23]);
           } else {
-            this.cspList[23] = "请选择时间"; // 交货时间
+            this.cspList[23] = ""; // 交货时间
           }
           if (this.cspList[24] && this.cspList[24] != "1900-01-01 00:00:00") {
             this.cspList[24] = this.$util.formatDate(this.cspList[24]);
           } else {
-            this.cspList[24] = "请选择时间"; // 保质结束时间
+            this.cspList[24] = ""; // 保质结束时间
           }
           if (this.cspList[38] && this.cspList[38] != "1900-01-01 00:00:00") {
             this.cspList[38] = this.$util.formatDate(this.cspList[38]);
           } else {
-            this.cspList[38] = "请选择时间"; // 甲方
+            this.cspList[38] = ""; // 甲方
           }
           if (this.cspList[46] && this.cspList[46] != "1900-01-01 00:00:00") {
             this.cspList[46] = this.$util.formatDate(this.cspList[46]);
           } else {
-            this.cspList[46] = "请选择时间"; // 乙方
+            this.cspList[46] = ""; // 乙方
           }
           const i = this.cspList[12];
           this.payment = this.columns[i - 1];

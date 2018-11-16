@@ -14,15 +14,19 @@
               <span class="content-left">联系人：{{item.Contact}}</span>
               <span class="content-right">联系电话：{{item.Telephone}}</span>
             </div>
+            <div class="item-content">
+              <span class="content-left">联系地址：{{item.Address}}</span>
+            </div>
           </div>
           <div class="option">
             <div class="icon icon-edit" @click.stop="jumpEdit(item)">
               <van-icon name="edit" size="18px" color="#00A0E9" />
-              <span class="text-xs">编辑</span>
+              <span class="icon-text">编辑</span>
             </div>
+            <span class="text-darkGray">|</span>
             <div class="icon icon-delete" @click.stop="onDelete(item)">
               <van-icon name="close" size="18px" color="#f44" />
-              <span class="text-xs">删除</span>
+              <span class="icon-text">删除</span>
             </div>
           </div>
         </div>
@@ -65,6 +69,7 @@ export default {
   data() {
     return {
       active: 0,
+      edit: false,
       list: []
     };
   },
@@ -74,12 +79,59 @@ export default {
         oid: this.userInfo.oid,
         type
       };
-      project.getProjectList(params).then(res => {
+      return project.getProjectList(params).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split(";");
           this.list = eval(sp[0]);
+          return true;
+          // console.log(this.list);
         }
+        return false;
       });
+    },
+    onDelete(item) {
+      console.log(item);
+      this.$dialog
+        .confirm({
+          title: "删除提示",
+          message: "确定要删除[" + item.ProjectName + "]项目？"
+        })
+        .then(() => {
+          project.deleteProjectSelf(item.SC_ProjectOID).then(result => {
+            if (result.status && result.text == "False") {
+              const xml = require("xml");
+              const xmlString = xml({
+                root: [
+                  {
+                    BC_SC_Project: [
+                      { _attr: { UpdateKind: "ukDelete" } },
+                      { SC_ProjectOID: item.SC_ProjectOID }
+                    ]
+                  }
+                ]
+              });
+              project.saveProjectSelf(xmlString).then(res => {
+                try {
+                  if (res.status === 1) {
+                    this.getData(this.userType != 2 ? this.active : 1).then(
+                      r => {
+                        if (r) this.$toast.success("删除成功");
+                        else window.location.reload();
+                      }
+                    );
+                    return;
+                  }
+                  throw "删除失败，请刷新页面重试";
+                } catch (e) {
+                  this.$toast.fail(e);
+                }
+              });
+            } else {
+              this.$toast.fail("项目已经引用，不能删除");
+            }
+          });
+        })
+        .catch(() => {});
     },
     switchType(res) {
       this.getData(this.userType != 2 ? res : 1);
@@ -97,7 +149,11 @@ export default {
     jumpEdit(item) {
       this.$store.commit("projectInfo", item);
       this.$router.push({
-        name: "projectSelf"
+        name: "projectSelf",
+        query: {
+          edit: true,
+          type: this.active + 1
+        }
       });
     }
   },
@@ -138,24 +194,27 @@ export default {
       align-items: center;
       justify-content: space-between;
       color: #666;
-      border-bottom: 1px solid #eee;
     }
     .option {
       padding-top: 5px;
       display: flex;
+      border-top: 1px solid #f6f6f6;
       .icon {
         padding-right: 15px;
         display: flex;
         align-items: center;
-        .icon-edit {
-          color: #00a0e9;
-        }
-        .icon-delete {
-          color: #f44;
-        }
-        .text-xs {
-          padding-left: 5px;
-        }
+      }
+      .icon-edit {
+        color: #00a0e9;
+        padding-left: 5px;
+      }
+      .icon-delete {
+        color: #f44;
+        padding-left: 15px;
+      }
+      .icon-text {
+        padding-left: 5px;
+        font-size: 13px;
       }
     }
   }

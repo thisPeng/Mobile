@@ -28,7 +28,7 @@
                   </div>
                   <div slot="title" class="van-card__row">
                     <div class="van-card__title">{{item[4]}}</div>
-                    <div class="van-card__price">{{'￥ '+item[14]}}</div>
+                    <div class="van-card__price">{{item[14] ? '￥ ' + item[14] : '工程价'}}</div>
                   </div>
                   <div slot="footer">
                     <van-stepper v-model="item[11]" :integer="true" />
