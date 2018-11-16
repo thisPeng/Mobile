@@ -12,6 +12,7 @@ import Cart from "./views/Cart/Cart";
 import ProjectList from "./views/Project/ProjectList";
 import ConPrice from "./views/Project/ConPrice/ConPrice";
 import ContractInfo from "./views/Project/ContractInfo/ContractInfo";
+import ContractWorkInfo from "./views/Project/ContractInfo/ContractWorkInfo";
 import ArrivalInformation from "./views/Project/Delivery/ArrivalInformation";
 import ProjectInfo from "./views/Project/ProjectInfo/ProjectInfo";
 import application from "./views/Project/Payment/List/Application"; //支付申请信息
@@ -364,6 +365,13 @@ export default new Router({
         component: ContractInfo,
         meta: {
           title: "合同信息"
+        }
+      }, {
+        path: "/contractInfo/contractWorkInfo",
+        name: "contractWorkInfo",
+        component: ContractWorkInfo,
+        meta: {
+          title: "劳务合同详情"
         }
       }, {
         path: "/arrivalinformation",
