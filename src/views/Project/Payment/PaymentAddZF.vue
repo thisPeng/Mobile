@@ -1,5 +1,5 @@
 <template>
-  <div class="task">
+  <div class="task" :style="buttonValue.length > 0 ? 'padding-bottom: 75px;' : ''">
     <div class="task-content">
       <van-cell-group>
         <van-field :value="data.id || '系统生成'" label="单号" :disabled="true" />
@@ -16,8 +16,8 @@
         <van-field v-model="data.Sheet_Amt" label="单据金额(￥)" disabled v-if="payment === '支付供应商'" />
         <div class="van-cell van-cell--required van-field">
           <div class="van-cell__title">支付类型</div>
-          <div class="van-cell__value flex-between">
-            <span :class="edit ? 'text-gray from-select' : 'from-select'" @click="edit ? '' : paymentShow=true">{{payment}}</span>
+          <div class="van-cell__value flex-between" @click="edit ? '' : paymentShow=true">
+            <span :class="edit ? 'text-gray from-select' : 'from-select'">{{payment}}</span>
           </div>
         </div>
 
@@ -54,7 +54,7 @@
             <tbody>
               <tr v-for="(item,index) in dataTable" :key="index">
                 <td>
-                  <van-field :value="item.name" :disabled="true" />
+                  <van-field :value="item.name" type="textarea" :disabled="true" />
                 </td>
                 <td>
                   <van-field v-model="item.money" placeholder="请输入金额" @change="onChangeMoney" />
@@ -86,7 +86,7 @@
     <van-popup v-model="paymentShow" position="bottom">
       <van-picker show-toolbar title="支付类型" :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
     </van-popup>
-    <div class="payment-button">
+    <div class="payment-button" v-if="buttonValue.length > 0">
       <div class="button-value" v-for="(item,index) in buttonValue" :key="index" v-if="item.Allowvisible === '1'">
         <van-button @click="onSave" v-if="item.text === '保存'" :disabled="item.Enabled !== '1'">保存</van-button>
         <van-button type="primary" @click="onSubmit" v-if="item.text === '提交'" :disabled="item.Enabled !== '1'">提交</van-button>
@@ -686,6 +686,8 @@ export default {
         .then(res => {
           if (res.status) {
             this.buttonValue = JSON.parse(res.text);
+          } else {
+            this.buttonValue = [];
           }
         });
     }
@@ -699,7 +701,6 @@ export default {
 <style lang="less" scoped>
 .task {
   width: 100%;
-  padding-bottom: 75px;
   overflow: hidden !important;
   .task-content {
     width: 100%;
@@ -816,6 +817,10 @@ export default {
           border-bottom: 1px solid #eee;
           td {
             height: 50px;
+            .van-field--min-height {
+              height: 50px;
+              padding: 0 2.5px;
+            }
           }
         }
       }

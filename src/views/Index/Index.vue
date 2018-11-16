@@ -4,7 +4,7 @@
     <div class="index-banner" v-if="images.length > 0">
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(item, index) in images" :key="index">
-          <img :src="item.ImagePath.replace('~',servePath)" :alt="item.ImageTitle" />
+          <img :src="item.ImagePath.replace('~',servePath)" alt="" />
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -17,7 +17,7 @@
       <div class="marquee-list">
         <ul :class="{animate}">
           <li v-for="(item, index) in marqueeList.data" :key="index">
-            <span class="marquee-text">{{item.Describe}}</span>
+            <span class="marquee-text">{{item.Describe || item.text || item.id}}</span>
           </li>
         </ul>
       </div>
@@ -33,7 +33,7 @@
         <div class="pages-content">
           <div :class="'content-item content-item-'+item.RowNum" v-for="(ite,idx) in item.data" :key="idx" @click="jumpPage(ite,item.ActionType)">
             <div class="content-image">
-              <img :src="(ite.icon).replace('~',servePath)" :alt="ite.text">
+              <img :src="(ite.icon).replace('~',servePath)" alt="">
             </div>
             <div class="content-text" v-if="ite.isShowTitle == 1">{{ite.text}}</div>
           </div>
@@ -67,7 +67,12 @@ export default {
           });
           break;
         case "4":
-          this.$store.commit("suppParams", { id: item.id });
+          this.$store.commit("suppParams", {
+            id: item.id,
+            icon: item.icon,
+            action: item.action,
+            param: item.Param
+          });
           this.$router.push({
             name: "supplierInfo"
           });
@@ -118,6 +123,7 @@ export default {
       try {
         const arr = JSON.parse(res.text);
         this.pages = [];
+        this.marqueeList = [];
         arr.forEach(val => {
           if (val.ActionType == 1) {
             this.marqueeList = val;
@@ -125,7 +131,6 @@ export default {
             this.pages.push(val);
           }
         });
-        // console.log(this.pages);
         setInterval(this.showMarquee, 2000);
       } catch (e) {
         this.pages = [];

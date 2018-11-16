@@ -1,21 +1,25 @@
 <template>
   <div class="supplie-type">
-    <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action v-if="!isSearch" />
-    <div class="supplie-info" v-if="suppInfo.length > 0" @click="jumpInfo">
+    <div class="van-cell van-cell--borderless van-field" v-if="userInfo.oid">
+      <div class="van-cell__title">工程名称：</div>
+      <div class="van-cell__value flex-between">
+        <span class="text-truncate text-left text-gray">{{projectInfo.ProjectName || '请选择工程项目'}}</span>
+        <van-button type="primary" size="mini" @click="$router.push({ name: 'projectList' })">选择</van-button>
+      </div>
+    </div>
+    <van-cell v-else title="未登录账号" value="" @click="$router.push({ name: 'login' })" icon="setting" is-link />
+
+    <div class="supplie-info" @click="jumpInfo">
       <div class="info-left">
         <div class="info-img">
-          <img src="img/icons/android-chrome-512x512.png" alt="" />
+          <img :src="(suppParams.icon).replace('~',servePath)" alt="" />
         </div>
         <div class="info-text">
-          <div class="text-name">{{suppInfo[22]}}</div>
-          <div class="text-address">{{suppInfo[30]}}</div>
+          <div class="text-name">{{suppInfo[2]}}</div>
+          <div class="text-address">{{suppInfo[12]}}</div>
         </div>
       </div>
       <div class="info-right">
-        <van-tag type="danger" v-if="suppInfo[3] === '1'">待审核</van-tag>
-        <van-tag type="primary" v-else-if="suppInfo[3] === '2'">审核中</van-tag>
-        <van-tag type="success" v-else-if="suppInfo[3] === '3'">已审核</van-tag>
-        <van-tag v-else>未审核</van-tag>
         <van-icon class="padding-left-xs" name="arrow" size="20px" />
       </div>
     </div>
@@ -78,13 +82,9 @@
     <van-popup v-model="screenShow" position="right">
       <div class="screen">
         <div class="screen-filter">
+          <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
           <van-collapse v-model="activeNames">
-            <van-collapse-item title="供应商" name="1" v-if="isSearch">
-              <span class="filter-item" v-for="(item, index) in suppList" :key="index">
-                <van-button @click="filterSupp(item, index)" :disabled="suppActive === index ? true : false">{{item[5]}}</van-button>
-              </span>
-            </van-collapse-item>
-            <van-collapse-item title="分类" name="2">
+            <van-collapse-item title="分类" name="1">
               <span class="filter-item" v-for="(item, index) in filterList" :key="index">
                 <van-button @click="filterGoods(item, index)" :disabled="filterActive === index ? true : false">{{item.MaterialName}}</van-button>
               </span>
@@ -105,10 +105,9 @@ import { classify, supplier } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      activeNames: ["1", "2"],
+      activeNames: ["1"],
       priceDesc: "",
       screenShow: false,
-      isSearch: false,
       keyword: "",
       activeKey: 0,
       typeList: [],
@@ -155,7 +154,7 @@ export default {
     jumpInfo() {
       supplier
         .getSuppTaskId(
-          this.projectInfo.DemandID || this.confirmParams[24],
+          "00000000-0000-0000-0000-000000000000",
           this.suppParams.id
         )
         .then(res => {
@@ -231,6 +230,7 @@ export default {
         this.typeList[i].SupplierID,
         this.typeList[i].SC_SMaterialTypeOID
       );
+      this.screenShow = false;
     },
     // 选择分类
     selectKey(i) {
@@ -400,11 +400,12 @@ export default {
     },
     // 获取供应商详情
     getSuppInfo() {
-      return supplier.getSuppInfo(this.suppParams.id).then(res => {
+      return supplier.getSupplieInfo(this.suppParams.id).then(res => {
         try {
           const sp = res.text.split("[[");
           const tsp = sp[1].split("]]");
           this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
+          console.log(this.suppInfo);
           return true;
         } catch (e) {
           this.suppInfo = [];
@@ -413,7 +414,6 @@ export default {
       });
     },
     pageInit() {
-      // this.isSearch = this.$parent.index ? true : false;
       this.getSuppInfo().then(res => {
         if (res) {
           this.getSuppType();
@@ -439,6 +439,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     background-color: #fff;
+    border-top: 1px solid #eee;
     .info-left {
       display: flex;
       .info-img {
@@ -469,7 +470,7 @@ export default {
       display: flex;
       align-items: center;
       .van-tag {
-        width: 50px;
+        width: 60px;
       }
     }
   }

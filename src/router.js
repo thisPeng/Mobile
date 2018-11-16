@@ -83,14 +83,6 @@ Vue.use(Router);
 export default new Router({
   // mode: "history",
   routes: [{
-    path: "/login",
-    name: "login",
-    component: Login
-  }, {
-    path: "/register",
-    name: "register",
-    component: Register
-  }, {
     path: "/",
     redirect: "/index",
     component: Home,
@@ -101,6 +93,20 @@ export default new Router({
       meta: {
         title: "首页", // 页面标题
         keepAlive: true // 是否缓存
+      }
+    }, {
+      path: "/login",
+      name: "login",
+      component: Login,
+      meta: {
+        title: "登录" // 页面标题
+      }
+    }, {
+      path: "/register",
+      name: "register",
+      component: Register,
+      meta: {
+        title: "注册账号" // 页面标题
       }
     }, {
       path: "/working",

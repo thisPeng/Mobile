@@ -1,12 +1,12 @@
 <template>
   <div class="login">
-    <!-- <div class="login-logo">
-      <i class="iconfont icon-leicailiaojiagongx"></i>
-    </div> -->
-    <div class="logo">
+    <!-- <div class="logo">
       <img src="img\icons\android-chrome-512x512.png" alt="logo">
     </div>
-    <div class="login-title">材博汇供应链系统</div>
+    <div class="login-title">材博汇供应链系统</div> -->
+    <div class="logo">
+      <img src="img/login_bar.png" alt="">
+    </div>
     <div class="login-form">
       <form @submit.prevent="userLogin">
         <div class="login-form-input">
@@ -35,7 +35,7 @@
                 </span> -->
           </div>
           <div class="button-option">
-            <van-button type="main">登 录</van-button>
+            <van-button type="main" native-type="submit">登 录</van-button>
           </div>
         </div>
       </form>
@@ -170,10 +170,9 @@ export default {
 <style lang="less" scoped>
 .login {
   width: 100%;
-  padding-top: 15%;
+  background-color: #fff !important;
   .logo {
-    width: 100px;
-    height: 100px;
+    width: 100%;
     margin: 0 auto;
     img {
       width: 100%;
@@ -202,7 +201,6 @@ export default {
   }
   .login-form {
     width: 100%;
-    margin-top: 20px;
     .login-form-input {
       width: 85%;
       margin: 10px auto;

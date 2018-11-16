@@ -25,7 +25,7 @@
       <van-cell title="附件" is-link value="" @click="jumpPage('comfrimAnnex')" />
     </van-cell-group>
     <!--功能操作-->
-    <div class="con-button">
+    <div class="con-button" v-if="buttonValue.length > 0">
       <div class="button-value" v-for="(item,index) in buttonValue" :key="index" v-if="item.Allowvisible === '1'">
         <van-button type="primary" @click="confrimPrice" v-if="list[39] === '已报价' && list[16] !== '1' && item.text === '确认'" :disabled="item.Enabled !== '1'">确认</van-button>
         <van-button type="primary" @click="sendOrder" v-if="list[39] === '初始状态' && item.text === '发送'" :disabled="item.Enabled !== '1'">发送</van-button>

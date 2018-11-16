@@ -16,7 +16,7 @@
       <div class="task-title">制单信息</div>
       <van-field :value="data[29]" label="制单人" :disabled="true" />
       <van-field :value="$util.formatDate(data[17])" label="制单日期" :disabled="true" />
-      <van-field :value="$util.formatDate(data[18])" label="修改日期" :disabled="true" />
+      <van-field :value="$util.formatDate(data[18])" label="修改日期" :disabled="true" v-if="data[18] && data[18] != '1900-01-01 00:00:00'" />
     </van-cell-group>
     <van-cell-group v-if="taskTabs.codeJson && data[30] === 0">
       <taskTabs :data="taskTabs" />

@@ -1,6 +1,6 @@
 <template>
   <!-- 新增预存列表 -->
-  <div class="task">
+  <div class="task" :style="buttonValue.length > 0 ? 'padding-bottom: 75px;' : ''">
     <div class="task-data">
       <van-cell-group>
         <div class="task-title">基础信息</div>
@@ -46,9 +46,9 @@
         <div class="task-title">制单信息</div>
         <van-field :value="data[29] || userInfo.name" label="制单人：" disabled />
         <van-field :value="$util.formatDate(data[17]) || new Date().Format('yyyy-MM-dd')" label="制单日期：" disabled />
-        <van-field :value="$util.formatDate(data[18]) || new Date().Format('yyyy-MM-dd')" label="修改日期" disabled v-if="data[18]" />
+        <van-field :value="$util.formatDate(data[18]) || new Date().Format('yyyy-MM-dd')" label="修改日期" disabled v-if="data[18] && data[18] != '1900-01-01 00:00:00'" />
       </van-cell-group>
-      <div class="payment-button">
+      <div class="payment-button" v-if="buttonValue.length > 0">
         <div class="button-value" v-for="(item,index) in buttonValue" :key="index" v-if="item.Allowvisible === '1'">
           <van-button @click="onSave" v-if="item.text === '保存'" :disabled="item.Enabled !== '1'">保存</van-button>
           <van-button type="primary" @click="onSubmit" v-if="item.text === '提交'" :disabled="item.Enabled !== '1'">提交</van-button>
@@ -324,7 +324,6 @@ export default {
 <style lang="less" scoped>
 .task {
   width: 100%;
-  padding-bottom: 75px;
   overflow: hidden !important;
   .task-data {
     width: 100%;
@@ -391,62 +390,62 @@ export default {
       z-index: 9999;
       bottom: 0;
     }
-    /* 选择项目 */
-    .van-popup--right {
-      width: 90%;
+  }
+  /* 选择项目 */
+  .van-popup--right {
+    width: 90%;
+    height: 100%;
+    .supplier {
       height: 100%;
-      .supplier {
-        height: 100%;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        background-color: #f6f6f6;
-        padding-bottom: 50px;
-        .supplier-item {
-          background-color: #fff;
-          padding: 5px 10px;
-          margin-bottom: 10px;
-          .item-title {
-            height: 40px;
-            border-bottom: 1px solid #f6f6f6;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      background-color: #f6f6f6;
+      padding-bottom: 50px;
+      .supplier-item {
+        background-color: #fff;
+        padding: 5px 10px;
+        margin-bottom: 10px;
+        .item-title {
+          height: 40px;
+          border-bottom: 1px solid #f6f6f6;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .title {
+            font-weight: 600;
+            font-size: 16px;
+          }
+          .option {
+            padding: 10px 15px;
+            font-size: 12px;
+            color: #00a0e9;
+            text-decoration: underline;
+          }
+        }
+        .item-content {
+          font-size: 12px;
+          color: #666;
+          padding: 5px 0;
+          .content-row {
+            padding: 5px 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            .title {
-              font-weight: 600;
-              font-size: 16px;
+            .row-left {
+              flex: 1;
             }
-            .option {
-              padding: 10px 15px;
-              font-size: 12px;
-              color: #00a0e9;
-              text-decoration: underline;
-            }
-          }
-          .item-content {
-            font-size: 12px;
-            color: #666;
-            padding: 5px 0;
-            .content-row {
-              padding: 5px 0;
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              .row-left {
-                flex: 1;
-              }
-              .row-right {
-                flex: 1;
-              }
+            .row-right {
+              flex: 1;
             }
           }
         }
-        .screen-button {
-          position: fixed;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          text-align: center;
-        }
+      }
+      .screen-button {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
       }
     }
   }

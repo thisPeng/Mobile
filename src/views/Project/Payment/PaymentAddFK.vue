@@ -47,9 +47,9 @@
         <div class="task-title">制单信息</div>
         <van-field :value="data[29] || userInfo.name" label="制单人" disabled />
         <van-field :value="$util.formatDate(data[17]) || new Date().Format('yyyy-MM-dd')" label="制单日期：" disabled />
-        <van-field :value="$util.formatDate(data[18]) || new Date().Format('yyyy-MM-dd')" label="修改日期" disabled v-if="data[18]" />
+        <van-field :value="$util.formatDate(data[18]) || new Date().Format('yyyy-MM-dd')" label="修改日期" disabled v-if="data[18] && data[18] != '1900-01-01 00:00:00'" />
       </van-cell-group>
-      <div class="payment-button" v-if="edit">
+      <div class="payment-button" v-if="edit && buttonValue.length > 0">
         <div class="button-value" v-for="(item,index) in buttonValue" :key="index" v-if="item.Allowvisible === '1'">
           <van-button @click="onSave" v-if="item.text === '保存'" :disabled="item.Enabled !== '1'">保存</van-button>
           <van-button type="primary" @click="onSumbit" v-if="item.text === '审核'" :disabled="item.Enabled !== '1'">审核</van-button>
@@ -203,7 +203,6 @@ export default {
 <style lang="less" scoped>
 .task {
   width: 100%;
-  padding-bottom: 75px;
   overflow: hidden !important;
   .task-data {
     width: 100%;

@@ -1,6 +1,6 @@
 <template>
   <!-- 到货信息-发货单 -->
-  <div class="deliverydetails">
+  <div class="deliverydetails" :style="buttonValue.length > 0 ? 'padding-bottom: 75px;' : ''">
     <van-cell-group>
       <div class="task-title">基础信息</div>
       <van-field v-model="info[2]" label="发货单号：" disabled />
@@ -27,7 +27,7 @@
       <div class="task-title">附加信息</div>
       <van-cell title="物资列表" is-link value="" @click="jumpInfo" />
     </van-cell-group>
-    <div class="con-button" v-if="info && info[25] != '1' && info[20] != '1'">
+    <div class="con-button" v-if="info && info[25] != '1' && info[20] != '1' && buttonValue.length > 0">
       <div class="button-value" v-for="(item,index) in buttonValue" :key="index" v-if="item.Allowvisible === '1'">
         <van-button type="primary" @click="DeliverySign" v-if="info[47] == '0' && item.text === '签收'" :disabled="item.Enabled !== '1'">签收</van-button>
         <van-button type="danger" @click="DeliveryOffer" v-if="item.text === '提议'" :disabled="item.Enabled !== '1'">提议</van-button>
@@ -208,7 +208,6 @@ export default {
 <style lang="less" scoped>
 .deliverydetails {
   width: 100%;
-  padding-bottom: 75px;
   .delivery-data {
     .delivery-card {
       width: 100%;

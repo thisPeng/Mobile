@@ -13,7 +13,7 @@
       <van-tab title="系统分类">
         <cly :topList="topList" :detailedList="detailedList"></cly>
       </van-tab>
-      <van-tab title="供应商">
+      <van-tab title="供应商" v-if="userInfo.oid">
         <stp ref="suppTabs" />
       </van-tab>
       <div class="classify-icon" v-show="activeTabs === 1 && suppParams.id">
