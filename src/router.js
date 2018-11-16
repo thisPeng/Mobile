@@ -77,6 +77,8 @@ import ComfrimAnnex from "./views/Annex/Comfrim";
 import ContractAnnex from "./views/Annex/Contract";
 import PartnerAnnex from "./views/Annex/Partner";
 import SupplierAnnex from "./views/Annex/Supplier";
+import ProjectSelf from "./views/Project/ProjectSelf/ProjectSelf";
+import ProjectCooperation from "./views/Project/ProjectCooperation/ProjectCooperation";
 
 Vue.use(Router);
 
@@ -169,7 +171,24 @@ export default new Router({
       meta: {
         title: "选择项目"
       }
-    }, {
+    },
+    {
+      path: "/projectSelf",
+      name: "projectSelf",
+      component: ProjectSelf,
+      meta: {
+        title: "自营项目"
+      }
+    },
+    {
+      path: "/projectCooperation",
+      name: "projectCooperation",
+      component: ProjectCooperation,
+      meta: {
+        title: "合作项目"
+      }
+    },
+    {
       path: "/taskList/taskYCFrom",
       name: "taskYCFrom",
       component: TaskYCFrom,
