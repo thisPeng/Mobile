@@ -4,17 +4,17 @@
     <van-cell-group>
       <van-field :value="info[2]" label="系统工程编号：" disabled />
 
-      <van-field :value="info[55]" label="项目编号：" required/>
+      <van-field :value="info[55]" label="项目编号：" required />
 
-      <van-field :value="info[1]" label="工程名称：" required/>
+      <van-field :value="info[1]" label="工程名称：" required />
 
-      <van-field :value="info[21]" label="联系人：" required/>
+      <van-field :value="info[21]" label="联系人：" required />
 
-      <cbh-select :value="info[23]" label="业务类型：" code="CodeTable_BusinessType" @change="comTypeConfirm" required/>
+      <cbh-select :value="info[23]" label="业务类型：" code="CodeTable_BusinessType" @change="comTypeConfirm" required />
 
-      <van-field :value="info[18]" label="工程地址：" required/>
+      <van-field :value="info[18]" label="工程地址：" required />
 
-      <van-field :value="info[24]" label="联系电话：" required/>
+      <van-field :value="info[24]" label="联系电话：" required />
 
       <van-field :value="info[25]" label="登记时间：" required readonly @click="showDate" />
       <van-datetime-picker v-model="currentDate" title="登记时间" v-show="dateShow" :min-date="new Date()" type="date" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
@@ -23,21 +23,21 @@
 
       <van-field :value="info[35]" label="单位电话：" disabled />
 
-      <van-field :value="info[31]" label="工程单位：" required/>
+      <van-field :value="info[31]" label="工程单位：" required />
 
-      <cbh-select :value="info[20]" label="项目类型：" code="CodeTable_ProjectType" @change="comProConfirm" required/>
+      <cbh-select :value="info[20]" label="项目类型：" code="CodeTable_ProjectType" @change="comProConfirm" required />
 
-      <van-field :value="info[26]" label="合作方式：" required/>
+      <van-field :value="info[26]" label="合作方式：" required />
 
-      <van-field :value="info[27]" label="工程造价：" required/>
+      <van-field :value="info[27]" label="工程造价：" required />
 
-      <cbh-select :value="info[28]" label="计征方式：" code="CodeTable_CalType" @change="comCalConfirm" required/>
+      <cbh-select :value="info[28]" label="计征方式：" code="CodeTable_CalType" @change="comCalConfirm" required />
 
-      <cbh-select :value="info[29]" label="计征区域：" code="CodeTable_CalArea" @change="comAreaConfirm" required/>
+      <cbh-select :value="info[29]" label="计征区域：" code="CodeTable_CalArea" @change="comAreaConfirm" required />
 
       <van-field :value="info[30]" label="税务组织：" />
 
-      <cbh-select :value="info[6]" label="项目状态：" code="CodeTable_opening" @change="comOpenConfirm" required/>
+      <cbh-select :value="info[6]" label="项目状态：" code="CodeTable_opening" @change="comOpenConfirm" required />
 
       <van-field :value="info[3]" label="工期：" />
 
@@ -59,9 +59,9 @@
   </div>
 </template>
 <script>
-import computed from "../../../assets/js/computed.js";
-import { project } from "../../../assets/js/api.js";
-import { users } from "../../../assets/js/api.js";
+import computed from "../../assets/js/computed.js";
+import { project } from "../../assets/js/api.js";
+import { users } from "../../assets/js/api.js";
 export default {
   data() {
     return {

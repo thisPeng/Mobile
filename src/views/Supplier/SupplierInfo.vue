@@ -329,7 +329,7 @@ export default {
           classify.addCartForOrder(params).then(res => {
             try {
               if (res.status === 1 && res.text == "1") {
-                this.$toast.success("添加物资成功");
+                this.$toast.success("添加物资成功，请到购物车修改数量");
                 return;
               } else if (res.status === 1 && res.text == "-1") {
                 throw "供应商未通过审核，添加物资失败";
@@ -349,7 +349,7 @@ export default {
           classify.addCart(params).then(res => {
             try {
               if (res.status === 1 && res.text == "1") {
-                this.$toast.success("添加物资成功");
+                this.$toast.success("添加物资成功，请到购物车修改数量");
                 return;
               } else if (res.status === 1 && res.text == "-1") {
                 throw "供应商未通过审核，添加物资失败";

@@ -54,9 +54,9 @@
   </div>
 </template>
 <script>
-import computed from "../../../assets/js/computed.js";
-import { project } from "../../../assets/js/api.js";
-import { users } from "../../../assets/js/api.js";
+import computed from "../../assets/js/computed.js";
+import { project } from "../../assets/js/api.js";
+import { users } from "../../assets/js/api.js";
 export default {
   data() {
     return {

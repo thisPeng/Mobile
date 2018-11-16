@@ -3,15 +3,27 @@
     <van-tabs v-model="active" @click="switchType" v-if="userType != 2">
       <van-tab title="自营项目">
         <div class="project-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
-          <div class="item-title">
-            <span class="title">{{item.ProjectName}}</span>
-            <span class="icon">
-              <van-icon name="success" color="#00A0E9" v-if="item.ProjectNo === projectInfo.ProjectNo" />
-            </span>
+          <div class="item">
+            <div class="item-title">
+              <span class="title">{{item.ProjectName}}</span>
+              <span class="icon">
+                <van-icon name="success" color="#00A0E9" v-if="item.ProjectNo === projectInfo.ProjectNo" />
+              </span>
+            </div>
+            <div class="item-content">
+              <span class="content-left">联系人：{{item.Contact}}</span>
+              <span class="content-right">联系电话：{{item.Telephone}}</span>
+            </div>
           </div>
-          <div class="item-content">
-            <span class="content-left">联系人：{{item.Contact}}</span>
-            <span class="content-right">联系电话：{{item.Telephone}}</span>
+          <div class="option">
+            <div class="icon icon-edit" @click.stop="jumpEdit(item)">
+              <van-icon name="edit" size="18px" color="#00A0E9" />
+              <span class="text-xs">编辑</span>
+            </div>
+            <div class="icon icon-delete" @click.stop="onDelete(item)">
+              <van-icon name="close" size="18px" color="#f44" />
+              <span class="text-xs">删除</span>
+            </div>
           </div>
         </div>
       </van-tab>
@@ -80,6 +92,13 @@ export default {
       } else {
         this.$router.go(-1);
       }
+    },
+    // 跳转编辑
+    jumpEdit(item) {
+      this.$store.commit("projectInfo", item);
+      this.$router.push({
+        name: "projectSelf"
+      });
     }
   },
   computed,
@@ -93,10 +112,11 @@ export default {
   width: 100%;
   .project-item {
     background-color: #fff;
-    padding: 10px 15px;
     border-bottom: 1px solid #eee;
     border-radius: 5px;
     margin: 10px 0;
+    padding: 10px 15px;
+
     .item-title {
       padding: 10px 0;
       border-bottom: 1px solid #f6f6f6;
@@ -118,6 +138,25 @@ export default {
       align-items: center;
       justify-content: space-between;
       color: #666;
+      border-bottom: 1px solid #eee;
+    }
+    .option {
+      padding-top: 5px;
+      display: flex;
+      .icon {
+        padding-right: 15px;
+        display: flex;
+        align-items: center;
+        .icon-edit {
+          color: #00a0e9;
+        }
+        .icon-delete {
+          color: #f44;
+        }
+        .text-xs {
+          padding-left: 5px;
+        }
+      }
     }
   }
 }

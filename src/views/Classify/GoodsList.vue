@@ -231,7 +231,7 @@ export default {
               this.getCartList();
               this.$nextTick().then(() => {
                 setTimeout(() => {
-                  this.$toast.success("添加物资成功");
+                  this.$toast.success("添加物资成功，请到购物车修改数量");
                 }, 300);
               });
               return;
