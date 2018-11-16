@@ -99,12 +99,6 @@ export default {
         name: "contractWorkInfo"
       });
     },
-    jumpPage(item) {
-      this.$store.commit("contractParams", item);
-      this.$router.push({
-        name: "contractlabor"
-      });
-    },
     pageInit() {
       index
         .getAppletButton(this.userId.UCML_UserOID, "BPO_Contract_List")
