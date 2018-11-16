@@ -231,9 +231,16 @@ export default {
             }
           }
           .content-text {
+            height: 36px;
             font-size: 12px;
             padding: 5px 0;
             text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            white-space: normal;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
           }
         }
         .content-item-1 {
