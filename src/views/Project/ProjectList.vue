@@ -7,7 +7,7 @@
             <div class="item-title">
               <span class="title">{{item.ProjectName}}</span>
               <span class="icon">
-                <van-icon name="success" color="#00A0E9" v-if="item.ProjectNo === projectInfo.ProjectNo" />
+                <van-icon name="success" color="#00A0E9" v-if="item.SC_ProjectOID === projectInfo.SC_ProjectOID" />
               </span>
             </div>
             <div class="item-content">
@@ -36,7 +36,7 @@
           <div class="item-title">
             <span class="title">{{item.ProjectName}}</span>
             <span class="icon">
-              <van-icon name="success" color="#00A0E9" v-if="item.ProjectNo === projectInfo.ProjectNo" />
+              <van-icon name="success" color="#00A0E9" v-if="item.SC_ProjectOID === projectInfo.SC_ProjectOID" />
             </span>
           </div>
           <div class="item-content">
@@ -51,7 +51,7 @@
       <div class="item-title">
         <span class="title">{{item.ProjectName}}</span>
         <span class="icon">
-          <van-icon name="success" color="#00A0E9" v-if="item.ProjectNo === projectInfo.ProjectNo" />
+          <van-icon name="success" color="#00A0E9" v-if="item.SC_ProjectOID === projectInfo.SC_ProjectOID" />
         </span>
       </div>
       <div class="item-content">
@@ -90,7 +90,6 @@ export default {
       });
     },
     onDelete(item) {
-      console.log(item);
       this.$dialog
         .confirm({
           title: "删除提示",

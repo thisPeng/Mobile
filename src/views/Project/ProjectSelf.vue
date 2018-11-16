@@ -76,6 +76,7 @@ export default {
       info: [],
       edit: false,
       projectType: "1",
+      businessKey: "",
       dateShow: false,
       dateShowone: false,
       dateShowtwo: false,
@@ -135,6 +136,7 @@ export default {
           if (res.status === 1) {
             const sp = res.text.split(";");
             this.info = eval(sp[0].split("=")[1])[0];
+            this.businessKey = this.info[0];
             const defaultDate = "1900-01-01 00:00:00";
             if (this.info[4] === defaultDate) this.info[4] = "";
             if (this.info[5] === defaultDate) this.info[5] = "";
@@ -163,20 +165,22 @@ export default {
       }
 
       const xml = require("xml");
-      let uuidv1 = require("uuid/v1");
       let xmlString = "";
       if (this.edit) {
         xmlString = xml({
           BC_SC_Project: [
             { _attr: { UpdateKind: "ukModify" } },
-            { SC_ProjectOID: this.info[0] }
+            { SC_ProjectOID: this.businessKey }
           ]
         });
+      } else {
+        const uuidv4 = require("uuid/v4");
+        this.businessKey = uuidv4();
       }
       xmlString += xml({
         BC_SC_Project: [
           { _attr: { UpdateKind: this.edit ? "" : "ukInsert" } },
-          { SC_ProjectOID: this.edit ? "null" : uuidv1() },
+          { SC_ProjectOID: this.edit ? "null" : this.businessKey },
           { Project_SubNo: this.info[55] || "null" }, //项目编号
           { ProjectName: this.info[1] || "null" }, //工程名称
           { BusinessType: this.info[23] || "null" }, //业务类型
@@ -214,9 +218,15 @@ export default {
       project.saveProjectSelf(xmlString).then(res => {
         try {
           if (res.status === 1) {
-            this.$toast.success("保存成功");
-            this.$router.push({
-              name: "projectList"
+            this.edit = true;
+            this.$toast.success({
+              forbidClick: true, // 禁用背景点击
+              message: "保存成功"
+            });
+            this.$nextTick().then(() => {
+              setTimeout(() => {
+                this.$router.go(-1);
+              }, 800);
             });
             return;
           }

@@ -271,7 +271,11 @@ export default {
             message: "确认删除购物车已选物资？"
           })
           .then(() => {
-            let str = this.checkedArr.join("|");
+            let str = "";
+            this.checkedArr.forEach(val => {
+              str += val[0] + "|";
+            });
+            str = str.substr(0, str.length - 1);
             // 多个删除
             cart.delCartMaterials(str).then(res => {
               try {
