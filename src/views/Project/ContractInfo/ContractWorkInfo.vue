@@ -97,6 +97,9 @@
     <van-cell-group>
       <van-cell title="清单详情" is-link @click="jumpInfo()" />
     </van-cell-group>
+    <div class="invoice-button" v-if="contractParams[20] != '发货情况：全部发货'">
+      <a :href="'tel:'+contractParams[21]">联系供应商</a>
+    </div>
   </div>
 </template>
 <script>
@@ -201,6 +204,15 @@ export default {
 <style lang="less" scoped>
 .contractwork {
   width: 100%;
+  padding-bottom: 50px;
+  .invoice-button {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
+  }
   .title-delivery {
     font-size: 16px;
     padding: 10px;
@@ -257,6 +269,14 @@ export default {
       width: 95%;
       text-align: center;
     }
+  }
+  .invoice-button {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
   }
 }
 </style>

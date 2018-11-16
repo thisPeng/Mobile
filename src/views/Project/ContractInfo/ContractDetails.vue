@@ -31,10 +31,6 @@
         </div>
       </template>
     </van-sku>
-    <div class="invoice-button" v-if="confirmParams[20] != '发货情况：全部发货'">
-      <a :href="'tel:'+contractParams[21]">联系供应商</a>
-      <!-- <van-button type="primary" size="large" @click="onContract"></van-button> -->
-    </div>
   </div>
 </template>
 <script>
@@ -147,14 +143,6 @@ export default {
         }
       }
     }
-  }
-  .invoice-button {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    padding: 10px;
-    text-align: center;
-    background-color: #fff;
   }
 }
 </style>
