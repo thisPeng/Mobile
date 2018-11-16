@@ -97,14 +97,14 @@
     <van-cell-group>
       <van-cell title="清单详情" is-link @click="jumpInfo()" />
     </van-cell-group>
-    <!-- <div class="button">
-      <van-button size="large" type="primary" @click="submitWork">提交合同</van-button>
-    </div> -->
+    <div class="invoice-button" v-if="contractParams[20] != '发货情况：全部发货'">
+      <a :href="'tel:'+contractParams[21]">联系供应商</a>
+    </div>
   </div>
 </template>
 <script>
 import computed from "../../../assets/js/computed.js";
-import { conprice, contractInfo } from "../../../assets/js/api.js";
+import { conprice } from "../../../assets/js/api.js";
 export default {
   data() {
     return {
@@ -153,7 +153,8 @@ export default {
       this.showDatafour = false;
     },
     conContract() {
-      conprice.conContract(this.confirmParams[4]).then(res => {
+      // console.log(this.confirmParams);
+      conprice.conContract(this.contractParams[0]).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[1].split(";");
@@ -189,136 +190,6 @@ export default {
         }
       });
     },
-    // 提交
-    submitWork() {
-      const cspList = this.cspList;
-      if (!cspList[2]) {
-        this.$toast.fail("请输入合同名称");
-        return;
-      } else if (!cspList[3]) {
-        this.$toast.fail("请输入甲方");
-        return;
-      } else if (!cspList[4]) {
-        this.$toast.fail("请输入乙方");
-        return;
-      } else if (cspList[11] === "") {
-        this.$toast.fail("请输入合同金额");
-        return;
-      } else if (!cspList[18]) {
-        this.$toast.fail("请输入正确的合同含税金额");
-        return;
-      } else if (!cspList[28]) {
-        this.$toast.fail("请输入正确的乙方违约比例");
-        return;
-      } else if (!cspList[29]) {
-        this.$toast.fail("请输入正确的甲方违约比例");
-        return;
-      } else if (this.payment == "第三种付款方式" && !cspList[13]) {
-        this.$toast.fail("请输入订金付款期限");
-        return;
-      } else if (this.payment == "第三种付款方式" && !cspList[15]) {
-        this.$toast.fail("请输入付款期限");
-        return;
-      } else if (this.payment == "第三种付款方式" && !cspList[20]) {
-        this.$toast.fail("请输入保质付款期限");
-        return;
-      } else if (this.payment == "第三种付款方式" && !cspList[14]) {
-        this.$toast.fail("请输入订金比例");
-        return;
-      } else if (this.payment == "第三种付款方式" && !cspList[16]) {
-        this.$toast.fail("请输入进场付款比例");
-        return;
-      } else if (this.payment == "第三种付款方式" && !cspList[21]) {
-        this.$toast.fail("请输入保质付款比例");
-        return;
-      }
-      const xml = require("xml");
-      const xmlString = xml({
-        root: [
-          {
-            BC_SC_Order_Contract: [
-              { _attr: { UpdateKind: "ukModify" } },
-              { SC_Order_ContractOID: cspList[0] }
-            ]
-          },
-          {
-            BC_SC_Order_Contract: [
-              { _attr: { UpdateKind: "" } },
-              { SC_Order_ContractOID: "null" },
-              { Contract_Name: cspList[2] },
-              { Partner_Name: cspList[31] },
-              { Supplier_Name: cspList[39] },
-              { Deliver_Addr: cspList[8] },
-              {
-                Deliver_Time: cspList[9] != "请选择时间" ? cspList[9] : "null"
-              },
-              { Accept_Valid_Day: cspList[10] },
-              { Contract_Amt: cspList[11] },
-              { Pay_Mode: cspList[12] },
-              { Signt_Valid_Day: cspList[13] },
-              { Signt_Percent: cspList[14] },
-              { In_Valid_Day: cspList[15] },
-              { In_Pay_Percent: cspList[16] },
-              { Ensure_Valid_Day: cspList[20] },
-              { Ensure_Pay_Percent: cspList[21] },
-              { Ensure_Day: cspList[22] },
-              {
-                Ensure_Begin_Date:
-                  cspList[23] != "请选择时间" ? cspList[23] : "null"
-              },
-              {
-                Ensure_End_Date:
-                  cspList[24] != "请选择时间" ? cspList[24] : "null"
-              },
-              { Ensure_Amt_Percent: cspList[25] },
-              { Ensure_Deal_Day: cspList[26] },
-              { Ensure_Deal_Remark: cspList[27] },
-              { Supplier_Breach: cspList[28] },
-              { Partner_Breach: cspList[29] },
-              { Partner_Behalf: cspList[37] },
-              {
-                Partner_Sign_Date:
-                  cspList[38] != "请选择时间" ? cspList[38] : "null"
-              },
-              {
-                Supplier_Sign_Date:
-                  cspList[46] != "请选择时间" ? cspList[46] : "null"
-              },
-              { Supplier_Sign: cspList[45] },
-              { Edit_Flag: this.$util.replacePos(cspList[50], 1, 1) },
-              { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") }, // 最后修改日期
-              { SYS_LAST_UPD_BY: this.userInfo.oid } // 最后修改用户
-            ]
-          }
-        ]
-      });
-      this.$dialog
-        .confirm({
-          title: "提交",
-          message: "确认提交该合同？"
-        })
-        .then(() => {
-          contractInfo.saveContract(xmlString).then(res => {
-            try {
-              if (res.status === 1) {
-                this.$toast.success({
-                  forbidClick: true, // 禁用背景点击
-                  message: "合同提交成功"
-                });
-                this.$nextTick().then(() => {
-                  setTimeout(() => {
-                    this.$router.go(-1);
-                  }, 800);
-                });
-                return;
-              }
-              throw res.text;
-            } catch (e) {
-              this.$toast.fail(e);
-            }
-          });
-        });
-    },
     jumpInfo() {
       this.$router.push({
         name: "contractdetails"
@@ -333,6 +204,15 @@ export default {
 <style lang="less" scoped>
 .contractwork {
   width: 100%;
+  padding-bottom: 50px;
+  .invoice-button {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
+  }
   .title-delivery {
     font-size: 16px;
     padding: 10px;
@@ -389,6 +269,14 @@ export default {
       width: 95%;
       text-align: center;
     }
+  }
+  .invoice-button {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
   }
 }
 </style>
