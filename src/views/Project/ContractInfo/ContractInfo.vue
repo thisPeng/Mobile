@@ -96,7 +96,7 @@ export default {
     jumpInfo(item) {
       this.$store.commit("contractParams", item);
       this.$router.push({
-        name: "contractdetails"
+        name: "contractWorkInfo"
       });
     },
     jumpPage(item) {
