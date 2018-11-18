@@ -2,12 +2,10 @@
   <!-- 自营项目 -->
   <div class="projectSelf">
     <van-cell-group>
-      <van-field :value="info[2] || no" label="系统编号：" disabled />
-
-      <van-field v-model="info[55]" label="项目编号：" />
-
-      <van-field v-model="info[1]" label="工程名称：" required />
-
+      <div class="task-title">基本信息</div>
+      <van-field :value="info[2] || no" label="系统编号：" disabled v-if="edit" />
+      <van-field v-model="info[55]" label="项目编号：" required placeholder="请输入项目编号" />
+      <van-field v-model="info[1]" label="工程名称：" required placeholder="请输入工程名称" />
       <div class="van-cell van-cell--required van-field">
         <div class="van-cell__title"><span>工程类别：</span>
         </div>
@@ -20,46 +18,38 @@
           </div>
         </div>
       </div>
-
-      <van-field v-model="info[21]" label="联系人：" />
-
-      <cbh-select :value="info[23]" label="业务类型：" code="CodeTable_BusinessType" @change="comTypeConfirm" />
-
-      <van-field v-model="info[18]" label="工程地址：" />
-
-      <van-field v-model="info[24]" label="联系电话：" />
-
-      <van-field v-model="info[25]" label="登记时间：" required readonly @click="showDate" />
+      <van-field :value="info[25]" label="登记时间：" placeholder="请选择登记时间" required readonly @click="showDate" />
       <van-datetime-picker v-model="currentDate" title="登记时间" v-show="dateShow" :min-date="new Date()" type="date" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
-      <van-field v-model="info[31]" label="工程单位：" />
 
-      <cbh-select :value="info[20]" label="项目类型：" code="CodeTable_ProjectType" @change="comProConfirm" />
+      <div class="task-title">联系方式</div>
+      <van-field v-model="info[21]" label="联系人：" placeholder="请输入联系人" />
+      <van-field v-model="info[24]" label="联系电话：" placeholder="请输入联系电话" />
+      <van-field v-model="info[18]" label="工程地址：" placeholder="请输入工程地址" />
 
-      <van-field v-model="info[26]" label="合作方式：" />
+      <div class="task-title">工程信息</div>
+      <van-field v-model="info[31]" label="工程单位：" placeholder="请输入工程单位" />
+      <van-field v-model="info[27]" label="工程造价：" placeholder="请输入工程造价" />
+      <van-field v-model="info[3]" label="工期：" placeholder="请输入工期" />
+      
+      <van-field v-model="info[22]" label="建设单位：" placeholder="请输入建设单位" />
+      <cbh-select :value="info[23]" label="业务类型：" code="CodeTable_BusinessType" @change="comTypeConfirm" />
+      <van-field v-model="info[26]" label="合作方式：" placeholder="请输入合作方式" />
 
-      <van-field v-model="info[27]" label="工程造价：" />
-
+      <van-field v-model="info[30]" label="税务组织：" placeholder="请输入税务组织" />
       <cbh-select :value="info[28]" label="计征方式：" code="CodeTable_CalType" @change="comCalConfirm" />
-
       <cbh-select :value="info[29]" label="计征区域：" code="CodeTable_CalArea" @change="comAreaConfirm" />
+      
+      
 
-      <van-field v-model="info[30]" label="税务组织：" />
-
+      <div class="task-title">项目信息</div>
+      <!-- <cbh-select :value="info[20]" label="项目类型：" code="CodeTable_ProjectType" @change="comProConfirm" /> -->
       <cbh-select :value="info[6]" label="项目状态：" code="CodeTable_opening" @change="comOpenConfirm" />
-
-      <van-field v-model="info[3]" label="工期：" />
-
       <cbh-select :value="info[17]" label="公开状态：" code="CodeTable_YesNo" @change="comYesNoConfirm" />
-
-      <van-field v-model="info[4]" label="开通时间：" readonly @click="showDateone" />
+      <van-field :value="info[4]" label="开通时间：" placeholder="请选择开通时间" readonly @click="showDateone" />
       <van-datetime-picker v-model="currentDate" title="开通时间" v-show="dateShowone" :min-date="new Date()" type="date" class="task-date" @confirm="saveDateone" @cancel="dateShowone=false" />
-
-      <van-field v-model="info[5]" label="到期时间：" readonly @click="showDatetwo" />
+      <van-field :value="info[5]" label="到期时间：" placeholder="请选择到期时间" readonly @click="showDatetwo" />
       <van-datetime-picker v-model="currentDate" title="到期时间" v-show="dateShowtwo" :min-date="new Date()" type="date" class="task-date" @confirm="saveDatetwo" @cancel="dateShowtwo=false" />
-
-      <van-field v-model="info[22]" label="建设单位：" />
-
-      <van-field v-model="info[7]" label="备注：" />
+      <van-field v-model="info[7]" label="备注：" placeholder="请选择备注" />
     </van-cell-group>
     <div class="project-button">
       <van-button type="primary" size="large" @click="keepSelf">保 存</van-button>
@@ -160,7 +150,7 @@ export default {
       }
 
       if (!this.info[25] || this.info[25] == "1900-01-01 00:00:00") {
-        this.$toast("请选择登记时间：");
+        this.$toast("请选择登记时间");
         return;
       }
 
@@ -238,8 +228,13 @@ export default {
     },
     formatNo(str) {
       str = str.toString();
-      let len = str.length;
-      if (len > 10) {
+      if (str.length > 10) {
+        str = str.substr(str.length - 10);
+      } else {
+        str = Date.parse(
+          this.$util.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss.S")
+        );
+        str = str.toString();
         str = str.substr(str.length - 10);
       }
       str = str.substr(0, 5) + "-" + str.substr(5);
@@ -255,15 +250,25 @@ export default {
       this.getData();
     } else {
       project.getProjectNO(this.userId.UCML_OrganizeOID).then(res => {
-        if (res.status === 1) {
-          const tmp = res.text.split(",");
-          const timestamp = Date.parse(tmp[1]) / 1000;
-          this.no = tmp[0] + "-" + this.formatNo(timestamp);
+        try {
+          if (res.status) {
+            const tmp = res.text.split(",");
+            const timestamp = Date.parse(
+              this.$util.formatDate(tmp[1], "yyyy-MM-dd hh:mm:ss.S")
+            );
+            this.no = tmp[0] + "-" + this.formatNo(timestamp);
+            this.info[55] = this.no;
+            this.info[25] = new Date().Format("yyyy-MM-dd hh:mm:ss");
+          }
+        } catch (e) {
+          const timestamp = new Date().getTime();
+          this.no =
+            Math.floor(Math.random() * 90000) +
+            10000 +
+            "-" +
+            this.formatNo(timestamp);
           this.info[55] = this.no;
           this.info[25] = new Date().Format("yyyy-MM-dd hh:mm:ss");
-        } else {
-          this.$toast.fail("生成编号失败，请重试");
-          this.$route.go(-1);
         }
       });
     }
@@ -273,6 +278,12 @@ export default {
 <style lang="less" scoped>
 .projectSelf {
   width: 100%;
+  .task-title {
+    font-size: 16px;
+    padding: 10px;
+    color: #00a0e9;
+    background-color: #f7f7f7;
+  }
   .con-price {
     display: flex;
     padding: 4px 15px;
@@ -306,6 +317,7 @@ export default {
   }
   .project-button {
     padding: 10px;
+    margin-top: 15px;
     text-align: center;
   }
 }

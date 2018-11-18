@@ -90,7 +90,7 @@
         </div>
         <div class="van-submit-bar__text"></div>
         <van-button type="primary" @click="jumpPage">添加物资</van-button>
-        <van-button type="danger" class="margin-right-xs">{{checkedArr.length > 999 ? '询价(999+)' : '询价('+checkedArr.length+')'}}</van-button>
+        <van-button type="danger" class="margin-right-xs" @click="onSubmit">{{checkedArr.length > 999 ? '询价(999+)' : '询价('+checkedArr.length+')'}}</van-button>
       </div>
     </div>
   </div>
@@ -271,7 +271,7 @@ export default {
             message: "确认删除购物车已选物资？"
           })
           .then(() => {
-            let str = "";
+            let str = this.checkedArr.join("|");
             this.checkedArr.forEach(val => {
               str += val[0] + "|";
             });
