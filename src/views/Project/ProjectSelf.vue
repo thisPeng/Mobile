@@ -1,63 +1,64 @@
 <template>
   <!-- 自营项目 -->
   <div class="projectSelf">
-    <van-cell-group>
-      <div class="task-title">基本信息</div>
-      <!-- <van-field :value="info[2] || no" label="系统编号：" disabled v-if="edit" /> -->
-      <van-field v-model="info[1]" label="工程名称：" required placeholder="请输入工程名称" />
-      <van-field v-model="info[55]" label="项目编号：" required placeholder="请输入项目编号" />
-      <div class="van-cell van-cell--required van-field">
-        <div class="van-cell__title">
-          <span>工程类别：</span>
-        </div>
-        <div class="van-cell__value">
-          <div class="van-field__body">
-            <van-radio-group v-model="projectType" class="flex" :disabled="edit">
-              <van-radio name="1" class="margin-right-xl">自营项目</van-radio>
-              <van-radio name="2">合作项目</van-radio>
-            </van-radio-group>
+    <div class="projectSelf-content">
+      <van-cell-group>
+        <div class="task-title">基本信息</div>
+        <!-- <van-field :value="info[2] || no" label="系统编号：" disabled v-if="edit" /> -->
+        <van-field v-model="info[1]" label="工程名称：" required placeholder="请输入工程名称" />
+        <van-field v-model="info[55]" label="项目编号：" required placeholder="请输入项目编号" />
+        <div class="van-cell van-cell--required van-field">
+          <div class="van-cell__title">
+            <span>工程类别：</span>
+          </div>
+          <div class="van-cell__value">
+            <div class="van-field__body">
+              <van-radio-group v-model="projectType" class="flex" :disabled="edit">
+                <van-radio name="1" class="margin-right-xl">自营项目</van-radio>
+                <van-radio name="2">合作项目</van-radio>
+              </van-radio-group>
+            </div>
           </div>
         </div>
-      </div>
-      <van-field :value="info[25]" label="登记时间：" placeholder="请选择登记时间" required readonly @click="showDate" />
-      <van-datetime-picker v-model="currentDate" title="登记时间" v-show="dateShow" :min-date="new Date()" type="date" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
-      <!--合作商列表-->
-      <van-cell-group class="from-payment van-cell--required" v-if="projectType == 2">
-        <span class="from-label">合作商：</span>
-        <span class="from-select">
-          <span :class="info[34] ? '' : 'text-gray'">{{info[34] || "请选择合作商"}}</span>
-          <van-button type="primary" size="mini" @click="partnerShow=true">选择</van-button>
-        </span>
+        <van-field :value="info[25]" label="登记时间：" placeholder="请选择登记时间" required readonly @click="showDate" />
+        <!--合作商列表-->
+        <van-cell-group class="from-payment van-cell--required" v-if="projectType == 2">
+          <span class="from-label">合作商：</span>
+          <span class="from-select">
+            <span :class="info[34] ? '' : 'text-gray'">{{info[34] || "请选择合作商"}}</span>
+            <van-button type="primary" size="mini" @click="partnerShow=true">选择</van-button>
+          </span>
+        </van-cell-group>
+
+        <div class="task-title">联系方式</div>
+        <van-field v-model="info[21]" label="联系人：" placeholder="请输入联系人" />
+        <van-field v-model="info[24]" label="联系电话：" placeholder="请输入联系电话" />
+        <van-field v-model="info[18]" label="工程地址：" placeholder="请输入工程地址" />
+
+        <div class="task-title">工程信息</div>
+        <van-field v-model="info[31]" label="工程单位：" placeholder="请输入工程单位" />
+        <van-field v-model="info[27]" label="工程造价：" placeholder="请输入工程造价" />
+        <van-field v-model="info[3]" label="工期：" placeholder="请输入工期" />
+        <van-field v-model="info[22]" label="建设单位：" placeholder="请输入建设单位" />
+        <cbh-select :value="info[23]" label="业务类型：" code="CodeTable_BusinessType" @change="comTypeConfirm" />
+        <van-field v-model="info[26]" label="合作方式：" placeholder="请输入合作方式" />
+        <van-field v-model="info[30]" label="税务组织：" placeholder="请输入税务组织" />
+        <cbh-select :value="info[28]" label="计征方式：" code="CodeTable_CalType" @change="comCalConfirm" />
+        <cbh-select :value="info[29]" label="计征区域：" code="CodeTable_CalArea" @change="comAreaConfirm" />
+
+        <div class="task-title">项目信息</div>
+        <cbh-select :value="info[20]" label="项目类型：" code="CodeTable_ProjectType" @change="comProConfirm" />
+        <cbh-select :value="info[6]" label="项目状态：" code="CodeTable_opening" @change="comOpenConfirm" />
+        <cbh-select :value="info[17]" label="公开状态：" code="CodeTable_YesNo" @change="comYesNoConfirm" />
+        <van-field :value="info[4]" label="开通时间：" placeholder="请选择开通时间" readonly @click="showDateStart" />
+        <van-field :value="info[5]" label="到期时间：" placeholder="请选择到期时间" readonly @click="showDateEnd" />
+        <van-field v-model="info[7]" label="备注：" type="textarea" placeholder="请选择备注" />
       </van-cell-group>
+    </div>
+    <van-datetime-picker v-model="currentDate" title="登记时间" v-show="dateShow" :min-date="new Date()" type="date" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
+    <van-datetime-picker v-model="currentDate" title="开通时间" v-show="dateShowone" :min-date="new Date()" type="date" class="task-date" @confirm="saveDateStart" @cancel="dateShowone=false" />
+    <van-datetime-picker v-model="currentDate" title="到期时间" v-show="dateShowtwo" :min-date="new Date()" type="date" class="task-date" @confirm="saveDateEnd" @cancel="dateShowtwo=false" />
 
-      <div class="task-title">联系方式</div>
-      <van-field v-model="info[21]" label="联系人：" placeholder="请输入联系人" />
-      <van-field v-model="info[24]" label="联系电话：" placeholder="请输入联系电话" />
-      <van-field v-model="info[18]" label="工程地址：" placeholder="请输入工程地址" />
-
-      <div class="task-title">工程信息</div>
-      <van-field v-model="info[31]" label="工程单位：" placeholder="请输入工程单位" />
-      <van-field v-model="info[27]" label="工程造价：" placeholder="请输入工程造价" />
-      <van-field v-model="info[3]" label="工期：" placeholder="请输入工期" />
-
-      <van-field v-model="info[22]" label="建设单位：" placeholder="请输入建设单位" />
-      <cbh-select :value="info[23]" label="业务类型：" code="CodeTable_BusinessType" @change="comTypeConfirm" />
-      <van-field v-model="info[26]" label="合作方式：" placeholder="请输入合作方式" />
-
-      <van-field v-model="info[30]" label="税务组织：" placeholder="请输入税务组织" />
-      <cbh-select :value="info[28]" label="计征方式：" code="CodeTable_CalType" @change="comCalConfirm" />
-      <cbh-select :value="info[29]" label="计征区域：" code="CodeTable_CalArea" @change="comAreaConfirm" />
-
-      <div class="task-title">项目信息</div>
-      <cbh-select :value="info[20]" label="项目类型：" code="CodeTable_ProjectType" @change="comProConfirm" />
-      <cbh-select :value="info[6]" label="项目状态：" code="CodeTable_opening" @change="comOpenConfirm" />
-      <cbh-select :value="info[17]" label="公开状态：" code="CodeTable_YesNo" @change="comYesNoConfirm" />
-      <van-field :value="info[4]" label="开通时间：" placeholder="请选择开通时间" readonly @click="showDateStart" />
-      <van-datetime-picker v-model="currentDate" title="开通时间" v-show="dateShowone" :min-date="new Date()" type="date" class="task-date" @confirm="saveDateStart" @cancel="dateShowone=false" />
-      <van-field :value="info[5]" label="到期时间：" placeholder="请选择到期时间" readonly @click="showDateEnd" />
-      <van-datetime-picker v-model="currentDate" title="到期时间" v-show="dateShowtwo" :min-date="new Date()" type="date" class="task-date" @confirm="saveDateEnd" @cancel="dateShowtwo=false" />
-      <van-field v-model="info[7]" label="备注：" placeholder="请选择备注" />
-    </van-cell-group>
     <div class="project-button">
       <van-button type="primary" size="large" @click="keepSelf">保 存</van-button>
     </div>
@@ -346,46 +347,54 @@ export default {
 <style lang="less" scoped>
 .projectSelf {
   width: 100%;
-  .task-title {
-    font-size: 16px;
-    padding: 10px;
-    color: #00a0e9;
-    background-color: #f7f7f7;
-  }
-  .con-price {
-    display: flex;
-    padding: 4px 15px;
-    box-sizing: border-box;
-    line-height: 32px;
-    position: relative;
-    background-color: #fff;
-    color: #333;
-    font-size: 14px;
-    overflow: hidden;
-    .con-label {
-      min-width: 130px;
-      flex: 1;
-    }
-    .con-select {
-      flex: 5;
-    }
-  }
-  .contract-date {
+  overflow: hidden !important;
+  padding-bottom: 70px;
+  .projectSelf-content {
     width: 100%;
-    position: fixed;
-    z-index: 9999;
-    bottom: 0;
-    padding-right: 30px;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    .task-title {
+      font-size: 16px;
+      padding: 10px;
+      color: #00a0e9;
+      background-color: #f7f7f7;
+    }
+    .con-price {
+      display: flex;
+      padding: 4px 15px;
+      box-sizing: border-box;
+      line-height: 32px;
+      position: relative;
+      background-color: #fff;
+      color: #333;
+      font-size: 14px;
+      overflow: hidden;
+      .con-label {
+        min-width: 130px;
+        flex: 1;
+      }
+      .con-select {
+        flex: 5;
+      }
+    }
+    .contract-date {
+      width: 100%;
+      position: fixed;
+      z-index: 9999;
+      bottom: 0;
+      padding-right: 30px;
+    }
+    .task-date {
+      width: 100%;
+      position: fixed;
+      z-index: 9999;
+      bottom: 0;
+    }
   }
-  .task-date {
-    width: 100%;
-    position: fixed;
-    z-index: 9999;
-    bottom: 0;
-  }
+
   .project-button {
     padding: 10px;
-    margin-top: 15px;
     text-align: center;
   }
 
