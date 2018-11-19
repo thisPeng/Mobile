@@ -3,11 +3,12 @@
   <div class="projectSelf">
     <van-cell-group>
       <div class="task-title">基本信息</div>
-      <van-field :value="info[2] || no" label="系统编号：" disabled v-if="edit" />
-      <van-field v-model="info[55]" label="项目编号：" required placeholder="请输入项目编号" />
+      <!-- <van-field :value="info[2] || no" label="系统编号：" disabled v-if="edit" /> -->
       <van-field v-model="info[1]" label="工程名称：" required placeholder="请输入工程名称" />
+      <van-field v-model="info[55]" label="项目编号：" required placeholder="请输入项目编号" />
       <div class="van-cell van-cell--required van-field">
-        <div class="van-cell__title"><span>工程类别：</span>
+        <div class="van-cell__title">
+          <span>工程类别：</span>
         </div>
         <div class="van-cell__value">
           <div class="van-field__body">
@@ -20,6 +21,14 @@
       </div>
       <van-field :value="info[25]" label="登记时间：" placeholder="请选择登记时间" required readonly @click="showDate" />
       <van-datetime-picker v-model="currentDate" title="登记时间" v-show="dateShow" :min-date="new Date()" type="date" class="task-date" @confirm="saveDate" @cancel="dateShow=false" />
+      <!--合作商列表-->
+      <van-cell-group class="from-payment van-cell--required" v-if="projectType == 2">
+        <span class="from-label">合作商：</span>
+        <span class="from-select">
+          <span :class="info[34] ? '' : 'text-gray'">{{info[34] || "请选择合作商"}}</span>
+          <van-button type="primary" size="mini" @click="partnerShow=true">选择</van-button>
+        </span>
+      </van-cell-group>
 
       <div class="task-title">联系方式</div>
       <van-field v-model="info[21]" label="联系人：" placeholder="请输入联系人" />
@@ -30,7 +39,7 @@
       <van-field v-model="info[31]" label="工程单位：" placeholder="请输入工程单位" />
       <van-field v-model="info[27]" label="工程造价：" placeholder="请输入工程造价" />
       <van-field v-model="info[3]" label="工期：" placeholder="请输入工期" />
-      
+
       <van-field v-model="info[22]" label="建设单位：" placeholder="请输入建设单位" />
       <cbh-select :value="info[23]" label="业务类型：" code="CodeTable_BusinessType" @change="comTypeConfirm" />
       <van-field v-model="info[26]" label="合作方式：" placeholder="请输入合作方式" />
@@ -38,22 +47,48 @@
       <van-field v-model="info[30]" label="税务组织：" placeholder="请输入税务组织" />
       <cbh-select :value="info[28]" label="计征方式：" code="CodeTable_CalType" @change="comCalConfirm" />
       <cbh-select :value="info[29]" label="计征区域：" code="CodeTable_CalArea" @change="comAreaConfirm" />
-      
-      
 
       <div class="task-title">项目信息</div>
-      <!-- <cbh-select :value="info[20]" label="项目类型：" code="CodeTable_ProjectType" @change="comProConfirm" /> -->
+      <cbh-select :value="info[20]" label="项目类型：" code="CodeTable_ProjectType" @change="comProConfirm" />
       <cbh-select :value="info[6]" label="项目状态：" code="CodeTable_opening" @change="comOpenConfirm" />
       <cbh-select :value="info[17]" label="公开状态：" code="CodeTable_YesNo" @change="comYesNoConfirm" />
-      <van-field :value="info[4]" label="开通时间：" placeholder="请选择开通时间" readonly @click="showDateone" />
-      <van-datetime-picker v-model="currentDate" title="开通时间" v-show="dateShowone" :min-date="new Date()" type="date" class="task-date" @confirm="saveDateone" @cancel="dateShowone=false" />
-      <van-field :value="info[5]" label="到期时间：" placeholder="请选择到期时间" readonly @click="showDatetwo" />
-      <van-datetime-picker v-model="currentDate" title="到期时间" v-show="dateShowtwo" :min-date="new Date()" type="date" class="task-date" @confirm="saveDatetwo" @cancel="dateShowtwo=false" />
+      <van-field :value="info[4]" label="开通时间：" placeholder="请选择开通时间" readonly @click="showDateStart" />
+      <van-datetime-picker v-model="currentDate" title="开通时间" v-show="dateShowone" :min-date="new Date()" type="date" class="task-date" @confirm="saveDateStart" @cancel="dateShowone=false" />
+      <van-field :value="info[5]" label="到期时间：" placeholder="请选择到期时间" readonly @click="showDateEnd" />
+      <van-datetime-picker v-model="currentDate" title="到期时间" v-show="dateShowtwo" :min-date="new Date()" type="date" class="task-date" @confirm="saveDateEnd" @cancel="dateShowtwo=false" />
       <van-field v-model="info[7]" label="备注：" placeholder="请选择备注" />
     </van-cell-group>
     <div class="project-button">
       <van-button type="primary" size="large" @click="keepSelf">保 存</van-button>
     </div>
+
+    <!--合作商列表-->
+    <van-popup v-model="partnerShow" position="right">
+      <div class="supplier">
+        <div class="supplier-item" v-for="(item,index) in partnerList" :key="index" @click="currPartner=item">
+          <!--标题-->
+          <div class="item-title">
+            <span class="title">{{item[2]}}</span>
+            <span class="icon">
+              <van-icon name="success" color="#00A0E9" v-if="item[0] === currPartner[0]" />
+            </span>
+          </div>
+          <!--内容-->
+          <div class="item-content">
+            <div class="content-row">
+              <span class="row-left">联系人：{{item[4]}}</span>
+              <span class="row-right text-right">联系电话：{{item[3] || item[5]}}</span>
+            </div>
+            <div class="content-row">
+              <span class="row-left">备注：{{item[11]}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="screen-button">
+          <van-button type="primary" size="large" @click.stop="onConfrimPartner">确 定</van-button>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 <script>
@@ -70,6 +105,9 @@ export default {
       dateShow: false,
       dateShowone: false,
       dateShowtwo: false,
+      partnerShow: false,
+      currPartner: [],
+      partnerList: [],
       currentDate: new Date()
     };
   },
@@ -99,11 +137,11 @@ export default {
       this.currentDate = this.info[25] || new Date();
       this.dateShow = true;
     },
-    showDateone() {
+    showDateStart() {
       this.currentDate = this.info[4] || new Date();
       this.dateShowone = true;
     },
-    showDatetwo() {
+    showDateEnd() {
       this.currentDate = this.info[5] || new Date();
       this.dateShowtwo = true;
     },
@@ -112,13 +150,19 @@ export default {
       this.info[25] = this.$util.formatDate(val, "yyyy-MM-dd hh:mm:ss");
       this.dateShow = false;
     },
-    saveDateone(val) {
+    saveDateStart(val) {
       this.info[4] = this.$util.formatDate(val, "yyyy-MM-dd hh:mm:ss");
       this.dateShowone = false;
     },
-    saveDatetwo(val) {
+    saveDateEnd(val) {
       this.info[5] = this.$util.formatDate(val, "yyyy-MM-dd hh:mm:ss");
       this.dateShowtwo = false;
+    },
+    // 确认合作商选择
+    onConfrimPartner() {
+      this.info[19] = this.currPartner[8];
+      this.info[34] = this.info[31] = this.currPartner[2];
+      this.partnerShow = false;
     },
     getData() {
       project.getParojectInfo(this.projectInfo.SC_ProjectOID).then(res => {
@@ -154,6 +198,11 @@ export default {
         return;
       }
 
+      if (!this.info[19] && this.projectType == 2) {
+        this.$toast("请选择合作商");
+        return;
+      }
+
       const xml = require("xml");
       let xmlString = "";
       if (this.edit) {
@@ -171,6 +220,7 @@ export default {
         BC_SC_Project: [
           { _attr: { UpdateKind: this.edit ? "" : "ukInsert" } },
           { SC_ProjectOID: this.edit ? "null" : this.businessKey },
+          { ProjectNo: this.info[2] || this.no || "null" }, //项目编号
           { Project_SubNo: this.info[55] || "null" }, //项目编号
           { ProjectName: this.info[1] || "null" }, //工程名称
           { BusinessType: this.info[23] || "null" }, //业务类型
@@ -190,18 +240,22 @@ export default {
           { StartDate: this.info[4] || "null" }, //开通时间
           { EndDate: this.info[5] || "null" }, //到期时间
           { CreateDepartName: this.info[22] || "null" }, //建设单位
+          { Trigger_Status: "0" }, // 写入状态
           { Remark: this.info[7] || "null" }, //备注
-          { SYS_Created: new Date().Format("yyyy-MM-dd hh:mm:ss") }, // 创建日期
+          {
+            SYS_Created:
+              this.info[8] || new Date().Format("yyyy-MM-dd hh:mm:ss")
+          }, // 创建日期
           { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") }, // 最后修改日期
           { SYS_CreatedBy: this.userId.UCML_UserOID }, // 创建用户
           { SYS_POSTN: this.userId.UCML_PostOID }, // 所属岗位
           { SYS_DIVISION: this.userId.UCML_DivisionOID }, // 所属部门
           { SYS_ORG: this.userId.UCML_OrganizeOID }, // 所属组织
           { SYS_LAST_UPD_BY: this.userInfo.oid }, // 最后修改用户
-          { DemandID: this.userId.UCML_OrganizeOID }, // 最后修改用户
-          { PartnerID: this.userId.UCML_OrganizeOID }, // 最后修改用户
-          { OrgName: this.userId.OrgName }, // 最后修改用户
-          { ConstructionUnit: "null" } // 最后修改用户
+          { DemandID: this.info[53] || this.userId.UCML_OrganizeOID }, // 供应商ID
+          { OrgName: this.info[31] || this.userId.OrgName }, // 工程单位
+          { PartnerID: this.info[19] || this.userId.UCML_OrganizeOID }, // 合作商ID
+          { ConstructionUnit: this.info[34] || "null" } // 合作商名称
         ]
       });
       xmlString = "<root>" + xmlString + "</root>";
@@ -228,50 +282,64 @@ export default {
     },
     formatNo(str) {
       str = str.toString();
-      if (str.length > 10) {
+      if (str.length >= 10) {
         str = str.substr(str.length - 10);
       } else {
-        str = Date.parse(
-          this.$util.formatDate(new Date(), "yyyy-MM-dd hh:mm:ss.S")
-        );
-        str = str.toString();
+        str = new Date().getTime().toString();
         str = str.substr(str.length - 10);
       }
       str = str.substr(0, 5) + "-" + str.substr(5);
       return str;
-    }
-  },
-  mounted() {
-    this.edit = this.$route.query.edit || false;
-    this.projectType = this.$route.query.type
-      ? this.$route.query.type + ""
-      : "1";
-    if (this.edit) {
-      this.getData();
-    } else {
-      project.getProjectNO(this.userId.UCML_OrganizeOID).then(res => {
+    },
+    pageInit() {
+      this.edit = this.$route.query.edit || false;
+      this.projectType = this.$route.query.type
+        ? this.$route.query.type.toString()
+        : "1";
+
+      // 获取合作商列表
+      project.getParojectPartner(this.userId.UCML_OrganizeOID).then(res => {
         try {
           if (res.status) {
-            const tmp = res.text.split(",");
-            const timestamp = Date.parse(
-              this.$util.formatDate(tmp[1], "yyyy-MM-dd hh:mm:ss.S")
-            );
-            this.no = tmp[0] + "-" + this.formatNo(timestamp);
+            const sp = res.text.split(";");
+            this.partnerList = eval(sp[0].split("=")[1]);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      });
+
+      if (this.edit) {
+        this.getData();
+      } else {
+        project.getProjectNO(this.userId.UCML_OrganizeOID).then(res => {
+          try {
+            if (res.status) {
+              const tmp = res.text.split(",");
+              const timestamp =
+                Date.parse(
+                  this.$util.formatDate(tmp[1], "yyyy/MM/dd hh:mm:ss")
+                ) / 1000;
+              this.no = tmp[0] + "-" + this.formatNo(timestamp);
+              this.info[55] = this.no;
+              this.info[25] = new Date().Format("yyyy-MM-dd hh:mm:ss");
+            }
+          } catch (e) {
+            const timestamp = new Date().getTime();
+            this.no =
+              Math.floor(Math.random() * 90000) +
+              10000 +
+              "-" +
+              this.formatNo(timestamp);
             this.info[55] = this.no;
             this.info[25] = new Date().Format("yyyy-MM-dd hh:mm:ss");
           }
-        } catch (e) {
-          const timestamp = new Date().getTime();
-          this.no =
-            Math.floor(Math.random() * 90000) +
-            10000 +
-            "-" +
-            this.formatNo(timestamp);
-          this.info[55] = this.no;
-          this.info[25] = new Date().Format("yyyy-MM-dd hh:mm:ss");
-        }
-      });
+        });
+      }
     }
+  },
+  mounted() {
+    this.pageInit();
   }
 };
 </script>
@@ -319,6 +387,85 @@ export default {
     padding: 10px;
     margin-top: 15px;
     text-align: center;
+  }
+
+  /* 供应商列表 */
+  .van-popup--right {
+    width: 90%;
+    height: 100%;
+    .supplier {
+      height: 100%;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      background-color: #f6f6f6;
+      padding-bottom: 50px;
+      .supplier-item {
+        background-color: #fff;
+        padding: 5px 10px;
+        margin-bottom: 10px;
+        .item-title {
+          height: 40px;
+          border-bottom: 1px solid #f6f6f6;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .title {
+            font-weight: 600;
+            font-size: 16px;
+          }
+          .option {
+            padding: 10px 15px;
+            font-size: 12px;
+            color: #00a0e9;
+            text-decoration: underline;
+          }
+        }
+        .item-content {
+          font-size: 12px;
+          color: #666;
+          padding: 5px 0;
+          .content-row {
+            padding: 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .row-left {
+              flex: 1;
+            }
+            .row-right {
+              flex: 1;
+            }
+          }
+        }
+      }
+      .screen-button {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
+      }
+    }
+  }
+  .from-payment {
+    display: flex;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    line-height: 24px;
+    position: relative;
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    overflow: hidden;
+    .from-label {
+      min-width: 90px;
+      flex: 1;
+    }
+    .from-select {
+      flex: 5;
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }
 </style>

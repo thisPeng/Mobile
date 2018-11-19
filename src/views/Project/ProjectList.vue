@@ -33,29 +33,31 @@
       </van-tab>
       <van-tab title="合作项目">
         <div class="project-item" v-for="(item,index) in list" :key="index" @click="jumpPage(item)">
-          <div class="item-title">
-            <span class="title">{{item.ProjectName}}</span>
-            <span class="icon">
-              <van-icon name="success" color="#00A0E9" v-if="item.SC_ProjectOID === projectInfo.SC_ProjectOID" />
-            </span>
+          <div class="item">
+            <div class="item-title">
+              <span class="title">{{item.ProjectName}}</span>
+              <span class="icon">
+                <van-icon name="success" color="#00A0E9" v-if="item.SC_ProjectOID === projectInfo.SC_ProjectOID" />
+              </span>
+            </div>
+            <div class="item-content">
+              <span class="content-left">联系人：{{item.Contact}}</span>
+              <span class="content-right">联系电话：{{item.Telephone}}</span>
+            </div>
+            <div class="item-content">
+              <span class="content-left">联系地址：{{item.Address}}</span>
+            </div>
           </div>
-          <div class="item-content">
-            <span class="content-left">联系人：{{item.Contact}}</span>
-            <span class="content-right">联系电话：{{item.Telephone}}</span>
-          </div>
-          <div class="item-content">
-            <span class="content-left">联系地址：{{item.Address}}</span>
-          </div>
-        </div>
-        <div class="option">
-          <div class="icon icon-edit" @click.stop="jumpEdit(item)">
-            <van-icon name="edit" size="18px" color="#00A0E9" />
-            <span class="icon-text">编辑</span>
-          </div>
-          <span class="text-darkGray">|</span>
-          <div class="icon icon-delete" @click.stop="onDelete(item)">
-            <van-icon name="close" size="18px" color="#f44" />
-            <span class="icon-text">删除</span>
+          <div class="option">
+            <div class="icon icon-edit" @click.stop="jumpEdit(item)">
+              <van-icon name="edit" size="18px" color="#00A0E9" />
+              <span class="icon-text">编辑</span>
+            </div>
+            <span class="text-darkGray">|</span>
+            <div class="icon icon-delete" @click.stop="onDelete(item)">
+              <van-icon name="close" size="18px" color="#f44" />
+              <span class="icon-text">删除</span>
+            </div>
           </div>
         </div>
       </van-tab>
@@ -71,6 +73,9 @@
       <div class="item-content">
         <span class="content-left">联系人：{{item.Contact}}</span>
         <span class="content-right">联系电话：{{item.Telephone}}</span>
+      </div>
+      <div class="item-content">
+        <span class="content-left">联系地址：{{item.Address}}</span>
       </div>
     </div>
   </div>

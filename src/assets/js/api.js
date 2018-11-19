@@ -187,7 +187,7 @@ const project = {
       }
     })
   },
-  //自营项目新增保存
+  // 新增项目保存
   saveProjectSelf(xmlData = "") {
     return axios({
       url: "UCMLWebServiceEntryForJs.aspx",
@@ -201,7 +201,7 @@ const project = {
       }
     })
   },
-  //自营项目新增保存
+  // 删除项目
   deleteProjectSelf(ProjectID = "") {
     return axios({
       url: "UCMLWebServiceEntryForJs.aspx",
@@ -214,7 +214,29 @@ const project = {
         _pUrl: ""
       }
     })
-  }
+  },
+  // 获取项目信息
+  getParojectPartner(Organize_ID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_BC_SC_SelUnitService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_Company_Partner",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": " Status=1 AND SC_Company_Partner.Organize_ID='" + Organize_ID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": "",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    });
+  },
 };
 
 // 消息页面

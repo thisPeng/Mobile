@@ -411,7 +411,6 @@ export default {
           const sp = res.text.split("[[");
           const tsp = sp[1].split("]]");
           this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
-          console.log(this.suppInfo);
           return true;
         } catch (e) {
           this.suppInfo = [];
