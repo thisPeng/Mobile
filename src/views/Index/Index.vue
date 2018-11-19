@@ -64,7 +64,7 @@ export default {
           case "2":
             this.$store.commit("goodsParams", { id: item.id });
             this.$router.push({
-              name: this.userInfo.oid ? "goodsList" : "goodsSearch"
+              name: "goodsList"
             });
             break;
           case "4":

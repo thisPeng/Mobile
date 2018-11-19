@@ -67,7 +67,7 @@
       </div>
     </van-popup>
     <!--购物车-->
-    <div class="cart-icon" @click="jumpCart" v-if="projectInfo.ProjectNo">
+    <div class="cart-icon" @click="jumpCart" v-if="projectInfo.SC_ProjectOID">
       <div class="icon-number">{{goodsPages.RecordCount}}</div>
       <i class="iconfont icon-gouwuchekong"></i>
     </div>
@@ -189,6 +189,7 @@ export default {
     },
     // 添加物资到购物车
     addCart(item) {
+      this.sku.price = item[5];
       this.goods = {
         id: item[0],
         sid: item[31],
@@ -205,6 +206,7 @@ export default {
     },
     // 显示物资详情
     showInfo(item) {
+      this.sku.price = item[5];
       this.goods = {
         id: item[0],
         sid: item[31],
