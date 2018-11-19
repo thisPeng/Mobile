@@ -106,6 +106,7 @@ export default {
         this.$toast.fail("请先登录账号");
       }
     },
+    // 搜索
     onSearch() {
       if (this.userInfo.oid) {
         this.$store.commit("goodsParams", { keyword: this.keyword });
@@ -116,10 +117,12 @@ export default {
         this.$toast.fail("请先登录账号");
       }
     },
+    // 搜索重置
     filterReset() {
       this.keyword = "";
       this.$store.commit("goodsParams", "");
     },
+    // 动态
     showMarquee() {
       this.animate = true;
       setTimeout(() => {
@@ -141,6 +144,9 @@ export default {
         const arr = JSON.parse(res.text);
         this.pages = [];
         this.marqueeList = [];
+        arr.sort((x, y) => {
+          return x.Index - y.Index;
+        });
         arr.forEach(val => {
           if (val.ActionType == 1) {
             this.marqueeList = val;

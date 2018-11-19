@@ -23,7 +23,7 @@
     "postcss-write-svg": "^3.0.1",
     "register-service-worker": "^1.5.1",
     "uuid": "^3.3.2",
-    "vant": "^1.4.3",
+    "vant": "^1.4.4",
     "vue": "^2.5.17",
     "vue-input": "^1.0.2",
     "vue-router": "^3.0.1",

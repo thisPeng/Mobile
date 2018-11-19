@@ -37,6 +37,7 @@
 
         <div class="task-title">工程信息</div>
         <van-field v-model="info[31]" label="工程单位：" placeholder="请输入工程单位" />
+        <van-field v-model="info[35]" label="单位电话：" placeholder="请输入单位电话" v-if="projectType == 2" />
         <van-field v-model="info[27]" label="工程造价：" placeholder="请输入工程造价" />
         <van-field v-model="info[3]" label="工期：" placeholder="请输入工期" />
         <van-field v-model="info[22]" label="建设单位：" placeholder="请输入建设单位" />
@@ -163,6 +164,7 @@ export default {
     onConfrimPartner() {
       this.info[19] = this.currPartner[8];
       this.info[34] = this.info[31] = this.currPartner[2];
+      this.info[35] = this.currPartner[3] || this.currPartner[5];
       this.partnerShow = false;
     },
     getData() {
@@ -228,6 +230,7 @@ export default {
           { Address: this.info[18] || "null" }, //工程地址
           { Contact: this.info[21] || "null" }, //联系人
           { Telephone: this.info[24] || "null" }, //联系电话
+          { UnitTelphone: this.info[35] || "null" }, //联系电话
           { RegisterTime: this.info[25] || "null" }, //登记时间
           { Project_Type: this.edit ? this.info[20] : this.projectType }, //项目类型
           { CooperationType: this.info[26] || "null" }, //合作方式
