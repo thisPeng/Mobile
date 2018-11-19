@@ -4,7 +4,7 @@
       <van-cell-group>
         <van-field :value="data[1] || '系统生成'" label="单号" :disabled="true" />
         <van-field :value="data[27]" label="工程编号" :disabled="true" />
-        <div class="van-cell van-cell--required van-field">
+        <div class="van-cell van-field">
           <div class="van-cell__title">工程名称</div>
           <div class="van-cell__value flex-between">
             <span :class="edit ? 'text-truncate text-left text-gray' : 'text-truncate text-left'">{{data[28] || '请选择工程项目'}}</span>
