@@ -21,6 +21,10 @@ export default {
     };
   },
   props: {
+    data: {
+      type: Array,
+      default: () => []
+    },
     label: {
       type: String,
       default: ""
@@ -32,13 +36,17 @@ export default {
     value: {
       type: [String, Number],
       default: ""
+    },
+    model: {
+      type: [String, Number],
+      default: ""
     }
   },
   computed,
   methods: {
     getData() {
       const params = {
-        id: this.userInfo.oid,
+        id: this.model == 1 ? this.userId.UCML_OrganizeOID : "",
         code: this.code
       };
       return index.getConfig(params).then(res => {
@@ -59,15 +67,24 @@ export default {
     }
   },
   mounted() {
-    this.getData().then(res => {
-      if (res) {
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.result = this.value;
-          }, 10);
-        });
-      }
-    });
+    if (this.code) {
+      this.getData().then(res => {
+        if (res) {
+          this.$nextTick(() => {
+            setTimeout(() => {
+              this.result = this.value;
+            }, 10);
+          });
+        }
+      });
+    } else if (this.data) {
+      this.list = this.data;
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.result = this.value;
+        }, 10);
+      });
+    }
   }
 };
 </script>

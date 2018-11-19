@@ -41,13 +41,14 @@
         <van-field v-model="info[27]" label="工程造价：" placeholder="请输入工程造价" />
         <van-field v-model="info[22]" label="建设单位：" placeholder="请输入建设单位" />
         <van-field v-model="info[3]" label="工期：" placeholder="请输入工期" />
-        <cbh-select :value="info[23]" label="业务类型：" code="CodeTable_BusinessType" @change="comTypeConfirm" />
+        <cbh-select :value="info[23]" label="业务类型：" code="CodeTable_BusinessType" model="1" @change="comTypeConfirm" />
         <van-field v-model="info[30]" label="税务组织：" placeholder="请输入税务组织" />
-        <cbh-select :value="info[28]" label="计征方式：" code="CodeTable_CalType" @change="comCalConfirm" />
-        <cbh-select :value="info[29]" label="计征区域：" code="CodeTable_CalArea" @change="comAreaConfirm" />
+        <cbh-select :value="info[28]" label="计征方式：" code="CodeTable_CalType" model="1" @change="comCalConfirm" />
+        <cbh-select :value="info[29]" label="计征区域：" code="CodeTable_CalArea" model="1" @change="comAreaConfirm" />
 
         <div class="task-title">项目信息</div>
-        <cbh-select :value="info[20]" label="项目类型：" code="CodeTable_ProjectType" @change="comProConfirm" />
+        <cbh-select :value="info[20]" label="项目类型：" :data="selfType" @change="comProConfirm" v-if="info[20] && projectType == 1" />
+        <cbh-select :value="info[20]" label="项目类型：" :data="cpType" @change="comProConfirm" v-if="info[20] && projectType == 2" />
         <van-field v-model="info[26]" label="合作方式：" placeholder="请输入合作方式" />
         <cbh-select :value="info[6]" label="项目状态：" code="CodeTable_opening" @change="comOpenConfirm" />
         <cbh-select :value="info[17]" label="公开状态：" code="CodeTable_YesNo" @change="comYesNoConfirm" />
@@ -110,6 +111,26 @@ export default {
       partnerShow: false,
       currPartner: [],
       partnerList: [],
+      selfType: [
+        {
+          CodeID: "1",
+          CodeName: "总部自营"
+        },
+        {
+          CodeID: "3",
+          CodeName: "分公司自营"
+        }
+      ],
+      cpType: [
+        {
+          CodeID: "2",
+          CodeName: "总部合作"
+        },
+        {
+          CodeID: "4",
+          CodeName: "分公司合作"
+        }
+      ],
       currentDate: new Date()
     };
   },
@@ -296,7 +317,7 @@ export default {
       return str;
     },
     pageInit() {
-      this.edit = this.$route.query.edit || false;
+      this.edit = this.$route.query.edit ? true : false;
       this.projectType = this.$route.query.type
         ? this.$route.query.type.toString()
         : "1";
