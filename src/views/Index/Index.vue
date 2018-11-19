@@ -87,6 +87,15 @@ export default {
           default:
             if (item.action.indexOf(".") >= 0) {
               window.location.href = item.action;
+            } else if (item.action === "alert") {
+              this.$dialog
+                .alert({
+                  title: "提示",
+                  message: item.Param
+                })
+                .then(() => {
+                  // on close
+                });
             } else {
               this.$router.push({
                 name: item.action

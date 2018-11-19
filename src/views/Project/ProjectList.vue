@@ -43,6 +43,20 @@
             <span class="content-left">联系人：{{item.Contact}}</span>
             <span class="content-right">联系电话：{{item.Telephone}}</span>
           </div>
+          <div class="item-content">
+            <span class="content-left">联系地址：{{item.Address}}</span>
+          </div>
+        </div>
+        <div class="option">
+          <div class="icon icon-edit" @click.stop="jumpEdit(item)">
+            <van-icon name="edit" size="18px" color="#00A0E9" />
+            <span class="icon-text">编辑</span>
+          </div>
+          <span class="text-darkGray">|</span>
+          <div class="icon icon-delete" @click.stop="onDelete(item)">
+            <van-icon name="close" size="18px" color="#f44" />
+            <span class="icon-text">删除</span>
+          </div>
         </div>
       </van-tab>
     </van-tabs>

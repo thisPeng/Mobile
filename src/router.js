@@ -94,7 +94,6 @@ export default new Router({
         component: Index,
         meta: {
           title: "首页", // 页面标题
-          keepAlive: true // 是否缓存
         }
       }, {
         path: "/login",
@@ -183,7 +182,7 @@ export default new Router({
         name: "projectSelf",
         component: ProjectSelf,
         meta: {
-          title: "自营项目"
+          title: "工程项目"
         }
       },
       {
