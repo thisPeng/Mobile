@@ -384,37 +384,20 @@ export default {
       color: #00a0e9;
       background-color: #f7f7f7;
     }
-    .con-price {
-      display: flex;
-      padding: 4px 15px;
-      box-sizing: border-box;
-      line-height: 32px;
-      position: relative;
-      background-color: #fff;
-      color: #333;
-      font-size: 14px;
-      overflow: hidden;
-      .con-label {
-        min-width: 130px;
-        flex: 1;
-      }
-      .con-select {
-        flex: 5;
-      }
-    }
-    .contract-date {
-      width: 100%;
-      position: fixed;
-      z-index: 9999;
-      bottom: 0;
-      padding-right: 30px;
-    }
-    .task-date {
-      width: 100%;
-      position: fixed;
-      z-index: 9999;
-      bottom: 0;
-    }
+  }
+
+  .contract-date {
+    width: 100%;
+    position: fixed;
+    z-index: 9999;
+    bottom: 0;
+    padding-right: 30px;
+  }
+  .task-date {
+    width: 100%;
+    position: fixed;
+    z-index: 9999;
+    bottom: 0;
   }
 
   .project-button {
