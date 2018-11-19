@@ -361,7 +361,7 @@ export default new Router({
         name: "contractWorkInfo",
         component: ContractWorkInfo,
         meta: {
-          title: "劳务合同详情"
+          title: "合同详情"
         }
       }, {
         path: "/arrivalinformation",

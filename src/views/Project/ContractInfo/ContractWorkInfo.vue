@@ -3,19 +3,19 @@
   <div class="contractwork">
     <van-cell-group>
       <div class="title-delivery">基本合同信息</div>
-      <van-field v-model="cspList[1]" label="合同编号" disabled />
-      <van-field v-model="cspList[2]" label="合同名称" disabled />
-      <van-field v-model="cspList[11]" label="合同金额" type="number" disabled />
-      <van-field v-model="cspList[19]" label="税率(%)" type="number" disabled />
-      <van-field v-model="cspList[18]" label="合同含税金额" type="number" disabled />
-      <van-field v-model="cspList[3]" label="甲方" disabled />
-      <van-field v-model="cspList[4]" label="乙方" disabled />
-      <van-field v-model="cspList[10]" label="验收限期(天)" disabled />
+      <van-field :value="cspList[1]" label="合同编号" disabled />
+      <van-field :value="cspList[2]" label="合同名称" disabled />
+      <van-field :value="cspList[11]" label="合同金额" type="number" disabled />
+      <van-field :value="cspList[19]" label="税率(%)" type="number" disabled />
+      <van-field :value="cspList[18]" label="合同含税金额" type="number" disabled />
+      <van-field :value="cspList[3]" label="甲方" disabled />
+      <van-field :value="cspList[4]" label="乙方" disabled />
+      <van-field :value="cspList[10]" label="验收限期(天)" disabled />
       <van-cell-group class="con-price">
         <span class="con-label">交货时间</span>
         <span class="con-select">{{cspList[9]}}</span>
       </van-cell-group>
-      <van-field v-model="cspList[8]" label="交货地点" disabled />
+      <van-field :value="cspList[8]" label="交货地点" disabled />
       <van-cell-group class="con-price">
         <span class="con-label">付款方式</span>
         <span class="con-select">{{payment}}</span>
@@ -31,61 +31,64 @@
         </div>
       </van-cell-group>
       <div v-if="payment === '第三种付款方式'">
-        <van-field v-model="cspList[13]" label="订金付款期限(天)" disabled />
-        <van-field v-model="cspList[15]" label="进场付款期限(天)" disabled />
-        <van-field v-model="cspList[20]" label="保质付款期限(天)" disabled />
-        <van-field v-model="cspList[14]" label="订金比例(%)" disabled />
-        <van-field v-model="cspList[16]" label="进场付款比例(%)" disabled />
-        <van-field v-model="cspList[21]" label="保质付款比例(%)" disabled />
+        <van-field :value="cspList[13]" label="订金付款期限(天)" disabled />
+        <van-field :value="cspList[15]" label="进场付款期限(天)" disabled />
+        <van-field :value="cspList[20]" label="保质付款期限(天)" disabled />
+        <van-field :value="cspList[14]" label="订金比例(%)" disabled />
+        <van-field :value="cspList[16]" label="进场付款比例(%)" disabled />
+        <van-field :value="cspList[21]" label="保质付款比例(%)" disabled />
       </div>
       <div class="title-delivery">保质与违约</div>
-      <van-field v-model="cspList[22]" label="保质期（天）" type="number" disabled />
+      <van-field :value="cspList[22]" label="保质期（天）" type="number" disabled />
       <van-cell-group class="con-price">
         <span class="con-label">保质开始时间</span>
         <span class="con-select">{{cspList[23]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDate" :min-date="new Date()" type="date" class="contract-date" />
       <van-cell-group class="con-price">
         <span class="con-label">保质结束时间</span>
         <span class="con-select">{{cspList[24]}}</span>
       </van-cell-group>
-      <van-datetime-picker v-model="currentDate" v-show="showDatatwo" :min-date="new Date()" type="date" class="contract-date" />
-      <van-field v-model="cspList[25]" label="保证金比例(%)" disabled />
-      <van-field v-model="cspList[26]" label="保质期处理期限(天)" disabled />
-      <van-field v-model="cspList[27]" label="保质期处理备注" disabled />
-      <van-field v-model="cspList[28]" label="乙方违约(‰)" type="number" />
-      <van-field v-model="cspList[29]" label="甲方违约(‰)" type="number" />
+      <van-field :value="cspList[25]" label="保证金比例(%)" disabled />
+      <van-field :value="cspList[26]" label="保质期处理期限(天)" disabled />
+      <van-field :value="cspList[27]" label="保质期处理备注" disabled />
+      <van-field :value="cspList[28]" label="乙方违约(‰)" type="number" disabled />
+      <van-field :value="cspList[29]" label="甲方违约(‰)" type="number" disabled />
+
       <div class="title-delivery">甲方信息</div>
-      <van-field v-model="cspList[31]" label="甲方(盖章签名处)" disabled />
-      <van-field v-model="cspList[32]" label="甲方银行账号" disabled />
-      <van-field v-model="cspList[33]" label="甲方开户行" disabled />
-      <van-field v-model="cspList[34]" label="甲方纳税识别码" disabled />
-      <van-field v-model="cspList[36]" label="甲方电话" disabled />
-      <van-field v-model="cspList[37]" label="甲方代表人" />
+      <van-field :value="cspList[31]" label="甲方(盖章签名处)" disabled />
+      <van-field :value="cspList[32]" label="甲方银行账号" disabled />
+      <van-field :value="cspList[33]" label="甲方开户行" disabled />
+      <van-field :value="cspList[34]" label="甲方纳税识别码" disabled />
+      <van-field :value="cspList[36]" label="甲方电话" disabled />
+      <van-field :value="cspList[37]" label="甲方代表人" disabled />
       <van-cell-group class="con-price">
         <span class="con-label">甲方签订日期</span>
         <span class="con-select">{{cspList[38]}}</span>
       </van-cell-group>
-      <van-field v-model="cspList[35]" label="甲方地址" disabled />
+      <van-field :value="cspList[35]" label="甲方地址" disabled />
+
       <div class="title-delivery">乙方信息</div>
-      <van-field v-model="cspList[39]" label="乙方(盖章签名处)" disabled />
-      <van-field v-model="cspList[40]" label="乙方银行账号" disabled />
-      <van-field v-model="cspList[41]" label="乙方开户行" disabled />
-      <van-field v-model="cspList[42]" label="乙方纳税识别码" disabled />
-      <van-field v-model="cspList[44]" label="乙方电话" disabled />
-      <van-field v-model="cspList[45]" label="乙方代表人" disabled />
+      <van-field :value="cspList[39]" label="乙方(盖章签名处)" disabled />
+      <van-field :value="cspList[40]" label="乙方银行账号" disabled />
+      <van-field :value="cspList[41]" label="乙方开户行" disabled />
+      <van-field :value="cspList[42]" label="乙方纳税识别码" disabled />
+      <van-field :value="cspList[44]" label="乙方电话" disabled />
+      <van-field :value="cspList[45]" label="乙方代表人" disabled />
       <van-cell-group class="con-price">
         <span class="con-label">乙方签订日期</span>
         <span class="con-select">{{cspList[46]}}</span>
       </van-cell-group>
-      <van-field v-model="cspList[43]" label="乙方地址" disabled />
+      <van-field :value="cspList[43]" label="乙方地址" disabled />
     </van-cell-group>
+
     <div class="title-delivery">合同附件</div>
     <van-cell title="附件" is-link value="" @click="$router.push({name: 'contractAnnex'})" />
-    <div class="title-delivery">清单</div>
+
+    <div class="title-delivery">物资清单</div>
     <van-cell-group>
-      <van-cell title="清单详情" is-link @click="jumpInfo()" />
+      <van-cell title="清单详情" is-link value="" @click="jumpInfo" />
     </van-cell-group>
+
     <div class="invoice-button" v-if="contractParams[20] != '发货情况：全部发货'">
       <a :href="'tel:'+contractParams[21]">联系供应商</a>
     </div>
@@ -98,15 +101,8 @@ export default {
   data() {
     return {
       cspList: [],
-      payment: "请选择付款方式",
-      currentDate: new Date(),
-      columns: ["第一种付款方式", "第二种付款方式", "第三种付款方式"],
-      paymentShow: false,
-      showDate: false, // 确认时间
-      showDateone: false, //交货时间
-      showDatatwo: false, //保质结束时间
-      showDatathree: false, //甲方
-      showDatafour: false //乙方
+      payment: "",
+      columns: ["第一种付款方式", "第二种付款方式", "第三种付款方式"]
     };
   },
   computed,

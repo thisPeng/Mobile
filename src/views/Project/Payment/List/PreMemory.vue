@@ -38,7 +38,7 @@
             </div>
           </van-cell>
         </van-cell-group>
-        <div class="margin-top-sm">
+        <div class="margin-top-sm" v-if="filterParams === 1">
           <van-button type="primary" size="large" @click="onAdd" v-if="buttonValue.add.show" :disabled="buttonValue.add.disabled">新增预存登记</van-button>
         </div>
       </div>

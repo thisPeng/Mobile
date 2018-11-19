@@ -11,7 +11,7 @@
 
     <div class="supplie-info" @click="jumpInfo">
       <div class="info-left">
-        <div class="info-img">
+        <div class="info-img" v-if="suppParams.icon">
           <img :src="(suppParams.icon).replace('~',servePath)" alt="" />
         </div>
         <div class="info-text">
@@ -249,17 +249,6 @@ export default {
       // 获取二级分类
       this.getSuppType(false, this.typeList[i].SC_SMaterialTypeOID);
     },
-    // 过滤供应商
-    filterSupp(item, index) {
-      this.suppActive = index;
-      this.$store.commit("suppParams", { id: item[2] });
-      this.getSuppInfo().then(res => {
-        if (res) {
-          this.getSuppType();
-        }
-      });
-      this.screenShow = false;
-    },
     // 过滤分类
     filterGoods(item, index) {
       this.filterActive = index;
@@ -408,10 +397,13 @@ export default {
     getSuppInfo() {
       return supplier.getSupplieInfo(this.suppParams.id).then(res => {
         try {
-          const sp = res.text.split("[[");
-          const tsp = sp[1].split("]]");
-          this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
-          return true;
+          if (res.status) {
+            const sp = res.text.split("[[");
+            const tsp = sp[1].split("]]");
+            this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
+            return true;
+          }
+          return false;
         } catch (e) {
           this.suppInfo = [];
           return false;
