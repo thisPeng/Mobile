@@ -259,9 +259,11 @@ export default {
             }
           }
           .content-text {
-            height: 36px;
+            height: 45px;
             font-size: 12px;
-            padding: 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
             overflow: hidden;
             text-overflow: ellipsis;

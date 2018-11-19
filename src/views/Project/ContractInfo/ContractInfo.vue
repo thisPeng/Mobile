@@ -3,7 +3,7 @@
   <div class="contractInfo">
     <div class="tran-data">
       <div class="tran-card">
-        <div class="tran-item" v-for="(item,index) in list" :key="index" v-if="item[18] !== '审核情况：未审核' && item[18] !== '审核情况：已审核'">
+        <div class="tran-item" v-for="(item,index) in list" :key="index">
           <div class="item-title">
             <span class="title">{{item[22]}}</span>
             <span class="option" v-for="(ite,idx) in buttonValue" :key="idx" v-if="item[6]==1 && ite.text === '合同退回' && ite.Allowvisible === '1'">

@@ -28,7 +28,7 @@
     <div class="con-button" v-if="buttonValue.length > 0">
       <div class="button-value" v-for="(item,index) in buttonValue" :key="index" v-if="item.Allowvisible === '1'">
         <van-button type="primary" @click="confrimPrice" v-if="list[39] === '已报价' && list[16] !== '1' && item.text === '确认'" :disabled="item.Enabled !== '1'">确认</van-button>
-        <van-button type="primary" @click="sendOrder" v-if="list[39] === '初始状态' && item.text === '发送'" :disabled="item.Enabled !== '1'">发送</van-button>
+        <van-button type="primary" @click="sendOrder" v-if="list[39] === '初始状态' && item.text === '提议'" :disabled="item.Enabled !== '1'">发送</van-button>
         <van-button type="warning" @click="conProposal" v-if="list[39] === '已报价' && item.text === '提议'" :disabled="item.Enabled !== '1'">提议</van-button>
         <van-button type="main" @click="jumpPage('contractwork')" v-if="list[39] !== '待报价' && list[39] !== '待确认' && item.text === '编辑'" :disabled="item.Enabled !== '1'">编辑合同</van-button>
         <van-button type="default" @click="conAddGoods" v-if="list[39] !== '待报价' && list[39] !== '待确认' && item.text === '添加物资'" :disabled="item.Enabled !== '1'">添加物资</van-button>
@@ -295,6 +295,7 @@ export default {
         .then(res => {
           if (res.status) {
             this.buttonValue = JSON.parse(res.text);
+            console.log(this.buttonValue);
           }
         });
       this.getInfo();
