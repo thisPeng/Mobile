@@ -40,7 +40,6 @@ export default new Vuex.Store({
         state.isReload = false;
         state.userId = {};
         state.userInfo = {};
-        state.codeValue = [];
         state.taskModel = "";
         state.backRouter = "";
         state.clientInfo = {};

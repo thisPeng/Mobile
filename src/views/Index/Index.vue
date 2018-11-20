@@ -160,6 +160,7 @@ export default {
         this.marqueeList = [];
       }
     });
+    this.$parent.active = 0;
   }
 };
 </script>

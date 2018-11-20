@@ -91,8 +91,8 @@ export default {
           loginName: this.loginName,
           password: this.password
         };
-        login.validate(params).then(res => {
-          if (res && res.text != "0") {
+        login.validate(params).then(loginRes => {
+          if (loginRes && loginRes.text != "0") {
             users.userInfo().then(result => {
               if (result) {
                 this.$store.commit("cleanStore", true);
@@ -107,7 +107,27 @@ export default {
                     if (res && res.status === 1) {
                       const uId = JSON.parse(res.text)[0];
                       this.$store.commit("userId", uId);
-                      this.$parent.isMenu = true;
+                      // this.$parent.isMenu = true;
+
+                      // 获取系统配置
+                      const params = {
+                        id: this.userInfo.oid,
+                        code:
+                          "OrderType|CodeTable_Unit|CodeTable_TaxClass|CodeTable_Status|CodeTable_CalArea|CodeTable_CalType|" +
+                          "CodeTable_ProjectType|CodeTable_BusinessType|CodeTable_opening|CodeTable_YesNo|CodeTable_SkuStatus|" +
+                          "CodeTable_Taxrate_Can|CodeTable_Labor_Pay|CodeTable_CoType|CodeTable_Pay_Info|CodeTable_Approve|" +
+                          "CodeTable_Deliver_Type"
+                      };
+                      // 获取配置表数据
+                      index.getConfig(params).then(codeRes => {
+                        if (codeRes && codeRes.status === 1) {
+                          this.$store.commit(
+                            "codeValue",
+                            JSON.parse(codeRes.text)
+                          );
+                        }
+                      });
+
                       users.userType(uId.UCML_OrganizeOID).then(r => {
                         try {
                           this.$store.commit(
@@ -128,22 +148,6 @@ export default {
                         }
                       });
                     }
-
-                    // 获取系统配置
-                    const params = {
-                      id: this.userInfo.oid,
-                      code:
-                        "OrderType|CodeTable_Unit|CodeTable_TaxClass|CodeTable_Status|CodeTable_CalArea|CodeTable_CalType|" +
-                        "CodeTable_ProjectType|CodeTable_BusinessType|CodeTable_opening|CodeTable_YesNo|CodeTable_SkuStatus|" +
-                        "CodeTable_Taxrate_Can|CodeTable_Labor_Pay|CodeTable_CoType|CodeTable_Pay_Info|CodeTable_Approve|" +
-                        "CodeTable_Deliver_Type"
-                    };
-                    // 获取配置表数据
-                    index.getConfig(params).then(res => {
-                      if (res && res.status === 1) {
-                        this.$store.commit("codeValue", JSON.parse(res.text));
-                      }
-                    });
                   } catch (e) {
                     this.$store.commit("userType", "");
                     this.$router.replace({
@@ -153,7 +157,7 @@ export default {
                 });
               }
             });
-          } else if (res && res.text == "0") {
+          } else if (loginRes && loginRes.text == "0") {
             this.$toast("用户名或密码错误");
           } else {
             this.$toast("服务器未响应");

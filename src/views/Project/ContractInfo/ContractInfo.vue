@@ -2,38 +2,67 @@
   <!-- 合同信息 -->
   <div class="contractInfo">
     <div class="tran-data">
-      <div class="tran-card">
-        <div class="tran-item" v-for="(item,index) in list" :key="index">
-          <div class="item-title">
-            <span class="title">{{item[22]}}</span>
-            <span class="option" v-for="(ite,idx) in buttonValue" :key="idx" v-if="item[6]==1 && ite.text === '合同退回' && ite.Allowvisible === '1'">
-              <van-button type="danger" size="mini" plain @click.stop="onReturn(item)" :disabled="ite.Enabled !== '1'">退回</van-button>
-            </span>
-          </div>
-          <van-cell :is-link="item[5]==0" class="item-content" @click="item[5]==0 ? jumpInfo(item) : ''">
-            <div class="content-row">
-              <span class="row-left">{{item[14]}}</span>
-            </div>
-            <div class="content-row">
-              <span class="row-left">{{item[15]}}</span>
-              <span class="row-right">
-                <van-tag type="danger" v-if="item[18] === '审核情况：未审核'">{{item[18]}}</van-tag>
-                <van-tag type="success" v-else-if="item[18] === '审核情况：已审核'">{{item[18]}}</van-tag>
-                <van-tag type="danger" v-else-if="item[18] === '发货情况：未发货'">{{item[18]}}</van-tag>
-                <van-tag type="primary" v-else-if="item[18] === '发货情况：部分发货'">{{item[18]}}</van-tag>
-                <van-tag type="success" v-else-if="item[18] === '发货情况：全部发货'">{{item[18]}}</van-tag>
-                <van-tag v-else>{{item[18]}}</van-tag>
+      <van-tabs v-model="active" class="tran-card" sticky>
+        <van-tab :title="'材料合同 (' + listMaterials.length + ')'">
+          <div class="tran-item" v-for="(item,index) in listMaterials" :key="index">
+            <div class="item-title">
+              <span class="title">{{item[22]}}</span>
+              <span class="option" v-for="(ite,idx) in buttonValue" :key="idx" v-if="item[6]==1 && ite.text === '合同退回' && ite.Allowvisible === '1'">
+                <van-button type="danger" size="mini" plain @click.stop="onReturn(item)" :disabled="ite.Enabled !== '1'">退回</van-button>
               </span>
             </div>
-            <div class="content-row">
-              <span class="row-left">{{item[12]}}</span>
+            <van-cell is-link class="item-content" @click="jumpInfo(item)">
+              <div class="content-row">
+                <span class="row-left">{{item[14]}}</span>
+              </div>
+              <div class="content-row">
+                <span class="row-left">{{item[15]}}</span>
+                <span class="row-right">
+                  <van-tag type="danger" v-if="item[18] === '发货情况：未发货'">{{item[18]}}</van-tag>
+                  <van-tag type="primary" v-else-if="item[18] === '发货情况：部分发货'">{{item[18]}}</van-tag>
+                  <van-tag type="success" v-else-if="item[18] === '发货情况：全部发货'">{{item[18]}}</van-tag>
+                  <van-tag v-else>{{item[18]}}</van-tag>
+                </span>
+              </div>
+              <div class="content-row">
+                <span class="row-left">{{item[12]}}</span>
+              </div>
+              <div class="content-row">
+                <span class="row-left">{{item[13]}}</span>
+              </div>
+            </van-cell>
+          </div>
+        </van-tab>
+        <van-tab :title="'材料合同 (' + listLabor.length + ')'">
+          <div class="tran-item" v-for="(item,index) in listLabor" :key="index">
+            <div class="item-title">
+              <span class="title">{{item[22]}}</span>
+              <span class="option" v-for="(ite,idx) in buttonValue" :key="idx" v-if="item[6]==1 && ite.text === '合同退回' && ite.Allowvisible === '1'">
+                <van-button type="danger" size="mini" plain @click.stop="onReturn(item)" :disabled="ite.Enabled !== '1'">退回</van-button>
+              </span>
             </div>
-            <div class="content-row">
-              <span class="row-left">{{item[13]}}</span>
-            </div>
-          </van-cell>
-        </div>
-      </div>
+            <van-cell class="item-content">
+              <div class="content-row">
+                <span class="row-left">{{item[14]}}</span>
+              </div>
+              <div class="content-row">
+                <span class="row-left">{{item[15]}}</span>
+                <span class="row-right">
+                  <van-tag type="danger" v-if="item[18] === '审核情况：未审核'">{{item[18]}}</van-tag>
+                  <van-tag type="success" v-else-if="item[18] === '审核情况：已审核'">{{item[18]}}</van-tag>
+                  <van-tag v-else>{{item[18]}}</van-tag>
+                </span>
+              </div>
+              <div class="content-row">
+                <span class="row-left">{{item[12]}}</span>
+              </div>
+              <div class="content-row">
+                <span class="row-left">{{item[13]}}</span>
+              </div>
+            </van-cell>
+          </div>
+        </van-tab>
+      </van-tabs>
     </div>
   </div>
 </template>
@@ -43,8 +72,9 @@ import { index, contractInfo } from "../../../assets/js/api.js";
 export default {
   data() {
     return {
-      list: [],
-      listOrder: [],
+      active: 0,
+      listLabor: [],
+      listMaterials: [],
       buttonValue: []
     };
   },
@@ -57,7 +87,14 @@ export default {
             const sp = res.text.split("[[");
             const tsp = sp[1].split(";");
             const list = eval("[[" + tsp[0]);
-            this.list = list;
+            list.forEach(val => {
+              if (val[5] == 1) {
+                this.listLabor.push(val);
+              } else {
+                this.listMaterials.push(val);
+              }
+            });
+            // console.log(this.listLabor);
             return true;
           }
           throw "数据获取失败，请刷新重试";
@@ -118,11 +155,10 @@ export default {
 <style lang="less" scoped>
 .contractInfo {
   width: 100%;
-  padding: 10px;
   .tran-data {
-    margin-bottom: 40px;
     .tran-card {
       width: 100%;
+      padding: 55px 10px 10px 10px;
       .tran-item {
         background-color: #fff;
         padding: 0 15px;

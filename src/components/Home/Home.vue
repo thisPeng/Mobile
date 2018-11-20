@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <van-nav-bar :title="title" :left-arrow="isBack" @click-left="onBack" @click-right="onMenu">
+    <van-nav-bar :title="title" :left-arrow="isBack" @click-left="onBack">
       <!-- <i slot="right" class="iconfont icon-qiehuan home-icon" v-if="isMenu && userType <= 3" /> -->
     </van-nav-bar>
 

@@ -299,7 +299,7 @@ export default {
             });
             return;
           }
-          throw "保存失败，请刷新页面重试";
+          throw res.text;
         } catch (e) {
           this.$toast.fail(e);
         }

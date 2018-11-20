@@ -101,11 +101,16 @@ export default {
             this.$store.commit("userInfo", result);
             users.userId(result.oid).then(res => {
               if (res && res.status === 1) {
-                this.$store.commit("userId", JSON.parse(res.text)[0]);
-                this.$toast("缓存已清除");
-                // setTimeout(() => {
-                //   location.reload();
-                // }, 800);
+                const uId = JSON.parse(res.text)[0];
+                this.$store.commit("userId", uId);
+                users.userType(uId.UCML_OrganizeOID).then(r => {
+                  if (r && r.status === 1) {
+                    this.$store.commit("userType", JSON.parse(r.text).UserType);
+                  } else {
+                    this.$store.commit("userType", "");
+                  }
+                  this.$toast("缓存已清除");
+                });
               }
             });
           }
@@ -114,6 +119,7 @@ export default {
         }
       });
     },
+    // 跳转详情
     jumpInfo() {
       if (this.userInfo.oid) {
         if (this.userType == 1) {
