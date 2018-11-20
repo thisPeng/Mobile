@@ -184,7 +184,7 @@ export default {
     width: 100%;
     align-items: center;
     color: #fff;
-    background-color: #49b1e0;
+    background-color: #333;
     display: flex;
     .marquee-title {
       padding: 0 20px;
