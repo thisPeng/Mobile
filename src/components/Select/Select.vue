@@ -2,7 +2,7 @@
   <div class="select">
     <van-cell-group>
       <van-cell :title="label">
-        <select class="cbhSelect" v-model="result" @change="onChange">
+        <select class="cbhSelect" v-model="result" @change="onChange" :disabled="disabled">
           <option value="">请选择</option>
           <option v-for="(item,index) in list" :key="index" :value="item.CodeID">{{item.CodeName}}</option>
         </select>
@@ -24,6 +24,10 @@ export default {
     data: {
       type: Array,
       default: () => []
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
     label: {
       type: String,

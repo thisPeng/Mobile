@@ -2,19 +2,19 @@
   <div class="region">
     <van-cell-group>
       <van-cell title="省份：">
-        <select class="taskSelect" v-model="provRes" @change="districtRes=cityRes='';onChangeP()">
+        <select class="taskSelect" v-model="provRes" @change="districtRes=cityRes='';onChangeP()" :disabled="disabled">
           <option value="">请选择</option>
           <option v-for="(item,index) in regionP" :key="index" :value="item.id">{{item.name}}</option>
         </select>
       </van-cell>
       <van-cell title="城市：">
-        <select class="taskSelect" v-model="cityRes" @change="districtRes='';onChangeC()">
+        <select class="taskSelect" v-model="cityRes" @change="districtRes='';onChangeC()" :disabled="disabled">
           <option value="">请选择</option>
           <option v-for="(item,index) in regionC" :key="index" :value="item.id">{{item.name}}</option>
         </select>
       </van-cell>
       <van-cell title="区域：">
-        <select class="taskSelect" v-model="districtRes" @change="onChangeX()">
+        <select class="taskSelect" v-model="districtRes" @change="onChangeX()" :disabled="disabled">
           <option value="">请选择</option>
           <option v-for="(item,index) in regionX" :key="index" :value="item.id">{{item.name}}</option>
         </select>
@@ -50,6 +50,10 @@ export default {
     district: {
       type: String,
       default: ""
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {

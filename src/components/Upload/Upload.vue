@@ -1,17 +1,17 @@
 <template>
   <div class="upload">
     <div class="upload-imgage" v-if="image.src">
-      <van-icon name="close" class="upload-close" @click="onDelete" />
+      <van-icon name="close" class="upload-close" @click="onDelete" v-if="!disabled" />
       <img :src="image.src" :alt="image.name" @click="preView">
     </div>
-      <van-uploader class="upload-imgage" v-else :after-read="onReadFile" accept="image/*" :max-size="2097152" @oversize="$toast.fail('图片大小不能超过2M')">
-        <div class="upload-content">
-          <van-icon name="photograph" />
-          <span>点击上传图片</span>
-        </div>
-      </van-uploader>
-      <div class="upload-name">{{image.name}}</div>
-    </div>
+    <van-uploader class="upload-imgage" v-else-if="!disabled" :after-read="onReadFile" accept="image/*" :max-size="2097152" @oversize="$toast.fail('图片大小不能超过2M')">
+      <div class="upload-content">
+        <van-icon name="photograph" />
+        <span>点击上传图片</span>
+      </div>
+    </van-uploader>
+    <div class="upload-name">{{image.name}}</div>
+  </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
@@ -39,6 +39,10 @@ export default {
     path: {
       type: String,
       default: ""
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
     index: {
       type: Number,

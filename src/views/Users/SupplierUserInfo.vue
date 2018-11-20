@@ -1,57 +1,65 @@
  <template>
   <div class="supplierUserInfo">
     <div class="mui-head">
-      <img src="../../../public/img/ms_ico5.png" alt="" />
-      <div id="nName" class="mui-name">{{userInfo.name}}</div>
+      <div class="mui-head-img">
+        <img src="../../../public/img/ms_ico5.png" alt="" />
+      </div>
+      <div class="mui-name">{{userInfo.name}}</div>
     </div>
     <div class="info-users">
       <!-- 供应商编号 -->
       <van-cell-group>
         <van-field :value="data[35]" label="供应商编号：" disabled />
         <!-- 单位名称 -->
-        <van-field v-model="data[22]" label="单位名称：" placeholder="请输入单位名称" />
+        <van-field v-model="data[22]" label="单位名称：" placeholder="请输入单位名称" :disabled="buttonValue.disabled" />
         <!-- 统一社会信用代码 -->
-        <van-field v-model="data[25]" label="统一社会信用代码：" placeholder="请输入统一社会信用代码" />
+        <van-field v-model="data[25]" label="统一社会信用代码：" placeholder="请输入统一社会信用代码" :disabled="buttonValue.disabled" />
         <!-- 单位类别 -->
-        <cbh-select v-model="data[23]" label="单位类别：" code="CodeTable_Unit" @change="unitConfirm" v-if="data.length > 0" />
+        <van-field :value="data[23] | codeValue('CodeTable_Unit')" label="单位类别：" disabled v-if="buttonValue.disabled" />
+        <cbh-select v-model="data[23]" label="单位类别：" code="CodeTable_Unit" @change="unitConfirm" v-else-if="data.length > 0" />
         <!-- 纳税人类别 -->
-        <cbh-select v-model="data[26]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onConfirm" v-if="data.length > 0" />
+        <van-field :value="data[26] | codeValue('CodeTable_TaxClass')" label="纳税人类别：" disabled v-if="buttonValue.disabled" />
+        <cbh-select v-model="data[26]" label="纳税人类别：" code="CodeTable_TaxClass" @change="onConfirm" v-else-if="data.length > 0" />
         <!-- 税率 -->
-        <van-field v-model="data[27]" label="税率：" placeholder="请输入联系人税率" />
+        <van-field v-model="data[27]" label="税率：" placeholder="请输入联系人税率" :disabled="buttonValue.disabled" />
         <!-- 开户行 -->
-        <van-field v-model="data[28]" label="开户行：" placeholder="请输入开户行" />
+        <van-field v-model="data[28]" label="开户行：" placeholder="请输入开户行" :disabled="buttonValue.disabled" />
         <!-- 银行账号 -->
-        <van-field v-model="data[29]" label="银行账号：" placeholder="请输入银行账号" />
+        <van-field v-model="data[29]" label="银行账号：" placeholder="请输入银行账号" :disabled="buttonValue.disabled" />
       </van-cell-group>
       <!-- 公司地址 -->
-      <cbh-region :prov="data[58]" :city="data[59]" :district="data[60]" @change="onRegionChange" v-if="data.length > 0" />
+      <cbh-region :prov="data[58]" :city="data[59]" :district="data[60]" @change="onRegionChange" :disabled="buttonValue.disabled" v-if="data.length > 0" />
       <!-- 可开票税率 -->
       <van-cell-group>
-        <van-field v-model="data[49]" label="可开票税率：" placeholder="请输入可开票税率" />
+        <van-field v-model="data[49]" label="可开票税率：" placeholder="请输入可开票税率" :disabled="buttonValue.disabled" />
         <!-- 详细地址 -->
-        <van-field v-model="data[30]" label="详细地址：" placeholder="请输入详细地址" />
-        <van-field v-model="data[31]" label="联系人：" placeholder="请输入联系人" />
-        <van-field v-model="data[32]" label="固定电话：" placeholder="请输入固定电话" />
-        <van-field v-model="data[33]" label="手机：" placeholder="请输入手机" />
-        <van-field v-model="data[34]" label="邮箱：" placeholder="请输入邮箱" />
+        <van-field v-model="data[30]" label="详细地址：" placeholder="请输入详细地址" :disabled="buttonValue.disabled" />
+        <van-field v-model="data[31]" label="联系人：" placeholder="请输入联系人" :disabled="buttonValue.disabled" />
+        <van-field v-model="data[32]" label="固定电话：" placeholder="请输入固定电话" :disabled="buttonValue.disabled" />
+        <van-field v-model="data[33]" label="手机：" placeholder="请输入手机" :disabled="buttonValue.disabled" />
+        <van-field v-model="data[34]" label="邮箱：" placeholder="请输入邮箱" :disabled="buttonValue.disabled" />
       </van-cell-group>
       <van-cell-group>
         <van-cell class="padding-vertical" title="证照资料" is-link value="" @click="jumpPage('usersInfoAccessory')" />
         <van-cell class="padding-vertical" title="附件" is-link value="" @click="jumpPage('supplierAnnex')" />
       </van-cell-group>
-      <div class="pwd-button" @click="saveMessage">
-        <van-button type="primary" size="large">保 存</van-button>
+      <div class="users-button" v-if="buttonValue.show">
+        <van-button type="primary" size="large" @click="saveMessage" :disabled="buttonValue.disabled">保 存</van-button>
       </div>
     </div>
   </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { users } from "./../../assets/js/api.js";
+import { users, index } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      data: []
+      data: [],
+      buttonValue: {
+        show: false,
+        disabled: true
+      }
     };
   },
   methods: {
@@ -124,16 +132,29 @@ export default {
       });
     },
     //获取用户信息
-    getData() {
+    pageInit() {
       //供应商
       users.getSupplierUserInfo(this.userId.UCML_OrganizeOID).then(res => {
         if (res && res.status === 1) {
           const sp = res.text.split("[[");
           const csp = sp[1].split("]]");
           this.data = eval("[[" + csp[0] + "]]")[0];
-
         }
       });
+
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_SC_Supplier_Edit")
+        .then(res => {
+          if (res.status) {
+            const arr = JSON.parse(res.text);
+            arr.forEach(val => {
+              if (val.Allowvisible === "1" && val.text === "保存并关闭") {
+                this.buttonValue.show = true;
+                this.buttonValue.disabled = val.Enabled !== "1";
+              }
+            });
+          }
+        });
     },
     jumpPage(name) {
       this.$router.push({
@@ -143,7 +164,7 @@ export default {
   },
   computed,
   mounted() {
-    this.getData();
+    this.pageInit();
   }
 };
 </script>
@@ -171,22 +192,25 @@ export default {
     height: 200px;
     background-image: url("../../../public/img/topbar.jpg");
     background-repeat: no-repeat;
-    background-size: 100% 50%;
+    background-size: 100% 100%;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
-  .mui-head img {
+  .mui-head .mui-head-img {
     display: block;
     margin-bottom: 10px;
     width: 100px;
     height: 100px;
     border-radius: 80px;
-    -moz-box-shadow: 0px 0px 3px #999;
-    -webkit-box-shadow: 0px 0px 3px #999;
     box-shadow: 0px 0px 3px #999;
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
   }
   .info-users {
     .info-sex {
@@ -226,7 +250,7 @@ export default {
       }
     }
   }
-  .pwd-button {
+  .users-button {
     padding: 10px;
     text-align: center;
   }

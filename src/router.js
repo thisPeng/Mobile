@@ -94,13 +94,15 @@ export default new Router({
         component: Index,
         meta: {
           title: "首页", // 页面标题
+          // keepAlive: true
         }
       }, {
         path: "/login",
         name: "login",
         component: Login,
         meta: {
-          title: "登录" // 页面标题
+          title: "登录", // 页面标题
+          keepAlive: true
         }
       }, {
         path: "/register",

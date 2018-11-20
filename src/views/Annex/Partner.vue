@@ -1,10 +1,10 @@
 <template>
   <div class="annex">
     <div class="annex-content">
-      <cbh-upload class="annex-item" path="Contract" @change="onSave" />
+      <cbh-upload class="annex-item" path="Contract" @change="onSave" v-if="buttonValue.show && !buttonValue.disabled" />
       <div class="annex-item" v-for="(item, index) in data" :key="index">
         <div class="item-img">
-          <cbh-upload :src="(servePath+item[3]).replace('..','')" :name="item[1]" :index="index" @close="onDelete" />
+          <cbh-upload :src="(servePath+item[3]).replace('..','')" :name="item[1]" :index="index" :disabled="buttonValue.disabled" @close="onDelete" />
         </div>
       </div>
     </div>
@@ -12,11 +12,15 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { annex } from "./../../assets/js/api.js";
+import { annex, index } from "./../../assets/js/api.js";
 export default {
   data() {
     return {
-      data: []
+      data: [],
+      buttonValue: {
+        show: false,
+        disabled: true
+      }
     };
   },
   computed,
@@ -95,6 +99,20 @@ export default {
           this.data = [];
         }
       });
+
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_SC_Partner_Edit")
+        .then(res => {
+          if (res.status) {
+            const arr = JSON.parse(res.text);
+            arr.forEach(val => {
+              if (val.Allowvisible === "1" && val.text === "保存并关闭") {
+                this.buttonValue.show = true;
+                this.buttonValue.disabled = val.Enabled !== "1";
+              }
+            });
+          }
+        });
     }
   },
   mounted() {

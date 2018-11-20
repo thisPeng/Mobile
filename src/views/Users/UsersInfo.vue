@@ -4,78 +4,71 @@
       <div class="mui-head-img">
         <img src="../../../public/img/ms_ico5.png" alt="" />
       </div>
-      <div id="nName" class="mui-name">{{userInfo.name}}</div>
+      <div class="mui-name">{{userInfo.name}}</div>
     </div>
     <div class="info-users">
-      <!-- 合作商编号 -->
       <van-cell-group>
+        <!-- 合作商编号 -->
         <van-field :value="data[1]" label="合作商编号：" disabled />
-      </van-cell-group>
-      <!-- 姓名 -->
-      <van-cell-group>
-        <van-field :value="data[2]" label="合作商名称：" disabled />
-      </van-cell-group>
-      <!-- 签约单位名称 -->
-      <van-cell-group>
-        <van-field v-model="data[27]" label="签约单位名称：" placeholder="请输入签约单位名称" />
-      </van-cell-group>
-      <!-- 法定代表人 -->
-      <van-cell-group>
-        <van-field v-model="data[22]" label="法定代表人：" placeholder="请输入法定代表人" />
-      </van-cell-group>
-      <!-- 法人身份证号 -->
-      <van-cell-group>
-        <van-field v-model="data[26]" label="法人身份证号：" placeholder="请输入法人身份证号" />
-      </van-cell-group>
-      <!-- 法人电话 -->
-      <van-cell-group>
-        <van-field v-model="data[10]" label="法人电话：" placeholder="请输入法人电话" />
-      </van-cell-group>
-      <!-- 联系人姓名 -->
-      <van-cell-group>
-        <van-field v-model="data[8]" label="联系人姓名：" placeholder="请输入联系人姓名" />
-      </van-cell-group>
-      <!-- 联系人电话 -->
-      <van-cell-group>
-        <van-field v-model="data[11]" label="联系人电话：" placeholder="请输入联系人电话" />
-      </van-cell-group>
-      <!-- 联系人邮箱 -->
-      <van-cell-group>
-        <van-field v-model="data[12]" label="联系人邮箱：" placeholder="请输入联系人邮箱" />
-      </van-cell-group>
 
-      <!-- 状态 -->
-      <van-cell-group>
+        <!-- 姓名 -->
+        <van-field :value="data[2]" label="合作商名称：" disabled />
+
+        <!-- 状态 -->
         <van-field :value="data[7] | supplierStatus" label="状态：" disabled />
-      </van-cell-group>
-      <!-- 公司地址 -->
-      <cbh-region :prov="data[30]" :city="data[31]" :district="data[32]" @change="onRegionChange" v-if="data.length>0" />
-      <!-- 地址 -->
-      <van-cell-group>
-        <van-field v-model="data[9]" label="地址：" placeholder="请输入地址" />
-      </van-cell-group>
-      <!-- 备注 -->
-      <van-cell-group>
-        <van-field v-model="data[13]" label="备注：" placeholder="请输入备注" />
+
+        <!-- 签约单位名称 -->
+        <van-field v-model="data[27]" label="签约单位名称：" placeholder="请输入签约单位名称" :disabled="buttonValue.disabled" />
+
+        <!-- 法定代表人 -->
+        <van-field v-model="data[22]" label="法定代表人：" placeholder="请输入法定代表人" :disabled="buttonValue.disabled" />
+
+        <!-- 法人身份证号 -->
+        <van-field v-model="data[26]" label="法人身份证号：" placeholder="请输入法人身份证号" :disabled="buttonValue.disabled" />
+
+        <!-- 法人电话 -->
+        <van-field v-model="data[10]" label="法人电话：" placeholder="请输入法人电话" :disabled="buttonValue.disabled" />
+
+        <!-- 联系人姓名 -->
+        <van-field v-model="data[8]" label="联系人姓名：" placeholder="请输入联系人姓名" :disabled="buttonValue.disabled" />
+
+        <!-- 联系人电话 -->
+        <van-field v-model="data[11]" label="联系人电话：" placeholder="请输入联系人电话" :disabled="buttonValue.disabled" />
+
+        <!-- 联系人邮箱 -->
+        <van-field v-model="data[12]" label="联系人邮箱：" placeholder="请输入联系人邮箱" :disabled="buttonValue.disabled" />
+
+        <!-- 公司地址 -->
+        <cbh-region :prov="data[30]" :city="data[31]" :district="data[32]" @change="onRegionChange" v-if="data.length>0" :disabled="buttonValue.disabled" />
+
+        <!-- 地址 -->
+        <van-field v-model="data[9]" label="地址：" placeholder="请输入地址" :disabled="buttonValue.disabled" />
+
+        <!-- 备注 -->
+        <van-field v-model="data[13]" label="备注：" placeholder="请输入备注" :disabled="buttonValue.disabled" />
       </van-cell-group>
       <van-cell-group>
         <van-cell title="证照资料" is-link value="" @click="jumpPage('usersInfoAccessory')" />
         <van-cell title="附件" is-link value="" @click="jumpPage('partnerAnnex')" />
       </van-cell-group>
-      <div class="pwd-button" @click="saveMessage">
-        <van-button type="primary" size="large">保 存</van-button>
+      <div class="users-button" v-if="buttonValue.show">
+        <van-button type="primary" size="large" @click="saveMessage" :disabled="buttonValue.disabled">保 存</van-button>
       </div>
     </div>
   </div>
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { users } from "./../../assets/js/api.js";
+import { users, index } from "./../../assets/js/api.js";
 import { ImagePreview } from "vant";
 export default {
   data() {
     return {
-      data: []
+      data: [],
+      buttonValue: {
+        show: false,
+        disabled: true
+      }
     };
   },
   methods: {
@@ -135,7 +128,7 @@ export default {
       });
     },
     //获取用户信息
-    getData() {
+    pageInit() {
       //合作商
       users.getUserInfo(this.userId.UCML_OrganizeOID).then(res => {
         if (res && res.status === 1) {
@@ -144,6 +137,20 @@ export default {
           this.data = eval("[[" + csp[0])[0];
         }
       });
+
+      index
+        .getAppletButton(this.userId.UCML_UserOID, "BPO_SC_Partner_Edit")
+        .then(res => {
+          if (res.status) {
+            const arr = JSON.parse(res.text);
+            arr.forEach(val => {
+              if (val.Allowvisible === "1" && val.text === "保存并关闭") {
+                this.buttonValue.show = true;
+                this.buttonValue.disabled = val.Enabled !== "1";
+              }
+            });
+          }
+        });
     },
     preView() {
       ImagePreview([
@@ -160,7 +167,7 @@ export default {
   },
   computed,
   mounted() {
-    this.getData();
+    this.pageInit();
   }
 };
 </script>
@@ -229,7 +236,7 @@ export default {
       }
     }
   }
-  .pwd-button {
+  .users-button {
     padding: 10px;
     text-align: center;
   }
