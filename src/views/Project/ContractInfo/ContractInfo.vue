@@ -33,7 +33,7 @@
             </van-cell>
           </div>
         </van-tab>
-        <van-tab :title="'材料合同 (' + listLabor.length + ')'">
+        <van-tab :title="'劳务合同 (' + listLabor.length + ')'">
           <div class="tran-item" v-for="(item,index) in listLabor" :key="index">
             <div class="item-title">
               <span class="title">{{item[22]}}</span>

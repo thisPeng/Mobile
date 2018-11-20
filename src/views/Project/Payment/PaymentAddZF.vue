@@ -86,6 +86,7 @@
     <van-popup v-model="paymentShow" position="bottom">
       <van-picker show-toolbar title="支付类型" :columns="columns" @cancel="paymentShow=false" @confirm="onConfirm" />
     </van-popup>
+    <!--功能操作-->
     <div class="payment-button" v-if="buttonValue.length > 0">
       <div class="button-value" v-for="(item,index) in buttonValue" :key="index" v-if="item.Allowvisible === '1'">
         <van-button @click="onSave" v-if="item.text === '保存'" :disabled="item.Enabled !== '1'">保存</van-button>
@@ -686,6 +687,7 @@ export default {
         .then(res => {
           if (res.status) {
             this.buttonValue = JSON.parse(res.text);
+            console.log(this.buttonValue);
           } else {
             this.buttonValue = [];
           }
