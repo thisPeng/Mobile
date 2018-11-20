@@ -111,7 +111,7 @@ export default {
 
                       // 获取系统配置
                       const params = {
-                        id: this.userInfo.oid,
+                        id: "",
                         code:
                           "OrderType|CodeTable_Unit|CodeTable_TaxClass|CodeTable_Status|CodeTable_CalArea|CodeTable_CalType|" +
                           "CodeTable_ProjectType|CodeTable_BusinessType|CodeTable_opening|CodeTable_YesNo|CodeTable_SkuStatus|" +
