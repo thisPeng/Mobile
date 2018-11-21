@@ -11,8 +11,8 @@
 
     <div class="supplie-info" @click="jumpInfo">
       <div class="info-left">
-        <div class="info-img" v-if="suppParams.icon">
-          <img :src="(suppParams.icon).replace('~',servePath)" alt="" />
+        <div class="info-img" v-if="suppInfo[60]">
+          <img :src="(suppInfo[60]).replace('~',servePath)" alt="" />
         </div>
         <div class="info-text">
           <div class="text-name">{{suppInfo[2]}}</div>

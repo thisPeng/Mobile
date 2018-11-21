@@ -48,7 +48,9 @@ export default {
     jumpInfo() {
       supplier
         .getSuppTaskId(
-          this.projectInfo.DemandID || this.confirmParams[24],
+          this.projectInfo.DemandID ||
+            this.confirmParams[24] ||
+            "00000000-0000-0000-0000-000000000000",
           this.suppParams.id
         )
         .then(res => {
