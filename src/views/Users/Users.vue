@@ -140,15 +140,38 @@ export default {
           name: "login"
         });
       }
+    },
+    pageInit() {
+      users.userInfo().then(result => {
+        if (result && this.userInfo.oid !== result.oid) {
+          this.$store.commit("cleanStore", true);
+          this.$store.commit("userInfo", result);
+          users.userId(result.oid).then(res => {
+            try {
+              if (res && res.status === 1) {
+                const uId = JSON.parse(res.text)[0];
+                this.$store.commit("userId", uId);
+                users.userType(uId.UCML_OrganizeOID).then(r => {
+                  if (r && r.status === 1) {
+                    this.$store.commit("userType", JSON.parse(r.text).UserType);
+                    if (this.userType == 2) this.$parent.active = 3;
+                    else if (this.userType == 3) this.$parent.active = 2;
+                  } else {
+                    this.$store.commit("userType", "");
+                  }
+                });
+              }
+            } catch (e) {
+              location.reload();
+            }
+          });
+        }
+      });
     }
   },
   computed,
   mounted() {
-    users.userInfo().then(result => {
-      if (result) {
-        this.$store.commit("userInfo", result);
-      }
-    });
+    this.pageInit();
   }
 };
 </script>

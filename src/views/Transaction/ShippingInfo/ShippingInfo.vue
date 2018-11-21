@@ -160,7 +160,6 @@ export default {
                 }
               }
             });
-            // console.log(this.buttonValue);
           }
         });
 

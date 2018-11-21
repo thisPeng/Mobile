@@ -392,7 +392,9 @@ export default {
     },
     // 页面初始化
     pageInit() {
-      this.getCart();
+      if (this.projectInfo.SC_ProjectOID) {
+        this.getCart();
+      }
     },
     // 保存购物车选择
     saveCart() {

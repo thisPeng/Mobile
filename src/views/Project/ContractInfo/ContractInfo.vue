@@ -94,7 +94,6 @@ export default {
                 this.listMaterials.push(val);
               }
             });
-            // console.log(this.listLabor);
             return true;
           }
           throw "数据获取失败，请刷新重试";

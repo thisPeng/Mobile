@@ -96,6 +96,15 @@ export default {
                 .then(() => {
                   // on close
                 });
+            } else if (item.action === "projectSelf" && this.userType != 1) {
+              this.$dialog
+                .alert({
+                  title: "提示",
+                  message: "暂无权限，请联系工程商。"
+                })
+                .then(() => {
+                  // on close
+                });
             } else {
               this.$router.push({
                 name: item.action
@@ -136,7 +145,6 @@ export default {
     index.getBanner().then(res => {
       if (res && res.status === 1 && res.text) {
         this.images = JSON.parse(res.text);
-        // console.log(this.images);
       }
     });
     index.getHomePageInfo().then(res => {

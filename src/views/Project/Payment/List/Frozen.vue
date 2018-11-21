@@ -162,7 +162,6 @@ export default {
           message: "是否删除单据？"
         })
         .then(() => {
-          console.log(id);
           financial
             .deleteOrder("BPO_Money_DJ_InOutListService", id)
             .then(res => {
@@ -226,7 +225,6 @@ export default {
                     }
                   }
                 });
-                // console.log(this.buttonValue);
               }
             });
         }

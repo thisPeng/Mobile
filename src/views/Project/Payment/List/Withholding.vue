@@ -143,7 +143,6 @@ export default {
           financial
             .deleteOrder("BPO_Money_KK_InOutListService", id)
             .then(res => {
-              console.log(res);
               if (res && res.status === 1) {
                 if (res.text == "0") {
                   this.$toast.fail("单据已审核，不能删除！");

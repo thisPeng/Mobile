@@ -103,7 +103,6 @@ export default {
           const sp = res.text.split(";");
           this.list = eval(sp[0]);
           return true;
-          // console.log(this.list);
         }
         return false;
       });

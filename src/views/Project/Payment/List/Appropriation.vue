@@ -148,11 +148,9 @@ export default {
           message: "是否删除单据？"
         })
         .then(() => {
-          console.log(id);
           financial
             .deleteOrder("BPO_Money_PK_InOutListService", id)
             .then(res => {
-              console.log(res);
               if (res && res.status === 1) {
                 if (res.text == "0") {
                   this.$toast.fail("单据已审核，不能删除！");

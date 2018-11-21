@@ -687,7 +687,6 @@ export default {
         .then(res => {
           if (res.status) {
             this.buttonValue = JSON.parse(res.text);
-            console.log(this.buttonValue);
           } else {
             this.buttonValue = [];
           }

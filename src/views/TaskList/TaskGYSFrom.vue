@@ -67,7 +67,6 @@ export default {
       this.data[23] = res;
     },
     onTaxChange(res) {
-      // console.log(res);
       this.data[26] = res;
     },
     onRegionChange(res) {
