@@ -154,8 +154,6 @@ export default {
                 users.userType(uId.UCML_OrganizeOID).then(r => {
                   if (r && r.status === 1) {
                     this.$store.commit("userType", JSON.parse(r.text).UserType);
-                    if (this.userType == 2) this.$parent.active = 3;
-                    else if (this.userType == 3) this.$parent.active = 2;
                   } else {
                     this.$store.commit("userType", "");
                   }

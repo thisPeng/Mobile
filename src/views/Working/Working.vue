@@ -58,8 +58,6 @@ export default {
           this.data = JSON.parse(res.text);
         }
       });
-
-      this.$parent.active = 1;
     }
   },
   mounted() {
