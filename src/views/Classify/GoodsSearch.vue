@@ -27,7 +27,7 @@
               <div class="price">{{item[5] ? '￥ ' + item[5] : '工程价'}}</div>
             </div>
             <div slot="desc">
-              <div class="item-desc">{{item[28] + ' | 单位：' + item[23]}}</div>
+              <div class="van-card__desc">{{item[28] + ' | 单位：' + item[23]}}</div>
               <div class="item-brand">
                 <van-tag plain type="success">品牌：{{item[24]}}</van-tag>
               </div>

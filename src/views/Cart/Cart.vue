@@ -27,13 +27,19 @@
             <van-swipe-cell :right-width="65" v-for="(item,index) in ite.list" :key="index">
               <div class="cart-item">
                 <van-checkbox :name="item" class="item-check" ref="checked"></van-checkbox>
-                <van-card :desc="item[16] + ' | 单位：' + item[15]">
+                <van-card>
                   <div slot="thumb" @click.stop="onShowInfo(item,index)">
                     <img :src="item[32]" class="van-card__img">
                   </div>
-                  <div slot="title" class="van-card__row" @click.stop="onShowInfo(item,index)">
-                    <div class="van-card__title">{{item[14]}}</div>
-                    <div class="van-card__price">{{item[19] ? '￥ '+item[19] : '工程价'}}</div>
+                  <div slot="title" class="van-card__title" @click.stop="onShowInfo(item,index)">
+                    <div class="title">{{item[14]}}</div>
+                    <div class="price">{{item[19] ? '￥ ' + item[19] : '工程价'}}</div>
+                  </div>
+                  <div slot="desc">
+                    <div class="van-card__desc">{{item[16] + ' | 单位：' + item[15]}}</div>
+                    <div class="item-brand">
+                      <van-tag plain type="success">品牌：{{item[10]}}</van-tag>
+                    </div>
                   </div>
                   <div slot="footer">
                     <van-stepper v-model="item[3]" :integer="true" @change="onChangNumber(item)" />
@@ -455,6 +461,24 @@ export default {
         width: 100%;
         background-color: #fff;
         overflow: hidden;
+        .van-card__title {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          .title {
+            width: 0;
+            font-size: 14px;
+            flex: 9;
+            word-wrap: normal;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+          .price {
+            color: #ff4257;
+            flex: 1;
+          }
+        }
       }
     }
     .left {
