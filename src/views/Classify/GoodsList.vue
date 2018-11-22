@@ -29,21 +29,24 @@
     </div>
     <div class="classify-data">
       <div class="classify-list">
-        <div class="list-item" v-for="(item, index) in goodsList" :key="index" @click="showInfo(item)">
-          <van-card :title="item[22]" :desc="item[28] + ' | 单位：' + item[23]" :thumb="item[41].replace('~',servePath)">
-            <div slot="title" class="van-card__title">
+        <div class="list-item" v-for="(item, index) in goodsList" :key="index">
+          <van-card :title="item[22]" :desc="item[28] + ' | 单位：' + item[23]">
+            <div slot="thumb" @click.stop="showInfo(item)">
+              <img :src="item[41].replace('~',servePath)" class="van-card__img">
+            </div>
+            <div slot="title" class="van-card__title" @click="showInfo(item)">
               <div class="title">{{item[22]}}</div>
               <div class="price">{{item[5] ? '￥ ' + item[5] : '工程价'}}</div>
             </div>
-            <div slot="desc">
+            <div slot="desc" @click="showInfo(item)">
               <div class="van-card__desc">{{item[28] + ' | 单位：' + item[23]}}</div>
               <div class="item-brand">
                 <van-tag plain type="success">品牌：{{item[24]}}</van-tag>
               </div>
             </div>
-            <div slot="footer" v-if="userType != 3">
-              <!-- <i class="iconfont icon-xiangqing" @click="showInfo(item)"></i> -->
-              <i class="iconfont icon-add" @click.stop="addCart(item)" v-if="projectInfo.SC_ProjectOID"></i>
+            <div slot="footer" v-if="userType != 3 && projectInfo.SC_ProjectOID">
+              <van-stepper v-model="item[48]" :integer="true" @change="onChangNumber(item)" v-if="projectInfo.SC_ProjectOID == item[49]" />
+              <i class="iconfont icon-add" @click.stop="addCart(item)" v-else></i>
             </div>
           </van-card>
         </div>
@@ -68,7 +71,7 @@
     </van-popup>
     <!--购物车-->
     <div class="cart-icon" @click="jumpCart" v-if="projectInfo.SC_ProjectOID">
-      <div class="icon-number">{{goodsPages.RecordCount}}</div>
+      <div class="icon-number">{{cartPages.RecordCount}}</div>
       <i class="iconfont icon-gouwuchekong"></i>
     </div>
     <!--商品详情-->
@@ -92,7 +95,8 @@
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
           <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-          <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')" v-if="userType != 3 && projectInfo.SC_ProjectOID">加入购物车</van-button>
+          <van-button type="primary" bottom-action @click="onCartDelete" v-if="goods.isCart">移出购物车</van-button>
+          <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')" v-else-if="userType != 3 && projectInfo.SC_ProjectOID">加入购物车</van-button>
         </div>
       </template>
     </van-sku>
@@ -139,9 +143,11 @@ export default {
         unit: "",
         shop: "",
         taxRate: "",
-        taxAll: ""
+        taxAll: "",
+        isCart: false
       },
-      goodsPages: {}
+      cartList: [],
+      cartPages: []
     };
   },
   methods: {
@@ -153,6 +159,93 @@ export default {
       } else {
         this.filterReset();
       }
+    },
+    // 修改数量
+    onChangNumber(item) {
+      cart.getIntentionSKU(item[0]).then(result => {
+        try {
+          if (result.status) {
+            const sp = result.text.split(";");
+            let tmp = eval(sp[0].split("=")[1])[0];
+            tmp[3] = item[48];
+            const xmlString = "<root>" + this.xmlString(tmp) + "</root>";
+            cart.saveCart(xmlString).then(res => {
+              if (res.status !== 1) {
+                this.$toast.fail("保存失败，请重试");
+              }
+            });
+            return;
+          }
+          throw "修改失败，请重试";
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
+    },
+    // 拼接XML
+    xmlString(item) {
+      const xml = require("xml");
+      return xml([
+        {
+          BC_SC_IntentionSKU: [
+            { _attr: { UpdateKind: "ukModify" } },
+            { SC_IntentionSKUOID: item[0] }
+          ]
+        },
+        {
+          BC_SC_IntentionSKU: [
+            { _attr: { UpdateKind: "" } },
+            { SC_IntentionSKUOID: "null" },
+            { Order_Qty: item[3] },
+            { Remark: "null" },
+            { SKU_Status: item[23] },
+            { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") },
+            { SYS_LAST_UPD_BY: this.userInfo.oid }
+          ]
+        }
+      ]);
+    },
+    // 购物车删除
+    onCartDelete() {
+      cart.getIntentionSKU(this.goods.id).then(result => {
+        try {
+          if (result.status) {
+            const sp = result.text.split(";");
+            const tmp = eval(sp[0].split("=")[1])[0];
+            cart.delCartMaterials(tmp[0]).then(res => {
+              try {
+                if (res.status === 1 && res.text == "True") {
+                  this.getCartList().then(ress => {
+                    if (ress) {
+                      let goodsList = this.goodsList;
+                      for (const i in goodsList) {
+                        if (goodsList[i][0] == this.goods.id) {
+                          goodsList[i][48] = 0;
+                          goodsList[i][49] =
+                            "00000000-0000-0000-0000-000000000000";
+                          break;
+                        }
+                      }
+                      this.goodsList = [];
+                      this.goodsList = goodsList;
+                      this.showBase = false;
+                      this.$toast.success("已移除购物车");
+                    } else location.reload();
+                  });
+                } else {
+                  this.$toast.fail("删除失败，请刷新页面重试");
+                }
+              } catch (e) {
+                this.$toast.fail("删除失败，请刷新页面重试");
+              }
+            });
+            return;
+          }
+          throw "修改失败，请重试";
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
     },
     // 获取物资种类
     getGoodsFilter() {
@@ -217,7 +310,8 @@ export default {
         unit: item[23],
         shop: item[36],
         taxRate: item[20],
-        taxAll: item[32]
+        taxAll: item[32],
+        isCart: this.projectInfo.SC_ProjectOID == item[49]
       };
       this.showBase = true;
     },
@@ -240,12 +334,22 @@ export default {
         classify.addCart(params).then(res => {
           try {
             if (res.status === 1 && res.text == "1") {
-              this.getCartList();
-              this.$nextTick().then(() => {
-                setTimeout(() => {
-                  this.$toast.success("添加物资成功，请到购物车修改数量");
-                }, 300);
+              this.getCartList().then(ress => {
+                if (ress) {
+                  this.$toast.success("添加物资成功");
+                  let goodsList = this.goodsList;
+                  for (const i in goodsList) {
+                    if (goodsList[i][0] == this.goods.id) {
+                      goodsList[i][48] = 1;
+                      goodsList[i][49] = this.projectInfo.SC_ProjectOID;
+                      break;
+                    }
+                  }
+                  this.goodsList = [];
+                  this.goodsList = goodsList;
+                } else location.reload();
               });
+
               return;
             } else if (res.status === 1 && res.text == "-1") {
               throw "供应商未通过审核，添加物资失败";
@@ -262,14 +366,18 @@ export default {
     // 获取购物车列表
     getCartList() {
       if (this.projectInfo.SC_ProjectOID) {
-        cart.getList(this.projectInfo.SC_ProjectOID).then(res => {
+        return cart.getList(this.projectInfo.SC_ProjectOID).then(res => {
           try {
             if (res && res.status === 1) {
               const sp = res.text.split(";");
-              this.goodsPages = eval("(" + sp[1].split("=")[1] + ")");
+              this.cartList = eval("(" + sp[0].split("=")[1] + ")");
+              this.cartPages = eval("(" + sp[1].split("=")[1] + ")");
+              return true;
             }
+            return false;
           } catch (e) {
             console.log(e);
+            return false;
           }
         });
       }
@@ -279,18 +387,21 @@ export default {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
       this.params.keyword = this.keyword;
 
-      classify.getGoodsList(this.params, page).then(res => {
+      return classify.getGoodsList(this.params, page).then(res => {
         try {
           if (res && res.status === 1) {
             const sp = res.text.split("]]");
             this.goodsList = eval(sp[0].split("=")[1] + "]]");
             this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
             this.getGoodsFilter();
+            return true;
           }
+          return false;
         } catch (e) {
           this.filterList = [];
           this.goodsList = [];
           this.pages = {};
+          return false;
         }
       });
     },

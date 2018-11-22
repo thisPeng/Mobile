@@ -1,6 +1,5 @@
 <template>
   <div class="supplie-type">
-    <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action v-if="!isSearch" />
     <div class="supplie-select">
       <van-cell is-link @click="$router.push({ name: 'supplier' })">
         <template slot="title">
@@ -33,16 +32,24 @@
       </div>
       <div class="classify-list" id="classifyList">
         <van-list v-model="loading" :finished="finished" :immediate-check="false" @load="onLoad">
-          <div class="list-item" v-for="(item, index) in goodsList" :key="index" @click="showInfo(item)">
-            <van-card :title="item[22]" :thumb="item[41].replace('~',servePath)">
-              <div slot="desc">
-                <div class="item-brand">
-                  <van-tag plain type="success">品牌： {{item[24]}}</van-tag>
-                </div>
-                <div class="item-price">{{item[5] ? '￥' + item[5] : '工程价'}}</div>
+          <div class="list-item" v-for="(item, index) in goodsList" :key="index">
+            <van-card :title="item[22]">
+              <div slot="thumb" @click.stop="showInfo(item)">
+                <img :src="item[41].replace('~',servePath)" class="van-card__img">
               </div>
-              <div slot="footer">
-                <i class="iconfont icon-add" @click.stop="addCart(item)"></i>
+              <div slot="title" class="van-card__title" @click="showInfo(item)">
+                <div class="title">{{item[22]}}</div>
+                <div class="price">{{item[5] ? '￥ ' + item[5] : '工程价'}}</div>
+              </div>
+              <div slot="desc" @click="showInfo(item)">
+                <div class="van-card__desc">{{item[28] + ' | 单位：' + item[23]}}</div>
+                <div class="item-brand" v-if="projectInfo.SC_ProjectOID != item[49]">
+                  <van-tag plain type="success">品牌：{{item[24]}}</van-tag>
+                </div>
+              </div>
+              <div slot="footer" v-if="userType != 3 && projectInfo.SC_ProjectOID">
+                <van-stepper v-model="item[48]" :integer="true" @change="onChangNumber(item)" v-if="projectInfo.SC_ProjectOID == item[49]" />
+                <i class="iconfont icon-add" @click.stop="addCart(item)" v-else></i>
               </div>
             </van-card>
           </div>
@@ -69,7 +76,8 @@
         <template slot="sku-actions" slot-scope="props">
           <div class="van-sku-actions">
             <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-            <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">加入购物车</van-button>
+            <van-button type="primary" bottom-action @click="onCartDelete" v-if="goods.isCart">移出购物车</van-button>
+            <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')" v-else-if="userType != 3 && projectInfo.SC_ProjectOID">加入购物车</van-button>
           </div>
         </template>
       </van-sku>
@@ -77,6 +85,7 @@
     <van-popup v-model="screenShow" position="right">
       <div class="screen">
         <div class="screen-filter">
+          <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
           <van-collapse v-model="activeNames">
             <van-collapse-item title="分类" name="1">
               <span class="filter-item" v-for="(item, index) in filterList" :key="index">
@@ -94,7 +103,7 @@
 </template>
 <script>
 import computed from "./../../assets/js/computed.js";
-import { classify, supplier } from "./../../assets/js/api.js";
+import { classify, supplier, cart } from "./../../assets/js/api.js";
 
 export default {
   data() {
@@ -102,7 +111,6 @@ export default {
       activeNames: ["1"],
       priceDesc: "",
       screenShow: false,
-      isSearch: false,
       keyword: "",
       activeKey: 0,
       typeList: [],
@@ -135,11 +143,94 @@ export default {
         unit: "",
         shop: "",
         taxRate: "",
-        taxAll: ""
+        taxAll: "",
+        isCart: false
       }
     };
   },
   methods: {
+    // 修改数量
+    onChangNumber(item) {
+      cart.getIntentionSKU(item[0]).then(result => {
+        try {
+          if (result.status) {
+            const sp = result.text.split(";");
+            let tmp = eval(sp[0].split("=")[1])[0];
+            tmp[3] = item[48];
+            const xmlString = "<root>" + this.xmlString(tmp) + "</root>";
+            cart.saveCart(xmlString).then(res => {
+              if (res.status !== 1) {
+                this.$toast.fail("保存失败，请重试");
+              }
+            });
+            return;
+          }
+          throw "修改失败，请重试";
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
+    },
+    // 拼接XML
+    xmlString(item) {
+      const xml = require("xml");
+      return xml([
+        {
+          BC_SC_IntentionSKU: [
+            { _attr: { UpdateKind: "ukModify" } },
+            { SC_IntentionSKUOID: item[0] }
+          ]
+        },
+        {
+          BC_SC_IntentionSKU: [
+            { _attr: { UpdateKind: "" } },
+            { SC_IntentionSKUOID: "null" },
+            { Order_Qty: item[3] },
+            { Remark: "null" },
+            { SKU_Status: item[23] },
+            { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") },
+            { SYS_LAST_UPD_BY: this.userInfo.oid }
+          ]
+        }
+      ]);
+    },
+    // 购物车删除
+    onCartDelete() {
+      cart.getIntentionSKU(this.goods.id).then(result => {
+        try {
+          if (result.status) {
+            const sp = result.text.split(";");
+            const tmp = eval(sp[0].split("=")[1])[0];
+            cart.delCartMaterials(tmp[0]).then(res => {
+              try {
+                if (res.status === 1 && res.text == "True") {
+                  let goodsList = this.goodsList;
+                  for (const i in goodsList) {
+                    if (goodsList[i][0] == this.goods.id) {
+                      goodsList[i][48] = 0;
+                      goodsList[i][49] = "00000000-0000-0000-0000-000000000000";
+                      break;
+                    }
+                  }
+                  this.goodsList = [];
+                  this.goodsList = goodsList;
+                  this.showBase = false;
+                  this.$toast.success("已移除购物车");
+                } else {
+                  this.$toast.fail("删除失败，请刷新页面重试");
+                }
+              } catch (e) {
+                this.$toast.fail("删除失败，请刷新页面重试");
+              }
+            });
+            return;
+          }
+          throw "修改失败，请重试";
+        } catch (e) {
+          this.$toast.fail(e);
+        }
+      });
+    },
     jumpInfo() {
       supplier
         .getSuppTaskId(
@@ -219,6 +310,7 @@ export default {
         this.typeList[i].SupplierID,
         this.typeList[i].SC_SMaterialTypeOID
       );
+      this.screenShow = false;
     },
     // 选择分类
     selectKey(i) {
@@ -230,17 +322,6 @@ export default {
       );
       // 获取二级分类
       this.getSuppType(false, this.typeList[i].SC_SMaterialTypeOID);
-    },
-    // 过滤供应商
-    filterSupp(item, index) {
-      this.suppActive = index;
-      this.$store.commit("suppParams", { id: item[2] });
-      this.getSuppInfo().then(res => {
-        if (res) {
-          this.getSuppType();
-        }
-      });
-      this.screenShow = false;
     },
     // 过滤分类
     filterGoods(item, index) {
@@ -317,7 +398,17 @@ export default {
           classify.addCartForOrder(params).then(res => {
             try {
               if (res.status === 1 && res.text == "1") {
-                this.$toast.success("添加物资成功，请到购物车修改数量");
+                this.$toast.success("添加物资成功");
+                let goodsList = this.goodsList;
+                for (const i in goodsList) {
+                  if (goodsList[i][0] == this.goods.id) {
+                    goodsList[i][48] = 1;
+                    goodsList[i][49] = this.projectInfo.SC_ProjectOID;
+                    break;
+                  }
+                }
+                this.goodsList = [];
+                this.goodsList = goodsList;
                 return;
               } else if (res.status === 1 && res.text == "-1") {
                 throw "供应商未通过审核，添加物资失败";
@@ -337,7 +428,17 @@ export default {
           classify.addCart(params).then(res => {
             try {
               if (res.status === 1 && res.text == "1") {
-                this.$toast.success("添加物资成功，请到购物车修改数量");
+                this.$toast.success("添加物资成功");
+                let goodsList = this.goodsList;
+                for (const i in goodsList) {
+                  if (goodsList[i][0] == this.goods.id) {
+                    goodsList[i][48] = 1;
+                    goodsList[i][49] = this.projectInfo.SC_ProjectOID;
+                    break;
+                  }
+                }
+                this.goodsList = [];
+                this.goodsList = goodsList;
                 return;
               } else if (res.status === 1 && res.text == "-1") {
                 throw "供应商未通过审核，添加物资失败";
@@ -365,7 +466,8 @@ export default {
         unit: item[23],
         shop: item[36],
         taxRate: item[20],
-        taxAll: item[32]
+        taxAll: item[32],
+        isCart: true
       };
       this.onBuyClicked();
     },
@@ -382,7 +484,8 @@ export default {
         unit: item[23],
         shop: item[36],
         taxRate: item[20],
-        taxAll: item[32]
+        taxAll: item[32],
+        isCart: this.projectInfo.SC_ProjectOID == item[49]
       };
       this.showBase = true;
     },
@@ -390,10 +493,13 @@ export default {
     getSuppInfo() {
       return supplier.getSuppInfo(this.suppParams.id).then(res => {
         try {
-          const sp = res.text.split("[[");
-          const tsp = sp[1].split("]]");
-          this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
-          return true;
+          if (res.status) {
+            const sp = res.text.split("[[");
+            const tsp = sp[1].split("]]");
+            this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
+            return true;
+          }
+          return false;
         } catch (e) {
           this.suppInfo = [];
           return false;
@@ -401,7 +507,6 @@ export default {
       });
     },
     pageInit() {
-      this.isSearch = this.$parent.index ? true : false;
       this.getSuppInfo().then(res => {
         if (res) {
           this.getSuppType();
@@ -517,23 +622,38 @@ export default {
       -webkit-overflow-scrolling: touch;
       background-color: #f6f6f6;
       .list-item {
-        width: 100%;
-        .van-card {
-          background-color: #fff;
-          border: 1px solid #eee;
-          border-radius: 5px;
-          margin-bottom: 10px;
-          .item-brand {
-            padding: 5px 0;
+        background-color: #fff;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        .van-card__title {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          .title {
+            width: 0;
+            font-size: 14px;
+            flex: 9;
+            word-wrap: normal;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
           }
-          .item-price {
+          .price {
             color: #ff4257;
+            flex: 1;
           }
-          .iconfont {
-            color: #00a0e9;
-            font-size: 26px;
-            padding: 10px;
-          }
+        }
+        .item-brand {
+          padding: 5px 0;
+        }
+        .item-price {
+          color: #ff4257;
+        }
+        .iconfont {
+          color: #00a0e9;
+          font-size: 26px;
+          padding: 10px;
         }
       }
     }
@@ -568,9 +688,6 @@ export default {
         text-align: center;
       }
     }
-  }
-  .van-cell__title {
-    text-align: center;
   }
 }
 </style>

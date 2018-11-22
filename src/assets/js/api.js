@@ -1200,6 +1200,28 @@ const cart = {
     });
   },
   // 获取购物车列表
+  getIntentionSKU(Supp_SKU_ID = "") {
+    return axios({
+      url: "/UCMLWebServiceEntryForJs.aspx",
+      method: "post",
+      data: {
+        _bpoName: "BPO_Purchase_ProjectService",
+        _methodName: "getCondiActorDataBCString",
+        "_parameters[BCName]": "BC_SC_IntentionSKU",
+        "_parameters[nStartPos]": 0,
+        "_parameters[nRecords]": -1,
+        "_parameters[fieldList]": "",
+        "_parameters[valueList]": "",
+        "_parameters[condiIndentList]": "",
+        "_parameters[SQLCondi]": "SC_IntentionSKU.Supp_SKU_ID ='" + Supp_SKU_ID + "'",
+        "_parameters[SQLCondiType]": 0,
+        "_parameters[SQLFix]": " ORDER BY SupplierName ASC",
+        _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
+        _pUrl: ""
+      }
+    });
+  },
+  // 获取购物车列表
   getAllList() {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",

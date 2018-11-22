@@ -39,7 +39,8 @@ if (process.env.NODE_ENV === "production") {
   if (postPath === '/Screen' || postPath === '/mobile') postPath = ''
   store.commit('servePath', postPath);
 } else {
-  store.commit('servePath', "http://192.168.2.254/SupplyChain/");
+  // store.commit('servePath', "http://192.168.2.254/SupplyChain/");
+  store.commit('servePath', "http://127.0.0.1");
 }
 
 // 路由守卫

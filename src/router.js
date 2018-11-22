@@ -146,8 +146,8 @@ export default new Router({
         name: "cart",
         component: Cart,
         meta: {
-          title: "购物车",
-          keepAlive: true
+          title: "购物车"
+          // keepAlive: true
         }
       }, {
         path: "/inquiry",
