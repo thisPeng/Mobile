@@ -139,7 +139,7 @@ export default {
   },
   methods: {
     getCart() {
-      cart.getList(this.projectInfo.SC_ProjectOID).then(res => {
+      return cart.getList(this.projectInfo.SC_ProjectOID).then(res => {
         try {
           const sp = res.text.split(";");
           const list = eval(sp[0].split("=")[1]);
@@ -176,10 +176,12 @@ export default {
           this.listOrder = listOrder;
           this.checkedArr = arr;
           this.pages = eval("(" + sp[1].split("=")[1] + ")");
+          return true;
         } catch (e) {
           this.list = [];
           this.listOrder = [];
           this.checkedArr = [];
+          return false;
         }
       });
     },
@@ -286,11 +288,9 @@ export default {
             cart.delCartMaterials(str).then(res => {
               try {
                 if (res.status === 1 && res.text == "True") {
-                  this.$toast.success("已删除");
-                  this.$nextTick().then(() => {
-                    setTimeout(() => {
-                      this.getCart();
-                    }, 1000);
+                  this.getCart().then(result => {
+                    if (result) this.$toast.success("已删除");
+                    else location.reload();
                   });
                 } else {
                   this.$toast.fail("删除失败，请刷新页面重试");
@@ -341,11 +341,9 @@ export default {
                 if (result.status === 1) {
                   const res = JSON.parse(result.text)[0];
                   if (res.iReturn == "1") {
-                    this.$toast.success("提交成功");
-                    this.$nextTick().then(() => {
-                      setTimeout(() => {
-                        this.getCart();
-                      }, 1000);
+                    this.getCart().then(res => {
+                      if (res) this.$toast.success("提交成功");
+                      else location.reload();
                     });
                     return;
                   }
@@ -382,11 +380,9 @@ export default {
       cart.delCartMaterials(id).then(res => {
         try {
           if (res.status === 1 && res.text == "True") {
-            this.$toast.success("已删除");
-            this.$nextTick().then(() => {
-              setTimeout(() => {
-                this.getCart();
-              }, 1000);
+            this.getCart().then(result => {
+              if (result) this.$toast.success("已删除");
+              else location.reload();
             });
           } else {
             throw "删除失败，请刷新页面重试";

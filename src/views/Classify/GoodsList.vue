@@ -1,13 +1,14 @@
 <template>
   <div class="classify">
-    <div class="van-cell van-cell--borderless van-field" v-if="userInfo.oid">
+    <div class="van-cell van-cell--borderless van-field" v-if="userInfo.oid && userType != 3">
       <div class="van-cell__title">工程名称：</div>
       <div class="van-cell__value flex-between">
         <span class="text-truncate text-left text-gray">{{projectInfo.ProjectName || '请选择工程项目'}}</span>
         <van-button type="primary" size="mini" @click="$router.push({ name: 'projectList' })">选择</van-button>
       </div>
     </div>
-    <van-cell v-else title="未登录账号" value="" @click="$router.push({ name: 'login' })" icon="setting" is-link />
+    <van-cell v-else-if="userType == 3" title="正在查阅所有物资……" icon="password-view" />
+    <van-cell v-else title="未登录账号" @click="$router.push({ name: 'login' })" icon="setting" is-link />
 
     <div class="classify-search">
       <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
@@ -311,7 +312,9 @@ export default {
         shop: item[36],
         taxRate: item[20],
         taxAll: item[32],
-        isCart: this.projectInfo.SC_ProjectOID == item[49]
+        isCart:
+          this.projectInfo.SC_ProjectOID &&
+          this.projectInfo.SC_ProjectOID == item[49]
       };
       this.showBase = true;
     },
@@ -387,23 +390,27 @@ export default {
       const page = this.curPage > 0 ? this.curPage - 1 : 0;
       this.params.keyword = this.keyword;
 
-      return classify.getGoodsList(this.params, page).then(res => {
-        try {
-          if (res && res.status === 1) {
-            const sp = res.text.split("]]");
-            this.goodsList = eval(sp[0].split("=")[1] + "]]");
-            this.pages = eval("(" + sp[1].split("=")[1].replace(";", "") + ")");
-            this.getGoodsFilter();
-            return true;
+      return classify
+        .getGoodsList(this.params, page, this.projectInfo.SC_ProjectOID)
+        .then(res => {
+          try {
+            if (res && res.status === 1) {
+              const sp = res.text.split("]]");
+              this.goodsList = eval(sp[0].split("=")[1] + "]]");
+              this.pages = eval(
+                "(" + sp[1].split("=")[1].replace(";", "") + ")"
+              );
+              this.getGoodsFilter();
+              return true;
+            }
+            return false;
+          } catch (e) {
+            this.filterList = [];
+            this.goodsList = [];
+            this.pages = {};
+            return false;
           }
-          return false;
-        } catch (e) {
-          this.filterList = [];
-          this.goodsList = [];
-          this.pages = {};
-          return false;
-        }
-      });
+        });
     },
     // 商品排序
     orderList(type = "price") {

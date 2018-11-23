@@ -266,9 +266,11 @@ export default {
                     forbidClick: true, // 禁用背景点击
                     message: "提交成功"
                   });
-                  setTimeout(() => {
-                    this.$router.go(-1);
-                  }, 800);
+                  this.$nextTick().then(() => {
+                    setTimeout(() => {
+                      this.$router.go(-1);
+                    }, 800);
+                  });
                 } else {
                   this.$toast.fail(res.text);
                 }

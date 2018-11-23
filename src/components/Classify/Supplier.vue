@@ -259,6 +259,7 @@ export default {
       const i = this.activeKey;
       classify
         .getSuppGoods(
+          this.projectInfo.SC_ProjectOID,
           this.typeList[i].SupplierID,
           this.typeList[i].SC_SMaterialTypeOID,
           this.keyword,
@@ -340,27 +341,35 @@ export default {
     },
     // 获取分类商品
     getSuppGoodsList(id = "", pid = "") {
-      classify.getSuppGoods(id, pid, this.keyword, this.SQLFix).then(res => {
-        try {
-          if (res.status === 1) {
-            document.querySelector("#classifyList").scrollTop = 0;
-            const sp = res.text.split("[[");
-            const tsp = sp[1].split("]]");
-            let arr = [];
-            arr = eval("[[" + tsp[0] + "]]");
-            this.pages = eval(
-              "(" + tsp[1].split("=")[1].replace(";", "") + ")"
-            );
-            this.goodsList = arr;
+      classify
+        .getSuppGoods(
+          this.projectInfo.SC_ProjectOID,
+          id,
+          pid,
+          this.keyword,
+          this.SQLFix
+        )
+        .then(res => {
+          try {
+            if (res.status === 1) {
+              document.querySelector("#classifyList").scrollTop = 0;
+              const sp = res.text.split("[[");
+              const tsp = sp[1].split("]]");
+              let arr = [];
+              arr = eval("[[" + tsp[0] + "]]");
+              this.pages = eval(
+                "(" + tsp[1].split("=")[1].replace(";", "") + ")"
+              );
+              this.goodsList = arr;
+              this.loading = false;
+              this.finished = false;
+            }
+          } catch (e) {
+            this.goodsList = [];
             this.loading = false;
             this.finished = false;
           }
-        } catch (e) {
-          this.goodsList = [];
-          this.loading = false;
-          this.finished = false;
-        }
-      });
+        });
     },
     // 获取供应商分类
     getSuppType(isLoad = true, fk = "") {
@@ -475,7 +484,9 @@ export default {
         shop: item[36],
         taxRate: item[20],
         taxAll: item[32],
-        isCart: this.projectInfo.SC_ProjectOID == item[49]
+        isCart:
+          this.projectInfo.SC_ProjectOID &&
+          this.projectInfo.SC_ProjectOID == item[49]
       };
       this.showBase = true;
     },

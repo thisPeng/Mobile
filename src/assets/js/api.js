@@ -365,20 +365,20 @@ const classify = {
     });
   },
   // 获取物资列表
-  getGoodsList(params = {}, page = 0) {
+  getGoodsList(params = {}, page = 0, ProjectID = '') {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_Supp_ProductSKU_QueryService",
+        _bpoName: "BPO_Vue_ProductSKU_QueryService",
         _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_SC_Supp_ProductSKU",
+        "_parameters[BCName]": "BC_Vue_Supp_ProductSKU",
         "_parameters[nStartPos]": page * 10,
         "_parameters[nRecords]": 10,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": params.SQLCondi + " AND (smt.SPUName LIKE '%" + params.keyword + "%' OR BrandName LIKE '%" + params.keyword + "%') AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') ",
+        "_parameters[SQLCondi]": params.SQLCondi + " AND (smt.SPUName LIKE '%" + params.keyword + "%' OR BrandName LIKE '%" + params.keyword + "%') AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') " + (ProjectID ? "AND (ProjectID='" + ProjectID + "' OR ProjectID Is Null)" : ""),
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": params.SQLFix,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -403,6 +403,7 @@ const classify = {
   },
   // 获取供应商物资
   getSuppGoods(
+    ProjectID = "",
     SupplierID = "",
     SC_SMaterialType_FK = "",
     keyword = "",
@@ -413,21 +414,15 @@ const classify = {
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
-        _bpoName: "BPO_Purchase_ProductSKUQueryService",
+        _bpoName: "BPO_Vue_ProductSKU_QueryService",
         _methodName: "getCondiActorDataBCString",
-        "_parameters[BCName]": "BC_SC_Supp_ProductSKU",
+        "_parameters[BCName]": "BC_Vue_Supp_ProductSKU",
         "_parameters[nStartPos]": StartPos,
         "_parameters[nRecords]": 20,
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Supp_ProductSKU.SupplierID='" +
-          SupplierID +
-          "' AND (SC_SMaterialType_FK in (select SC_SMaterialTypeOID from SC_SMaterialType where SC_SMaterialType_FK='" +
-          SC_SMaterialType_FK +
-          "') OR SC_SMaterialType_FK = '" +
-          SC_SMaterialType_FK +
-          "' )" + " AND (smt.SPUName LIKE '%" + keyword + "%' OR BrandName LIKE '%" + keyword + "%') AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') ",
+        "_parameters[SQLCondi]": "SC_Supp_ProductSKU.SupplierID='" + SupplierID + "' AND (SC_SMaterialType_FK in (select SC_SMaterialTypeOID from SC_SMaterialType where SC_SMaterialType_FK='" + SC_SMaterialType_FK + "') OR SC_SMaterialType_FK = '" + SC_SMaterialType_FK + "' )" + " AND (smt.SPUName LIKE '%" + keyword + "%' OR BrandName LIKE '%" + keyword + "%') AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') " + (ProjectID ? "AND (ProjectID='" + ProjectID + "' OR ProjectID Is Null)" : "AND ProjectID Is Null"),
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": SQLFix,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",

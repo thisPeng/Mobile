@@ -1,15 +1,16 @@
 <template>
   <div class="supplie-type">
-    <div class="van-cell van-cell--borderless van-field" v-if="userInfo.oid">
+    <div class="van-cell van-cell--borderless van-field" v-if="userInfo.oid && userType != 3">
       <div class="van-cell__title">工程名称：</div>
       <div class="van-cell__value flex-between">
         <span class="text-truncate text-left text-gray">{{projectInfo.ProjectName || '请选择工程项目'}}</span>
         <van-button type="primary" size="mini" @click="$router.push({ name: 'projectList' })">选择</van-button>
       </div>
     </div>
-    <van-cell v-else title="未登录账号" value="" @click="$router.push({ name: 'login' })" icon="setting" is-link />
+    <van-cell v-else-if="userType == 3" title="正在暗中观察其他供应商……" icon="password-not-view" />
+    <van-cell v-else title="未登录账号" @click="$router.push({ name: 'login' })" icon="setting" is-link />
 
-    <div class="supplie-info" @click="jumpInfo">
+    <div class="supplie-info" @click="userType != 3 ? jumpInfo : ''">
       <div class="info-left">
         <div class="info-img" v-if="suppInfo[56]">
           <img :src="suppInfo[56].toString().replace('~',servePath)" alt="" />
@@ -19,7 +20,7 @@
           <div class="text-address">{{suppInfo[30]}}</div>
         </div>
       </div>
-      <div class="info-right">
+      <div class="info-right" v-if="userType != 3">
         <van-tag type="danger" v-if="suppInfo[3] === '1'">待审核</van-tag>
         <van-tag type="primary" v-else-if="suppInfo[3] === '2'">审核中</van-tag>
         <van-tag type="success" v-else-if="suppInfo[3] === '3'">已审核</van-tag>
@@ -275,6 +276,7 @@ export default {
       const i = this.activeKey;
       classify
         .getSuppGoods(
+          this.projectInfo.SC_ProjectOID,
           this.typeList[i].SupplierID,
           this.typeList[i].SC_SMaterialTypeOID,
           this.keyword,
@@ -356,27 +358,35 @@ export default {
     },
     // 获取分类商品
     getSuppGoodsList(id = "", pid = "") {
-      classify.getSuppGoods(id, pid, this.keyword, this.SQLFix).then(res => {
-        try {
-          if (res.status === 1) {
-            document.querySelector("#classifyList").scrollTop = 0;
-            const sp = res.text.split("[[");
-            const tsp = sp[1].split("]]");
-            let arr = [];
-            arr = eval("[[" + tsp[0] + "]]");
-            this.pages = eval(
-              "(" + tsp[1].split("=")[1].replace(";", "") + ")"
-            );
-            this.goodsList = arr;
+      classify
+        .getSuppGoods(
+          this.projectInfo.SC_ProjectOID,
+          id,
+          pid,
+          this.keyword,
+          this.SQLFix
+        )
+        .then(res => {
+          try {
+            if (res.status === 1) {
+              document.querySelector("#classifyList").scrollTop = 0;
+              const sp = res.text.split("[[");
+              const tsp = sp[1].split("]]");
+              let arr = [];
+              arr = eval("[[" + tsp[0] + "]]");
+              this.pages = eval(
+                "(" + tsp[1].split("=")[1].replace(";", "") + ")"
+              );
+              this.goodsList = arr;
+              this.loading = false;
+              this.finished = false;
+            }
+          } catch (e) {
+            this.goodsList = [];
             this.loading = false;
             this.finished = false;
           }
-        } catch (e) {
-          this.goodsList = [];
-          this.loading = false;
-          this.finished = false;
-        }
-      });
+        });
     },
     // 获取供应商分类
     getSuppType(isLoad = true, fk = "") {
@@ -491,7 +501,9 @@ export default {
         shop: item[36],
         taxRate: item[20],
         taxAll: item[32],
-        isCart: this.projectInfo.SC_ProjectOID == item[49]
+        isCart:
+          this.projectInfo.SC_ProjectOID &&
+          this.projectInfo.SC_ProjectOID == item[49]
       };
       this.showBase = true;
     },
