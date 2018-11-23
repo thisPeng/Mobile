@@ -72,14 +72,15 @@ const index = {
     });
   },
   // 获取首页版块
-  getHomePageInfo() {
+  getHomePageInfo(oid = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
       data: {
         _bpoName: "BPO_Vue_NotValidationService",
         _methodName: "GetHomePageInfo",
-        _paraNames: "",
+        "_parameters[LoginUserOID]": oid,
+        _paraNames: "LoginUserOID",
         _pUrl: ""
       }
     });

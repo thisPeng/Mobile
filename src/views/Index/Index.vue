@@ -147,7 +147,7 @@ export default {
         this.images = JSON.parse(res.text);
       }
     });
-    index.getHomePageInfo().then(res => {
+    index.getHomePageInfo(this.userInfo.oid).then(res => {
       try {
         const arr = JSON.parse(res.text);
         this.pages = [];
