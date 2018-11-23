@@ -415,16 +415,6 @@ export default {
             try {
               if (res.status === 1 && res.text == "1") {
                 this.$toast.success("添加物资成功");
-                let goodsList = this.goodsList;
-                for (const i in goodsList) {
-                  if (goodsList[i][0] == this.goods.id) {
-                    goodsList[i][48] = 1;
-                    goodsList[i][49] = this.projectInfo.SC_ProjectOID;
-                    break;
-                  }
-                }
-                this.goodsList = [];
-                this.goodsList = goodsList;
                 return;
               } else if (res.status === 1 && res.text == "-1") {
                 throw "供应商未通过审核，添加物资失败";

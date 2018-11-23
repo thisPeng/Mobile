@@ -28,7 +28,7 @@
       <van-button type="primary" @click="onSubmit" v-if="info[15] != '2' && buttonValue.submit.show" :disabled="buttonValue.submit.disabled">提交报价</van-button>
       <!-- <van-button type="primary" @click="saveTranDetails" v-if="info[15] != '2'">保存</van-button> -->
       <van-button type="main" @click="jumpInfo" v-if="info[15] != '3' && buttonValue.edit.show" :disabled="buttonValue.edit.disabled">编辑合同</van-button>
-      <van-button type="default" @click="onAddItem" v-if="info[15] != '2' && buttonValue.add.show" :disabled="buttonValue.add.disabled">添加物资</van-button>
+      <van-button type="default" @click="jumpPage('tranrialDetail')" v-if="info[15] != '2' && buttonValue.add.show" :disabled="buttonValue.add.disabled">添加物资</van-button>
     </div>
   </div>
 </template>

@@ -165,7 +165,7 @@ export default {
                     ]
                   }
                 ]);
-                xmlString += "<root>" + xmlString + "</root>";
+                xmlString = "<root>" + xmlString + "</root>";
                 contractInfo.keepContract(xmlString).then(ress => {
                   try {
                     if (ress.status === 1) {

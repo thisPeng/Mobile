@@ -58,6 +58,7 @@ import TaskJDFrom from "./views/TaskList/TaskJDFrom";
 import TaskDJFrom from "./views/TaskList/TaskDJFrom";
 import TaskGYSFrom from "./views/TaskList/TaskGYSFrom";
 import TaskGYSDetails from "./views/TaskList/TaskGYSDetails";
+import MaterialList from "./views/Transaction/MaterialList/MaterialList";
 import Inquiry from "./views/Transaction/MaterialQuotation/Inquiry";
 import TranrialDetail from "./views/Transaction/MaterialQuotation/TranrialDetail"
 import TranContract from "./views/Transaction/TranContract/TranContract";
@@ -156,6 +157,14 @@ export default new Router({
         meta: {
           title: "询价单",
           // keepAlive: true
+        }
+      }, {
+        path: "/materialList",
+        name: "materialList",
+        component: MaterialList,
+        meta: {
+          title: "物资列表",
+          keepAlive: true
         }
       }, {
         path: "/taskList",

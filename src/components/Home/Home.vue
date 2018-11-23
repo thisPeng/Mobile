@@ -18,6 +18,7 @@
     <van-tabbar v-model="active" v-show="isTabbar" v-else>
       <van-tabbar-item icon="wap-home" @click="jumpTabs('index')">首页</van-tabbar-item>
       <van-tabbar-item icon="records" @click="jumpTabs('working')" v-if="userInfo.oid">工作台</van-tabbar-item>
+      <van-tabbar-item icon="point-gift" @click="jumpTabs('materialList')" v-if="userInfo.oid">物资</van-tabbar-item>
       <van-tabbar-item icon="contact" @click="jumpTabs('users')">我的</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -43,7 +44,7 @@ export default {
         if (
           to.name !== "index" &&
           to.name !== "working" &&
-          // to.name !== "classify" &&
+          to.name !== "materialList" &&
           to.name !== "cart" &&
           to.name !== "users"
         ) {
@@ -95,7 +96,7 @@ export default {
     if (
       current.name !== "index" &&
       current.name !== "working" &&
-      // current.name !== "classify" &&
+      current.name !== "materialList" &&
       current.name !== "cart" &&
       current.name !== "users"
     ) {

@@ -31,7 +31,7 @@
         <van-button type="primary" @click="sendOrder" v-if="list[39] === '初始状态' && item.text === '提议'" :disabled="item.Enabled !== '1'">发送</van-button>
         <van-button type="warning" @click="conProposal" v-if="list[39] === '已报价' && item.text === '提议'" :disabled="item.Enabled !== '1'">提议</van-button>
         <van-button type="main" @click="jumpPage('contractwork')" v-if="list[39] !== '待报价' && list[39] !== '待确认' && item.text === '编辑'" :disabled="item.Enabled !== '1'">编辑合同</van-button>
-        <van-button type="default" @click="conAddGoods" v-if="list[39] !== '待报价' && list[39] !== '待确认' && item.text === '添加物资'" :disabled="item.Enabled !== '1'">添加物资</van-button>
+        <van-button type="default" @click="jumpPage('inquirydetails')" v-if="list[39] !== '待报价' && list[39] !== '待确认' && item.text === '添加物资'" :disabled="item.Enabled !== '1'">添加物资</van-button>
         <van-button type="danger" @click="confirmDelete" v-if="item.text === '删除'" :disabled="item.Enabled !== '1'">删除</van-button>
       </div>
     </div>

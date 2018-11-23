@@ -32,13 +32,13 @@
 
         <div class="task-title">联系方式</div>
         <van-field v-model="info[21]" label="联系人：" placeholder="请输入联系人" />
-        <van-field v-model="info[24]" label="联系电话：" placeholder="请输入联系电话" />
+        <van-field v-model="info[24]" label="联系电话：" type="tel" placeholder="请输入联系电话" />
         <van-field v-model="info[18]" label="工程地址：" placeholder="请输入工程地址" />
 
         <div class="task-title">工程信息</div>
         <van-field :value="info[31] || this.userId.OrgName" label="工程单位：" disabled />
-        <van-field v-model="info[35]" label="单位电话：" placeholder="请输入单位电话" v-if="projectType == 2" />
-        <van-field v-model="info[27]" label="工程造价：" placeholder="请输入工程造价" />
+        <van-field v-model="info[35]" label="单位电话：" type="tel" placeholder="请输入单位电话" v-if="projectType == 2" />
+        <van-field v-model="info[27]" label="工程造价：" type="number" placeholder="请输入工程造价" />
         <van-field v-model="info[22]" label="建设单位：" placeholder="请输入建设单位" />
         <van-field v-model="info[3]" label="工期：" placeholder="请输入工期" />
         <cbh-select :value="info[23]" label="业务类型：" code="CodeTable_BusinessType" model="1" @change="comTypeConfirm" />

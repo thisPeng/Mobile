@@ -1,16 +1,6 @@
 <template>
   <div class="supplie-type">
-    <div class="supplie-select">
-      <van-cell is-link @click="$router.push({ name: 'supplier' })">
-        <template slot="title">
-          <van-tag type="danger" v-if="suppInfo[3] === '1'">待审核</van-tag>
-          <van-tag type="primary" v-else-if="suppInfo[3] === '2'">审核中</van-tag>
-          <van-tag type="success" v-else-if="suppInfo[3] === '3'">已审核</van-tag>
-          <van-tag v-else>未审核</van-tag>
-          <span class="van-cell-text padding-left">{{suppInfo[22] || '请选择供应商'}}</span>
-        </template>
-      </van-cell>
-    </div>
+    <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
 
     <div class="left">
       <div class="van-hairline--top-bottom van-badge-group">
@@ -47,16 +37,12 @@
                   <van-tag plain type="success">品牌：{{item[24]}}</van-tag>
                 </div>
               </div>
-              <div slot="footer" v-if="userType != 3 && projectInfo.SC_ProjectOID">
-                <van-stepper v-model="item[48]" :integer="true" @change="onChangNumber(item)" v-if="projectInfo.SC_ProjectOID == item[49]" />
-                <i class="iconfont icon-add" @click.stop="addCart(item)" v-else></i>
-              </div>
             </van-card>
           </div>
         </van-list>
       </div>
       <!--商品详情-->
-      <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked">
+      <van-sku v-model="showBase" :sku="sku" :goods="goods" :goods-id="goods.id" :hide-stock="sku.hide_stock">
         <template slot="sku-header-price" slot-scope="props">
           <div class="van-sku__goods-price">
             <span class="van-sku__price-symbol" v-if="props.price > 0">￥</span>
@@ -76,8 +62,7 @@
         <template slot="sku-actions" slot-scope="props">
           <div class="van-sku-actions">
             <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-            <van-button type="primary" bottom-action @click="onCartDelete" v-if="goods.isCart">移出购物车</van-button>
-            <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')" v-else-if="userType != 3 && projectInfo.SC_ProjectOID">加入购物车</van-button>
+            <!-- <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')" v-if="suppParams.oid">加入询价单</van-button> -->
           </div>
         </template>
       </van-sku>
@@ -85,7 +70,6 @@
     <van-popup v-model="screenShow" position="right">
       <div class="screen">
         <div class="screen-filter">
-          <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" show-action />
           <van-collapse v-model="activeNames">
             <van-collapse-item title="分类" name="1">
               <span class="filter-item" v-for="(item, index) in filterList" :key="index">
@@ -102,8 +86,8 @@
   </div>
 </template>
 <script>
-import computed from "./../../assets/js/computed.js";
-import { classify, supplier, cart } from "./../../assets/js/api.js";
+import computed from "./../../../assets/js/computed.js";
+import { classify } from "./../../../assets/js/api.js";
 
 export default {
   data() {
@@ -122,7 +106,6 @@ export default {
       suppActive: 0,
       filterActive: "",
       SQLFix: "",
-      suppInfo: [],
       // 物资详情
       showBase: false,
       sku: {
@@ -143,117 +126,11 @@ export default {
         unit: "",
         shop: "",
         taxRate: "",
-        taxAll: "",
-        isCart: false
+        taxAll: ""
       }
     };
   },
   methods: {
-    // 修改数量
-    onChangNumber(item) {
-      cart.getIntentionSKU(item[0]).then(result => {
-        try {
-          if (result.status) {
-            const sp = result.text.split(";");
-            let tmp = eval(sp[0].split("=")[1])[0];
-            tmp[3] = item[48];
-            const xmlString = "<root>" + this.xmlString(tmp) + "</root>";
-            cart.saveCart(xmlString).then(res => {
-              if (res.status !== 1) {
-                this.$toast.fail("保存失败，请重试");
-              }
-            });
-            return;
-          }
-          throw "修改失败，请重试";
-        } catch (e) {
-          this.$toast.fail(e);
-        }
-      });
-    },
-    // 拼接XML
-    xmlString(item) {
-      const xml = require("xml");
-      return xml([
-        {
-          BC_SC_IntentionSKU: [
-            { _attr: { UpdateKind: "ukModify" } },
-            { SC_IntentionSKUOID: item[0] }
-          ]
-        },
-        {
-          BC_SC_IntentionSKU: [
-            { _attr: { UpdateKind: "" } },
-            { SC_IntentionSKUOID: "null" },
-            { Order_Qty: item[3] },
-            { Remark: "null" },
-            { SKU_Status: item[23] },
-            { SYS_LAST_UPD: new Date().Format("yyyy-MM-dd hh:mm:ss") },
-            { SYS_LAST_UPD_BY: this.userInfo.oid }
-          ]
-        }
-      ]);
-    },
-    // 购物车删除
-    onCartDelete() {
-      cart.getIntentionSKU(this.goods.id).then(result => {
-        try {
-          if (result.status) {
-            const sp = result.text.split(";");
-            const tmp = eval(sp[0].split("=")[1])[0];
-            cart.delCartMaterials(tmp[0]).then(res => {
-              try {
-                if (res.status === 1 && res.text == "True") {
-                  let goodsList = this.goodsList;
-                  for (const i in goodsList) {
-                    if (goodsList[i][0] == this.goods.id) {
-                      goodsList[i][48] = 0;
-                      goodsList[i][49] = "00000000-0000-0000-0000-000000000000";
-                      break;
-                    }
-                  }
-                  this.goodsList = [];
-                  this.goodsList = goodsList;
-                  this.showBase = false;
-                  this.$toast.success("已移除购物车");
-                } else {
-                  this.$toast.fail("删除失败，请刷新页面重试");
-                }
-              } catch (e) {
-                this.$toast.fail("删除失败，请刷新页面重试");
-              }
-            });
-            return;
-          }
-          throw "修改失败，请重试";
-        } catch (e) {
-          this.$toast.fail(e);
-        }
-      });
-    },
-    jumpInfo() {
-      supplier
-        .getSuppTaskId(
-          this.projectInfo.DemandID || this.confirmParams[24],
-          this.suppParams.id
-        )
-        .then(res => {
-          try {
-            if (res.status === 1) {
-              const params = {
-                name: "供应商详情",
-                TaskGYSID: "SC_Company_SupplierOID='" + res.text + "'"
-              };
-              this.$store.commit("taskParams", params);
-              this.$router.push({
-                name: "taskGYSFrom"
-              });
-            }
-          } catch (e) {
-            this.$toast.fail(e);
-          }
-        });
-    },
     // 滚动加载
     onLoad() {
       const i = this.activeKey;
@@ -364,7 +241,7 @@ export default {
     },
     // 获取供应商分类
     getSuppType(isLoad = true, fk = "") {
-      classify.getSupplierType(this.suppParams.id, fk).then(res => {
+      classify.getSupplierType(this.userId.UCML_UserOID, fk).then(res => {
         try {
           if (res.status === 1) {
             const arr = JSON.parse(res.text);
@@ -382,85 +259,6 @@ export default {
         }
       });
     },
-    // 添加购物车
-    onBuyClicked() {
-      if (this.projectInfo.SC_ProjectOID || this.clientInfo[0]) {
-        if (this.suppParams.oid) {
-          const params = {
-            OIDCheckList: this.goods.id,
-            PartnerID: this.userId.UCML_OrganizeOID,
-            ProjectID: this.projectInfo.SC_ProjectOID || "",
-            DemandID: this.projectInfo.DemandID || this.confirmParams[24],
-            SupplierID: this.suppParams.id,
-            PurchaseOrderID: this.suppParams.oid,
-            IsDel: false
-          };
-          classify.addCartForOrder(params).then(res => {
-            try {
-              if (res.status === 1 && res.text == "1") {
-                this.$toast.success("添加物资成功");
-                return;
-              } else if (res.status === 1 && res.text == "-1") {
-                throw "供应商未通过审核，添加物资失败";
-              }
-              throw "添加失败，请刷新页面后重试";
-            } catch (e) {
-              this.$toast.fail(e);
-            }
-          });
-        } else {
-          const params = {
-            OIDCheckList: this.goods.id + "|" + this.goods.sid,
-            PartnerID: this.userId.UCML_OrganizeOID,
-            ProjectID: this.projectInfo.SC_ProjectOID,
-            DemandID: this.projectInfo.DemandID
-          };
-          classify.addCart(params).then(res => {
-            try {
-              if (res.status === 1 && res.text == "1") {
-                this.$toast.success("添加物资成功");
-                let goodsList = this.goodsList;
-                for (const i in goodsList) {
-                  if (goodsList[i][0] == this.goods.id) {
-                    goodsList[i][48] = 1;
-                    goodsList[i][49] = this.projectInfo.SC_ProjectOID;
-                    break;
-                  }
-                }
-                this.goodsList = [];
-                this.goodsList = goodsList;
-                return;
-              } else if (res.status === 1 && res.text == "-1") {
-                throw "供应商未通过审核，添加物资失败";
-              }
-              throw "添加失败，请刷新页面后重试";
-            } catch (e) {
-              this.$toast.fail(e);
-            }
-          });
-        }
-      } else {
-        this.$store.commit("backRouter", this.$router.name);
-        this.$toast.fail("请选择项目");
-      }
-    },
-    // 添加物资到购物车
-    addCart(item) {
-      this.goods = {
-        id: item[0],
-        sid: item[31],
-        title: item[22],
-        picture: item[41].replace("~", this.servePath),
-        brand: item[24],
-        info: item[28],
-        unit: item[23],
-        shop: item[36],
-        taxRate: item[20],
-        taxAll: item[32],
-        isCart: true
-      };
-      this.onBuyClicked();
-    },
     // 显示物资详情
     showInfo(item) {
       this.sku.price = item[5];
@@ -474,34 +272,12 @@ export default {
         unit: item[23],
         shop: item[36],
         taxRate: item[20],
-        taxAll: item[32],
-        isCart: this.projectInfo.SC_ProjectOID == item[49]
+        taxAll: item[32]
       };
       this.showBase = true;
     },
-    // 获取供应商详情
-    getSuppInfo() {
-      return supplier.getSuppInfo(this.suppParams.id).then(res => {
-        try {
-          if (res.status) {
-            const sp = res.text.split("[[");
-            const tsp = sp[1].split("]]");
-            this.suppInfo = eval("[[" + tsp[0] + "]]")[0];
-            return true;
-          }
-          return false;
-        } catch (e) {
-          this.suppInfo = [];
-          return false;
-        }
-      });
-    },
     pageInit() {
-      this.getSuppInfo().then(res => {
-        if (res) {
-          this.getSuppType();
-        }
-      });
+      this.getSuppType();
     }
   },
   computed,
@@ -522,6 +298,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     background-color: #fff;
+    border-top: 1px solid #eee;
     .info-left {
       display: flex;
       .info-img {
@@ -552,22 +329,20 @@ export default {
       display: flex;
       align-items: center;
       .van-tag {
-        width: 50px;
+        width: 60px;
       }
     }
   }
   .left {
     width: 25%;
     position: absolute;
-    top: 75px;
+    top: 50px;
     left: 0;
     right: 0;
-    bottom: 45px;
+    bottom: 55px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     z-index: 101;
-    border-right: 1px solid #eee;
-    background-color: #f6f6f6;
     .van-badge--select {
       border-color: #00a0e9;
     }
@@ -577,20 +352,19 @@ export default {
   }
   .right {
     position: absolute;
-    top: 75px;
+    top: 50px;
     left: 25%;
     right: 0;
-    bottom: 45px;
+    bottom: 55px;
     // overflow-y: auto;
     z-index: 102;
     .flex-span {
       width: 100%;
-      height: 40px;
+      height: 30px;
       font-size: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: #f6f6f6;
       .flex-1 {
         text-align: center;
         .iconfont {
