@@ -379,7 +379,8 @@ const classify = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": params.SQLCondi + " AND (smt.SPUName LIKE '%" + params.keyword + "%' OR BrandName LIKE '%" + params.keyword + "%') AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') " + (ProjectID ? "AND (ProjectID='" + ProjectID + "' OR ProjectID Is Null)" : ""),
+        "_parameters[SQLCondi]": params.SQLCondi + " AND (smt.SPUName LIKE '%" + params.keyword + "%' OR BrandName LIKE '%" + params.keyword + "%') AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') " +
+          (ProjectID ? "AND (ProjectID='" + ProjectID + "' OR ProjectID Is Null OR SC_IntentionSKUOID IN (SELECT MAX(SC_IntentionSKUOID) AS SC_IntentionSKUOID FROM SC_IntentionSKU WHERE ProjectID<>'" + ProjectID + "' AND Supp_SKU_ID NOT IN (SELECT Supp_SKU_ID FROM SC_IntentionSKU WHERE ProjectID='" + ProjectID + "') GROUP BY Supp_SKU_ID))" : ""),
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": params.SQLFix,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -423,7 +424,8 @@ const classify = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_Supp_ProductSKU.SupplierID='" + SupplierID + "' AND (SC_SMaterialType_FK in (select SC_SMaterialTypeOID from SC_SMaterialType where SC_SMaterialType_FK='" + SC_SMaterialType_FK + "') OR SC_SMaterialType_FK = '" + SC_SMaterialType_FK + "' )" + " AND (smt.SPUName LIKE '%" + keyword + "%' OR BrandName LIKE '%" + keyword + "%') AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') " + (ProjectID ? "AND (ProjectID='" + ProjectID + "' OR ProjectID Is Null)" : "AND ProjectID Is Null"),
+        "_parameters[SQLCondi]": "SC_Supp_ProductSKU.SupplierID='" + SupplierID + "' AND (SC_SMaterialType_FK in (select SC_SMaterialTypeOID from SC_SMaterialType where SC_SMaterialType_FK='" + SC_SMaterialType_FK + "') OR SC_SMaterialType_FK = '" + SC_SMaterialType_FK + "' )" + " AND (smt.SPUName LIKE '%" + keyword + "%' OR BrandName LIKE '%" + keyword + "%') AND ComSupplier.Organize_ID=(select top 1 Organize_ID from sc_company where CoStatus=1 and IsDefault='1') " +
+          (ProjectID ? "AND (ProjectID='" + ProjectID + "' OR ProjectID Is Null OR SC_IntentionSKUOID IN (SELECT MAX(SC_IntentionSKUOID) AS SC_IntentionSKUOID FROM SC_IntentionSKU WHERE ProjectID<>'" + ProjectID + "' AND Supp_SKU_ID NOT IN (SELECT Supp_SKU_ID FROM SC_IntentionSKU WHERE ProjectID='" + ProjectID + "') GROUP BY Supp_SKU_ID))" : ""),
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": SQLFix,
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",
@@ -1196,7 +1198,7 @@ const cart = {
     });
   },
   // 获取购物车列表
-  getIntentionSKU(Supp_SKU_ID = "") {
+  getIntentionSKU(Supp_SKU_ID = "", ProjectID = "") {
     return axios({
       url: "/UCMLWebServiceEntryForJs.aspx",
       method: "post",
@@ -1209,7 +1211,7 @@ const cart = {
         "_parameters[fieldList]": "",
         "_parameters[valueList]": "",
         "_parameters[condiIndentList]": "",
-        "_parameters[SQLCondi]": "SC_IntentionSKU.Supp_SKU_ID ='" + Supp_SKU_ID + "'",
+        "_parameters[SQLCondi]": "SC_IntentionSKU.Supp_SKU_ID ='" + Supp_SKU_ID + "' AND SC_IntentionSKU.ProjectID='" + ProjectID + "'",
         "_parameters[SQLCondiType]": 0,
         "_parameters[SQLFix]": " ORDER BY SupplierName ASC",
         _paraNames: "BCName,nStartPos,nRecords,fieldList,valueList,condiIndentList,SQLCondi,SQLCondiType,SQLFix",

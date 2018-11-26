@@ -281,6 +281,7 @@ export default {
           try {
             if (res.status === 1 && res.text == "1") {
               this.$toast.success("添加成功，请到询价单物资列表修改数量");
+              this.showBase = false;
               return;
             } else if (res.status === 1 && res.text == "-1") {
               throw "供应商未通过审核，添加物资失败";

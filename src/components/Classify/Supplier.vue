@@ -151,25 +151,27 @@ export default {
   methods: {
     // 修改数量
     onChangNumber(item) {
-      cart.getIntentionSKU(item[0]).then(result => {
-        try {
-          if (result.status) {
-            const sp = result.text.split(";");
-            let tmp = eval(sp[0].split("=")[1])[0];
-            tmp[3] = item[48];
-            const xmlString = "<root>" + this.xmlString(tmp) + "</root>";
-            cart.saveCart(xmlString).then(res => {
-              if (res.status !== 1) {
-                this.$toast.fail("保存失败，请重试");
-              }
-            });
-            return;
+      cart
+        .getIntentionSKU(item[0], this.projectInfo.SC_ProjectOID)
+        .then(result => {
+          try {
+            if (result.status) {
+              const sp = result.text.split(";");
+              let tmp = eval(sp[0].split("=")[1])[0];
+              tmp[3] = item[48];
+              const xmlString = "<root>" + this.xmlString(tmp) + "</root>";
+              cart.saveCart(xmlString).then(res => {
+                if (res.status !== 1) {
+                  this.$toast.fail("保存失败，请重试");
+                }
+              });
+              return;
+            }
+            throw "修改失败，请重试";
+          } catch (e) {
+            this.$toast.fail(e);
           }
-          throw "修改失败，请重试";
-        } catch (e) {
-          this.$toast.fail(e);
-        }
-      });
+        });
     },
     // 拼接XML
     xmlString(item) {
@@ -196,40 +198,43 @@ export default {
     },
     // 购物车删除
     onCartDelete() {
-      cart.getIntentionSKU(this.goods.id).then(result => {
-        try {
-          if (result.status) {
-            const sp = result.text.split(";");
-            const tmp = eval(sp[0].split("=")[1])[0];
-            cart.delCartMaterials(tmp[0]).then(res => {
-              try {
-                if (res.status === 1 && res.text == "True") {
-                  let goodsList = this.goodsList;
-                  for (const i in goodsList) {
-                    if (goodsList[i][0] == this.goods.id) {
-                      goodsList[i][48] = 0;
-                      goodsList[i][49] = "00000000-0000-0000-0000-000000000000";
-                      break;
+      cart
+        .getIntentionSKU(this.goods.id, this.projectInfo.SC_ProjectOID)
+        .then(result => {
+          try {
+            if (result.status) {
+              const sp = result.text.split(";");
+              const tmp = eval(sp[0].split("=")[1])[0];
+              cart.delCartMaterials(tmp[0]).then(res => {
+                try {
+                  if (res.status === 1 && res.text == "True") {
+                    let goodsList = this.goodsList;
+                    for (const i in goodsList) {
+                      if (goodsList[i][0] == this.goods.id) {
+                        goodsList[i][48] = 0;
+                        goodsList[i][49] =
+                          "00000000-0000-0000-0000-000000000000";
+                        break;
+                      }
                     }
+                    this.goodsList = [];
+                    this.goodsList = goodsList;
+                    this.showBase = false;
+                    this.$toast.success("已移除购物车");
+                  } else {
+                    this.$toast.fail("删除失败，请刷新页面重试");
                   }
-                  this.goodsList = [];
-                  this.goodsList = goodsList;
-                  this.showBase = false;
-                  this.$toast.success("已移除购物车");
-                } else {
+                } catch (e) {
                   this.$toast.fail("删除失败，请刷新页面重试");
                 }
-              } catch (e) {
-                this.$toast.fail("删除失败，请刷新页面重试");
-              }
-            });
-            return;
+              });
+              return;
+            }
+            throw "修改失败，请重试";
+          } catch (e) {
+            this.$toast.fail(e);
           }
-          throw "修改失败，请重试";
-        } catch (e) {
-          this.$toast.fail(e);
-        }
-      });
+        });
     },
     jumpInfo() {
       supplier
@@ -408,6 +413,7 @@ export default {
             try {
               if (res.status === 1 && res.text == "1") {
                 this.$toast.success("添加物资成功");
+                this.showBase = false;
                 return;
               } else if (res.status === 1 && res.text == "-1") {
                 throw "供应商未通过审核，添加物资失败";
@@ -438,6 +444,7 @@ export default {
                 }
                 this.goodsList = [];
                 this.goodsList = goodsList;
+                this.showBase = false;
                 return;
               } else if (res.status === 1 && res.text == "-1") {
                 throw "供应商未通过审核，添加物资失败";
