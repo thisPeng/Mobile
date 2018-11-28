@@ -7,7 +7,7 @@
       </div>
       <div class="option-item">
         <div class="item" v-for="(ite, idx) in item.data" :key="idx" @click="jumpPage(ite)">
-          <div class="van-info" v-if="ite.info > 0">{{ite.info}}</div>
+          <div class="item-info" v-if="ite.info > 0">{{ite.info}}</div>
           <div class="item-icon" v-if="ite.icon">
             <img :src="ite.icon">
           </div>
@@ -93,11 +93,25 @@ export default {
         align-items: center;
         justify-content: center;
         position: relative;
-        .van-info {
+        .item-info {
+          position: absolute;
           left: auto;
           right: 0px;
           top: 3px;
           font-size: 16px;
+          color: #fff;
+          font-weight: 500;
+          padding: 0 0.25em;
+          text-align: center;
+          min-width: 1.4em;
+          line-height: 1.4;
+          border-radius: 0.7em;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          background-color: #f44;
+          -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+          font-family: PingFang SC, Helvetica Neue, Arial, sans-serif;
         }
         .item-icon {
           width: 60px;

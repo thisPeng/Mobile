@@ -326,13 +326,15 @@ export default {
           that.model = that.data.length > 8;
           if (!this.userType) {
             if (that.model) {
-              that.$store.commit("userType", 1);
+              that.$store.commit("userType", 2);
             } else {
               that.$store.commit("userType", 3);
             }
           }
           this.$nextTick().then(() => {
-            that.drawLine();
+            setTimeout(() => {
+              that.drawLine();
+            }, 0);
           });
         }
       });
