@@ -1,4 +1,4 @@
-# my-app
+# mobile
 
 ## Project setup
 ```
