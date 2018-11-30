@@ -21,7 +21,6 @@ module.exports = {
     modules: false
   },
   // PWA 插件相关配置
-  // see https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
   pwa: {
     name: '材博汇',
     themeColor: '#FFFFFF',
