@@ -1,41 +1,93 @@
 <template>
   <div class="index">
     <!--轮播图-->
-    <div class="index-banner" v-if="images.length > 0">
+    <!-- <div
+      class="index-banner"
+      v-if="images.length > 0"
+    >
       <van-swipe :autoplay="3000">
-        <van-swipe-item v-for="(item, index) in images" :key="index">
-          <img :src="item.ImagePath.replace('~',servePath)" alt="" />
+        <van-swipe-item
+          v-for="(item, index) in images"
+          :key="index"
+        >
+          <img
+            :src="item.ImagePath.replace('~',servePath)"
+            alt=""
+          />
         </van-swipe-item>
       </van-swipe>
-    </div>
+    </div> -->
 
     <!--动态-->
     <div class="index-marquee">
-      <div class="marquee-title" v-if="marqueeList.isShowTitle == 1">
+      <div
+        class="marquee-title"
+        v-if="marqueeList.isShowTitle == 1"
+      >
         <span>{{marqueeList.title}}</span>
       </div>
       <div class="marquee-list">
         <ul :class="{animate}">
-          <li v-for="(item, index) in marqueeList.data" :key="index">
+          <li
+            v-for="(item, index) in marqueeList.data"
+            :key="index"
+          >
             <span class="marquee-text">{{item.Describe || item.text || item.id}}</span>
           </li>
         </ul>
       </div>
     </div>
+    <div class="searchItem">
+      <div class="logos">
+        <h2>物资查询</h2>
+      </div>
 
-    <!--搜索框-->
-    <van-search placeholder="搜物资、找品牌" v-model="keyword" @search="onSearch" @cancel="filterReset" />
-
+      <!--搜索框-->
+      <van-search
+        placeholder="搜物资、找品牌"
+        v-model="keyword"
+        @search="onSearch"
+        @cancel="filterReset"
+      />
+      <!-- 快速查询 -->
+      <div
+        class="button-option"
+        @click="jumpItem"
+      >
+        <van-button
+          type="main"
+          native-type="submit"
+        >快速查询</van-button>
+      </div>
+    </div>
     <!--页面版块-->
     <div class="index-pages">
-      <div class="pages-row" v-for="(item,index) in pages" :key="index">
-        <div class="pages-title" v-if="item.isShowTitle == 1">{{item.title}}</div>
+      <div
+        class="pages-row"
+        v-for="(item,index) in pages"
+        :key="index"
+      >
+        <div
+          class="pages-title"
+          v-if="item.isShowTitle == 1"
+        >{{item.title}}</div>
         <div class="pages-content">
-          <div :class="'content-item content-item-'+item.RowNum" v-for="(ite,idx) in item.data" :key="idx" @click="jumpPage(ite,item.ActionType)">
+          <div
+            :class="'content-item content-item-'+item.RowNum"
+            v-for="(ite,idx) in item.data"
+            :key="idx"
+            @click="jumpPage(ite,item.ActionType)"
+          >
             <div class="content-image">
-              <img :src="(ite.icon).replace('~',servePath)" alt="">
+              <img
+                :src="(ite.icon).replace('~',servePath)"
+                alt=""
+              >
             </div>
-            <div class="content-text" v-if="ite.isShowTitle == 1">{{ite.text}}</div>
+            <div
+              class="content-text"
+              v-if="ite.isShowTitle == 1"
+            >{{ite.text}}</div>
           </div>
         </div>
       </div>
@@ -131,6 +183,11 @@ export default {
       this.keyword = "";
       this.$store.commit("goodsParams", "");
     },
+    jumpItem() {
+      this.$router.push({
+        name: "classify"
+      });
+    },
     // 动态
     showMarquee() {
       this.animate = true;
@@ -175,8 +232,36 @@ export default {
 <style lang="less" scoped>
 .index {
   width: 100%;
-  background-color: #fff;
+  background-color: #ffffff;
   padding-bottom: 60px;
+  .button-option {
+    width: 100%;
+    > button {
+      width: 100%;
+      height: 45px;
+      font-size: 18px;
+      border: 0;
+      border-radius: 130px;
+      margin-top: 30px;
+    }
+  }
+  .searchItem {
+    margin-top: 90px;
+  }
+  .van-button--danger {
+    color: #fff;
+    background-color: #3d95d5;
+    border: 1px solid #ebedf0;
+  }
+  .logos {
+    width: 100%;
+  }
+  .logos h2 {
+    display: flex;
+    justify-content: center;
+    color: #00a0e9;
+    // padding-bottom: 20px;
+  }
   .index-banner {
     height: 200px;
     .van-swipe-item {
@@ -233,7 +318,6 @@ export default {
     padding: 15px 10px !important;
     background: #fff !important;
   }
-
   // 版块
   .index-pages {
     .pages-row {
@@ -312,14 +396,27 @@ export default {
       }
     }
   }
-}
-</style>
-<style lang="less">
-.index {
-  .van-search {
-    .van-cell {
-      border: 1px solid #eee;
-    }
+  .index .van-search[data-v-1744366b] {
+    padding-bottom: 50px;
   }
 }
 </style>
+<style lang="less">
+
+.index {
+  .van-search {
+    padding: 10px 2px 40px 2px;
+    .van-cell {
+      border: 1px solid #eee;
+      padding: 13px 20px;
+    }
+  }
+}
+
+// .index {
+//   .van-search {
+
+//   }
+// }
+</style>
+

@@ -1,5 +1,5 @@
 <template>
-  <div class="count">
+  <div class="count" v-show=false>
     <!--统计数据-->
     <div class="count-number" v-if="userType <= 3">
       <van-row class="count-row">

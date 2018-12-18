@@ -1,6 +1,6 @@
 <template>
   <div class="classify">
-    <div class="van-cell van-cell--borderless van-field" v-if="userInfo.oid && userType != 3">
+    <div class="van-cell van-cell--borderless van-field" v-if="userInfo.oid && userType != 3" v-show=false>
       <div class="van-cell__title">工程名称：</div>
       <div class="van-cell__value flex-between">
         <span class="text-truncate text-left text-gray">{{projectInfo.ProjectName || '请选择工程项目'}}</span>
